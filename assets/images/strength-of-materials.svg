@@ -1,0 +1,15 @@
+<svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+<line x1="60" y1="220" x2="560" y2="220" stroke="#EDEFF2" stroke-width="2"/>
+<line x1="60" y1="220" x2="60" y2="20" stroke="#EDEFF2" stroke-width="2"/>
+<text x="300" y="248" fill="#5C7E96" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">STRAIN</text>
+<text x="30" y="120" fill="#5C7E96" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace" transform="rotate(-90 30 120)">STRESS</text>
+<path d="M60,220 L180,110 L220,95 L260,60 L340,45 L460,90 L520,150" fill="none" stroke="#8FE0FF" stroke-width="3"/>
+<circle cx="180" cy="110" r="4" fill="#F2A93C"/>
+<text x="185" y="100" fill="#F2A93C" font-size="11" font-family="IBM Plex Mono, monospace">Elastic limit</text>
+<circle cx="260" cy="60" r="4" fill="#F2A93C"/>
+<text x="265" y="52" fill="#F2A93C" font-size="11" font-family="IBM Plex Mono, monospace">Yield</text>
+<circle cx="340" cy="45" r="4" fill="#D9694F"/>
+<text x="345" y="38" fill="#D9694F" font-size="11" font-family="IBM Plex Mono, monospace">Ultimate</text>
+<circle cx="520" cy="150" r="4" fill="#D9694F"/>
+<text x="480" y="170" fill="#D9694F" font-size="11" font-family="IBM Plex Mono, monospace">Fracture</text>
+</svg>

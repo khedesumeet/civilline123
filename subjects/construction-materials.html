@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Construction Materials & Management — CIVILINE</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#subjects">Subjects</a>
+    <a href="../video-library.html">Video Library</a>
+  </div>
+  <a href="../index.html#subjects" class="btn btn-primary" style="padding:10px 18px;font-size:0.75rem;">Start Quiz</a>
+</nav>
+
+<div class="subject-header">
+  <div class="breadcrumb"><a href="../index.html">HOME</a> / <a href="../index.html#subjects">SUBJECTS</a> / CE-104</div>
+  <h1>Construction Materials & Management</h1>
+  <p class="desc">Properties of cement, aggregates, bricks, timber and principles of project management.</p>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-frame tick-frame">
+    <div class="tick-bl"></div><div class="tick-br"></div>
+    <img src="../assets/images/construction-materials.svg" alt="Construction Materials & Management diagram">
+  </div>
+  <div class="diagram-caption">FIG. 1 — Stretcher bond brick masonry course pattern</div>
+</div>
+
+<div class="lecture-box">
+  <div class="lecture-card">
+    <div class="info">
+      <h3>Watch the full NPTEL lecture series</h3>
+      <p>Building Materials and Construction — IIT Delhi</p>
+    </div>
+    <a href="https://nptel.ac.in/courses/105102088" target="_blank" rel="noopener" class="btn btn-primary">Open on NPTEL &rarr;</a>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <div class="section-head" style="border:none;padding-bottom:0;margin-bottom:20px;">
+    <div>
+      <div class="tag mono">// SELF TEST</div>
+      <h2>8 Practice MCQs</h2>
+    </div>
+    <p>Click an option to see the correct answer and a short explanation instantly.</p>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+
+<script src="../assets/js/quiz.js"></script>
+<script>
+  var QUESTIONS = [{"q": "The setting of ordinary Portland cement is primarily due to the chemical reaction called:", "options": ["Oxidation", "Hydration", "Carbonation", "Sublimation"], "answer": 1, "explanation": "Hydration is the chemical reaction between cement compounds and water that causes cement paste to set and gain strength over time."}, {"q": "The standard curing period generally recommended for concrete to gain adequate strength is about:", "options": ["1 day", "3 days", "28 days", "6 months"], "answer": 2, "explanation": "Concrete is conventionally cured and tested at 28 days, by which time it has gained the large majority of its design compressive strength."}, {"q": "Fineness of cement affects mainly its:", "options": ["Colour", "Rate of hydration and early strength gain", "Long-term durability only", "Fire resistance only"], "answer": 1, "explanation": "Finer cement particles hydrate faster, giving quicker setting and higher early strength, though it can also increase heat of hydration and shrinkage."}, {"q": "The slump test is performed on fresh concrete to measure its:", "options": ["Compressive strength", "Workability", "Setting time", "Density"], "answer": 1, "explanation": "The slump test measures the consistency/workability of fresh concrete by observing how much a cone-shaped sample subsides under its own weight."}, {"q": "In brick masonry, a 'header' is a brick laid such that:", "options": ["Its longer face is visible on the wall face", "Its shorter end (header face) is visible on the wall face", "It is placed vertically on edge", "It is cut diagonally"], "answer": 1, "explanation": "A header is laid with its short end exposed on the wall face, as opposed to a stretcher, which shows its long face."}, {"q": "Fine aggregate used in concrete generally refers to particles that pass through a:", "options": ["80 mm sieve", "4.75 mm sieve", "300 mm sieve", "150 mm sieve only"], "answer": 1, "explanation": "As per standard grading, fine aggregate (sand) consists of particles passing the 4.75 mm sieve, while coarser particles are classed as coarse aggregate."}, {"q": "A critical path in project management refers to the sequence of activities that:", "options": ["Has the most float (slack) available", "Determines the shortest possible project duration with zero float", "Can be delayed without affecting the project finish", "Involves the least cost"], "answer": 1, "explanation": "The critical path is the longest chain of dependent activities with zero float; any delay in it directly delays the overall project completion."}, {"q": "Admixtures are added to concrete mainly to:", "options": ["Replace cement completely", "Modify specific fresh or hardened properties like workability or setting time", "Increase self-weight only", "Eliminate the need for curing"], "answer": 1, "explanation": "Chemical or mineral admixtures are dosed into concrete to achieve specific desired properties, such as improved workability, retarded/accelerated setting, or durability."}];
+  CIVILINE.renderQuiz("quiz-container", QUESTIONS);
+</script>
+
+<footer>
+  <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
+  <div>Built for self-study &middot; Video lectures courtesy NPTEL</div>
+</footer>
+</body>
+</html>

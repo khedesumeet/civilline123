@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transportation Engineering — CIVILINE</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#subjects">Subjects</a>
+    <a href="../video-library.html">Video Library</a>
+  </div>
+  <a href="../index.html#subjects" class="btn btn-primary" style="padding:10px 18px;font-size:0.75rem;">Start Quiz</a>
+</nav>
+
+<div class="subject-header">
+  <div class="breadcrumb"><a href="../index.html">HOME</a> / <a href="../index.html#subjects">SUBJECTS</a> / CE-303</div>
+  <h1>Transportation Engineering</h1>
+  <p class="desc">Highway geometric design, pavement materials, traffic engineering and railways.</p>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-frame tick-frame">
+    <div class="tick-bl"></div><div class="tick-br"></div>
+    <img src="../assets/images/transportation-engineering.svg" alt="Transportation Engineering diagram">
+  </div>
+  <div class="diagram-caption">FIG. 1 — Typical flexible pavement cross-section showing layered courses</div>
+</div>
+
+<div class="lecture-box">
+  <div class="lecture-card">
+    <div class="info">
+      <h3>Watch the full NPTEL lecture series</h3>
+      <p>Introduction to Transportation Engineering — IIT Kharagpur</p>
+    </div>
+    <a href="https://nptel.ac.in/courses/105105107" target="_blank" rel="noopener" class="btn btn-primary">Open on NPTEL &rarr;</a>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <div class="section-head" style="border:none;padding-bottom:0;margin-bottom:20px;">
+    <div>
+      <div class="tag mono">// SELF TEST</div>
+      <h2>8 Practice MCQs</h2>
+    </div>
+    <p>Click an option to see the correct answer and a short explanation instantly.</p>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+
+<script src="../assets/js/quiz.js"></script>
+<script>
+  var QUESTIONS = [{"q": "The camber provided on a road cross-section mainly serves to:", "options": ["Increase vehicle speed", "Drain off surface rain water quickly", "Reduce construction cost only", "Increase pavement thickness"], "answer": 1, "explanation": "Camber, the cross slope of a road, sheds surface rainwater to the sides quickly, preventing water from ponding and weakening the pavement."}, {"q": "Superelevation is provided on horizontal curves mainly to counteract:", "options": ["Gradient resistance", "Centrifugal force acting on vehicles", "Braking force only", "Rolling resistance"], "answer": 1, "explanation": "Superelevation (banking) tilts the pavement on curves to help counter the centrifugal force acting on a vehicle, improving stability at speed."}, {"q": "In flexible pavements, the load is transferred to the subgrade mainly through:", "options": ["Slab action of a rigid layer", "Grain-to-grain contact and layered stress distribution", "Steel reinforcement", "A single rigid course only"], "answer": 1, "explanation": "Flexible pavements distribute wheel loads through successive granular/bituminous layers via grain-to-grain contact, spreading stress over a wider area at the subgrade."}, {"q": "The stopping sight distance for a vehicle depends on:", "options": ["Only the road width", "Speed of vehicle, reaction time and braking efficiency", "Only pavement colour", "Only the camber"], "answer": 1, "explanation": "Stopping sight distance is calculated from the distance covered during driver reaction time plus the braking distance, both a function of speed."}, {"q": "A rigid pavement differs from a flexible pavement mainly in that it:", "options": ["Has no wearing course", "Distributes load over a large area through slab (beam) action", "Cannot carry any traffic load", "Is always thinner than flexible pavement"], "answer": 1, "explanation": "Rigid (concrete) pavements act like a beam/slab, distributing loads over a wide area through flexural strength, unlike the layered load-spreading of flexible pavements."}, {"q": "The purpose of providing a transition curve between a straight road and a circular curve is to:", "options": ["Reduce construction length", "Gradually introduce curvature and superelevation, avoiding sudden jerk", "Increase pavement thickness", "Reduce the radius of the circular curve"], "answer": 1, "explanation": "A transition curve provides a gradual change in curvature and superelevation, avoiding the sudden centrifugal jerk a vehicle would feel entering a circular curve directly."}, {"q": "California Bearing Ratio (CBR) test is used to evaluate:", "options": ["Bitumen quality", "Strength of subgrade soil for pavement design", "Cement grade", "Aggregate impact value"], "answer": 1, "explanation": "The CBR test measures the load-bearing capacity of subgrade/subbase soil relative to a standard crushed stone, guiding flexible pavement thickness design."}, {"q": "Traffic signals at an intersection are primarily designed to:", "options": ["Increase the number of accidents", "Separate conflicting traffic movements in time", "Eliminate the need for road markings", "Reduce road width requirements"], "answer": 1, "explanation": "Signals assign right-of-way to different traffic streams at different times, separating conflicting movements to reduce collisions and improve flow."}];
+  CIVILINE.renderQuiz("quiz-container", QUESTIONS);
+</script>
+
+<footer>
+  <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
+  <div>Built for self-study &middot; Video lectures courtesy NPTEL</div>
+</footer>
+</body>
+</html>

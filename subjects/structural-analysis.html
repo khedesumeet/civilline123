@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structural Analysis — CIVILINE</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#subjects">Subjects</a>
+    <a href="../video-library.html">Video Library</a>
+  </div>
+  <a href="../index.html#subjects" class="btn btn-primary" style="padding:10px 18px;font-size:0.75rem;">Start Quiz</a>
+</nav>
+
+<div class="subject-header">
+  <div class="breadcrumb"><a href="../index.html">HOME</a> / <a href="../index.html#subjects">SUBJECTS</a> / CE-101</div>
+  <h1>Structural Analysis</h1>
+  <p class="desc">Forces, reactions, bending moments and deflections in beams, trusses and frames.</p>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-frame tick-frame">
+    <div class="tick-bl"></div><div class="tick-br"></div>
+    <img src="../assets/images/structural-analysis.svg" alt="Structural Analysis diagram">
+  </div>
+  <div class="diagram-caption">FIG. 1 — Simply supported beam under a point load, with bending moment diagram</div>
+</div>
+
+<div class="lecture-box">
+  <div class="lecture-card">
+    <div class="info">
+      <h3>Watch the full NPTEL lecture series</h3>
+      <p>NOC: Structural Analysis I — IIT Kharagpur</p>
+    </div>
+    <a href="https://nptel.ac.in/courses/105105166" target="_blank" rel="noopener" class="btn btn-primary">Open on NPTEL &rarr;</a>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <div class="section-head" style="border:none;padding-bottom:0;margin-bottom:20px;">
+    <div>
+      <div class="tag mono">// SELF TEST</div>
+      <h2>8 Practice MCQs</h2>
+    </div>
+    <p>Click an option to see the correct answer and a short explanation instantly.</p>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+
+<script src="../assets/js/quiz.js"></script>
+<script>
+  var QUESTIONS = [{"q": "A simply supported beam carries a single point load at mid-span. The bending moment is maximum at:", "options": ["The supports", "The mid-span", "Quarter span", "It is uniform throughout"], "answer": 1, "explanation": "For a centrally loaded simply supported beam, the bending moment increases linearly from zero at the supports to a peak directly under the load at mid-span."}, {"q": "A statically determinate structure is one where:", "options": ["Equations of static equilibrium alone are sufficient to find all reactions", "Reactions can only be found using strain energy methods", "The structure has more unknowns than equations", "The structure cannot carry any load"], "answer": 0, "explanation": "Determinate structures have exactly as many unknown reactions/forces as available equilibrium equations, so no compatibility conditions are needed."}, {"q": "The degree of static indeterminacy of a fixed beam (both ends fixed, no intermediate hinge) is:", "options": ["0", "1", "2", "3"], "answer": 3, "explanation": "A fixed-fixed beam has 6 reaction components against 3 equilibrium equations, giving a degree of indeterminacy of 3."}, {"q": "In the method of virtual work for deflection of trusses, a unit load is applied:", "options": ["At the support only", "In the direction of the desired deflection, at the point of interest", "Perpendicular to the member axis always", "Equal to the actual load"], "answer": 1, "explanation": "The unit-load (virtual work) method places a fictitious unit force at the point and in the direction where deflection is sought."}, {"q": "Which method is best suited for analysing indeterminate structures using compatibility of displacements?", "options": ["Method of sections", "Force (flexibility) method", "Free body diagram method", "Graphical statics only"], "answer": 1, "explanation": "The force method (flexibility method) solves indeterminate structures by treating redundant reactions as unknowns and enforcing compatibility conditions."}, {"q": "In a three-hinged arch, the horizontal thrust depends on:", "options": ["Only the span", "Only the material", "The load, span, and central rise of the arch", "Only the support type"], "answer": 2, "explanation": "Horizontal thrust in a three-hinged arch is derived by taking moments about the crown hinge, and depends on load, span, and rise."}, {"q": "The Muller-Breslau principle is primarily used to construct:", "options": ["Free body diagrams", "Influence lines", "Mohr's circle", "Shear force diagrams only"], "answer": 1, "explanation": "The Muller-Breslau principle states that the influence line for a response function is given by the deflected shape from a unit displacement/rotation applied at that response location."}, {"q": "For a cantilever beam with a point load at the free end, the maximum deflection occurs at:", "options": ["The fixed end", "The free end", "Mid-span", "It is constant along the length"], "answer": 1, "explanation": "A cantilever has zero slope and deflection at the fixed support; deflection accumulates along the span and is maximum at the free end."}];
+  CIVILINE.renderQuiz("quiz-container", QUESTIONS);
+</script>
+
+<footer>
+  <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
+  <div>Built for self-study &middot; Video lectures courtesy NPTEL</div>
+</footer>
+</body>
+</html>

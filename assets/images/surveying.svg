@@ -1,0 +1,20 @@
+<svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#8FE0FF" stroke-width="2" fill="none">
+<polygon points="100,190 250,60 300,190"/>
+<polygon points="300,190 250,60 450,90"/>
+<polygon points="300,190 450,90 500,190"/>
+</g>
+<g fill="#F2A93C">
+<circle cx="100" cy="190" r="6"/>
+<circle cx="250" cy="60" r="6"/>
+<circle cx="300" cy="190" r="6"/>
+<circle cx="450" cy="90" r="6"/>
+<circle cx="500" cy="190" r="6"/>
+</g>
+<text x="90" y="210" fill="#EDEFF2" font-size="11" font-family="IBM Plex Mono, monospace">A</text>
+<text x="248" y="45" fill="#EDEFF2" font-size="11" font-family="IBM Plex Mono, monospace">B</text>
+<text x="300" y="210" fill="#EDEFF2" font-size="11" font-family="IBM Plex Mono, monospace">C</text>
+<text x="450" y="75" fill="#EDEFF2" font-size="11" font-family="IBM Plex Mono, monospace">D</text>
+<text x="500" y="210" fill="#EDEFF2" font-size="11" font-family="IBM Plex Mono, monospace">E</text>
+<text x="300" y="230" fill="#5C7E96" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">TRIANGULATION NETWORK</text>
+</svg>

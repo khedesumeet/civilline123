@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reinforced Concrete Design — CIVILINE</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#subjects">Subjects</a>
+    <a href="../video-library.html">Video Library</a>
+  </div>
+  <a href="../index.html#subjects" class="btn btn-primary" style="padding:10px 18px;font-size:0.75rem;">Start Quiz</a>
+</nav>
+
+<div class="subject-header">
+  <div class="breadcrumb"><a href="../index.html">HOME</a> / <a href="../index.html#subjects">SUBJECTS</a> / CE-201</div>
+  <h1>Reinforced Concrete Design</h1>
+  <p class="desc">Working stress and limit state design of RCC beams, slabs, columns and footings.</p>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-frame tick-frame">
+    <div class="tick-bl"></div><div class="tick-br"></div>
+    <img src="../assets/images/rcc-design.svg" alt="Reinforced Concrete Design diagram">
+  </div>
+  <div class="diagram-caption">FIG. 1 — RCC beam cross-section showing tension reinforcement and stirrups</div>
+</div>
+
+<div class="lecture-box">
+  <div class="lecture-card">
+    <div class="info">
+      <h3>Watch the full NPTEL lecture series</h3>
+      <p>Concrete Engineering and Technology — IIT Kanpur</p>
+    </div>
+    <a href="https://archive.nptel.ac.in/courses/105/104/105104030/" target="_blank" rel="noopener" class="btn btn-primary">Open on NPTEL &rarr;</a>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <div class="section-head" style="border:none;padding-bottom:0;margin-bottom:20px;">
+    <div>
+      <div class="tag mono">// SELF TEST</div>
+      <h2>8 Practice MCQs</h2>
+    </div>
+    <p>Click an option to see the correct answer and a short explanation instantly.</p>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+
+<script src="../assets/js/quiz.js"></script>
+<script>
+  var QUESTIONS = [{"q": "In RCC beams, steel reinforcement is primarily provided to resist:", "options": ["Compressive stresses", "Tensile stresses", "Shrinkage only", "Thermal stresses only"], "answer": 1, "explanation": "Concrete is weak in tension, so reinforcement bars are placed in the tension zone to carry tensile stresses that develop under bending."}, {"q": "As per limit state design philosophy, the design is checked against:", "options": ["Only the limit state of collapse", "Only the limit state of serviceability", "Both limit states of collapse and serviceability", "Neither; only working stress"], "answer": 2, "explanation": "Limit state design checks safety against collapse (strength) as well as serviceability conditions like deflection and cracking."}, {"q": "The minimum grade of concrete generally recommended for reinforced concrete work is:", "options": ["M10", "M15", "M20", "M5"], "answer": 2, "explanation": "As per common design codes, M20 is typically the minimum grade recommended for reinforced concrete structural elements."}, {"q": "Stirrups in an RCC beam are primarily provided to resist:", "options": ["Bending moment", "Shear force", "Axial load", "Torsional load only"], "answer": 1, "explanation": "Vertical stirrups act as shear reinforcement, resisting diagonal tension cracks caused by shear force in the beam."}, {"q": "The effective cover in RCC members is provided mainly to protect reinforcement from:", "options": ["Excess bending", "Corrosion and fire", "Torsion", "Shrinkage cracks only"], "answer": 1, "explanation": "Concrete cover shields steel bars from moisture and chemical ingress (corrosion) and provides fire resistance."}, {"q": "In a doubly reinforced beam, reinforcement is provided in:", "options": ["Tension zone only", "Compression zone only", "Both tension and compression zones", "Neither zone"], "answer": 2, "explanation": "A doubly reinforced beam has steel in both zones, used when the section size is restricted and compression steel helps share the load."}, {"q": "The purpose of a footing in a structure is to:", "options": ["Increase the height of the column", "Transfer and distribute loads safely to the soil", "Resist wind load only", "Provide architectural finish"], "answer": 1, "explanation": "Footings spread the concentrated column/wall loads over a larger soil area, keeping the bearing pressure within the safe limit of the soil."}, {"q": "The modular ratio in working stress design is the ratio of:", "options": ["Modulus of elasticity of steel to that of concrete", "Modulus of elasticity of concrete to that of steel", "Yield stress to ultimate stress", "Grade of concrete to grade of steel"], "answer": 0, "explanation": "Modular ratio (m) equals Es/Ec, used to transform steel area into an equivalent concrete area in working stress calculations."}];
+  CIVILINE.renderQuiz("quiz-container", QUESTIONS);
+</script>
+
+<footer>
+  <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
+  <div>Built for self-study &middot; Video lectures courtesy NPTEL</div>
+</footer>
+</body>
+</html>

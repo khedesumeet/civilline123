@@ -1,0 +1,13 @@
+<svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+<rect x="60" y="30" width="480" height="55" fill="none" stroke="#EDEFF2" stroke-width="1.5"/>
+<text x="80" y="62" fill="#EDEFF2" font-size="12" font-family="IBM Plex Mono, monospace">TOPSOIL</text>
+<rect x="60" y="85" width="480" height="60" fill="none" stroke="#8FE0FF" stroke-width="1.5"/>
+<text x="80" y="120" fill="#8FE0FF" font-size="12" font-family="IBM Plex Mono, monospace">SANDY LAYER</text>
+<rect x="60" y="145" width="480" height="65" fill="none" stroke="#F2A93C" stroke-width="1.5"/>
+<text x="80" y="182" fill="#F2A93C" font-size="12" font-family="IBM Plex Mono, monospace">CLAY LAYER</text>
+<line x1="60" y1="110" x2="540" y2="110" stroke="#8FE0FF" stroke-width="2" stroke-dasharray="6 4"/>
+<polygon points="500,95 490,110 510,110" fill="#8FE0FF"/>
+<text x="500" y="90" fill="#8FE0FF" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">WATER TABLE</text>
+<rect x="60" y="210" width="480" height="30" fill="none" stroke="#5C7E96" stroke-width="1"/>
+<text x="80" y="230" fill="#5C7E96" font-size="11" font-family="IBM Plex Mono, monospace">BEDROCK</text>
+</svg>

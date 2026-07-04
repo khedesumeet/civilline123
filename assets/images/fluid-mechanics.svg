@@ -1,0 +1,16 @@
+<svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+<path d="M60,70 L220,70 L280,120 L340,120 L400,70 L540,70
+         L540,150 L400,150 L340,100 L280,100 L220,150 L60,150 Z"
+      fill="none" stroke="#8FE0FF" stroke-width="3"/>
+<line x1="150" y1="70" x2="150" y2="150" stroke="#EDEFF2" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="310" y1="100" x2="310" y2="120" stroke="#F2A93C" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="150" y="45" fill="#EDEFF2" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">INLET</text>
+<text x="310" y="185" fill="#F2A93C" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">THROAT</text>
+<line x1="90" y1="110" x2="200" y2="110" stroke="#8FE0FF" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="290" y1="110" x2="330" y2="110" stroke="#F2A93C" stroke-width="2" marker-end="url(#a3)"/>
+<defs>
+<marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#8FE0FF"/></marker>
+<marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#F2A93C"/></marker>
+</defs>
+<text x="450" y="185" fill="#5C7E96" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">VENTURI METER</text>
+</svg>

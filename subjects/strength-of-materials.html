@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strength of Materials — CIVILINE</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<nav>
+  <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#subjects">Subjects</a>
+    <a href="../video-library.html">Video Library</a>
+  </div>
+  <a href="../index.html#subjects" class="btn btn-primary" style="padding:10px 18px;font-size:0.75rem;">Start Quiz</a>
+</nav>
+
+<div class="subject-header">
+  <div class="breadcrumb"><a href="../index.html">HOME</a> / <a href="../index.html#subjects">SUBJECTS</a> / CE-102</div>
+  <h1>Strength of Materials</h1>
+  <p class="desc">Stress, strain, torsion, bending and the mechanical behaviour of solid materials.</p>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-frame tick-frame">
+    <div class="tick-bl"></div><div class="tick-br"></div>
+    <img src="../assets/images/strength-of-materials.svg" alt="Strength of Materials diagram">
+  </div>
+  <div class="diagram-caption">FIG. 1 — Stress-strain curve showing elastic limit, yield point and ultimate stress</div>
+</div>
+
+<div class="lecture-box">
+  <div class="lecture-card">
+    <div class="info">
+      <h3>Watch the full NPTEL lecture series</h3>
+      <p>NOC: Strength of Materials — IIT Kharagpur</p>
+    </div>
+    <a href="https://nptel.ac.in/courses/105105108" target="_blank" rel="noopener" class="btn btn-primary">Open on NPTEL &rarr;</a>
+  </div>
+</div>
+
+<div class="quiz-box">
+  <div class="section-head" style="border:none;padding-bottom:0;margin-bottom:20px;">
+    <div>
+      <div class="tag mono">// SELF TEST</div>
+      <h2>8 Practice MCQs</h2>
+    </div>
+    <p>Click an option to see the correct answer and a short explanation instantly.</p>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+
+<script src="../assets/js/quiz.js"></script>
+<script>
+  var QUESTIONS = [{"q": "The region of a stress-strain curve where stress is directly proportional to strain is governed by:", "options": ["Hooke's Law", "Pascal's Law", "Bernoulli's principle", "Newton's third law"], "answer": 0, "explanation": "Hooke's Law states stress is proportional to strain within the elastic limit, with the constant of proportionality being the modulus of elasticity."}, {"q": "The point on the stress-strain curve beyond which the material does not return to its original shape is called the:", "options": ["Ultimate point", "Elastic limit", "Fracture point", "Proportional limit only"], "answer": 1, "explanation": "Beyond the elastic limit, permanent (plastic) deformation occurs and the material will not fully recover its original dimensions."}, {"q": "Poisson's ratio is defined as the ratio of:", "options": ["Longitudinal stress to longitudinal strain", "Lateral strain to longitudinal strain", "Shear stress to shear strain", "Volumetric strain to linear strain"], "answer": 1, "explanation": "Poisson's ratio quantifies how much a material contracts laterally when stretched longitudinally, expressed as lateral strain over longitudinal strain."}, {"q": "In a beam subjected to pure bending, the neutral axis experiences:", "options": ["Maximum tensile stress", "Maximum compressive stress", "Zero bending stress", "Maximum shear stress"], "answer": 2, "explanation": "The neutral axis is the locus of points in a cross-section with zero longitudinal bending stress; stress varies linearly away from it."}, {"q": "The polar moment of inertia is used in the design of members subjected to:", "options": ["Axial tension", "Torsion", "Pure bending only", "Buckling only"], "answer": 1, "explanation": "Torsional shear stress and angle of twist calculations use the polar moment of inertia (J) of the cross-section."}, {"q": "Which theory of failure is most suitable for ductile materials under combined stress?", "options": ["Maximum principal stress theory", "Maximum shear stress (Tresca) theory", "Maximum strain theory only", "St. Venant's theory only"], "answer": 1, "explanation": "The Tresca (maximum shear stress) theory correlates well with the observed yielding behaviour of ductile metals."}, {"q": "A column with both ends pinned (hinged) has an effective length factor of:", "options": ["0.5", "0.7", "1.0", "2.0"], "answer": 2, "explanation": "For a pin-pin column in Euler's buckling theory, the effective length equals the actual length, giving an effective length factor of 1.0."}, {"q": "The modulus of rigidity (shear modulus) relates:", "options": ["Normal stress to normal strain", "Shear stress to shear strain", "Volumetric stress to volumetric strain", "Bending moment to curvature"], "answer": 1, "explanation": "Shear modulus (G) is defined as the ratio of shear stress to shear strain within the elastic range."}];
+  CIVILINE.renderQuiz("quiz-container", QUESTIONS);
+</script>
+
+<footer>
+  <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
+  <div>Built for self-study &middot; Video lectures courtesy NPTEL</div>
+</footer>
+</body>
+</html>
