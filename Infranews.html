@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGNAL // Infra News Channel</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    --blueprint: #0d2b45;
+    --blueprint-deep: #081b2e;
+    --grid-line: rgba(255,255,255,0.07);
+    --paper: #eee8dc;
+    --paper-dim: #ddd5c3;
+    --signal-amber: #e8a13a;
+    --safety-rust: #c85a3e;
+    --ink: #10202c;
+    --ink-soft: #4b5d68;
+    --board-black: #111614;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--blueprint); color:var(--paper); font-family:'IBM Plex Sans',sans-serif;}
+  body{
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-color: var(--blueprint);
+    min-height:100vh;
+    padding-bottom: 60px;
+  }
+
+  a{color:inherit;}
+
+  /* ============ MASTHEAD ============ */
+  .masthead{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    padding: 34px 40px 18px;
+    border-bottom: 2px solid rgba(238,232,220,0.25);
+  }
+  .wordmark{
+    font-family:'Newsreader', serif;
+    font-size: 52px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: var(--paper);
+  }
+  .wordmark span{ color: var(--signal-amber); font-style: italic; }
+  .wordmark-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--signal-amber);
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .masthead-right{
+    text-align:right;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: rgba(238,232,220,0.65);
+    line-height: 1.8;
+  }
+  .masthead-right .clock{ font-size: 20px; color: var(--paper); }
+  .live-dot{
+    display:inline-block; width:8px; height:8px; border-radius:50%;
+    background: var(--safety-rust); margin-right:6px;
+    box-shadow: 0 0 0 0 rgba(200,90,62,0.7);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(200,90,62,0.6);}
+    70%{ box-shadow: 0 0 0 8px rgba(200,90,62,0);}
+    100%{ box-shadow: 0 0 0 0 rgba(200,90,62,0);}
+  }
+
+  /* ============ DEPARTURE BOARD TICKER ============ */
+  .board-wrap{
+    margin: 26px 40px 10px;
+    background: var(--board-black);
+    border: 1px solid #2b2f2c;
+    border-radius: 4px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.35), inset 0 0 40px rgba(0,0,0,0.5);
+    overflow:hidden;
+  }
+  .board-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #7c8a7e;
+    padding: 10px 16px 0;
+    text-transform: uppercase;
+  }
+  .board-row{
+    display:grid;
+    grid-template-columns: 90px 130px 1fr 120px;
+    align-items:center;
+    padding: 10px 16px;
+    border-bottom: 1px solid #232823;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .board-row:last-child{ border-bottom:none; }
+  .board-row .idx{ color: #5c6b5e; font-size:13px; }
+  .board-row .tag{
+    font-size: 11px; letter-spacing:1px; text-transform:uppercase;
+    color: var(--signal-amber);
+  }
+  .flap{
+    position:relative; overflow:hidden; height: 1.4em;
+  }
+  .flap-text{
+    font-size: 14px; color: #f4ecd8;
+    display:block;
+    animation: flap-in 0.5s ease-out;
+  }
+  @keyframes flap-in{
+    0%{ transform: translateY(-100%); opacity:0; filter:blur(2px); }
+    60%{ transform: translateY(6%); opacity:1;}
+    100%{ transform: translateY(0); filter:blur(0);}
+  }
+  .board-row .status{
+    font-size: 10px; letter-spacing:2px; text-align:right;
+    color: #7c8a7e; text-transform:uppercase;
+  }
+
+  /* ============ SECTOR NAV ============ */
+  .sector-nav{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin: 30px 40px 8px;
+  }
+  .sector-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing:1.5px; text-transform:uppercase;
+    background: transparent;
+    color: rgba(238,232,220,0.75);
+    border: 1px solid rgba(238,232,220,0.3);
+    padding: 9px 16px;
+    cursor:pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .sector-btn:hover{ border-color: var(--signal-amber); color: var(--signal-amber); }
+  .sector-btn.active{
+    background: var(--signal-amber);
+    color: var(--blueprint-deep);
+    border-color: var(--signal-amber);
+    font-weight:600;
+  }
+
+  /* ============ MAIN GRID ============ */
+  .main-grid{
+    display:grid;
+    grid-template-columns: 1fr 300px;
+    gap: 28px;
+    margin: 20px 40px 0;
+  }
+
+  .panels{ display:flex; flex-direction:column; gap: 22px; }
+
+  .panel{
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 3px;
+    position:relative;
+    padding: 26px 28px 22px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+  }
+  .panel::before, .panel::after,
+  .panel .corner-tl, .panel .corner-br{
+    content:'';
+    position:absolute; width:14px; height:14px;
+    border: 2px solid var(--safety-rust);
+  }
+  .panel::before{ top:8px; left:8px; border-right:none; border-bottom:none; }
+  .panel::after{ bottom:8px; right:8px; border-left:none; border-top:none; }
+
+  .panel-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 10px; margin-bottom: 16px;
+  }
+  .panel-title{
+    font-family:'Newsreader', serif;
+    font-size: 27px; font-weight:600; font-style:italic;
+  }
+  .panel-code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing:2px; color: var(--ink-soft);
+  }
+
+  .news-item{
+    display:grid;
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--paper-dim);
+  }
+  .news-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .news-item .stamp{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--ink-soft);
+    line-height:1.5;
+    padding-top: 3px;
+  }
+  .news-item .stamp b{
+    display:block; font-size: 16px; color: var(--safety-rust);
+    font-weight:600;
+  }
+  .news-item h3{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size: 15.5px; font-weight:600; line-height:1.4;
+    margin-bottom: 5px;
+  }
+  .news-item p{
+    font-size: 13px; line-height:1.55; color: var(--ink-soft);
+  }
+  .news-item .src{
+    display:inline-block; margin-top:7px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing:1px; text-transform:uppercase;
+    color: var(--blueprint);
+    border-bottom: 1px solid var(--blueprint);
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar{ display:flex; flex-direction:column; gap: 18px; }
+  .gauge-panel{
+    background: var(--blueprint-deep);
+    border: 1px solid rgba(238,232,220,0.2);
+    border-radius: 3px;
+    padding: 18px 20px;
+  }
+  .gauge-panel h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform:uppercase;
+    color: var(--signal-amber);
+    margin-bottom: 14px;
+  }
+  .gauge{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding: 9px 0;
+    border-bottom: 1px dotted rgba(238,232,220,0.2);
+  }
+  .gauge:last-child{ border-bottom:none; }
+  .gauge .num{
+    font-family:'Newsreader', serif; font-size:22px; font-weight:600;
+    color: var(--paper);
+  }
+  .gauge .lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; color: rgba(238,232,220,0.6);
+    text-align:right; max-width: 140px; line-height:1.4;
+  }
+
+  .legend-panel{
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 3px;
+    padding: 18px 20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    line-height: 1.9;
+  }
+  .legend-panel h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform:uppercase;
+    color: var(--safety-rust);
+    margin-bottom: 10px;
+  }
+
+  footer{
+    margin: 40px 40px 0;
+    padding-top: 18px;
+    border-top: 1px solid rgba(238,232,220,0.2);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: rgba(238,232,220,0.5);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 880px){
+    .main-grid{ grid-template-columns: 1fr; }
+    .masthead{ flex-direction:column; align-items:flex-start; gap:14px; }
+    .board-row{ grid-template-columns: 50px 100px 1fr; }
+    .board-row .status{ display:none; }
+    .wordmark{ font-size: 38px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="masthead">
+    <div>
+      <div class="wordmark">SIGNAL<span>/infra</span></div>
+      <div class="wordmark-sub">India Infrastructure &middot; Sector Dispatch</div>
+    </div>
+    <div class="masthead-right">
+      <div><span class="live-dot"></span>ON AIR</div>
+      <div class="clock" id="clock">--:--:--</div>
+      <div id="dateline">Sunday, 05 July 2026</div>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="board-label">Departures &mdash; Sector Headlines</div>
+    <div id="board"></div>
+  </div>
+
+  <div class="sector-nav" id="sectorNav">
+    <button class="sector-btn active" data-sector="all">All Sectors</button>
+    <button class="sector-btn" data-sector="roads">Roads &amp; Highways</button>
+    <button class="sector-btn" data-sector="ports">Ports &amp; Shipping</button>
+    <button class="sector-btn" data-sector="rail">Metro &amp; Rail</button>
+    <button class="sector-btn" data-sector="power">Power &amp; Energy</button>
+    <button class="sector-btn" data-sector="digital">Digital &amp; AI Infra</button>
+  </div>
+
+  <div class="main-grid">
+    <div class="panels" id="panels"></div>
+
+    <div class="sidebar">
+      <div class="gauge-panel">
+        <h4>Network Gauges &mdash; FY26</h4>
+        <div class="gauge"><span class="num">12.22L cr</span><span class="lbl">public capex outlay, FY 2026&ndash;27 (₹)</span></div>
+        <div class="gauge"><span class="num">1.46L km</span><span class="lbl">national highway network, up from 91,287 km in 2014</span></div>
+        <div class="gauge"><span class="num">3,124 km</span><span class="lbl">highway length awarded by NHAI in FY26, down 22% YoY</span></div>
+        <div class="gauge"><span class="num">1,726</span><span class="lbl">MMTPA major port capacity, nearly double 2014 levels</span></div>
+        <div class="gauge"><span class="num">283.46 GW</span><span class="lbl">non-fossil power capacity as of March 2026</span></div>
+        <div class="gauge"><span class="num">20.14 GW</span><span class="lbl">Adani Green's operational renewable capacity</span></div>
+        <div class="gauge"><span class="num">3.5 GW</span><span class="lbl">planned data-centre capacity added, Mar 2025&ndash;Apr 2026</span></div>
+        <div class="gauge"><span class="num">$260 bn+</span><span class="lbl">AI infra pledges from Reliance, Adani, Microsoft, Google</span></div>
+      </div>
+
+      <div class="legend-panel">
+        <h4>Board Key</h4>
+        <div>ON TIME &mdash; project tracking to schedule</div>
+        <div>BOARDING &mdash; tender / bid stage open</div>
+        <div>DELAYED &mdash; cost or timeline slippage</div>
+        <div>ARRIVED &mdash; commissioned / completed</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Dispatch compiled from public reporting incl. IBEF, PIB, ANI, Maersk, CRN Asia, India Roads Monitor, Metro Rail Today, Power Peak Digest, Drishti IAS and DD News, week of 05 Jul 2026.
+    Figures are the latest publicly available at time of writing and may be revised. This page is a demo news layout, not a live news feed &mdash; headlines are paraphrased summaries, not verbatim reproductions.
+  </footer>
+
+<script>
+const sectors = {
+  roads: {
+    code: "RD / 01",
+    title: "Roads & Highways",
+    items: [
+      {stamp:"NH-34", head:"CCEA clears Kanpur–Kabrai greenfield corridor", body:"On 1 July 2026, the Cabinet Committee on Economic Affairs approved the Kanpur–Kabrai four/six-lane access-controlled greenfield highway under NH-34, adding another major corridor to the Bharatmala pipeline and opening the way for tendering and land acquisition to begin.", src:"India Roads Monitor", status:"BOARDING"},
+      {stamp:"AWARDS", head:"NHAI awards fall sharply as capex stays flat", body:"A Nuvama report notes NHAI awarded just 3,124 km of road projects in FY26, down 22% year-on-year, after missing its 4,500 km target; award value of about ₹470 billion was well below the ₹1.3–1.5 trillion seen in FY22–23. In June 2026 alone, NHAI awarded only around 5 km, versus 102 km in May, with analysts citing appraisal delays and BOT-model reluctance among private bidders.", src:"ANI / Nuvama", status:"DELAYED"},
+      {stamp:"NETWORK", head:"National highway network crosses 1.46 lakh km", body:"India's national highway length has grown to roughly 1,46,572 km as of March 2026, up from 91,287 km in 2014, while access-controlled expressways have expanded to about 3,644 km — up from just 93 km of high-speed corridor a decade earlier.", src:"IBEF", status:"ON TIME"},
+      {stamp:"BUDGET", head:"Road ministry allocation rises to ₹3.1 lakh crore", body:"The Union Budget 2026–27 lifted the Ministry of Road Transport and Highways allocation to about ₹3,09,875 crore, close to 8% higher than the previous year's revised estimate, even as the roads-and-bridges capex line grew a more modest 5% to ₹1,21,999 crore.", src:"IBEF", status:"BOARDING"},
+      {stamp:"DIVEST", head:"IRB moves to sell two BOT highway assets", body:"IRB Infrastructure Trust has announced plans to transfer two build-operate-transfer highway projects with a combined enterprise value of about ₹46.05 billion, part of a broader trend of portfolio churn as toll-road investors including Macquarie also explore exits from Indian road assets.", src:"India Roads Monitor", status:"BOARDING"},
+    ]
+  },
+  ports: {
+    code: "PT / 02",
+    title: "Ports & Shipping",
+    items: [
+      {stamp:"MAERSK", head:"First India-made EXIM container rolls out for Maersk", body:"On 3 July 2026, Union Minister Sarbananda Sonowal unveiled the first export-import shipping container manufactured in India for A.P. Moller–Maersk at the Maersk-CONCOR depot in Dadri, Uttar Pradesh — a 16-month effort since Maersk's chairman met the Prime Minister in February 2025. Maersk simultaneously placed an order for 1,000 more India-made containers with DCM Shriram Group, backed by the ₹10,000 crore Container Manufacturing Promotion Scheme announced in Budget 2026.", src:"Maersk / The Statesman", status:"ARRIVED"},
+      {stamp:"CARRIER", head:"Groundwork laid for national container shipping line", body:"The government-backed Bharat Container Shipping Line, a joint venture involving Shipping Corporation of India, is moving toward operational reality, aimed at anchoring India's container trade domestically. A separate MoU with IRFC and SMFCL provides for joint funding of up to ₹15,000 crore for port capacity expansion under Sagarmala and PM Gati Shakti, including outer-harbour financing.", src:"India Shipping News", status:"BOARDING"},
+      {stamp:"CAPACITY", head:"Major port capacity nearly doubles since 2014", body:"Capacity at India's major ports has climbed to about 1,726 MMTPA in 2026, up from 873 MMTPA in 2014, while cargo handled rose from 581 MMT to 915 MMT and average vessel turnaround time nearly halved, from 94 hours to 48.8 hours.", src:"PIB / Drishti IAS", status:"ON TIME"},
+      {stamp:"KOLKATA", head:"Container upgrade deal signed at eastern port", body:"A concession agreement between Syama Prasad Mookerjee Port and JSW Infrastructure aims to modernise container handling capacity at the Kolkata port cluster, part of a wider push to raise throughput at India's older, riverine ports.", src:"Indian Infrastructure", status:"BOARDING"},
+      {stamp:"OVERSEAS", head:"Adani Ports pushes into Southeast Asia, Gulf", body:"Adani Ports and SEZ is targeting expansion into the Philippines, Vietnam and Indonesia alongside Middle East markets, aiming for 140–150 MMT of international throughput by 2030, while refinancing over ₹9,000 crore in debt and channelling roughly ₹12,000 crore into new investment.", src:"IBEF", status:"BOARDING"},
+    ]
+  },
+  rail: {
+    code: "RL / 03",
+    title: "Metro & Rail",
+    items: [
+      {stamp:"PUNE L3", head:"Pune Metro Line 3 to open first 12-km stretch", body:"Pune Metro's Line 3 is set to launch its first 12 km section on 15 July 2026, adding a new corridor to a network where Phase II was cleared by the Union Cabinet in November 2025; Siemens has separately booked an order from Titagarh Rail Systems for Pune Metro extension trainsets.", src:"Metro Rail Today", status:"BOARDING"},
+      {stamp:"GURUGRAM", head:"World Bank backs ₹1,400 crore Gurugram Metro tender", body:"The World Bank has approved financing for a ₹1,400 crore civil tender covering Gurugram Metro Phase 2, while Bengaluru's Bi-RIDE has separately invited a ₹200 crore tender for the Soladevanahalli depot on the Bengaluru Suburban Rail project.", src:"Metro Rail Today", status:"BOARDING"},
+      {stamp:"MEERUT", head:"Meerut Metro completes trial runs", body:"Trial runs have wrapped up on the 23 km Meerut Metro corridor, which combines 18 km of elevated track with a 5 km underground stretch across 13 stations, run by the National Capital Region Transport Corporation alongside the wider Namo Bharat RRTS network.", src:"Indian Infrastructure", status:"ARRIVED"},
+      {stamp:"LUCKNOW", head:"₹107.79 crore civil contract awarded for Lucknow Metro", body:"GHV India has been awarded a ₹107.79 crore civil contract for the Lucknow Metro East-West corridor, one of several mid-sized package awards moving through India's metro pipeline this quarter alongside Jaipur, Surat and Indore metro works.", src:"Metro Rail Today", status:"BOARDING"},
+      {stamp:"BUDGET", head:"Railway budgetary support hits ₹2.78 lakh crore", body:"Budgetary support for Indian Railways has grown from about ₹32,000 crore in 2014-15 to ₹2.78 lakh crore for 2026-27, with the network having reached 99.1% electrification of its broad-gauge route km as of end-2025.", src:"Drishti IAS", status:"ON TIME"},
+    ]
+  },
+  power: {
+    code: "PW / 04",
+    title: "Power & Energy",
+    items: [
+      {stamp:"MILESTONE", head:"Adani Green becomes first Indian firm past 20 GW", body:"Adani Green Energy has become the first Indian renewable energy company to cross 20 GW of operational capacity, reaching 20,141.8 MW plus 3.55 GWh of battery storage after adding 5,051 MW in FY26; the company plans a further 10 GWh of storage in FY27 en route to a 50 GWh battery portfolio within five years.", src:"Power Peak Digest", status:"ARRIVED"},
+      {stamp:"IRENA", head:"India now world's third-largest renewable capacity holder", body:"Citing IRENA's Renewable Energy Statistics 2026, the government says India reached 283.46 GW of non-fossil installed capacity by 31 March 2026 (274.68 GW renewable, 8.78 GW nuclear) after adding a record 55.3 GW in FY26 — nearly double the prior year's addition — hitting 50% non-fossil share five years ahead of its 2030 Paris Agreement target.", src:"DD News / PIB", status:"ON TIME"},
+      {stamp:"GRID", head:"₹9,980 crore transmission schemes cleared", body:"The National Committee on Transmission approved two transmission schemes worth about ₹9,980 crore in February 2026, including a ₹5,270 crore Nawada–Durgapur–Jeerat 765 kV corridor designed to improve Kolkata's supply reliability and evacuate power from a nearby NTPC plant.", src:"Power Peak Digest", status:"BOARDING"},
+      {stamp:"SOLAR", head:"₹22,000 crore set aside for rooftop solar", body:"The 2026–27 Budget allocated ₹22,000 crore to the PM Surya Ghar Muft Bijli Yojana, building on a scheme that has already added roughly 7 GW of distributed rooftop solar capacity to the grid, according to IEA analysis.", src:"IBEF / IEA", status:"BOARDING"},
+      {stamp:"FINANCE", head:"IREDA raises funds via perpetual bond issue", body:"The Indian Renewable Energy Development Agency raised ₹4.53 billion through a second perpetual bond issue carrying a 7.7% coupon, with bids exceeding the offer size, as part of continued fundraising to back the clean-energy pipeline.", src:"Indian Infrastructure", status:"ARRIVED"},
+    ]
+  },
+  digital: {
+    code: "DG / 05",
+    title: "Digital & AI Infra",
+    items: [
+      {stamp:"JAMNAGAR", head:"Reliance to build Meta's first India data centre", body:"Reliance Industries has been named Meta's AI infrastructure partner in India, building a hyperscale, built-to-suit data centre at Jamnagar, Gujarat, to be delivered within two years. Reliance will handle design, construction, renewable power supply and managed operations while Meta leases capacity; Jamnagar was chosen for its renewable power access, water resources and proximity to western submarine cable landing stations.", src:"CRN Asia", status:"BOARDING"},
+      {stamp:"CAPACITY", head:"India's data-centre build-out approaches 3.5 GW pipeline", body:"Between March 2025 and April 2026, operators announced roughly 30 large data-centre projects adding about 3.5 GW of planned capacity, with Andhra Pradesh and Telangana alone accounting for over 2 GW on the back of AI-focused campuses in Visakhapatnam and Hyderabad; Microsoft's Hyderabad region, its largest hyperscale build in India, is due to go live in mid-2026.", src:"CRN Asia", status:"BOARDING"},
+      {stamp:"SUMMIT", head:"Over $260 billion pledged for India AI infrastructure", body:"Investment commitments from Reliance, Adani, Microsoft, Google and others toward Indian AI infrastructure exceeded $260 billion at the India AI Impact Summit, with timelines running through 2035; India's overall IT spend is projected to reach $176.3 billion in 2026, according to Gartner.", src:"CRN Asia", status:"BOARDING"},
+      {stamp:"BUDGET", head:"₹1,000 crore earmarked for AI infrastructure", body:"The government has set aside ₹1,000 crore in Budget 2026–27 for expanding AI infrastructure, data centres and advanced computing systems, part of a wider push tied to the $1.2 billion IndiaAI Mission and the sector's newly granted infrastructure status.", src:"IBEF / CXOToday", status:"BOARDING"},
+      {stamp:"POLICY", head:"Draft data-centre policy proposes long tax breaks", body:"A draft National Data Centre Policy proposes tax exemptions running up to 20 years for developers, while India's data-centre capacity is projected to cross 2,700 MW in 2026, up from under 900 MW in recent years, per JLL and CBRE tracking — still only about 2-3% of global capacity against a nation producing roughly a fifth of the world's data traffic.", src:"Indian Infrastructure / The Mobile Times", status:"BOARDING"},
+    ]
+  }
+};
+
+const sectorOrder = ["roads","ports","rail","power","digital"];
+
+function renderPanels(filter){
+  const root = document.getElementById('panels');
+  root.innerHTML = '';
+  const keys = filter === 'all' ? sectorOrder : [filter];
+  keys.forEach(key => {
+    const s = sectors[key];
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+    let itemsHtml = s.items.map(it => `
+      <div class="news-item">
+        <div class="stamp"><b>${it.status.split(' ')[0]}</b>${it.stamp}</div>
+        <div>
+          <h3>${it.head}</h3>
+          <p>${it.body}</p>
+          <span class="src">${it.src}</span>
+        </div>
+      </div>
+    `).join('');
+    panel.innerHTML = `
+      <div class="panel-head">
+        <div class="panel-title">${s.title}</div>
+        <div class="panel-code">${s.code}</div>
+      </div>
+      ${itemsHtml}
+    `;
+    root.appendChild(panel);
+  });
+}
+
+document.getElementById('sectorNav').addEventListener('click', e => {
+  const btn = e.target.closest('.sector-btn');
+  if(!btn) return;
+  document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPanels(btn.dataset.sector);
+});
+
+renderPanels('all');
+
+// Departure board ticker
+const boardItems = [];
+sectorOrder.forEach(key => {
+  const s = sectors[key];
+  s.items.forEach(it => boardItems.push({tag:s.title, head:it.head, status:it.status}));
+});
+
+let boardIndex = 0;
+const ROWS = 5;
+function paintBoard(){
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  for(let r=0; r<ROWS; r++){
+    const item = boardItems[(boardIndex + r) % boardItems.length];
+    const row = document.createElement('div');
+    row.className = 'board-row';
+    row.innerHTML = `
+      <div class="idx">${String((boardIndex + r) % boardItems.length + 1).padStart(2,'0')}</div>
+      <div class="tag">${item.tag}</div>
+      <div class="flap"><span class="flap-text">${item.head}</span></div>
+      <div class="status">${item.status}</div>
+    `;
+    board.appendChild(row);
+  }
+}
+paintBoard();
+setInterval(() => {
+  boardIndex = (boardIndex + 1) % boardItems.length;
+  paintBoard();
+}, 3400);
+
+// Clock
+function tick(){
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-IN', {hour12:false});
+}
+tick();
+setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
