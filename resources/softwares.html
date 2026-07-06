@@ -1,493 +1,271 @@
+Here is your complete, fully assembled CivilLine software directory website. It features your chosen brand name, contains all 5 critical civil engineering and management tools (AutoCAD, ETABS, STAAD.Pro, Primavera P6, and MS Project), has no navigation bar, and includes direct working image embeds.
+You can save this code directly as an .html file (e.g., index.html) and open it in any browser.
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CivStruct Pro - Advanced Civil Engineering & Structural Design Software</title>
+    <title>CivilLine - Civil Engineering & Management Software Guide</title>
     <style>
-        /* Modern System Font Stack & Reset */
+        /* Modern System UI Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        :root {
-            --primary: #1e293b; /* Deep Slate */
-            --secondary: #0f172a; /* Darker Slate */
-            --accent: #f59e0b; /* Construction Amber */
-            --accent-hover: #d97706;
-            --blue-tech: #2563eb; /* Tech Blue */
-            --text-light: #f8fafc;
-            --text-dark: #334155;
-            --bg-light: #f1f5f9;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+            background-color: #f8fafc;
+            color: #1e293b;
             line-height: 1.6;
+            padding: 5rem 1.5rem;
         }
 
-        /* Navigation */
-        header {
-            background-color: var(--secondary);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .logo {
-            color: var(--text-light);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .cta-btn {
-            background-color: var(--accent);
-            color: var(--secondary);
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .cta-btn:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
-            color: var(--text-light);
-            padding: 6rem 2rem;
+        /* Branding & Header Layout (No Nav Bar) */
+        .brand-header {
             text-align: center;
-            position: relative;
+            margin-bottom: 5rem;
+        }
+
+        .brand-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-logo span {
+            color: #2563eb; /* Tech Blue Accent */
+        }
+
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Alternating Software Cards Grid */
+        .software-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
             overflow: hidden;
-        }
-
-        /* Blueprint grid effect background */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
-        }
-
-        .hero-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 span {
-            color: var(--accent);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: #94a3b8;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-light);
-            border: 2px solid #475569;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--text-light);
-            background-color: rgba(255,255,255,0.05);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
             margin-bottom: 4rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.25rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .section-title p {
-            color: #64748b;
-            margin-top: 0.5rem;
-        }
-
-        .features-grid {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 1.2fr 1fr;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .feature-card {
-            background: white;
-            padding: 2.5rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border-top: 4px solid var(--blue-tech);
-            transition: transform 0.3s;
+        .software-card:nth-child(even) {
+            grid-template-columns: 1fr 1.2fr;
         }
 
-        .feature-card:nth-child(2) { border-top-color: var(--accent); }
-        .feature-card:nth-child(3) { border-top-color: #10b981; }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
+        .software-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
         }
 
-        .feature-icon {
-            font-size: 2.5rem;
+        /* Content Area inside Cards */
+        .software-info {
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .software-name {
+            font-size: 2rem;
+            color: #0f172a;
+            font-weight: 700;
             margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card p {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
-
-        /* Specs / Stats Section */
-        .stats-bar {
-            background-color: var(--primary);
-            color: var(--text-light);
-            padding: 3rem 2rem;
-        }
-
-        .stats-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-item h4 {
-            font-size: 2.5rem;
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        .stat-item p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Pricing Section */
-        .pricing {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
             align-items: center;
+            gap: 0.75rem;
         }
 
-        .pricing-card {
-            background: white;
-            padding: 3rem 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            position: relative;
-        }
-
-        .pricing-card.popular {
-            border: 2px solid var(--accent);
-            transform: scale(1.03);
-        }
-
-        .badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: var(--accent);
-            color: var(--secondary);
+        .tag {
             font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
             text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
-        .price {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin: 1.5rem 0;
-        }
-
-        .price span {
-            font-size: 1rem;
-            color: #64748b;
-            font-weight: 400;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin: 2rem 0;
-            text-align: left;
-        }
-
-        .pricing-features li {
-            padding: 0.5rem 0;
+        .software-desc {
             color: #475569;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Feature Bullet Lists */
+        .use-cases {
+            list-style: none;
+        }
+
+        .use-cases li {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-bottom: 0.6rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
-        .pricing-features li::before {
-            content: "✓";
-            color: #10b981;
+        .use-cases li::before {
+            content: "▪";
+            color: #3b82f6;
             font-weight: bold;
         }
 
-        .price-btn {
+        /* Embedded Image Viewports */
+        .software-image-box {
+            background-color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            min-height: 360px;
+        }
+
+        .software-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.8rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
         }
 
-        .price-btn:hover {
-            background-color: var(--secondary);
-        }
-
-        .pricing-card.popular .price-btn {
-            background-color: var(--accent);
-            color: var(--secondary);
-        }
-
-        .pricing-card.popular .price-btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        /* Footer */
+        /* Technical Professional Footer */
         footer {
-            background-color: var(--secondary);
-            color: #94a3b8;
-            padding: 3rem 2rem;
             text-align: center;
-            border-top: 1px solid #334155;
+            margin-top: 6rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
             font-size: 0.9rem;
         }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 2.25rem; }
-            .pricing-card.popular { transform: none; }
-            .hero-buttons { flex-direction: column; }
+        /* Responsive Breakpoints for Mobile Layouts */
+        @media (max-width: 900px) {
+            .software-card, .software-card:nth-child(even) {
+                grid-template-columns: 1fr;
+            }
+            .software-image-box {
+                order: -1; /* Forces the screenshot to sit above text on screens like mobile phones */
+                min-height: 240px;
+            }
+            body {
+                padding: 3rem 1rem;
+            }
+            .brand-logo {
+                font-size: 2rem;
+            }
+            .software-info {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo">🏗️ CivStruct<span>Pro</span></div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#specs">Specifications</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
+    <div class="container">
+        
+        <div class="brand-header">
+            <div class="brand-logo">Civil<span>Line</span></div>
+            <p class="page-subtitle">The definitive industry reference hub for engineering design, structural modeling, and operational management systems.</p>
+        </div>
+
+        <div class="software-card">
+            <div class="software-info">
+                <div class="software-name">AutoCAD <span class="tag" style="background-color: #fef2f2; color: #dc2626;">Drafting</span></div>
+                <p class="software-desc">The structural engineering world's core drafting utility. Crucial for converting survey specs into 2D multi-view blueprints and geometric land site layouts.</p>
+                <ul class="use-cases">
+                    <li>2D cross-sectional detail drafting and layout configurations</li>
+                    <li>Precision geometric mapping coordinates</li>
+                    <li>Universal standard .DWG vector files formatting</li>
                 </ul>
-            </nav>
-            <a href="#pricing" class="cta-btn">Free Trial</a>
+            </div>
+            <div class="software-image-box">
+                <img class="software-img" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80" alt="CAD Drafting Environment Workspace">
+            </div>
         </div>
-    </header>
 
-    <section class="hero">
-        <div class="hero-container">
-            <h1>Next-Generation <span>Structural Analysis</span> & Design Suite</h1>
-            <p>Empower your engineering workflow with lightning-fast finite element analysis, automated BIM integration, and localized building code compliance tools.</p>
-            <div class="hero-buttons">
-                <a href="#pricing" class="cta-btn" style="padding: 0.8rem 2rem; font-size: 1.1rem;">Download Now</a>
-                <a href="#features" class="btn-secondary" style="padding: 0.8rem 2rem; font-size: 1.1rem;">Explore Features</a>
+        <div class="software-card">
+            <div class="software-image-box">
+                <img class="software-img" src="https://www.csiamerica.com/site/product/etabs/product-features/quick%20navigation.png" alt="ETABS Analytical Software Interface Display">
             </div>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <div class="section-title">
-            <h2>Engineered for High Performance</h2>
-            <p>Everything you need to design safe, compliant, and optimized structures.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Advanced FEA Engine</h3>
-                <p>Run linear, non-linear, static, and dynamic calculations in seconds with our multi-threaded 3D finite element solver.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Seamless BIM Sync</h3>
-                <p>Flawlessly import and export with Industry Foundation Classes (IFC), Autodesk Revit, and standard CAD formats without data loss.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📜</div>
-                <h3>Smart Code Compliance</h3>
-                <p>Automatically verify code requirements against latest IBC, Eurocodes, ASCE 7, and local design regulations.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="specs" class="stats-bar">
-        <div class="stats-container">
-            <div class="stat-item">
-                <h4>10x</h4>
-                <p>Faster Render Speeds</p>
-            </div>
-            <div class="stat-item">
-                <h4>99.9%</h4>
-                <p>Math Calculation Accuracy</p>
-            </div>
-            <div class="stat-item">
-                <h4>45k+</h4>
-                <p>Active Professional Users</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing">
-        <div class="section-title">
-            <h2>Flexible Licensing Plans</h2>
-            <p>Choose the power tier that aligns with your engineering firm's demands.</p>
-        </div>
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3>Standard Plan</h3>
-                <p>Ideal for independent contractors.</p>
-                <div class="price">$89<span>/mo</span></div>
-                <ul class="pricing-features">
-                    <li>2D & Basic 3D Modeling</li>
-                    <li>Standard Static Analysis</li>
-                    <li>PDF Report Generator</li>
-                    <li>Email Support</li>
+            <div class="software-info">
+                <div class="software-name">ETABS <span class="tag" style="background-color: #eff6ff; color: #2563eb;">Analysis</span></div>
+                <p class="software-desc">An advanced, object-based analysis environment specialized for complex multi-story building systems, high-rises, and concrete loading pathways.</p>
+                <ul class="use-cases">
+                    <li>Advanced multi-tiered shear wall design checks</li>
+                    <li>Localized wind simulation forces & seismic vectors</li>
+                    <li>Comprehensive framing stress profile calculations</li>
                 </ul>
-                <a href="#" class="price-btn">Get Started</a>
-            </div>
-
-            <div class="pricing-card popular">
-                <div class="badge">Most Popular</div>
-                <h3>Professional Plan</h3>
-                <p>Perfect for mid-sized structural firms.</p>
-                <div class="price">$149<span>/mo</span></div>
-                <ul class="pricing-features">
-                    <li>Full 3D Non-Linear FEA Engine</li>
-                    <li>Global Building Code Verification</li>
-                    <li>Full BIM Integration & Sync</li>
-                    <li>Priority 24/7 Support</li>
-                </ul>
-                <a href="#" class="price-btn">Start 14-Day Trial</a>
-            </div>
-
-            <div class="pricing-card">
-                <h3>Enterprise Suite</h3>
-                <p>Tailored for global infrastructure networks.</p>
-                <div class="price">Custom</div>
-                <ul class="pricing-features">
-                    <li>Unlimited Floating Licenses</li>
-                    <li>Custom API Access & Plugins</li>
-                    <li>Dedicated Cloud Compute Server</li>
-                    <li>Dedicated Account Engineer</li>
-                </ul>
-                <a href="#" class="price-btn">Contact Sales</a>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2026 CivStruct Pro Inc. Built for professional civil and structural engineering workflows. All rights reserved.</p>
-    </footer>
+        <div class="software-card">
+            <div class="software-info">
+                <div class="software-name">STAAD.Pro <span class="tag" style="background-color: #fffbeb; color: #d97706;">Structural</span></div>
+                <p class="software-desc">Bentley's premier structural software for testing heavy steel platforms, industrial pipelines, highway bridges, and complex grid trusses using Finite Element Analysis (FEA).</p>
+                <ul class="use-cases">
+                    <li>Non-linear finite element boundaries profiling</li>
+                    <li>Steel frame node connection tolerances checking</li>
+                    <li>International structural code verification routines</li>
+                </ul>
+            </div>
+            <div class="software-image-box">
+                <img class="software-img" src="https://xstructures.net/wp-content/uploads/2024/04/Screenshot_1.png" alt="STAAD Pro Steel Structural Model View">
+            </div>
+        </div>
+
+        <div class="software-card">
+            <div class="software-image-box">
+                <img class="software-img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Primavera P6 Analytical Scheduling Platform View">
+            </div>
+            <div class="software-info">
+                <div class="software-name">Primavera P6 <span class="tag" style="background-color: #f0fdf4; color: #16a34a;">Planning</span></div>
+                <p class="software-desc">Oracle's flagship enterprise scheduling program. Engineered specifically to regulate large-scale infrastructure investments, dependencies, and complex project lifecycles.</p>
+                <ul class="use-cases">
+                    <li>Critical Path Method (CPM) project logistics mapping</li>
+                    <li>Complex task dependencies and resource tracking</li>
+                    <li>Earned Value Management (EVM) budget calculations</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="software-card">
+            <div class="software-info">
+                <div class="software-name">MS Project <span class="tag" style="background-color: #faf5ff; color: #9333ea;">Management</span></div>
+                <p class="software-desc">A highly visual project management tracking solution used by site managers to track project milestones, coordinate construction phases, and balance timelines.</p>
+                <ul class="use-cases">
+                    <li>Dynamic Gantt chart construction schedules</li>
+                    <li>Real-time baseline vs. actual timeline progress tracking</li>
+                    <li>Streamlined resource workload leveling matrices</li>
+                </ul>
+            </div>
+            <div class="software-image-box">
+                <img class="software-img" src="https://images.unsplash.com/photo-1507207611509-ec012433ff52?auto=format&fit=crop&w=600&q=80" alt="Project Management Gantt Charts Setup">
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 CivilLine Directory. Compiled exclusively for professional civil engineering references.</p>
+        </footer>
+
+    </div>
 
 </body>
 </html>
+
