@@ -1,271 +1,762 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CivilLine - Civil Engineering & Management Software Guide</title>
+    <title>IS 10262:2019 Concrete Mix Design Calculator & Guide | civilline</title>
     <style>
-        /* Modern System UI Reset */
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-dark: #334155;
+            --text-light: #64748b;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --warning-bg: #fef08a;
+            --warning-text: #713f12;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
         body {
-            background-color: #f8fafc;
-            color: #1e293b;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
-            padding: 5rem 1.5rem;
+            color: var(--text-dark);
+            background-color: var(--bg-main);
+            padding: 0;
         }
 
+        /* Navbar Brand Header */
+        .navbar {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .navbar-brand span {
+            color: var(--accent-color);
+        }
+
+        /* Layout Container */
         .container {
             max-width: 1100px;
-            margin: 0 auto;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        /* Branding & Header Layout (No Nav Bar) */
-        .brand-header {
+        .page-header {
             text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: 40px;
         }
 
-        .brand-logo {
+        .page-header h1 {
             font-size: 2.5rem;
-            font-weight: 800;
-            color: #0f172a;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
 
-        .brand-logo span {
-            color: #2563eb; /* Tech Blue Accent */
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
         }
 
-        .page-subtitle {
-            color: #64748b;
-            font-size: 1.15rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Alternating Software Cards Grid */
-        .software-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 4rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .software-card:nth-child(even) {
-            grid-template-columns: 1fr 1.2fr;
-        }
-
-        .software-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Content Area inside Cards */
-        .software-info {
-            padding: 3.5rem;
+        /* NEW: Native HTML/CSS Flowchart Styling */
+        .flowchart-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-        }
-
-        .software-name {
-            font-size: 2rem;
-            color: #0f172a;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
             align-items: center;
-            gap: 0.75rem;
+            margin: 30px auto;
+            max-width: 600px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
-        .tag {
-            font-size: 0.75rem;
-            padding: 0.3rem 0.75rem;
-            border-radius: 6px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .software-desc {
-            color: #475569;
-            font-size: 1.05rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Feature Bullet Lists */
-        .use-cases {
-            list-style: none;
-        }
-
-        .use-cases li {
-            font-size: 0.95rem;
-            color: #334155;
-            margin-bottom: 0.6rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .use-cases li::before {
-            content: "▪";
-            color: #3b82f6;
-            font-weight: bold;
-        }
-
-        /* Embedded Image Viewports */
-        .software-image-box {
-            background-color: #0f172a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            min-height: 360px;
-        }
-
-        .software-img {
+        .flow-box {
+            background: var(--bg-main);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 20px;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.2s ease;
         }
 
-        /* Technical Professional Footer */
+        .flow-box:hover {
+            border-color: var(--accent-color);
+            background: #eff6ff;
+        }
+
+        .flow-box.start-end {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .flow-arrow {
+            font-size: 20px;
+            color: var(--accent-color);
+            margin: 8px 0;
+            font-weight: bold;
+            animation: bounce 2s infinite;
+        }
+
+        /* Interactive Calculator Grid */
+        .calculator-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            margin-bottom: 50px;
+            overflow: hidden;
+        }
+
+        .calc-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .calc-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .calc-inputs {
+            padding: 30px;
+            border-right: 1px solid var(--border-color);
+            background-color: #fafafa;
+        }
+
+        .calc-outputs {
+            padding: 30px;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+
+        select, input[type="number"], input[type="range"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            background-color: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: var(--accent-color);
+        }
+
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .range-value {
+            font-weight: bold;
+            min-width: 50px;
+            text-align: right;
+            color: var(--accent-color);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Output Styling */
+        .result-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .result-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .result-value span {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: normal;
+            margin-left: 4px;
+        }
+
+        .alert-box {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        /* Technical Guide Content Styling */
+        .guide-section {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+        }
+
+        /* Timeline/Step Progress design */
+        .step-list {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .step-node {
+            background: var(--bg-main);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .step-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .step-heading {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .math-box {
+            background: #edf2f7;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Courier, monospace;
+            font-weight: bold;
+            margin: 15px 0;
+            display: inline-block;
+            border: 1px solid #cbd5e1;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Table Styling */
+        .table-container {
+            overflow-x: auto;
+            margin: 30px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 16px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: white;
+        }
+
+        tr:nth-child(even) td {
+            background-color: var(--bg-main);
+        }
+
+        blockquote {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+
         footer {
             text-align: center;
-            margin-top: 6rem;
-            padding-top: 2rem;
-            border-top: 1px solid #e2e8f0;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Breakpoints for Mobile Layouts */
-        @media (max-width: 900px) {
-            .software-card, .software-card:nth-child(even) {
-                grid-template-columns: 1fr;
-            }
-            .software-image-box {
-                order: -1; /* Forces the screenshot to sit above text on screens like mobile phones */
-                min-height: 240px;
-            }
-            body {
-                padding: 3rem 1rem;
-            }
-            .brand-logo {
-                font-size: 2rem;
-            }
-            .software-info {
-                padding: 2rem;
-            }
+            padding: 30px;
+            margin-top: 60px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.95rem;
         }
     </style>
 </head>
 <body>
 
+    <nav class="navbar">
+        <div class="container" style="margin:0 auto; padding:0;">
+            <a href="#" class="navbar-brand">civil<span>linw</span></a>
+        </div>
+    </nav>
+
     <div class="container">
         
-        <div class="brand-header">
-            <div class="brand-logo">Civil<span>Line</span></div>
-            <p class="page-subtitle">The definitive industry reference hub for engineering design, structural modeling, and operational management systems.</p>
-        </div>
+        <header class="page-header">
+            <h1>Concrete Mix Design (IS 10262:2019)</h1>
+            <p>Comprehensive Engineering Guide & Live Preliminary Mix Proportioning Tool</p>
+        </header>
 
-        <div class="software-card">
-            <div class="software-info">
-                <div class="software-name">AutoCAD <span class="tag" style="background-color: #fef2f2; color: #dc2626;">Drafting</span></div>
-                <p class="software-desc">The structural engineering world's core drafting utility. Crucial for converting survey specs into 2D multi-view blueprints and geometric land site layouts.</p>
-                <ul class="use-cases">
-                    <li>2D cross-sectional detail drafting and layout configurations</li>
-                    <li>Precision geometric mapping coordinates</li>
-                    <li>Universal standard .DWG vector files formatting</li>
-                </ul>
-            </div>
-            <div class="software-image-box">
-                <img class="software-img" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80" alt="CAD Drafting Environment Workspace">
-            </div>
-        </div>
+        <section class="calculator-section">
+            <div class="calc-header">Live Mix Proportioning App (Preliminary Steps)</div>
+            <div class="calc-grid">
+                
+                <div class="calc-inputs">
+                    <div class="form-group">
+                        <label for="fck">Characteristic Strength (f<sub>ck</sub>)</label>
+                        <select id="fck">
+                            <option value="20">M20 Concrete</option>
+                            <option value="25">M25 Concrete</option>
+                            <option value="30" selected>M30 Concrete</option>
+                            <option value="35">M35 Concrete</option>
+                            <option value="40">M40 Concrete</option>
+                            <option value="45">M45 Concrete</option>
+                            <option value="50">M50 Concrete</option>
+                        </select>
+                    </div>
 
-        <div class="software-card">
-            <div class="software-image-box">
-                <img class="software-img" src="https://www.csiamerica.com/site/product/etabs/product-features/quick%20navigation.png" alt="ETABS Analytical Software Interface Display">
-            </div>
-            <div class="software-info">
-                <div class="software-name">ETABS <span class="tag" style="background-color: #eff6ff; color: #2563eb;">Analysis</span></div>
-                <p class="software-desc">An advanced, object-based analysis environment specialized for complex multi-story building systems, high-rises, and concrete loading pathways.</p>
-                <ul class="use-cases">
-                    <li>Advanced multi-tiered shear wall design checks</li>
-                    <li>Localized wind simulation forces & seismic vectors</li>
-                    <li>Comprehensive framing stress profile calculations</li>
-                </ul>
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label for="stdDev">Standard Deviation (S) [MPa]</label>
+                        <input type="number" id="stdDev" value="5.0" step="0.5" min="3.5" max="7.0">
+                    </div>
 
-        <div class="software-card">
-            <div class="software-info">
-                <div class="software-name">STAAD.Pro <span class="tag" style="background-color: #fffbeb; color: #d97706;">Structural</span></div>
-                <p class="software-desc">Bentley's premier structural software for testing heavy steel platforms, industrial pipelines, highway bridges, and complex grid trusses using Finite Element Analysis (FEA).</p>
-                <ul class="use-cases">
-                    <li>Non-linear finite element boundaries profiling</li>
-                    <li>Steel frame node connection tolerances checking</li>
-                    <li>International structural code verification routines</li>
-                </ul>
-            </div>
-            <div class="software-image-box">
-                <img class="software-img" src="https://xstructures.net/wp-content/uploads/2024/04/Screenshot_1.png" alt="STAAD Pro Steel Structural Model View">
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label for="exposure">Environmental Exposure (IS 456 Table 5)</label>
+                        <select id="exposure">
+                            <option value="mild">Mild (Min Cement: 300 kg/m³)</option>
+                            <option value="moderate" selected>Moderate (Min Cement: 300 kg/m³)</option>
+                            <option value="severe">Severe (Min Cement: 320 kg/m³)</option>
+                            <option value="very_severe">Very Severe (Min Cement: 340 kg/m³)</option>
+                            <option value="extreme">Extreme (Min Cement: 360 kg/m³)</option>
+                        </select>
+                    </div>
 
-        <div class="software-card">
-            <div class="software-image-box">
-                <img class="software-img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Primavera P6 Analytical Scheduling Platform View">
-            </div>
-            <div class="software-info">
-                <div class="software-name">Primavera P6 <span class="tag" style="background-color: #f0fdf4; color: #16a34a;">Planning</span></div>
-                <p class="software-desc">Oracle's flagship enterprise scheduling program. Engineered specifically to regulate large-scale infrastructure investments, dependencies, and complex project lifecycles.</p>
-                <ul class="use-cases">
-                    <li>Critical Path Method (CPM) project logistics mapping</li>
-                    <li>Complex task dependencies and resource tracking</li>
-                    <li>Earned Value Management (EVM) budget calculations</li>
-                </ul>
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label for="aggSize">Nominal Max Aggregate Size</label>
+                        <select id="aggSize">
+                            <option value="10">10 mm Aggregate</option>
+                            <option value="20" selected>20 mm Aggregate</option>
+                            <option value="40">40 mm Aggregate</option>
+                        </select>
+                    </div>
 
-        <div class="software-card">
-            <div class="software-info">
-                <div class="software-name">MS Project <span class="tag" style="background-color: #faf5ff; color: #9333ea;">Management</span></div>
-                <p class="software-desc">A highly visual project management tracking solution used by site managers to track project milestones, coordinate construction phases, and balance timelines.</p>
-                <ul class="use-cases">
-                    <li>Dynamic Gantt chart construction schedules</li>
-                    <li>Real-time baseline vs. actual timeline progress tracking</li>
-                    <li>Streamlined resource workload leveling matrices</li>
-                </ul>
-            </div>
-            <div class="software-image-box">
-                <img class="software-img" src="https://images.unsplash.com/photo-1507207611509-ec012433ff52?auto=format&fit=crop&w=600&q=80" alt="Project Management Gantt Charts Setup">
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label for="slump">Target Slump Workability</label>
+                        <div class="range-container">
+                            <input type="range" id="slump" min="50" max="175" step="25" value="75">
+                            <span class="range-value" id="slumpVal">75 mm</span>
+                        </div>
+                    </div>
 
-        <footer>
-            <p>&copy; 2026 CivilLine Directory. Compiled exclusively for professional civil engineering references.</p>
-        </footer>
+                    <div class="form-group">
+                        <label id="wcLabel">Water-Cement (w/c) Ratio</label>
+                        <div class="range-container">
+                            <input type="range" id="wcRatio" min="0.30" max="0.60" step="0.01" value="0.45">
+                            <span class="range-value" id="wcVal">0.45</span>
+                        </div>
+                    </div>
 
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="admixture">
+                        <label style="margin-bottom:0;" for="admixture">Include Superplasticizer (Reduces water by 20%)</label>
+                    </div>
+                </div>
+
+                <div class="calc-outputs">
+                    <div>
+                        <div class="result-title">Proportioning Results</div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Target Mean Strength (f'<sub>ck</sub>)</span>
+                            <span class="result-value" id="resTargetStr">38.25 <span>MPa</span></span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Base Water Demand (For 50mm Slump)</span>
+                            <span class="result-value" id="resBaseWater">186 <span>Liters</span></span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Calculated Water Content</span>
+                            <span class="result-value" id="resFinalWater">191.6 <span>kg/m³</span></span>
+                        </div>
+
+                        <div class="result-item">
+                            <span class="result-label">Required Cementitious Content</span>
+                            <span class="result-value" id="resCement" style="color: var(--success-color);">425.7 <span>kg/m³</span></span>
+                        </div>
+                    </div>
+
+                    <div class="alert-box" id="cementAlert">
+                        <strong>Notice:</strong> The calculated cement content was lower than the mandatory statutory limits for your chosen exposure setting. The value has been elevated to meet the minimum threshold of the IS 456 requirements.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <main class="guide-section">
+            <p>Concrete mix design is the process of selecting the optimum proportions of components (cement, sand, aggregates, and water) to produce concrete matching structural performance, workability, and durability targets. In India, this procedure is standardized under <strong>IS 10262:2019</strong>, operating concurrently with structural concrete durability guidelines outlined in <strong>IS 456:2000</strong>.</p>
+
+            <h2>The Mix Design Flowchart</h2>
+            <p>Below is the standard, code-defined sequence of operations required to achieve precise proportions without computational loop errors.</p>
+
+            <div class="flowchart-container">
+                <div class="flow-box start-end">1. Gather Baseline Data (Grade, Materials, Exposure)</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">2. Calculate Target Mean Compressive Strength (f'<sub>ck</sub>)</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">3. Select Approximate Air Content Selection</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">4. Select Water-Cement (w/c) Ratio</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">5. Select Direct Water Content & Admixture Scaling</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">6. Compute Total Mass of Cementitious Materials</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">7. Proportion Coarse and Fine Aggregates Volume Ratio</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box">8. Convert to Absolute Volume Mix Weight Proportions</div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box start-end">9. Execute Trial Mixes & Test 28-Day Strength</div>
+            </div>
+
+            <h2>Detailed Computational Steps</h2>
+            <div class="step-list">
+                
+                <div class="step-node">
+                    <div class="step-num">Step 1</div>
+                    <div class="step-heading">Determine Target Mean Strength</div>
+                    <p>To offset systemic field production variations, the field batch must be designed for an elevated Target Mean Strength (<i>f&apos;<sub>ck</sub></i>) over the structural baseline characteristic value (<i>f<sub>ck</sub></i>):</p>
+                    <div class="math-box">f&apos;<sub>ck</sub> = f<sub>ck</sub> + 1.65 × S</div>
+                    <p>Where <i>S</i> represents the Standard Deviation sourced from parameter matrices inside Table 1 of IS 10262:2019 (ranging usually between 3.5 to 5.0 MPa depending on control grade checks).</p>
+                </div>
+
+                <div class="step-node">
+                    <div class="step-num">Step 2</div>
+                    <div class="step-heading">Select Water-Cement (w/c) Ratio</div>
+                    <p>The selection process requires evaluating two parallel constraints:</p>
+                    <ul>
+                        <li><strong>Durability Constraint:</strong> Determine the maximum allowable bounding free w/c ratio matching the project environmental exposure profile using Table 5 of IS 456.</li>
+                        <li><strong>Strength Constraint:</strong> Evaluate empirical curves mapped inside IS 10262 targeting the adjusted calculated mean target strength.</li>
+                    </ul>
+                    <p>The definitive design w/c ratio must explicitly adopt the <strong>lower value</strong> of these two findings.</p>
+                </div>
+
+                <div class="step-node">
+                    <div class="step-num">Step 3</div>
+                    <div class="step-heading">Establish Baseline Net Water Content</div>
+                    <p>Table 4 of IS 10262 establishes default water limits based entirely on maximum nominal aggregate scaling for a fundamental 50mm placement slump target:</p>
+                    <ul>
+                        <li><strong>10 mm aggregate size:</strong> 208 kg/m³ (Liters)</li>
+                        <li><strong>20 mm aggregate size:</strong> 186 kg/m³ (Liters)</li>
+                        <li><strong>40 mm aggregate size:</strong> 165 kg/m³ (Liters)</li>
+                    </ul>
+                    <p><em>Proportional Modifications:</em> Increase net calculated values by 3% for every incremental 25mm slump requirement above the 50mm base index, or discount volume thresholds by 20% to 30% if using water-reducing plasticizer admixtures.</p>
+                </div>
+
+                <div class="step-node">
+                    <div class="step-num">Step 4</div>
+                    <div class="step-heading">Calculate Total Cementitious Content</div>
+                    <p>Compute mass configurations directly by establishing structural ratios against the previous design parameters:</p>
+                    <div class="math-box">Cement Content = Water Content / (w/c Ratio)</div>
+                    <p>Cross-examine the results directly with minimum bounds dictated by exposure rules. If the structural mass calculation drops below baseline targets, the execution criteria shifts up to use the minimum baseline instead.</p>
+                </div>
+
+                <div class="step-node">
+                    <div class="step-num">Step 5 & 6</div>
+                    <div class="step-heading">Aggregate Apportionment & Trial Runs</div>
+                    <p>Divide the remaining operational cubic meter volume space between fine aggregates (sand) and coarse aggregates based on granular zone classifications (Zones I through IV). Convert those volume parameters using relative density constraints into structural weight targets.</p>
+                    <p>Finally, assemble a control test sample batch (Trial Mix 1) to inspect real bleed configurations, modify configurations over secondary and tertiary trial mixes, and check structural performance parameters at 7 and 28 days.</p>
+                </div>
+
+            </div>
+
+            <h2>Mandatory Durability Thresholds (IS 456:2000 Table 5)</h2>
+            <p>Ensure your structural concrete satisfies these mandatory minimum properties during the design phase:</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Exposure Grade</th>
+                            <th>Min Cement Content (kg/m³)</th>
+                            <th>Max Free w/c Ratio</th>
+                            <th>Minimum Mix Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Mild</strong></td>
+                            <td>300</td>
+                            <td>0.55</td>
+                            <td>M20</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Moderate</strong></td>
+                            <td>300</td>
+                            <td>0.50</td>
+                            <td>M25</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Severe</strong></td>
+                            <td>320</td>
+                            <td>0.45</td>
+                            <td>M30</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Very Severe</strong></td>
+                            <td>340</td>
+                            <td>0.45</td>
+                            <td>M35</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Extreme</strong></td>
+                            <td>360</td>
+                            <td>0.40</td>
+                            <td>M40</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            blockquote>
+                <strong>Design Note:</strong> Strength specifications alone are insufficient. A mix engineered for indoor placement (Mild exposure) requires far less physical chemical protection than an outdoor infrastructure element near a marine line (Severe/Very Severe exposure), regardless of matching compressive specifications.
+            </blockquote>
+        </main>
     </div>
 
+    <footer>
+        <p>&copy; 2026 civillinw. Technical Reference Presentation Module for Professional Civil Engineers.</p>
+    </footer>
+
+    <script>
+        // DOM Element Selector Setup
+        const fckSelect = document.getElementById('fck');
+        const stdDevInput = document.getElementById('stdDev');
+        const exposureSelect = document.getElementById('exposure');
+        const aggSizeSelect = document.getElementById('aggSize');
+        const slumpInput = document.getElementById('slump');
+        const slumpVal = document.getElementById('slumpVal');
+        const wcRatioInput = document.getElementById('wcRatio');
+        const wcVal = document.getElementById('wcVal');
+        const admixtureCheck = document.getElementById('admixture');
+
+        // Output Field Elements
+        const resTargetStr = document.getElementById('resTargetStr');
+        const resBaseWater = document.getElementById('resBaseWater');
+        const resFinalWater = document.getElementById('resFinalWater');
+        const resCement = document.getElementById('resCement');
+        const cementAlert = document.getElementById('cementAlert');
+
+        // Minimum Cement & Maximum W/C mappings from IS 456 Table 5
+        const exposureLimits = {
+            mild: { minCement: 300, maxWc: 0.55 },
+            moderate: { minCement: 300, maxWc: 0.50 },
+            severe: { minCement: 320, maxWc: 0.45 },
+            very_severe: { minCement: 340, maxWc: 0.45 },
+            extreme: { minCement: 360, maxWc: 0.40 }
+        };
+
+        // Automatic Standard Deviation Adjuster based on selected Grade
+        function updateStandardDeviation() {
+            const fck = parseInt(fckSelect.value);
+            if (fck <= 25) {
+                stdDevInput.value = "4.0";
+            } else if (fck <= 50) {
+                stdDevInput.value = "5.0";
+            }
+        }
+
+        // Core Engineering Computation Engine
+        function calculateMix() {
+            const fck = parseInt(fckSelect.value);
+            const stdDev = parseFloat(stdDevInput.value) || 0;
+            const exposure = exposureSelect.value;
+            const aggSize = parseInt(aggSizeSelect.value);
+            const slump = parseInt(slumpInput.value);
+            const wcRatio = parseFloat(wcRatioInput.value);
+            const hasPlasticizer = admixtureCheck.checked;
+
+            // 1. Target Mean Strength Calculation
+            const targetStrength = fck + (1.65 * stdDev);
+            resTargetStr.innerHTML = `${targetStrength.toFixed(2)} <span>MPa</span>`;
+
+            // 2. Base Water Content selection (IS 10262 Table 4 for 50mm base slump)
+            let baseWater = 186;
+            if (aggSize === 10) baseWater = 208;
+            if (aggSize === 40) baseWater = 165;
+            resBaseWater.innerHTML = `${baseWater} <span>Liters</span>`;
+
+            // 3. Slump Adjustment (3% increase for every 25mm additional slump above 50mm)
+            let adjustedWater = baseWater;
+            if (slump > 50) {
+                const extraSlumpIncrements = (slump - 50) / 25;
+                adjustedWater = baseWater + (baseWater * (0.03 * extraSlumpIncrements));
+            }
+
+            // Admixture Modification (Reduces overall required water mass by 20%)
+            if (hasPlasticizer) {
+                adjustedWater = adjustedWater * 0.80;
+            }
+            resFinalWater.innerHTML = `${adjustedWater.toFixed(1)} <span>kg/m³</span>`;
+
+            // 4. Cement Calculation & Code Minimum Compliance Check
+            let calculatedCement = adjustedWater / wcRatio;
+            const absoluteMinCement = exposureLimits[exposure].minCement;
+
+            if (calculatedCement < absoluteMinCement) {
+                calculatedCement = absoluteMinCement;
+                cementAlert.style.display = 'block'; // Flag up to user
+            } else {
+                cementAlert.style.display = 'none'; // Clear flag if compliant
+            }
+            resCement.innerHTML = `${calculatedCement.toFixed(1)} <span>kg/m³</span>`;
+        }
+
+        // Event Listener Hooks for Interactive Elements
+        fckSelect.addEventListener('change', () => {
+            updateStandardDeviation();
+            calculateMix();
+        });
+        stdDevInput.addEventListener('input', calculateMix);
+        exposureSelect.addEventListener('change', calculateMix);
+        aggSizeSelect.addEventListener('change', calculateMix);
+        
+        slumpInput.addEventListener('input', (e) => {
+            slumpVal.innerText = `${e.target.value} mm`;
+            calculateMix();
+        });
+        
+        wcRatioInput.addEventListener('input', (e) => {
+            wcVal.innerText = e.target.value;
+            calculateMix();
+        });
+        
+        admixtureCheck.addEventListener('change', calculateMix);
+
+        // Run calculation on load initialization
+        updateStandardDeviation();
+        calculateMix();
+    </script>
 </body>
 </html>
 
