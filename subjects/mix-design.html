@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concrete Engineering Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --concrete-100:#eeeae2;
+    --concrete-200:#e3ddd1;
+    --concrete-900:#221f1a;
+    --rebar:#b5451e;
+    --rebar-dark:#8c3315;
+    --blueprint:#3c5a6b;
+    --line:#cdc4b2;
+    --paper:#f5f2ea;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--concrete-100);
+    color:var(--concrete-900);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.55;
+  }
+
+  /* ---------- texture backdrop ---------- */
+  .aggregate-bg{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(34,31,26,0.05) 0 2px, transparent 2px),
+      radial-gradient(circle at 60% 70%, rgba(34,31,26,0.04) 0 3px, transparent 3px),
+      radial-gradient(circle at 80% 15%, rgba(34,31,26,0.05) 0 1.5px, transparent 1.5px),
+      radial-gradient(circle at 40% 85%, rgba(34,31,26,0.04) 0 2.5px, transparent 2.5px),
+      radial-gradient(circle at 90% 50%, rgba(34,31,26,0.05) 0 1px, transparent 1px),
+      radial-gradient(circle at 10% 65%, rgba(34,31,26,0.04) 0 2px, transparent 2px);
+    background-size: 180px 180px, 220px 220px, 260px 260px, 200px 200px, 240px 240px, 190px 190px;
+  }
+
+  a{color:inherit;}
+
+  .wrap{max-width:1040px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- header ---------- */
+  header{
+    padding:56px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--rebar-dark);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--rebar);
+    display:inline-block;
+  }
+  .head-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:32px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(34px, 5.2vw, 58px);
+    line-height:1.02;
+    margin:0;
+    letter-spacing:-0.01em;
+    max-width:640px;
+  }
+  .stamp{
+    flex-shrink:0;
+    width:118px; height:118px;
+    border-radius:50%;
+    border:2px solid var(--rebar);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-8deg);
+    position:relative;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--rebar-dark);
+  }
+  .stamp::before{
+    content:"";
+    position:absolute;
+    inset:8px;
+    border:1px dashed var(--rebar);
+    border-radius:50%;
+    opacity:.6;
+  }
+  .stamp span{
+    display:block;
+    font-size:11px;
+    letter-spacing:.12em;
+  }
+  .stamp b{
+    display:block;
+    font-size:22px;
+    font-family:'Space Grotesk', sans-serif;
+    letter-spacing:0;
+  }
+  .dek{
+    margin:22px 0 0;
+    max-width:620px;
+    font-size:16.5px;
+    color:#4a463e;
+  }
+  .byline{
+    margin-top:26px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:#6b665a;
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  .byline strong{color:var(--concrete-900); font-weight:600;}
+
+  /* ---------- section labels ---------- */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin:64px 0 8px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .section-head h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:26px;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .section-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:#8a8474;
+    letter-spacing:.04em;
+  }
+  .section-rule{
+    height:1px;
+    background:var(--line);
+    margin-bottom:30px;
+  }
+
+  /* ---------- article list ---------- */
+  .article{
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px 24px;
+  }
+  .article:first-of-type{padding-top:6px;}
+  .article-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:20px;
+    font-weight:600;
+    margin:0 0 8px;
+    grid-column:1;
+  }
+  .article-meta{
+    grid-column:2;
+    text-align:right;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--rebar-dark);
+    white-space:nowrap;
+    padding-top:5px;
+  }
+  .article-author{
+    grid-column:1 / -1;
+    font-size:12.5px;
+    color:#847e6f;
+    font-family:'IBM Plex Mono', monospace;
+    margin-bottom:6px;
+  }
+  .article-body{
+    grid-column:1 / -1;
+    font-size:15px;
+    color:#403c33;
+    max-width:760px;
+    margin:0;
+  }
+
+  /* ---------- mix design datasheets ---------- */
+  .grade-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:22px;
+    margin-bottom:20px;
+  }
+  @media (max-width:720px){
+    .grade-grid{grid-template-columns:1fr;}
+  }
+  .datasheet{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:26px 26px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .datasheet::after{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:3px;
+    background:var(--blueprint);
+  }
+  .ds-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:6px;
+  }
+  .ds-grade{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:34px;
+    font-weight:700;
+    color:var(--blueprint);
+    line-height:1;
+  }
+  .ds-badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border:1px solid var(--blueprint);
+    color:var(--blueprint);
+    padding:4px 8px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .ds-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#8a8474;
+    margin-bottom:18px;
+  }
+  .spec-row{
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    font-size:13.5px;
+    padding:6px 0;
+    border-bottom:1px dotted #c7bfab;
+  }
+  .spec-row:last-child{border-bottom:none;}
+  .spec-label{
+    color:#5c5648;
+    flex-shrink:0;
+  }
+  .spec-leader{
+    flex:1;
+    border-bottom:1px dotted #c7bfab;
+    margin-bottom:4px;
+    min-width:6px;
+  }
+  .spec-value{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    color:var(--concrete-900);
+    text-align:right;
+    white-space:nowrap;
+  }
+
+  /* ---------- slump signature diagram ---------- */
+  .signature{
+    margin:64px 0;
+    border:1px solid var(--line);
+    background:var(--paper);
+    padding:30px 30px 24px;
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:30px;
+    align-items:center;
+  }
+  @media (max-width:640px){
+    .signature{grid-template-columns:1fr; text-align:center;}
+    .signature svg{margin:0 auto;}
+  }
+  .signature h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:19px;
+    margin:0 0 10px;
+  }
+  .signature p{
+    font-size:14px;
+    color:#43402f;
+    margin:0;
+    max-width:520px;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    margin-top:70px;
+    padding:34px 0 60px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:#8a8474;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  ::selection{background:var(--rebar); color:var(--paper);}
+</style>
+</head>
+<body>
+<div class="aggregate-bg"></div>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Field Notes / Mix Design Reference</div>
+    <div class="head-row">
+      <h1>Concrete Engineering Field Notes</h1>
+      <div class="stamp">
+        <div>
+          <b>IS 456</b>
+          <span>: 2000</span>
+        </div>
+      </div>
+    </div>
+    <p class="dek">A working reference on self-compacting concrete, mix proportioning method, and grade-wise mix designs proportioned to IS 10262:2009 and IS 456:2000 for moderate exposure, pump-placed reinforced concrete.</p>
+    <div class="byline">
+      <span><strong>Primary author</strong> — Kaushal Kishore, Materials Engineer, Roorkee</span>
+      <span><strong>Contributing</strong> — G. Prabhakaran, QA/QC Engineer</span>
+      <span><strong>Region</strong> — Bangalore</span>
+    </div>
+  </header>
+
+  <!-- ARTICLES -->
+  <section>
+    <div class="section-head">
+      <h2>Articles</h2>
+      <div class="section-note">6 entries</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="article">
+      <h3 class="article-title">Self Compacting Concrete</h3>
+      <div class="article-meta">0 comments</div>
+      <div class="article-author">Kaushal Kishore — Materials Engineer, Roorkee</div>
+      <p class="article-body">A special concrete that places and consolidates under its own weight, with no vibration effort, owing to its deformability, while staying cohesive enough to resist segregation and bleeding. Workability is checked with a standard slump cone over a 700&nbsp;mm base plate, against a 500&nbsp;mm reference circle.</p>
+    </div>
+
+    <div class="article">
+      <h3 class="article-title">Methods of Concrete Mix Design for Medium Strength Concretes</h3>
+      <div class="article-meta">2 comments</div>
+      <div class="article-author">BuildingMaterials &amp; Supplies</div>
+      <p class="article-body">A survey of the standard mix design approaches — trial and adjustment, British DoE, ACI, IS guidelines for proportioning, and rapid mix design methods — most of which lean on charts, graphs, and empirical relations built from repeated trials.</p>
+    </div>
+
+    <div class="article">
+      <h3 class="article-title">Effect on Compressive Strength of Concrete by Addition of Polypropylene Fiber in M20 Grade</h3>
+      <div class="article-meta">1 comment</div>
+      <div class="article-author">Gursharan Singh, Harish Kumar, Geetinder Kaur, Jaspreet Singh — GKU, Talwandi Sabo</div>
+      <p class="article-body">An experimental study of M20-grade mixes dosed with 0%–2% polypropylene fibre in 0.5% steps, tracking compressive strength across curing ages to identify the optimum fibre content.</p>
+    </div>
+
+    <div class="article">
+      <h3 class="article-title">Care in Concrete Mix Design</h3>
+      <div class="article-meta">1 comment</div>
+      <div class="article-author">Kaushal Kishore — Materials Engineer, Roorkee</div>
+      <p class="article-body">Two parallel mix designs, same PPC cement and aggregate grading, one worked out carelessly and one worked out with full technical rigour — a side-by-side of what gets missed and what it costs the concrete.</p>
+    </div>
+
+    <div class="article">
+      <h3 class="article-title">Mix Design and Pumped Concrete</h3>
+      <div class="article-meta">3 comments</div>
+      <div class="article-author">Kaushal Kishore — Materials Engineer, Roorkee</div>
+      <p class="article-body">A simple mix design method for pumpable concrete built around estimated unit weight, worked out from a wide range of Indian materials, suited to normal-weight concrete with admixture.</p>
+    </div>
+
+    <div class="article">
+      <h3 class="article-title">Concrete Mix Design — Its Acceptance</h3>
+      <div class="article-meta">3 comments</div>
+      <div class="article-author">Kaushal Kishore — Materials Engineer, Roorkee</div>
+      <p class="article-body">Mix design is part art, part science: material variability means no table or trial mix gives a final answer on its own — only a mix made and proven on site can be trusted, and even then proportions may need to shift as ingredients do.</p>
+    </div>
+  </section>
+
+  <!-- SIGNATURE DIAGRAM -->
+  <div class="signature">
+    <svg width="160" height="150" viewBox="0 0 160 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- base plate -->
+      <ellipse cx="80" cy="128" rx="66" ry="12" fill="none" stroke="#3c5a6b" stroke-width="2"/>
+      <ellipse cx="80" cy="128" rx="30" ry="5.5" fill="none" stroke="#b5451e" stroke-width="1.6" stroke-dasharray="2 3"/>
+      <!-- cone -->
+      <path d="M 55 118 L 68 24 L 92 24 L 105 118 Z" fill="none" stroke="#221f1a" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="68" y1="24" x2="92" y2="24" stroke="#221f1a" stroke-width="2"/>
+      <!-- dims -->
+      <line x1="30" y1="118" x2="30" y2="24" stroke="#8a8474" stroke-width="1"/>
+      <line x1="26" y1="118" x2="34" y2="118" stroke="#8a8474" stroke-width="1"/>
+      <line x1="26" y1="24" x2="34" y2="24" stroke="#8a8474" stroke-width="1"/>
+      <text x="16" y="74" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a8474" transform="rotate(-90 16 74)">300 mm</text>
+    </svg>
+    <div>
+      <h3>Slump-flow reference</h3>
+      <p>Workability of self-compacting concrete is read from a standard slump cone — 200&nbsp;mm base, 100&nbsp;mm top, 300&nbsp;mm height — inverted over a square base plate at least 700&nbsp;mm to a side, with a 500&nbsp;mm circle marked concentric to the cone as the spread reference.</p>
+    </div>
+  </div>
+
+  <!-- MIX DESIGN DATASHEETS -->
+  <section>
+    <div class="section-head">
+      <h2>Grade Mix Designs</h2>
+      <div class="section-note">IS 10262:2009 &amp; IS 456:2000 — Bangalore region</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="grade-grid">
+
+      <div class="datasheet">
+        <div class="ds-top">
+          <div class="ds-grade">M25</div>
+          <div class="ds-badge">Moderate exposure</div>
+        </div>
+        <div class="ds-sub">Designed by G. Prabhakaran, M.Tech, QA/QC Engineer</div>
+        <div class="spec-row"><span class="spec-label">Cement type</span><span class="spec-leader"></span><span class="spec-value">OPC 53, IS 12269</span></div>
+        <div class="spec-row"><span class="spec-label">Max aggregate size</span><span class="spec-leader"></span><span class="spec-value">20 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Min cement content</span><span class="spec-leader"></span><span class="spec-value">300 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Max w/c ratio</span><span class="spec-leader"></span><span class="spec-value">0.50</span></div>
+        <div class="spec-row"><span class="spec-label">Workability (slump)</span><span class="spec-leader"></span><span class="spec-value">100–120 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Placing method</span><span class="spec-leader"></span><span class="spec-value">Pumping</span></div>
+        <div class="spec-row"><span class="spec-label">Aggregate type</span><span class="spec-leader"></span><span class="spec-value">Crushed angular</span></div>
+        <div class="spec-row"><span class="spec-label">Max cement content</span><span class="spec-leader"></span><span class="spec-value">340 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Admixture</span><span class="spec-leader"></span><span class="spec-value">ECMAS HP 890</span></div>
+      </div>
+
+      <div class="datasheet">
+        <div class="ds-top">
+          <div class="ds-grade">M30</div>
+          <div class="ds-badge">Moderate exposure</div>
+        </div>
+        <div class="ds-sub">Designed by G. Prabhakaran, M.Tech, QA/QC Engineer</div>
+        <div class="spec-row"><span class="spec-label">Cement type</span><span class="spec-leader"></span><span class="spec-value">OPC 53, IS 12269</span></div>
+        <div class="spec-row"><span class="spec-label">Max aggregate size</span><span class="spec-leader"></span><span class="spec-value">20 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Min cement content</span><span class="spec-leader"></span><span class="spec-value">320 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Max w/c ratio</span><span class="spec-leader"></span><span class="spec-value">0.45</span></div>
+        <div class="spec-row"><span class="spec-label">Workability (slump)</span><span class="spec-leader"></span><span class="spec-value">100–120 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Placing method</span><span class="spec-leader"></span><span class="spec-value">Pumping</span></div>
+        <div class="spec-row"><span class="spec-label">Aggregate type</span><span class="spec-leader"></span><span class="spec-value">Crushed angular</span></div>
+        <div class="spec-row"><span class="spec-label">Max cement content</span><span class="spec-leader"></span><span class="spec-value">360 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Admixture</span><span class="spec-leader"></span><span class="spec-value">ECMAS HP 890</span></div>
+      </div>
+
+      <div class="datasheet">
+        <div class="ds-top">
+          <div class="ds-grade">M35</div>
+          <div class="ds-badge">Moderate exposure</div>
+        </div>
+        <div class="ds-sub">Designed by G. Prabhakaran, M.Tech, QA/QC Engineer</div>
+        <div class="spec-row"><span class="spec-label">Cement type</span><span class="spec-leader"></span><span class="spec-value">OPC 53, IS 12269</span></div>
+        <div class="spec-row"><span class="spec-label">Max aggregate size</span><span class="spec-leader"></span><span class="spec-value">20 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Min cement content</span><span class="spec-leader"></span><span class="spec-value">340 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Max w/c ratio</span><span class="spec-leader"></span><span class="spec-value">0.45</span></div>
+        <div class="spec-row"><span class="spec-label">Workability (slump)</span><span class="spec-leader"></span><span class="spec-value">100–120 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Placing method</span><span class="spec-leader"></span><span class="spec-value">Pumping</span></div>
+        <div class="spec-row"><span class="spec-label">Aggregate type</span><span class="spec-leader"></span><span class="spec-value">Crushed angular</span></div>
+        <div class="spec-row"><span class="spec-label">Max cement content</span><span class="spec-leader"></span><span class="spec-value">390 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Admixture</span><span class="spec-leader"></span><span class="spec-value">ECMAS HP 890</span></div>
+      </div>
+
+      <div class="datasheet">
+        <div class="ds-top">
+          <div class="ds-grade">M40</div>
+          <div class="ds-badge">Moderate exposure</div>
+        </div>
+        <div class="ds-sub">Designed by G. Prabhakaran, M.Tech, QA/QC Engineer</div>
+        <div class="spec-row"><span class="spec-label">Cement type</span><span class="spec-leader"></span><span class="spec-value">OPC 53, IS 12269</span></div>
+        <div class="spec-row"><span class="spec-label">Max aggregate size</span><span class="spec-leader"></span><span class="spec-value">20 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Min cement content</span><span class="spec-leader"></span><span class="spec-value">360 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Max w/c ratio</span><span class="spec-leader"></span><span class="spec-value">0.40</span></div>
+        <div class="spec-row"><span class="spec-label">Workability (slump)</span><span class="spec-leader"></span><span class="spec-value">100–120 mm</span></div>
+        <div class="spec-row"><span class="spec-label">Placing method</span><span class="spec-leader"></span><span class="spec-value">Pumping</span></div>
+        <div class="spec-row"><span class="spec-label">Aggregate type</span><span class="spec-leader"></span><span class="spec-value">Crushed angular</span></div>
+        <div class="spec-row"><span class="spec-label">Max cement content</span><span class="spec-leader"></span><span class="spec-value">420 kg/m³</span></div>
+        <div class="spec-row"><span class="spec-label">Admixture</span><span class="spec-leader"></span><span class="spec-value">ECMAS HP 890</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>Concrete Engineering Field Notes — compiled reference</span>
+    <span>Source: BuildingMaterials &amp; Supplies</span>
+  </footer>
+
+</div>
+</body>
+</html>
