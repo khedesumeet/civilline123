@@ -91,9 +91,78 @@ nav{
   transform:rotate(45deg);
 }
 .logo .mark span{transform:rotate(-45deg);}
-.nav-links{display:flex;gap:30px;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;}
-.nav-links a{opacity:0.75;transition:opacity 0.2s,color 0.2s;}
-.nav-links a:hover{opacity:1;color:var(--linework);}
+
+/* Hamburger Menu */
+.hamburger{
+  display:none;
+  flex-direction:column;
+  gap:6px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:0;
+}
+.hamburger span{
+  width:24px;
+  height:2px;
+  background:var(--linework);
+  display:block;
+  transition:all 0.3s ease;
+}
+.hamburger.active span:nth-child(1){
+  transform:rotate(45deg) translateY(10px);
+}
+.hamburger.active span:nth-child(2){
+  opacity:0;
+}
+.hamburger.active span:nth-child(3){
+  transform:rotate(-45deg) translateY(-10px);
+}
+
+.nav-links{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  font-size:0.82rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  font-weight:600;
+  position:absolute;
+  top:60px;
+  left:0;
+  right:0;
+  background:rgba(8,44,71,0.98);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(127,209,255,0.25);
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+}
+.nav-links.active{
+  max-height:400px;
+  display:flex;
+}
+.nav-links a{
+  padding:16px 6vw;
+  opacity:0.75;
+  transition:opacity 0.2s,color 0.2s,background 0.2s;
+  border-bottom:1px solid rgba(127,209,255,0.1);
+  display:block;
+}
+.nav-links a:last-child{
+  border-bottom:none;
+}
+.nav-links a:hover{
+  opacity:1;
+  color:var(--linework);
+  background:rgba(127,209,255,0.05);
+}
+
+/* Start Quiz Button */
+.nav-btn-container{
+  display:flex;
+  align-items:center;
+}
 
 /* ---------- HERO ---------- */
 .hero{
@@ -412,6 +481,8 @@ footer{
 @media (max-width:768px){
   nav{
     padding:16px 4vw;
+    flex-wrap:nowrap;
+    justify-content:space-between;
   }
   .logo{
     font-size:1rem;
@@ -421,12 +492,23 @@ footer{
     height:24px;
     font-size:0.65rem;
   }
+  .hamburger{
+    display:flex;
+  }
   .nav-links{
-    display:none;
+    position:absolute;
+    top:55px;
+    left:0;
+    right:0;
   }
   .btn{
     padding:10px 14px;
     font-size:0.7rem;
+  }
+  .nav-btn-container{
+    position:absolute;
+    top:16px;
+    right:50px;
   }
   
   .hero{
@@ -574,6 +656,10 @@ footer{
   .btn{
     padding:8px 10px;
     font-size:0.65rem;
+  }
+  .nav-btn-container{
+    top:12px;
+    right:45px;
   }
   
   .hero{
