@@ -1,30 +1,892 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tools & Calculators</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering Daily Calculator Suite</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #334155;
+            --text-heading: #0f172a;
+            --border: #e2e8f0;
+            --accent: #10b981;
+            --accent-hover: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background-color: var(--secondary);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 10px 0 30px 0;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            width: calc(100% - 280px);
+            padding: 40px;
+        }
+
+        .calculator-section {
+            display: none;
+        }
+
+        .calculator-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--text-heading);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* Grid Layout for Calculator Workspaces */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Elements */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            position: relative;
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .input-wrapper select + .input-unit {
+            right: 24px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            flex: 2;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #475569;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Results Display Grid */
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: #f8fafc;
+            border-left: 4px solid var(--primary-light);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .result-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .result-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-heading);
+            text-align: right;
+        }
+
+        .result-value span {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+            margin-left: 4px;
+        }
+
+        /* Responsive UI top navigation for tablets & mobile */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 15px;
+            }
+            .sidebar-header {
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
 <body>
-<header><h1>🧮 Tools & Calculators</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>CivilEng Suite</h1>
+            <p>Daily Engineering Calculators</p>
+        </div>
+        <ul class="nav-menu">
+            <li id="nav-concrete" class="nav-item active" onclick="switchTab('concrete')">🧱 Concrete & Materials</li>
+            <li id="nav-steel" class="nav-item" onclick="switchTab('steel')">⛓️ Steel Rebar Weight</li>
+            <li id="nav-brickwork" class="nav-item" onclick="switchTab('brickwork')">🧱 Brick Masonry</li>
+            <li id="nav-excavation" class="nav-item" onclick="switchTab('excavation')">🚜 Excavation & Soil</li>
+            <li id="nav-converter" class="nav-item" onclick="switchTab('converter')">🔄 Engineering Converter</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <div id="concrete" class="calculator-section active">
+            <h2 class="section-title">Concrete Material Estimates</h2>
+            <p class="section-desc">Estimate total concrete volume along with needed quantities of cement bags, sand, and coarse aggregates using standard dry volume conversion factors (1.54).</p>
+            
+            <div class="calc-grid">
+                <div class="card">
+                    <div class="card-title">Dimensions & Mix Ratio</div>
+                    <form id="concreteForm" onsubmit="event.preventDefault(); calculateConcrete();">
+                        <div class="form-group">
+                            <label>Structure Form Factor</label>
+                            <div class="input-wrapper">
+                                <select id="concShape" onchange="toggleConcInputs()">
+                                    <option value="rectangular">Rectangular (Slab, Beam, Footing)</option>
+                                    <option value="circular">Circular Column / Pile</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="rectInputs">
+                            <div class="form-group">
+                                <label>Length</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="concLength" step="any" value="5" required>
+                                    <span class="input-unit">meters</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Width / Width of Beam</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="concWidth" step="any" value="4" required>
+                                    <span class="input-unit">meters</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="circInputs" style="display: none;">
+                            <div class="form-group">
+                                <label>Diameter</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="concDiam" step="any" value="0.5">
+                                    <span class="input-unit">meters</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Thickness / Depth / Height</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="concDepth" step="any" value="0.15" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Concrete Grade Mix Proportion</label>
+                            <div class="input-wrapper">
+                                <select id="concMix">
+                                    <option value="M15">M15 (1 : 2 : 4) - Lean Concrete</option>
+                                    <option value="M20" selected>M20 (1 : 1.5 : 3) - Standard Structural</option>
+                                    <option value="M25">M25 (1 : 1 : 2) - High Strength</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">Calculate Quantities</button>
+                            <button type="reset" class="btn btn-secondary" onclick="setTimeout(calculateConcrete, 50)">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Material Breakdown Output</div>
+                    <div class="results-container">
+                        <div class="result-row">
+                            <div class="result-label">Total Wet Volume</div>
+                            <div class="result-value" id="resWetVol">0.00<span>m³</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #8b5cf6;">
+                            <div class="result-label">Est. Dry Volume (+54%)</div>
+                            <div class="result-value" id="resDryVol">0.00<span>m³</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #f59e0b;">
+                            <div class="result-label">Cement Required</div>
+                            <div class="result-value" id="resCement">0.0<span>Bags (50kg)</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #10b981;">
+                            <div class="result-label">Fine Aggregate (Sand)</div>
+                            <div class="result-value" id="resSand">0.00<span>m³</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #ef4444;">
+                            <div class="result-label">Coarse Aggregate</div>
+                            <div class="result-value" id="resAggregate">0.00<span>m³</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="steel" class="calculator-section">
+            <h2 class="section-title">Steel Rebar Weight Calculator</h2>
+            <p class="section-desc">Quickly compute standard nominal weight of reinforcement steel bars using structural unit mass criteria formula (D²/162.2).</p>
+            
+            <div class="calc-grid">
+                <div class="card">
+                    <div class="card-title">Rebar Specifications</div>
+                    <form id="steelForm" onsubmit="event.preventDefault(); calculateSteel();">
+                        <div class="form-group">
+                            <label>Bar Diameter</label>
+                            <div class="input-wrapper">
+                                <select id="steelDiam">
+                                    <option value="6">6 mm</option>
+                                    <option value="8">8 mm</option>
+                                    <option value="10" selected>10 mm</option>
+                                    <option value="12">12 mm</option>
+                                    <option value="16">16 mm</option>
+                                    <option value="20">20 mm</option>
+                                    <option value="25">25 mm</option>
+                                    <option value="32">32 mm</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Total Single Length</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="steelLength" step="any" value="12" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Number of Identical Bars</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="steelCount" step="1" value="20" required>
+                                <span class="input-unit">pcs</span>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">Calculate Weight</button>
+                            <button type="reset" class="btn btn-secondary" onclick="setTimeout(calculateSteel, 50)">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Calculated Weight Outputs</div>
+                    <div class="results-container">
+                        <div class="result-row">
+                            <div class="result-label">Unit Weight</div>
+                            <div class="result-value" id="steelUnitWt">0.000<span>kg/m</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #10b981;">
+                            <div class="result-label">Total Running Length</div>
+                            <div class="result-value" id="steelTotalLen">0.00<span>meters</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #ef4444; background-color: #fef2f2;">
+                            <div class="result-label">Total Mass Weight</div>
+                            <div class="result-value" id="steelTotalWt" style="font-size: 22px; color: #b91c1c;">0.00<span>kg</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #64748b;">
+                            <div class="result-label">Weight in Metric Tons</div>
+                            <div class="result-value" id="steelTons">0.000<span>Tons</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="brickwork" class="calculator-section">
+            <h2 class="section-title">Brickwork & Mortar Estimator</h2>
+            <p class="section-desc">Estimate modular masonry unit counts alongside structural cement/sand volume for standard structural boundaries.</p>
+            
+            <div class="calc-grid">
+                <div class="card">
+                    <div class="card-title">Wall Parameters & Options</div>
+                    <form id="brickForm" onsubmit="event.preventDefault(); calculateBrickwork();">
+                        <div class="form-group">
+                            <label>Wall Length</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="brickWallLen" step="any" value="10" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Wall Height</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="brickWallHeight" step="any" value="3" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Wall Thickness</label>
+                            <div class="input-wrapper">
+                                <select id="brickWallThick">
+                                    <option value="0.115">115 mm (Single Brick / Half Wall)</option>
+                                    <option value="0.23" selected>230 mm (Double Brick / Full Wall)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mortar Joint Thickness</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="mortarThick" step="any" value="10" required>
+                                <span class="input-unit">mm</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mortar Mix Ratio</label>
+                            <div class="input-wrapper">
+                                <select id="mortarRatio">
+                                    <option value="4">1 : 4 (Rich Structural Mix)</option>
+                                    <option value="6" selected>1 : 6 (Standard Partition Mix)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">Calculate Masonry</button>
+                            <button type="reset" class="btn btn-secondary" onclick="setTimeout(calculateBrickwork, 50)">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Masonry Components Required</div>
+                    <div class="results-container">
+                        <div class="result-row">
+                            <div class="result-label">Total Wall Volume</div>
+                            <div class="result-value" id="brickWallVol">0.00<span>m³</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #f59e0b;">
+                            <div class="result-label">Estimated Bricks Count</div>
+                            <div class="result-value" id="resBricksCount" style="font-size: 20px; color: var(--primary);">0<span>Pcs</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #8b5cf6;">
+                            <div class="result-label">Dry Mortar Mix Volume</div>
+                            <div class="result-value" id="resMortarVol">0.00<span>m³</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #10b981;">
+                            <div class="result-label">Mortar Cement Needed</div>
+                            <div class="result-value" id="resMortarCement">0.0<span>Bags</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #ef4444;">
+                            <div class="result-label">Mortar Sand Needed</div>
+                            <div class="result-value" id="resMortarSand">0.00<span>m³</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="excavation" class="calculator-section">
+            <h2 class="section-title">Excavation & Earthwork Volume</h2>
+            <p class="section-desc">Determine loose haul and structural pit geometric volumes incorporating variable soil volumetric swelling coefficients.</p>
+            
+            <div class="calc-grid">
+                <div class="card">
+                    <div class="card-title">Pit Dimensions & Profile</div>
+                    <form id="excForm" onsubmit="event.preventDefault(); calculateExcavation();">
+                        <div class="form-group">
+                            <label>Excavation Length</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="excLen" step="any" value="8" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Excavation Width</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="excWidth" step="any" value="6" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Depth</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="excDepth" step="any" value="2" required>
+                                <span class="input-unit">meters</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Soil Type / Swell Factor</label>
+                            <div class="input-wrapper">
+                                <select id="excSwell">
+                                    <option value="1.10">Sand / Gravel (10% Swell)</option>
+                                    <option value="1.25" selected>Common Earth / Clay (25% Swell)</option>
+                                    <option value="1.40">Hard Rock / Blasted (40% Swell)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">Calculate Earthwork</button>
+                            <button type="reset" class="btn btn-secondary" onclick="setTimeout(calculateExcavation, 50)">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Volumetric Totals</div>
+                    <div class="results-container">
+                        <div class="result-row">
+                            <div class="result-label">In-situ Bank Volume (Net Void)</div>
+                            <div class="result-value" id="resBankVol" style="font-size: 18px; color: var(--text-heading);">0.00<span>m³</span></div>
+                        </div>
+                        <div class="result-row" style="border-left-color: #f59e0b; background-color: #fffbeb;">
+                            <div class="result-label">Loose Haul Volume (Displaced)</div>
+                            <div class="result-value" id="resLooseVol" style="font-size: 22px; color: #d97706;">0.00<span>m³</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="converter" class="calculator-section">
+            <h2 class="section-title">Civil Engineering Unit Converter</h2>
+            <p class="section-desc">Instantly convert common dynamic measurements across imperial and metric scale baselines.</p>
+            
+            <div class="calc-grid">
+                <div class="card">
+                    <div class="card-title">Quick Conversion Machine</div>
+                    <form id="convForm">
+                        <div class="form-group">
+                            <label>Conversion Dimension Type</label>
+                            <div class="input-wrapper">
+                                <select id="convType" onchange="updateConvUnits()">
+                                    <option value="length">Length</option>
+                                    <option value="area">Area</option>
+                                    <option value="volume">Volume / Capacity</option>
+                                    <option value="weight">Mass / Force Weight</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Input Magnitude Value</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="convInput" step="any" value="1" oninput="performConversion()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>From Unit Scale</label>
+                            <div class="input-wrapper">
+                                <select id="convFrom" onchange="performConversion()"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>To Target Unit Scale</label>
+                            <div class="input-wrapper">
+                                <select id="convTo" onchange="performConversion()"></select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Transformation Results</div>
+                    <div class="results-container" style="justify-content: center; min-height: 200px;">
+                        <div style="text-align: center; padding: 40px 20px; background: #f8fafc; border: 2px dashed var(--border); border-radius: 8px; width: 100%;">
+                            <div style="font-size: 14px; color: #64748b; margin-bottom: 10px; font-weight: 500;">Converted Equivalent Balance</div>
+                            <div id="convResultDisplay" style="font-size: 28px; font-weight: 800; color: var(--primary);">1.0000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Tab switching controller
+        function switchTab(tabId) {
+            document.querySelectorAll('.calculator-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
+
+            if(tabId === 'converter') {
+                updateConvUnits();
+            }
+        }
+
+        // Concrete Input Form UI Toggle
+        function toggleConcInputs() {
+            const shape = document.getElementById('concShape').value;
+            if(shape === 'rectangular') {
+                document.getElementById('rectInputs').style.display = 'block';
+                document.getElementById('circInputs').style.display = 'none';
+                document.getElementById('concLength').required = true;
+                document.getElementById('concWidth').required = true;
+                document.getElementById('concDiam').required = false;
+            } else {
+                document.getElementById('rectInputs').style.display = 'none';
+                document.getElementById('circInputs').style.display = 'block';
+                document.getElementById('concLength').required = false;
+                document.getElementById('concWidth').required = false;
+                document.getElementById('concDiam').required = true;
+            }
+            calculateConcrete();
+        }
+
+        // Concrete Solver Logic
+        function calculateConcrete() {
+            const shape = document.getElementById('concShape').value;
+            const depth = parseFloat(document.getElementById('concDepth').value) || 0;
+            const mix = document.getElementById('concMix').value;
+            
+            let wetVol = 0;
+            if(shape === 'rectangular') {
+                const len = parseFloat(document.getElementById('concLength').value) || 0;
+                const width = parseFloat(document.getElementById('concWidth').value) || 0;
+                wetVol = len * width * depth;
+            } else {
+                const diam = parseFloat(document.getElementById('concDiam').value) || 0;
+                wetVol = Math.PI * Math.pow((diam / 2), 2) * depth;
+            }
+
+            // Dry factor constant expansion benchmark
+            let dryVol = wetVol * 1.54;
+
+            // Ratio Split configurations
+            let cPart = 1, sPart = 1.5, aPart = 3; 
+            if(mix === 'M15') { cPart = 1; sPart = 2; aPart = 4; }
+            else if(mix === 'M25') { cPart = 1; sPart = 1; aPart = 2; }
+            
+            let sumParts = cPart + sPart + aPart;
+            
+            let cementVol = (cPart / sumParts) * dryVol;
+            // 1 cubic meter of cement = ~28.8 bags (50kg each)
+            let cementBags = cementVol * 28.8;
+            let sandVol = (sPart / sumParts) * dryVol;
+            let aggVol = (aPart / sumParts) * dryVol;
+
+            // Display Results
+            document.getElementById('resWetVol').innerHTML = `${wetVol.toFixed(3)} <span>m³</span>`;
+            document.getElementById('resDryVol').innerHTML = `${dryVol.toFixed(3)} <span>m³</span>`;
+            document.getElementById('resCement').innerHTML = `${cementBags.toFixed(1)} <span>Bags</span>`;
+            document.getElementById('resSand').innerHTML = `${sandVol.toFixed(2)} m³ <span style="display:block;font-size:11px;color:#64748b;">(${(sandVol*35.3147).toFixed(1)} cft)</span>`;
+            document.getElementById('resAggregate').innerHTML = `${aggVol.toFixed(2)} m³ <span style="display:block;font-size:11px;color:#64748b;">(${(aggVol*35.3147).toFixed(1)} cft)</span>`;
+        }
+
+        // Steel Bar Matrix calculations
+        function calculateSteel() {
+            const d = parseFloat(document.getElementById('steelDiam').value);
+            const l = parseFloat(document.getElementById('steelLength').value) || 0;
+            const count = parseInt(document.getElementById('steelCount').value) || 0;
+
+            let unitWeight = (d * d) / 162.2;
+            let totalLength = l * count;
+            let totalWeight = unitWeight * totalLength;
+            let tons = totalWeight / 1000;
+
+            document.getElementById('steelUnitWt').innerHTML = `${unitWeight.toFixed(3)} <span>kg/m</span>`;
+            document.getElementById('steelTotalLen').innerHTML = `${totalLength.toFixed(2)} <span>meters</span>`;
+            document.getElementById('steelTotalWt').innerHTML = `${totalWeight.toFixed(2)} <span>kg</span>`;
+            document.getElementById('steelTons').innerHTML = `${tons.toFixed(4)} <span>Tons</span>`;
+        }
+
+        // Brickwork Math Engine
+        function calculateBrickwork() {
+            const wallLen = parseFloat(document.getElementById('brickWallLen').value) || 0;
+            const wallH = parseFloat(document.getElementById('brickWallHeight').value) || 0;
+            const wallThick = parseFloat(document.getElementById('brickWallThick').value) || 0.23;
+            const mortThickMm = parseFloat(document.getElementById('mortarThick').value) || 10;
+            const mRatio = parseFloat(document.getElementById('mortarRatio').value);
+
+            let wallVol = wallLen * wallH * wallThick;
+
+            // Standard Modular brick metric scale: 0.19m x 0.09m x 0.09m
+            let bL = 0.19, bW = 0.09, bH = 0.09;
+            let mThickM = mortThickMm / 1000;
+
+            let grossBrickVol = (bL + mThickM) * (bW + mThickM) * (bH + mThickM);
+            let totalBricks = Math.ceil(wallVol / grossBrickVol);
+
+            let netBrickVolAlone = totalBricks * (bL * bW * bH);
+            let wetMortarVol = wallVol - netBrickVolAlone;
+            if(wetMortarVol < 0) wetMortarVol = 0;
+
+            // Adding 15% wastage safety allowance + 33% dry density adjustments
+            let dryMortarVol = wetMortarVol * 1.15 * 1.33;
+
+            let sumMortarParts = 1 + mRatio;
+            let cementMortarVol = (1 / sumMortarParts) * dryMortarVol;
+            let cementBagsMortar = cementMortarVol * 28.8;
+            let sandMortarVol = (mRatio / sumMortarParts) * dryMortarVol;
+
+            document.getElementById('brickWallVol').innerHTML = `${wallVol.toFixed(2)} <span>m³</span>`;
+            document.getElementById('resBricksCount').innerHTML = `${totalBricks.toLocaleString()} <span>Pcs</span>`;
+            document.getElementById('resMortarVol').innerHTML = `${dryMortarVol.toFixed(3)} <span>m³ (Dry)</span>`;
+            document.getElementById('resMortarCement').innerHTML = `${cementBagsMortar.toFixed(1)} <span>Bags</span>`;
+            document.getElementById('resMortarSand').innerHTML = `${sandMortarVol.toFixed(2)} <span>m³</span>`;
+        }
+
+        // Excavation Solvers
+        function calculateExcavation() {
+            const l = parseFloat(document.getElementById('excLen').value) || 0;
+            const w = parseFloat(document.getElementById('excWidth').value) || 0;
+            const d = parseFloat(document.getElementById('excDepth').value) || 0;
+            const swell = parseFloat(document.getElementById('excSwell').value) || 1.25;
+
+            let bankVol = l * w * d;
+            let looseVol = bankVol * swell;
+
+            document.getElementById('resBankVol').innerHTML = `${bankVol.toFixed(2)} <span>m³</span>`;
+            document.getElementById('resLooseVol').innerHTML = `${looseVol.toFixed(2)} <span>m³</span>`;
+        }
+
+        // Unit Conversion Configuration Lookups
+        const unitsData = {
+            length: { m: 1, ft: 3.28084, mm: 1000, in: 39.3701, cm: 100 },
+            area: { sqm: 1, sqft: 10.7639, sqin: 1550.0031, acre: 0.000247105, hectare: 0.0001 },
+            volume: { cum: 1, cft: 35.3147, liters: 1000, gallons: 264.172 },
+            weight: { kg: 1, lbs: 2.20462, tons: 0.001, kN: 0.00980665 }
+        };
+
+        function updateConvUnits() {
+            const type = document.getElementById('convType').value;
+            const fromSelect = document.getElementById('convFrom');
+            const toSelect = document.getElementById('convTo');
+            
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+
+            Object.keys(unitsData[type]).forEach(unit => {
+                let opt1 = document.createElement('option');
+                opt1.value = unit; opt1.innerText = unit.toUpperCase();
+                let opt2 = opt1.cloneNode(true);
+                fromSelect.appendChild(opt1);
+                toSelect.appendChild(opt2);
+            });
+
+            if(toSelect.options.length > 1) {
+                toSelect.selectedIndex = 1;
+            }
+            performConversion();
+        }
+
+        function performConversion() {
+            const type = document.getElementById('convType').value;
+            const val = parseFloat(document.getElementById('convInput').value);
+            const fromUnit = document.getElementById('convFrom').value;
+            const toUnit = document.getElementById('convTo').value;
+
+            if (isNaN(val)) {
+                document.getElementById('convResultDisplay').innerText = '0.00';
+                return;
+            }
+
+            // Target base alignment math
+            let baseVal = val / unitsData[type][fromUnit];
+            let targetVal = baseVal * unitsData[type][toUnit];
+
+            document.getElementById('convResultDisplay').innerHTML = `${targetVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 4})} <span style='font-size:14px;color:#64748b;'>${toUnit.toUpperCase()}</span>`;
+        }
+
+        // Run baseline setup metrics on init
+        window.onload = function() {
+            calculateConcrete();
+            calculateSteel();
+            calculateBrickwork();
+            calculateExcavation();
+            updateConvUnits();
+        };
+    </script>
+</body>
+</html>
