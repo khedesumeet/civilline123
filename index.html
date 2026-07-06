@@ -3,231 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
-<title>CIVILINE — Civil Engineering NPTEL Knowledge Hub</title>
-<link rel="stylesheet" href="assets/css/style.css"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184504243491630"
-     crossorigin="anonymous"></script>
+<meta name="theme-color" content="#F4F2EC">
+<title>CIVILINE — Civil Engineering Knowledge Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184504243491630" crossorigin="anonymous"></script>
 
 </head>
 <body>
 <nav>
   <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
   <div class="nav-links" id="navLinks">
-    <a href="index.html">Home</a><br>
-    <a href="index.html#resources">Resources</a><br>
-    <a href="video-library.html">Video Library</a>  <br>
-    <a href="Infranews.html">infra News</a><br>
+    <a href="index.html">Home</a>
+    <a href="#resources">Resources</a>
+    <a href="video-library.html">Video Library</a>
+    <a href="Infranews.html">Infra News</a>
+    <a href="#about">About</a>
   </div>
-  <a href="index.html#resources" class="btn btn-primary" style="padding:10px 18px;font-size:0.75rem;">Explore Resources</a>
+  <a href="#resources" class="btn btn-primary">Explore Resources</a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
 </nav>
 
-<div class="hero tick-frame">
+<div class="hero">
   <div class="tick-bl"></div><div class="tick-br"></div>
-  <div class="eyebrow">Comprehensive learning platform &middot; Free resources &middot; Industry standards</div>
+  <div class="eyebrow mono">// Free resources · Curated for self-study</div>
   <h1>Civil Engineering Knowledge,<br>organized <span class="accent">for every need.</span></h1>
-  <p>A comprehensive hub for civil engineering education — access journals, books, software tools, research papers, and curated learning materials across all specializations.</p>
+
+  <div class="scale-strip">
+    <div class="scale-tick"><div class="num">12</div><div class="lbl mono">Branches Covered</div></div>
+    <div class="scale-tick"><div class="num">20+</div><div class="lbl mono">Knowledge Topics</div></div>
+    <div class="scale-tick"><div class="num">4</div><div class="lbl mono">Resource Libraries</div></div>
+    <div class="scale-tick"><div class="num">100%</div><div class="lbl mono">Free to Access</div></div>
+  </div>
 </div>
 
 <section id="resources">
   <div class="section-head">
     <div>
-      <div class="tag mono">// RESOURCES & KNOWLEDGE CENTER</div>
-      <h2>Expand your learning</h2>
+      <div class="tag mono">// Resources &amp; Knowledge Center</div>
+      <h2>Everything, in one directory</h2>
     </div>
-    <p>Access journals, books, software tools, and comprehensive knowledge resources for deeper understanding.</p>
+    <p>Filter by category or search directly — every link opens the matching page in <code>/resources</code>.</p>
   </div>
 
+  <div class="directory-controls">
+    <button class="filter-tab active" data-filter="all">All</button>
+    <button class="filter-tab" data-filter="library">Journals, Books &amp; Softwares</button>
+    <button class="filter-tab" data-filter="knowledge">Knowledge Center</button>
+    <button class="filter-tab" data-filter="branches">Branches</button>
+    <div class="search-box">
+      <input type="text" id="resourceSearch" placeholder="Search topics…">
+    </div>
+  </div>
+  <div class="result-count" id="resultCount">39 topics</div>
+
   <div class="resource-container">
-    <div class="resource-group">
-      <h3 class="group-title">Journals, Books & Softwares</h3>
+    <div class="resource-group" data-group="library">
+      <h3 class="group-title">Journals, Books &amp; Softwares <span class="count">4</span></h3>
       <div class="resource-grid">
-        <a href="resources/softwares.html" class="resource-card">
-          <div class="resource-icon">💻</div>
-          <h4>Civil Engineering Softwares</h4>
-        </a>
-        <a href="resources/civil-engineering-books.html" class="resource-card">
-          <div class="resource-icon">📚</div>
-          <h4>Civil Engineering Books</h4>
-        </a>
-        <a href="resources/journals-and-magazines.html" class="resource-card">
-          <div class="resource-icon">📖</div>
-          <h4>Civil Engineering Journals</h4>
-        </a>
-        <a href="resources/magazines-white-papers.html" class="resource-card">
-          <div class="resource-icon">📑</div>
-          <h4>Free Magazines & White Papers</h4>
-        </a>
+        <a href="resources/softwares.html" class="resource-card"><div class="resource-icon">💻</div><h4>Civil Engineering Softwares</h4></a>
+        <a href="resources/civil-engineering-books.html" class="resource-card"><div class="resource-icon">📚</div><h4>Civil Engineering Books</h4></a>
+        <a href="resources/journals-and-magazines.html" class="resource-card"><div class="resource-icon">📖</div><h4>Civil Engineering Journals</h4></a>
+        <a href="resources/magazines-white-papers.html" class="resource-card"><div class="resource-icon">📑</div><h4>Free Magazines &amp; White Papers</h4></a>
       </div>
     </div>
 
-    <div class="resource-group">
-      <h3 class="group-title">Knowledge Center</h3>
+    <div class="resource-group" data-group="knowledge">
+      <h3 class="group-title">Knowledge Center <span class="count">20</span></h3>
       <div class="resource-grid">
-        <a href="resources/mix-design.html" class="resource-card">
-          <div class="resource-icon">🔬</div>
-          <h4>Mix Design</h4>
-        </a>
-        <a href="resources/interviews.html" class="resource-card">
-          <div class="resource-icon">💬</div>
-          <h4>Interviews</h4>
-        </a>
-        <a href="resources/civil-engineering-tools.html" class="resource-card">
-          <div class="resource-icon">🧮</div>
-          <h4>Tools & Calculators</h4>
-        </a>
-        <a href="resources/project-reports.html" class="resource-card">
-          <div class="resource-icon">📊</div>
-          <h4>Project Reports</h4>
-        </a>
-        <a href="resources/research-papers.html" class="resource-card">
-          <div class="resource-icon">📝</div>
-          <h4>Research Papers</h4>
-        </a>
-        <a href="resources/student-corner.html" class="resource-card">
-          <div class="resource-icon">👨‍🎓</div>
-          <h4>Student Corner</h4>
-        </a>
-        <a href="resources/material-testing.html" class="resource-card">
-          <div class="resource-icon">⚗️</div>
-          <h4>Material Testing</h4>
-        </a>
-        <a href="resources/construction-terms.html" class="resource-card">
-          <div class="resource-icon">📋</div>
-          <h4>Construction Terms</h4>
-        </a>
-        <a href="resources/measurement-units.html" class="resource-card">
-          <div class="resource-icon">📏</div>
-          <h4>Measurement Units</h4>
-        </a>
-        <a href="resources/civil-engineering-facts.html" class="resource-card">
-          <div class="resource-icon">💡</div>
-          <h4>CE Facts</h4>
-        </a>
-        <a href="resources/famous-civil-engineers.html" class="resource-card">
-          <div class="resource-icon">🏛️</div>
-          <h4>Famous Civil Engineers</h4>
-        </a>
-        <a href="resources/civil-engineering-events.html" class="resource-card">
-          <div class="resource-icon">🎯</div>
-          <h4>CE Events</h4>
-        </a>
-        <a href="resources/construction-equipments.html" class="resource-card">
-          <div class="resource-icon">🏗️</div>
-          <h4>Construction Equipments</h4>
-        </a>
-        <a href="resources/civil-engineering-disasters.html" class="resource-card">
-          <div class="resource-icon">⚠️</div>
-          <h4>CE Disasters</h4>
-        </a>
-        <a href="resources/civil-engineering-information.html" class="resource-card">
-          <div class="resource-icon">ℹ️</div>
-          <h4>CE Information</h4>
-        </a>
-        <a href="resources/civil-engineering-presentations.html" class="resource-card">
-          <div class="resource-icon">🎬</div>
-          <h4>CE Presentations</h4>
-        </a>
-        <a href="resources/civil-engineering-quotes.html" class="resource-card">
-          <div class="resource-icon">💭</div>
-          <h4>CE Quotes</h4>
-        </a>
-        <a href="resources/civil-engineering-videos.html" class="resource-card">
-          <div class="resource-icon">🎥</div>
-          <h4>CE Videos</h4>
-        </a>
-        <a href="resources/civil-engineering-wonders.html" class="resource-card">
-          <div class="resource-icon">🌉</div>
-          <h4>CE Wonders</h4>
-        </a>
-        <a href="resources/civil-engineering-notes-from-universities.html" class="resource-card">
-          <div class="resource-icon">🎓</div>
-          <h4>CE Notes From Universities</h4>
-        </a>
+        <a href="resources/mix-design.html" class="resource-card"><div class="resource-icon">🔬</div><h4>Mix Design</h4></a>
+        <a href="resources/interviews.html" class="resource-card"><div class="resource-icon">💬</div><h4>Interviews</h4></a>
+        <a href="resources/civil-engineering-tools.html" class="resource-card"><div class="resource-icon">🧮</div><h4>Tools &amp; Calculators</h4></a>
+        <a href="resources/project-reports.html" class="resource-card"><div class="resource-icon">📊</div><h4>Project Reports</h4></a>
+        <a href="resources/research-papers.html" class="resource-card"><div class="resource-icon">📝</div><h4>Research Papers</h4></a>
+        <a href="resources/student-corner.html" class="resource-card"><div class="resource-icon">👨‍🎓</div><h4>Student Corner</h4></a>
+        <a href="resources/material-testing.html" class="resource-card"><div class="resource-icon">⚗️</div><h4>Material Testing</h4></a>
+        <a href="resources/construction-terms.html" class="resource-card"><div class="resource-icon">📋</div><h4>Construction Terms</h4></a>
+        <a href="resources/measurement-units.html" class="resource-card"><div class="resource-icon">📏</div><h4>Measurement Units</h4></a>
+        <a href="resources/civil-engineering-facts.html" class="resource-card"><div class="resource-icon">💡</div><h4>CE Facts</h4></a>
+        <a href="resources/famous-civil-engineers.html" class="resource-card"><div class="resource-icon">🏛️</div><h4>Famous Civil Engineers</h4></a>
+        <a href="resources/civil-engineering-events.html" class="resource-card"><div class="resource-icon">🎯</div><h4>CE Events</h4></a>
+        <a href="resources/construction-equipments.html" class="resource-card"><div class="resource-icon">🏗️</div><h4>Construction Equipments</h4></a>
+        <a href="resources/civil-engineering-disasters.html" class="resource-card"><div class="resource-icon">⚠️</div><h4>CE Disasters</h4></a>
+        <a href="resources/civil-engineering-information.html" class="resource-card"><div class="resource-icon">ℹ️</div><h4>CE Information</h4></a>
+        <a href="resources/civil-engineering-presentations.html" class="resource-card"><div class="resource-icon">🎬</div><h4>CE Presentations</h4></a>
+        <a href="resources/civil-engineering-quotes.html" class="resource-card"><div class="resource-icon">💭</div><h4>CE Quotes</h4></a>
+        <a href="resources/civil-engineering-videos.html" class="resource-card"><div class="resource-icon">🎥</div><h4>CE Videos</h4></a>
+        <a href="resources/civil-engineering-wonders.html" class="resource-card"><div class="resource-icon">🌉</div><h4>CE Wonders</h4></a>
+        <a href="resources/civil-engineering-notes-from-universities.html" class="resource-card"><div class="resource-icon">🎓</div><h4>CE Notes From Universities</h4></a>
       </div>
     </div>
 
-    <div class="resource-group">
-      <h3 class="group-title">Civil Engineering Branches</h3>
+    <div class="resource-group" data-group="branches">
+      <h3 class="group-title">Civil Engineering Branches <span class="count">12</span></h3>
       <div class="resource-grid">
-        <a href="resources/building.html" class="resource-card">
-          <div class="resource-icon">🏢</div>
-          <h4>Building</h4>
-        </a>
-        <a href="resources/surveying.html" class="resource-card">
-          <div class="resource-icon">🗺️</div>
-          <h4>Surveying</h4>
-        </a>
-        <a href="resources/steelworks.html" class="resource-card">
-          <div class="resource-icon">⚙️</div>
-          <h4>Steelworks</h4>
-        </a>
-        <a href="resources/hydraulics.html" class="resource-card">
-          <div class="resource-icon">💧</div>
-          <h4>Hydraulics</h4>
-        </a>
-        <a href="resources/soil-engineering.html" class="resource-card">
-          <div class="resource-icon">🌍</div>
-          <h4>Soil Engineering</h4>
-        </a>
-        <a href="resources/piles-engineering.html" class="resource-card">
-          <div class="resource-icon">🔩</div>
-          <h4>Piles Engineering</h4>
-        </a>
-        <a href="resources/timber-engineering.html" class="resource-card">
-          <div class="resource-icon">🌳</div>
-          <h4>Timber Engineering</h4>
-        </a>
-        <a href="resources/bridge-engineering.html" class="resource-card">
-          <div class="resource-icon">🌉</div>
-          <h4>Bridge Engineering</h4>
-        </a>
-        <a href="resources/marine-engineering.html" class="resource-card">
-          <div class="resource-icon">⛵</div>
-          <h4>Marine Engineering</h4>
-        </a>
-        <a href="resources/concrete-engineering.html" class="resource-card">
-          <div class="resource-icon">🏗️</div>
-          <h4>Concrete Engineering</h4>
-        </a>
-        <a href="resources/highway-engineering.html" class="resource-card">
-          <div class="resource-icon">🛣️</div>
-          <h4>Highway Engineering</h4>
-        </a>
-        <a href="resources/prestress-engineering.html" class="resource-card">
-          <div class="resource-icon">🔨</div>
-          <h4>Prestress Engineering</h4>
-        </a>
+        <a href="resources/building.html" class="resource-card"><div class="resource-icon">🏢</div><h4>Building</h4></a>
+        <a href="resources/surveying.html" class="resource-card"><div class="resource-icon">🗺️</div><h4>Surveying</h4></a>
+        <a href="resources/steelworks.html" class="resource-card"><div class="resource-icon">⚙️</div><h4>Steelworks</h4></a>
+        <a href="resources/hydraulics.html" class="resource-card"><div class="resource-icon">💧</div><h4>Hydraulics</h4></a>
+        <a href="resources/soil-engineering.html" class="resource-card"><div class="resource-icon">🌍</div><h4>Soil Engineering</h4></a>
+        <a href="resources/piles-engineering.html" class="resource-card"><div class="resource-icon">🔩</div><h4>Piles Engineering</h4></a>
+        <a href="resources/timber-engineering.html" class="resource-card"><div class="resource-icon">🌳</div><h4>Timber Engineering</h4></a>
+        <a href="resources/bridge-engineering.html" class="resource-card"><div class="resource-icon">🌉</div><h4>Bridge Engineering</h4></a>
+        <a href="resources/marine-engineering.html" class="resource-card"><div class="resource-icon">⛵</div><h4>Marine Engineering</h4></a>
+        <a href="resources/concrete-engineering.html" class="resource-card"><div class="resource-icon">🏗️</div><h4>Concrete Engineering</h4></a>
+        <a href="resources/highway-engineering.html" class="resource-card"><div class="resource-icon">🛣️</div><h4>Highway Engineering</h4></a>
+        <a href="resources/prestress-engineering.html" class="resource-card"><div class="resource-icon">🔨</div><h4>Prestress Engineering</h4></a>
       </div>
     </div>
   </div>
 </section>
 
+<section id="about">
+  <div class="section-head">
+    <div>
+      <div class="tag mono">// About Civiline</div>
+      <h2>Built for self-study, kept simple</h2>
+    </div>
+  </div>
+  <div class="about-wrap">
+    <div>
+      <p>CIVILINE brings together the scattered corners of civil engineering learning — journals, textbooks, software guides, and branch-specific notes — into one directory that's organized the way students and practicing engineers actually search: by branch, by topic, and by what they need to do next.</p>
+      <p>Video lectures are sourced from NPTEL, one of India's most trusted platforms for engineering education, and every written resource on this site is free to access.</p>
+    </div>
+    <ul class="about-list">
+      <li><span class="idx">01</span> Organized by branch, not just alphabetically</li>
+      <li><span class="idx">02</span> No paywalls, no sign-up required</li>
+      <li><span class="idx">03</span> Updated as new NPTEL lectures and papers are released</li>
+      <li><span class="idx">04</span> Built by and for self-taught engineers</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="callout-grid">
+    <div class="callout-card blue">
+      <h3>Watch the Video Library</h3>
+      <p>NPTEL lecture series organized by branch and semester, ready to stream.</p>
+      <a href="video-library.html">Go to Video Library →</a>
+    </div>
+    <div class="callout-card ink">
+      <h3>Read Infra News</h3>
+      <p>Updates on major construction, infrastructure, and industry developments.</p>
+      <a href="Infranews.html">Read Infra News →</a>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
-  <div>Built for self-study &middot; Video lectures courtesy NPTEL</div>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
+      <p>A free, self-study knowledge hub for civil engineering — journals, books, tools, and branch-specific notes in one place.</p>
+    </div>
+    <div class="foot-col">
+      <h5 class="mono">Library</h5>
+      <a href="resources/softwares.html">Softwares</a>
+      <a href="resources/civil-engineering-books.html">Books</a>
+      <a href="resources/journals-and-magazines.html">Journals</a>
+      <a href="resources/magazines-white-papers.html">White Papers</a>
+    </div>
+    <div class="foot-col">
+      <h5 class="mono">Knowledge Center</h5>
+      <a href="resources/mix-design.html">Mix Design</a>
+      <a href="resources/research-papers.html">Research Papers</a>
+      <a href="resources/student-corner.html">Student Corner</a>
+      <a href="resources/civil-engineering-videos.html">CE Videos</a>
+    </div>
+    <div class="foot-col">
+      <h5 class="mono">Branches</h5>
+      <a href="resources/bridge-engineering.html">Bridge Engineering</a>
+      <a href="resources/highway-engineering.html">Highway Engineering</a>
+      <a href="resources/concrete-engineering.html">Concrete Engineering</a>
+      <a href="resources/soil-engineering.html">Soil Engineering</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 CIVILINE — Civil Engineering Knowledge Hub</div>
+    <div>Built for self-study · Video lectures courtesy NPTEL</div>
+  </div>
 </footer>
 
 <script>
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
-  
   hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('active');
     hamburger.classList.toggle('active');
   });
-  
-  // Close menu when a link is clicked
   document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('active');
-      hamburger.classList.remove('active');
+    link.addEventListener('click', () => navLinks.classList.remove('active'));
+  });
+
+  // Directory filter + search
+  const tabs = document.querySelectorAll('.filter-tab');
+  const groups = document.querySelectorAll('.resource-group');
+  const cards = document.querySelectorAll('.resource-card');
+  const searchInput = document.getElementById('resourceSearch');
+  const resultCount = document.getElementById('resultCount');
+  let activeFilter = 'all';
+
+  function applyFilters(){
+    const q = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    groups.forEach(group => {
+      const groupName = group.dataset.group;
+      const groupMatchesFilter = activeFilter === 'all' || activeFilter === groupName;
+      let groupHasVisible = false;
+
+      group.querySelectorAll('.resource-card').forEach(card => {
+        const text = card.querySelector('h4').textContent.toLowerCase();
+        const matchesSearch = text.includes(q);
+        const show = groupMatchesFilter && matchesSearch;
+        card.classList.toggle('hidden', !show);
+        if (show){ visibleCount++; groupHasVisible = true; }
+      });
+
+      group.style.display = groupHasVisible ? '' : 'none';
+    });
+
+    resultCount.textContent = `${visibleCount} topic${visibleCount === 1 ? '' : 's'}`;
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeFilter = tab.dataset.filter;
+      applyFilters();
     });
   });
+
+  searchInput.addEventListener('input', applyFilters);
 </script>
 </body>
 </html>
