@@ -1,30 +1,344 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CE Wonders</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civilline | Modern Engineering Wonders</title>
+    <style>
+        /* Base and Typography */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e67e22;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        /* Navigation */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(26, 26, 26, 0.9)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        /* Section Titles */
+        .section-header {
+            text-align: center;
+            padding: 4rem 20px 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 25%;
+        }
+
+        /* Wonders Grid (Detailed Knowledge) */
+        .wonders-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 4rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+        }
+
+        .wonder-card {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .wonder-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .wonder-image {
+            flex: 1;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .wonder-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .wonder-info {
+            flex: 1.2;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .wonder-info h3 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .wonder-info .location {
+            color: var(--secondary);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .wonder-info p {
+            margin-bottom: 1rem;
+            color: #444;
+            text-align: justify;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .stat-item strong {
+            display: block;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 20px;
+        }
+
+        footer p {
+            color: var(--gray);
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .wonder-card, .wonder-card:nth-child(even) {
+                flex-direction: column;
+            }
+            .wonder-image {
+                min-height: 300px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            nav ul {
+                display: none; /* Hidden on mobile for simplicity */
+            }
+        }
+    </style>
+</head>
 <body>
-<header><h1>🌉 CE Wonders</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <!-- Arch icon SVG -->
+            <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 20h20"></path>
+                <path d="M5 20v-8a7 7 0 0 1 14 0v8"></path>
+                <path d="M12 15v5"></path>
+            </svg>
+            Civil<span>line</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#wonders">Global Wonders</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Monuments of Mankind</h1>
+        <p>Civilline explores the most breathtaking, complex, and boundary-pushing civil engineering wonders across the globe. Dive into the detailed knowledge of how mankind reshaped the world.</p>
+    </section>
+
+    <!-- Wonders Section -->
+    <section id="wonders">
+        <div class="section-header">
+            <h2>Marvels of the Modern World</h2>
+        </div>
+
+        <div class="wonders-container">
+            
+            <!-- Wonder 1: Burj Khalifa -->
+            <div class="wonder-card">
+                <div class="wonder-image">
+                    <img src="https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=800&q=80" alt="Burj Khalifa">
+                </div>
+                <div class="wonder-info">
+                    <h3>The Burj Khalifa</h3>
+                    <div class="location">Dubai, United Arab Emirates</div>
+                    <p>The undisputed king of skyscrapers, the Burj Khalifa is a triumph of structural and wind engineering. To prevent the massive wind forces from knocking the 828-meter structure down, engineers utilized a "buttressed core" design.</p>
+                    <p>This Y-shaped floor plan provides high torsional resistance. Furthermore, the building's profile steps back as it rises, confusing the wind and preventing the formation of organized wind vortices that cause buildings to sway violently.</p>
+                    <div class="stats-grid">
+                        <div class="stat-item"><strong>Height:</strong> 828 meters (2,717 ft)</div>
+                        <div class="stat-item"><strong>Concrete Used:</strong> 330,000 cubic meters</div>
+                        <div class="stat-item"><strong>Primary Discipline:</strong> Structural Engineering</div>
+                        <div class="stat-item"><strong>Completion:</strong> 2010</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wonder 2: Millau Viaduct -->
+            <div class="wonder-card">
+                <div class="wonder-image">
+                    <img src="https://images.unsplash.com/photo-1513426715694-878546b38c20?auto=format&fit=crop&w=800&q=80" alt="Millau Viaduct">
+                </div>
+                <div class="wonder-info">
+                    <h3>The Millau Viaduct</h3>
+                    <div class="location">Aveyron, France</div>
+                    <p>Spanning the deep valley of the River Tarn, the Millau Viaduct holds the record as the tallest bridge in the world. It is a multi-span cable-stayed bridge that touches the valley floor in only seven places, minimizing its environmental footprint.</p>
+                    <p>The engineering challenge was immense due to high winds and seismic activity. The deck was constructed on land and rolled out across the pylons using hydraulic rams—a massive feat of precise mechanical and civil synchronization.</p>
+                    <div class="stats-grid">
+                        <div class="stat-item"><strong>Mast Height:</strong> 343 meters (1,125 ft)</div>
+                        <div class="stat-item"><strong>Total Length:</strong> 2,460 meters</div>
+                        <div class="stat-item"><strong>Primary Discipline:</strong> Bridge Engineering</div>
+                        <div class="stat-item"><strong>Completion:</strong> 2004</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wonder 3: Panama Canal Expansion -->
+            <div class="wonder-card">
+                <div class="wonder-image">
+                    <img src="https://images.unsplash.com/photo-1616035974464-96839352e004?auto=format&fit=crop&w=800&q=80" alt="Cargo ship in canal">
+                </div>
+                <div class="wonder-info">
+                    <h3>The Panama Canal System</h3>
+                    <div class="location">Isthmus of Panama</div>
+                    <p>A masterpiece of hydraulic and geotechnical engineering, the Panama Canal connects the Atlantic and Pacific oceans. It operates using a system of locks that act as massive water elevators, lifting ships 26 meters above sea level to an artificial lake.</p>
+                    <p>The recent massive expansion project added wider locks and water-saving basins. These basins recycle 60% of the water used per transit, solving a critical environmental and hydrological challenge while accommodating modern "Neopanamax" mega-ships.</p>
+                    <div class="stats-grid">
+                        <div class="stat-item"><strong>Length:</strong> 82 Kilometers</div>
+                        <div class="stat-item"><strong>Earth Excavated:</strong> Over 200 million cubic meters</div>
+                        <div class="stat-item"><strong>Primary Discipline:</strong> Hydraulic Engineering</div>
+                        <div class="stat-item"><strong>Opened:</strong> 1914 (Expanded 2016)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <h2>Civilline Database</h2>
+        <p>Dedicated to documenting, analyzing, and appreciating the greatest achievements in the history of civil engineering. <br>From geotechnical foundations to structural heights, we map the human impact on the planet.</p>
+        <br>
+        <p>&copy; 2026 Civilline World Wonders. Built for educational purposes.</p>
+    </footer>
+
+</body>
+</html>
