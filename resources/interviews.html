@@ -1,30 +1,605 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Interviews</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Engineering — Interview Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+  :root{
+    --blueprint: #163A5F;
+    --blueprint-deep: #0E2A47;
+    --line: rgba(255,255,255,0.16);
+    --line-strong: rgba(255,255,255,0.32);
+    --paper: #F4F1E7;
+    --ink: #16202B;
+    --amber: #E8A33D;
+    --amber-deep: #C97F1E;
+    --ok: #7FB88A;
+    --card-back: #FBF9F2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--line) 0px, var(--line) 1px, transparent 1px, transparent 32px),
+      repeating-linear-gradient(90deg, var(--line) 0px, var(--line) 1px, transparent 1px, transparent 32px),
+      linear-gradient(160deg, var(--blueprint) 0%, var(--blueprint-deep) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--paper);
+    padding: 28px 20px 80px;
+  }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; }
+
+  header{
+    border: 2px solid var(--line-strong);
+    padding: 22px 26px;
+    position: relative;
+    margin-bottom: 26px;
+    background: rgba(255,255,255,0.02);
+  }
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h1{
+    font-family: 'Archivo Expanded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 44px);
+    letter-spacing: 0.5px;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+  h1 span{ color: var(--amber); }
+  .subhead{
+    margin-top: 10px;
+    max-width: 560px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: rgba(244,241,231,0.75);
+  }
+  .compass{
+    position:absolute; top: 18px; right: 22px;
+    width: 64px; height: 64px; opacity: 0.85;
+  }
+  @media (max-width: 640px){ .compass{ display:none; } }
+
+  .layers{
+    display:flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 22px;
+  }
+  .layer-btn{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding: 9px 14px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    color: rgba(244,241,231,0.85);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+    display:flex; align-items:center; gap:7px;
+  }
+  .layer-btn .dot{ width:7px; height:7px; border-radius:50%; background: currentColor; opacity:0.7; }
+  .layer-btn:hover{ border-color: var(--amber); color: var(--amber); }
+  .layer-btn.active{ background: var(--amber); color: var(--blueprint-deep); border-color: var(--amber); font-weight:600; }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .card-slot{ perspective: 1600px; height: 230px; }
+  .card{
+    position:relative; width:100%; height:100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(.4,.2,.2,1);
+    cursor:pointer;
+  }
+  .card-slot.flipped .card{ transform: rotateY(180deg); }
+
+  .face{
+    position:absolute; inset:0;
+    backface-visibility: hidden;
+    border-radius: 3px;
+    padding: 18px 18px 16px;
+    display:flex; flex-direction:column;
+  }
+
+  .front{
+    background: rgba(255,255,255,0.035);
+    border: 1px solid var(--line-strong);
+    color: var(--paper);
+  }
+  .front::before{
+    content:"";
+    position:absolute; top:8px; left:8px; right:8px; bottom:8px;
+    border: 1px dashed rgba(255,255,255,0.14);
+    pointer-events:none;
+  }
+  .tag-row{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 14px;}
+  .sheet-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--amber); letter-spacing:1px;
+  }
+  .cat-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 9.5px; text-transform:uppercase; letter-spacing:1px;
+    color: rgba(244,241,231,0.55);
+    border: 1px solid rgba(244,241,231,0.3);
+    padding: 3px 7px; border-radius: 2px;
+  }
+  .q-text{
+    font-size: 15.5px; line-height:1.42; font-weight:500;
+    flex:1; overflow-y:auto;
+  }
+  .flip-hint{
+    font-family:'IBM Plex Mono', monospace; font-size: 10.5px;
+    color: rgba(244,241,231,0.45); letter-spacing: 1px;
+    margin-top: 10px; display:flex; align-items:center; gap:6px;
+  }
+  .flip-hint svg{ width:12px; height:12px; }
+
+  .back{
+    background: var(--card-back);
+    color: var(--ink);
+    transform: rotateY(180deg);
+    border: 1px solid var(--amber-deep);
+    overflow-y:auto;
+  }
+  .back .label{
+    font-family:'IBM Plex Mono', monospace; font-size: 10px;
+    letter-spacing:1.5px; color: var(--amber-deep); text-transform:uppercase;
+    margin-bottom: 8px; font-weight:600;
+  }
+  .back .a-text{ font-size: 13.8px; line-height:1.5; }
+  .back .a-text strong{ color: var(--blueprint); }
+
+  .reviewed-badge{
+    position:absolute; bottom:10px; right:10px;
+    width:20px; height:20px; border-radius:50%;
+    background: var(--ok); display:flex; align-items:center; justify-content:center;
+    opacity:0; transform: scale(0.6);
+    transition: all 0.25s ease;
+  }
+  .card-slot.reviewed .reviewed-badge{ opacity:1; transform:scale(1); }
+  .reviewed-badge svg{ width:11px; height:11px; }
+
+  .titleblock{
+    margin-top: 34px;
+    border: 2px solid var(--line-strong);
+    background: rgba(255,255,255,0.02);
+    display:grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0;
+  }
+  .titleblock > div{
+    padding: 14px 20px;
+    border-left: 1px solid var(--line-strong);
+  }
+  .titleblock > div:first-child{ border-left:none; }
+  @media (max-width: 560px){
+    .titleblock{ grid-template-columns: 1fr; }
+    .titleblock > div{ border-left:none; border-top: 1px solid var(--line-strong); }
+    .titleblock > div:first-child{ border-top:none; }
+  }
+  .tb-label{
+    font-family:'IBM Plex Mono', monospace; font-size: 9.5px;
+    letter-spacing: 1.5px; color: rgba(244,241,231,0.5); text-transform:uppercase;
+    margin-bottom: 4px;
+  }
+  .tb-value{ font-family:'IBM Plex Mono', monospace; font-size: 17px; color: var(--amber); font-weight:600; }
+  .progress-bar{
+    height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 8px; overflow:hidden; width: 100%;
+  }
+  .progress-fill{
+    height:100%; background: var(--amber); width:0%; transition: width 0.4s ease;
+  }
+
+  .reset-btn{
+    font-family:'IBM Plex Mono', monospace; font-size: 11px;
+    background:none; border: 1px solid var(--line-strong); color: rgba(244,241,231,0.7);
+    padding: 8px 12px; border-radius:2px; cursor:pointer; letter-spacing:0.5px;
+    margin-top: 6px;
+  }
+  .reset-btn:hover{ border-color: var(--amber); color: var(--amber); }
+
+  ::-webkit-scrollbar{ width:6px; }
+  ::-webkit-scrollbar-thumb{ background: var(--amber-deep); border-radius:3px; }
+</style>
+</head>
 <body>
-<header><h1>💬 Interviews</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">DWG NO. CE-INT-01 · REV B</div>
+    <h1>Civil Engineer<span>.</span> Interview Sheet</h1>
+    <p class="subhead">240 questions across six sheets — 40 per topic — pulled from real site, structural, and geotech interviews. Click a card to flip it and check your answer against the reference notes.</p>
+    <svg class="compass" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="26" stroke="#E8A33D" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="2.5" fill="#E8A33D"/>
+      <line x1="32" y1="6" x2="32" y2="16" stroke="#E8A33D" stroke-width="1.5"/>
+      <line x1="32" y1="48" x2="32" y2="58" stroke="#E8A33D" stroke-width="1.5"/>
+      <line x1="6" y1="32" x2="16" y2="32" stroke="#E8A33D" stroke-width="1.5"/>
+      <line x1="48" y1="32" x2="58" y2="32" stroke="#E8A33D" stroke-width="1.5"/>
+      <path d="M32 32 L44 14" stroke="#E8A33D" stroke-width="1.5"/>
+      <path d="M32 32 L20 50" stroke="#E8A33D" stroke-width="1.5"/>
+    </svg>
+  </header>
+
+  <div class="layers" id="layers"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="titleblock">
+    <div>
+      <div class="tb-label">Reviewed</div>
+      <div class="tb-value" id="tb-count">0 / 240</div>
+      <div class="progress-bar"><div class="progress-fill" id="tb-fill"></div></div>
+    </div>
+    <div>
+      <div class="tb-label">Current Layer</div>
+      <div class="tb-value" id="tb-layer">ALL</div>
+    </div>
+    <div>
+      <button class="reset-btn" id="reset-btn">RESET PROGRESS</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  // ---------- STRUCTURAL (40) ----------
+  {cat:"Structural", q:"What's the difference between working stress design and limit state design?", a:"<strong>Working stress design</strong> keeps stresses within a fraction of the material's yield strength using one global factor of safety, assuming linear elastic behavior. <strong>Limit state design</strong> checks the structure against distinct limit states — ultimate (collapse, strength) and serviceability (deflection, cracking) — using separate partial safety factors for loads and materials."},
+  {cat:"Structural", q:"Why do we provide stirrups in a reinforced concrete beam?", a:"Stirrups resist diagonal shear and torsion, which the concrete alone can't fully carry near supports. They also hold the main longitudinal bars in position during casting and provide confinement, improving ductility."},
+  {cat:"Structural", q:"What is the difference between a one-way and a two-way slab?", a:"A slab is <strong>one-way</strong> when the ratio of longer to shorter span exceeds 2 — it bends mainly in the shorter direction. A <strong>two-way slab</strong> (ratio ≤ 2) bends and transfers load in both directions."},
+  {cat:"Structural", q:"What is the purpose of a factor of safety in design?", a:"It accounts for uncertainties in material strength, load estimation, construction quality, and analysis assumptions, ensuring the structure performs safely even under conditions worse than the nominal design case."},
+  {cat:"Structural", q:"Explain the difference between dead load, live load, and dynamic load.", a:"<strong>Dead load</strong> is the permanent self-weight of the structure. <strong>Live load</strong> is variable, movable load such as occupants or vehicles. <strong>Dynamic load</strong> varies with time and includes inertial effects like wind gusts or seismic shaking."},
+  {cat:"Structural", q:"What is buckling, and which structural members are most prone to it?", a:"Buckling is a sudden sideways instability failure under compressive load, occurring before crushing strength is reached. Slender columns and thin compression members are most prone; controlled through slenderness ratio limits and adequate stiffness."},
+  {cat:"Structural", q:"What is moment of inertia, and why does it matter in beam design?", a:"It's a geometric property describing how a cross-section's area is distributed relative to its neutral axis. A higher moment of inertia gives greater resistance to bending, reducing deflection and bending stress for the same load."},
+  {cat:"Structural", q:"What's the difference between simply supported, fixed, and cantilever beams?", a:"A <strong>simply supported</strong> beam rests on supports free to rotate. A <strong>fixed</strong> beam is rigidly restrained at both ends, developing end moments. A <strong>cantilever</strong> is fixed at one end and free at the other, with maximum moment at the support."},
+  {cat:"Structural", q:"What is the difference between a beam and a girder?", a:"Both carry transverse loads in bending, but a girder is typically the main, larger horizontal member that supports smaller beams framing into it — the term is more about relative role and size than a strict technical distinction."},
+  {cat:"Structural", q:"What is shear force and bending moment?", a:"Shear force at a section is the algebraic sum of transverse forces on one side of it. Bending moment is the sum of moments of those forces about the section, causing the beam to bend."},
+  {cat:"Structural", q:"What is a point of contraflexure?", a:"It's the point along a beam where the bending moment changes sign (from sagging to hogging or vice versa), meaning the curvature reverses and the bending moment is momentarily zero."},
+  {cat:"Structural", q:"Explain the difference between isotropic and anisotropic materials.", a:"An <strong>isotropic</strong> material (like steel or concrete, idealized) has the same mechanical properties in every direction. An <strong>anisotropic</strong> material (like timber) has properties that vary with direction."},
+  {cat:"Structural", q:"What is the purpose of providing a lap length in reinforcement?", a:"Since reinforcement bars come in limited lengths, a lap splice overlaps two bars enough that bond stress transfers the full force from one bar to the next without slipping or failure."},
+  {cat:"Structural", q:"What is development length, and why is it important?", a:"It's the minimum embedment length a reinforcement bar needs in concrete to develop its full design stress through bond, without pulling out. Insufficient length can cause bond failure even if the bar itself is strong enough."},
+  {cat:"Structural", q:"What's the difference between pre-tensioning and post-tensioning in prestressed concrete?", a:"In <strong>pre-tensioning</strong>, tendons are stressed before casting and released after the concrete hardens. In <strong>post-tensioning</strong>, tendons are stressed and anchored after the concrete has cured, transferring force via end anchorages."},
+  {cat:"Structural", q:"What is the difference between ductile and brittle failure?", a:"Ductile failure involves visible deformation and warning before collapse (e.g. steel yielding). Brittle failure occurs suddenly with little or no warning deformation — engineers design for ductile behavior wherever possible."},
+  {cat:"Structural", q:"What is the P-Delta effect?", a:"It's the additional secondary moment created when vertical loads act through a laterally displaced position, amplifying deflections and internal forces — significant in tall or flexible structures under lateral load."},
+  {cat:"Structural", q:"Why are shear walls provided in high-rise buildings?", a:"Shear walls provide substantial lateral stiffness and strength, resisting wind and seismic forces efficiently and limiting lateral sway, protecting both the structure and non-structural elements."},
+  {cat:"Structural", q:"What is the difference between a rigid frame and a braced frame structure?", a:"A rigid frame resists lateral loads through moment-resisting beam-column connections. A braced frame uses diagonal bracing members to carry lateral loads axially, generally giving higher stiffness with lighter members."},
+  {cat:"Structural", q:"What is torsion, and how is it resisted in RCC members?", a:"Torsion is a twisting action about a member's longitudinal axis. In RCC, it's resisted through closed stirrups combined with longitudinal reinforcement distributed around the section, forming a truss-like resisting mechanism."},
+  {cat:"Structural", q:"What's the difference between elastic and plastic analysis?", a:"Elastic analysis assumes stress is proportional to strain throughout. Plastic analysis accounts for the material's capacity to yield and redistribute moments beyond the elastic limit, often giving a more economical ultimate-strength design."},
+  {cat:"Structural", q:"Explain the concept of redundancy in structural design.", a:"Redundancy means a structure has more load paths or supports than the minimum needed for stability, so if one member or connection fails, load can redistribute to others instead of causing total collapse."},
+  {cat:"Structural", q:"What is the difference between isolated, combined, and raft footings?", a:"An isolated footing supports a single column. A combined footing supports two or more closely spaced columns on one base. A raft footing is a single large slab supporting the entire building."},
+  {cat:"Structural", q:"Why is minimum reinforcement specified in RCC members even when not required by calculation?", a:"It controls shrinkage and temperature cracking, provides ductility and residual strength against unexpected loads, and ensures a minimum level of toughness regardless of the exact design load."},
+  {cat:"Structural", q:"What is the significance of the modulus of elasticity in structural design?", a:"It measures a material's stiffness — how much it deforms elastically under stress. It's used to calculate deflections and distribute forces in indeterminate structures."},
+  {cat:"Structural", q:"Explain the difference between static and dynamic analysis of structures.", a:"Static analysis assumes loads are applied gradually with no inertial effects. Dynamic analysis accounts for time-varying loads and the structure's mass, stiffness, and damping — essential for seismic or wind-gust design."},
+  {cat:"Structural", q:"What is a diaphragm in structural engineering?", a:"It's typically a floor or roof slab that acts as a rigid horizontal plane, collecting lateral loads and distributing them to the vertical lateral-resisting elements like shear walls or frames."},
+  {cat:"Structural", q:"What is the difference between camber and deflection?", a:"Camber is an intentional upward curve built into a member before loading, to offset expected deflection. Deflection is the actual displacement that occurs once the member is loaded."},
+  {cat:"Structural", q:"Explain the term 'effective length' of a column.", a:"It's the length between points of zero moment in a column's buckled shape, which depends on end restraint conditions. It's used instead of actual length to correctly assess buckling capacity."},
+  {cat:"Structural", q:"What is slenderness ratio, and why does it matter for columns?", a:"It's the ratio of a column's effective length to its least radius of gyration. A higher slenderness ratio means greater vulnerability to buckling."},
+  {cat:"Structural", q:"What are the different types of trusses, and where are they used?", a:"Common types include Pratt, Warren, Howe, and King-post trusses, chosen based on span length, load pattern, and whether members are mainly in tension or compression — widely used in roofs and bridges."},
+  {cat:"Structural", q:"What is fatigue failure in structural materials?", a:"It's failure caused by repeated cyclic loading at stress levels below the material's static strength, leading to progressive crack growth over time — a key concern in bridges and cranes."},
+  {cat:"Structural", q:"Explain the concept of load path in a building.", a:"It's the route through which loads travel from their point of application down through structural members — slab to beam to column to foundation to soil — ensuring every load reaches the ground."},
+  {cat:"Structural", q:"Why do tall buildings sway, and how is this controlled?", a:"Wind and seismic forces induce lateral displacement in flexible tall structures. Sway is controlled using shear walls, braced or moment frames, outrigger systems, or tuned mass dampers."},
+  {cat:"Structural", q:"What's the difference between wind load and seismic load in design?", a:"Wind load is a surface pressure proportional to exposed area and wind speed. Seismic load is an inertial force proportional to the building's mass, generated by ground acceleration during an earthquake."},
+  {cat:"Structural", q:"What is the significance of ductility in seismic design?", a:"Ductile members can deform well beyond their elastic limit without losing much strength, absorbing and dissipating seismic energy gradually rather than failing suddenly."},
+  {cat:"Structural", q:"What is base isolation?", a:"It's a seismic protection technique that decouples a building from ground motion using flexible bearings or isolators at its base, reducing earthquake forces transmitted into the superstructure."},
+  {cat:"Structural", q:"Explain what a moment-resisting frame is.", a:"It's a structural system where beams and columns are rigidly connected so the frame resists lateral loads through bending at the joints, rather than relying on separate bracing or shear walls."},
+  {cat:"Structural", q:"What is the difference between a two-hinged and three-hinged arch?", a:"A two-hinged arch has hinges only at its two supports and is statically indeterminate. A three-hinged arch adds a hinge at the crown, making it statically determinate and more tolerant of support settlement."},
+  {cat:"Structural", q:"What is the difference between a statically determinate and indeterminate structure?", a:"A <strong>determinate</strong> structure's internal forces can be found using only the equations of static equilibrium. An <strong>indeterminate</strong> structure has more supports or members than equilibrium alone can solve, requiring compatibility conditions and material stiffness in the analysis — but this often gives more redundancy and reserve strength."},
+
+  // ---------- GEOTECHNICAL (40) ----------
+  {cat:"Geotechnical", q:"What is the difference between bearing capacity and settlement in foundation design?", a:"Bearing capacity is the maximum pressure soil can support without shear failure. Settlement is the vertical deformation under load even when the soil is far from failure. A foundation must satisfy both."},
+  {cat:"Geotechnical", q:"What's the difference between cohesive and cohesionless soils?", a:"Cohesive soils (clays) derive shear strength from particle-to-particle attraction. Cohesionless soils (sands, gravels) get strength only from inter-particle friction and require a natural angle of repose."},
+  {cat:"Geotechnical", q:"Why is soil compaction important before construction?", a:"Compaction increases soil density by expelling air voids, improving shear strength, reducing settlement potential, lowering permeability, and increasing bearing capacity."},
+  {cat:"Geotechnical", q:"What causes differential settlement, and why is it more damaging than uniform settlement?", a:"It's caused by variation in soil strata, load distribution, or foundation type across a structure. It induces internal stresses and distortion — cracking walls — because different parts move by different amounts."},
+  {cat:"Geotechnical", q:"When would you recommend pile foundations over shallow foundations?", a:"When upper soil strata have low bearing capacity, when loads are very heavy, when there's risk of scour or liquefaction, or when a stronger stratum lies deep enough that only piles can reach it."},
+  {cat:"Geotechnical", q:"What is the difference between angle of repose and angle of internal friction?", a:"Angle of repose is the maximum slope angle at which a loose soil heap stays stable under gravity alone. Angle of internal friction is a shear strength parameter from lab testing that also reflects particle interlocking under confinement."},
+  {cat:"Geotechnical", q:"What is liquefaction, and when does it occur?", a:"Liquefaction is the sudden loss of soil strength when saturated, loose, cohesionless soil experiences a rapid rise in pore water pressure during intense shaking, causing it to behave temporarily like a liquid."},
+  {cat:"Geotechnical", q:"What is the difference between consolidation and compaction?", a:"Compaction is rapid, mechanical densification by expelling air, typically done in construction. Consolidation is slow, time-dependent expulsion of pore water from saturated fine-grained soil under sustained load."},
+  {cat:"Geotechnical", q:"Explain Proctor's compaction test and its significance.", a:"It determines the relationship between a soil's moisture content and its dry density under a standard compactive effort, identifying the optimum moisture content for maximum dry density."},
+  {cat:"Geotechnical", q:"What is the purpose of a plate load test?", a:"It estimates the in-situ bearing capacity and settlement characteristics of soil by loading a rigid plate at foundation level, giving field data more representative of actual conditions than lab tests."},
+  {cat:"Geotechnical", q:"What is the difference between primary and secondary consolidation?", a:"Primary consolidation is settlement due to dissipation of excess pore water pressure. Secondary consolidation is additional, slower settlement continuing after pore pressure has dissipated, due to particle rearrangement."},
+  {cat:"Geotechnical", q:"What is the Standard Penetration Test (SPT), and what does the N-value indicate?", a:"SPT measures the number of blows (N-value) needed to drive a split-spoon sampler a standard depth into soil. A higher N-value generally indicates denser, stronger soil."},
+  {cat:"Geotechnical", q:"Explain the difference between effective stress and total stress in soil.", a:"Total stress is the overall stress from all overlying material including pore water. Effective stress is the portion carried by the soil skeleton, and it's what governs soil strength and compressibility."},
+  {cat:"Geotechnical", q:"What is the purpose of a retaining wall, and name its types.", a:"Retaining walls hold back soil at a change in ground elevation. Common types include gravity, cantilever, counterfort, and sheet pile or reinforced-earth walls."},
+  {cat:"Geotechnical", q:"What is the difference between active and passive earth pressure?", a:"Active pressure develops when a retaining structure moves slightly away from the soil, allowing it to expand. Passive pressure develops when the structure pushes into the soil, mobilizing much higher resisting pressure."},
+  {cat:"Geotechnical", q:"Explain the concept of a slip circle in slope stability analysis.", a:"It's an assumed circular failure surface used in limit-equilibrium methods to analyze slope stability — engineers check the factor of safety against sliding along many trial slip circles."},
+  {cat:"Geotechnical", q:"What is the difference between shallow and deep foundations?", a:"Shallow foundations (spread footings, rafts) transfer load to soil near the surface. Deep foundations (piles, piers, caissons) transfer load to deeper, stronger strata when surface soils are inadequate."},
+  {cat:"Geotechnical", q:"What is negative skin friction in pile foundations?", a:"It occurs when surrounding soil settles more than the pile, dragging downward on the pile shaft instead of providing upward support, adding load to the pile rather than resisting it."},
+  {cat:"Geotechnical", q:"What causes soil erosion, and how is it prevented on a construction site?", a:"Erosion is caused by water runoff or wind removing exposed topsoil, worsened by cleared vegetation and steep slopes. It's controlled using silt fences, erosion control blankets, and proper site drainage planning."},
+  {cat:"Geotechnical", q:"What is the purpose of a geotextile in civil engineering?", a:"Geotextiles are permeable synthetic fabrics used for separation, filtration, drainage, and reinforcement in soil — commonly placed under roads, embankments, or drains."},
+  {cat:"Geotechnical", q:"Explain the difference between permeability and porosity.", a:"Porosity is the fraction of a soil's total volume occupied by voids. Permeability measures how easily water can flow through those voids — a soil can have high porosity but low permeability if pores are poorly connected."},
+  {cat:"Geotechnical", q:"What is the California Bearing Ratio (CBR) test used for?", a:"It measures the strength of subgrade soil relative to a standard crushed stone, and is the primary input for designing the thickness of flexible pavement layers."},
+  {cat:"Geotechnical", q:"What is dewatering, and why is it necessary during excavation?", a:"Dewatering is the controlled removal of groundwater from an excavation area, done to keep the work area dry, prevent base heave or piping failure, and allow safe excavation below the water table."},
+  {cat:"Geotechnical", q:"Explain the difference between well-graded and poorly-graded soil.", a:"Well-graded soil has a good, continuous distribution of particle sizes, allowing dense packing and high strength. Poorly-graded soil is dominated by a narrow range of particle sizes."},
+  {cat:"Geotechnical", q:"What is the Atterberg limits test, and what does it tell you?", a:"It determines the moisture contents at which fine-grained soil transitions between solid, plastic, and liquid states, used to classify soil and estimate its compressibility and strength behavior."},
+  {cat:"Geotechnical", q:"How is a soil's liquefaction potential assessed?", a:"Engineers compare the earthquake-induced cyclic stress ratio against the soil's cyclic resistance ratio (from SPT, CPT, or lab data), factoring in relative density, groundwater depth, and grain-size characteristics."},
+  {cat:"Geotechnical", q:"What is the difference between end-bearing and friction piles?", a:"End-bearing piles transfer most of their load through the tip resting on a hard stratum. Friction piles transfer load mainly through skin friction along the shaft in soils without a distinct hard layer within reach."},
+  {cat:"Geotechnical", q:"What is underpinning, and when is it used?", a:"Underpinning strengthens or deepens an existing foundation, typically to support additional load, correct settlement, or allow excavation nearby without endangering the existing structure."},
+  {cat:"Geotechnical", q:"Explain the concept of allowable bearing pressure.", a:"It's the maximum soil pressure a foundation can be designed for, obtained by applying a suitable factor of safety to the ultimate bearing capacity, while ensuring settlement stays within tolerable limits."},
+  {cat:"Geotechnical", q:"What is a raft foundation, and when would you use it?", a:"A raft foundation is a single large slab supporting the whole building footprint, used when soil bearing capacity is low, column loads are heavy, or differential settlement needs to be minimized."},
+  {cat:"Geotechnical", q:"What causes landslides, and what engineering measures prevent them?", a:"Landslides result from steep slopes, weak or saturated soil, and triggers like heavy rainfall or seismic shaking. Prevention includes slope regrading, retaining structures, and subsurface drainage."},
+  {cat:"Geotechnical", q:"What is the purpose of a coffer dam?", a:"A coffer dam is a temporary watertight enclosure built to exclude water and soil from an area, typically to allow foundation work below the water table, such as bridge piers in a river."},
+  {cat:"Geotechnical", q:"Explain the difference between drained and undrained shear strength.", a:"Drained strength applies when pore water can dissipate freely as load is applied. Undrained strength applies when loading is fast relative to drainage, common in saturated clays."},
+  {cat:"Geotechnical", q:"What is soil stabilization, and what methods are commonly used?", a:"It's the process of improving soil properties for construction use, using methods like mechanical compaction, addition of lime or cement, chemical grouting, or geosynthetic reinforcement."},
+  {cat:"Geotechnical", q:"What is the difference between a borehole log and a soil profile?", a:"A borehole log is the detailed record of soil/rock strata and test results from a single exploratory hole. A soil profile is a broader interpreted cross-section built from multiple boreholes across a site."},
+  {cat:"Geotechnical", q:"What is the purpose of a geotechnical investigation before design?", a:"It identifies subsurface soil and rock conditions and their engineering properties, giving the designer the data needed to choose appropriate foundation type, depth, and bearing capacity."},
+  {cat:"Geotechnical", q:"What is the difference between rock and soil in an engineering sense?", a:"Rock is a naturally cemented, hard mineral aggregate with high intact strength. Soil is a loose, unconsolidated mixture of mineral particles, organic matter, water, and air."},
+  {cat:"Geotechnical", q:"What is the significance of the water table in foundation design?", a:"A high water table reduces effective stress and bearing capacity, increases uplift on foundations, complicates excavation, and raises the risk of liquefaction in loose sandy soils during earthquakes."},
+  {cat:"Geotechnical", q:"What is grouting, and where is it used in geotechnical engineering?", a:"Grouting injects a fluid material into soil or rock voids to reduce permeability, increase strength, or fill gaps — used in dam foundations, tunneling, and ground improvement."},
+  {cat:"Geotechnical", q:"What is the difference between a sheet pile wall and a diaphragm wall?", a:"A sheet pile wall is made of interlocking steel or vinyl sections driven into the ground, typically for temporary support. A diaphragm wall is a thick, cast-in-situ concrete wall built in slurry-supported trenches, used for deep excavations."},
+
+  // ---------- MATERIALS (40) ----------
+  {cat:"Materials", q:"What is the significance of the water-cement ratio in concrete?", a:"It controls workability, strength, and durability. A lower water-cement ratio generally gives higher strength and lower permeability, but too low a ratio hurts workability."},
+  {cat:"Materials", q:"What's the difference between OPC and PPC cement?", a:"OPC (Ordinary Portland Cement) gains strength faster. PPC (Portland Pozzolana Cement) includes pozzolanic material like fly ash, giving lower heat of hydration and better resistance to chemical attack."},
+  {cat:"Materials", q:"Why is curing of concrete necessary, and for how long?", a:"Curing keeps concrete moist so cement hydration continues, developing strength and reducing shrinkage cracks. Standard practice is a minimum of 7 days, extended for aggressive environments."},
+  {cat:"Materials", q:"What is segregation and bleeding in concrete, and how are they prevented?", a:"Segregation is the separation of coarse aggregate from the mortar matrix; bleeding is water rising to the surface after placing. Both are minimized with proper mix design and placement technique."},
+  {cat:"Materials", q:"What's the difference between mild steel and high-yield strength deformed (HYSD) bars?", a:"Mild steel bars are smooth, lower strength, and more ductile. HYSD bars have surface ribs for better bond and higher yield strength, allowing reduced steel quantity for the same load."},
+  {cat:"Materials", q:"What is the difference between M20 and M25 concrete grades?", a:"The number denotes characteristic compressive strength in N/mm² at 28 days — M20 is designed for 20 N/mm², M25 for 25 N/mm², used for more heavily loaded members."},
+  {cat:"Materials", q:"What is the purpose of admixtures in concrete?", a:"Admixtures modify fresh or hardened concrete properties — improving workability, accelerating or retarding setting time, entraining air, or reducing water demand — without changing basic mix proportions."},
+  {cat:"Materials", q:"Explain the difference between plasticizers and superplasticizers.", a:"Both are water-reducing admixtures that improve workability without adding water. Superplasticizers achieve a much greater water reduction, making them essential for high-strength and self-compacting concrete."},
+  {cat:"Materials", q:"What is the slump test, and what does it measure?", a:"It measures the workability of fresh concrete by observing how much a compacted cone of concrete subsides after the mold is lifted — higher slump indicates a more fluid, workable mix."},
+  {cat:"Materials", q:"What is the difference between fine aggregate and coarse aggregate?", a:"Fine aggregate (sand) passes through a 4.75 mm sieve and fills voids between larger particles. Coarse aggregate is retained on that sieve and forms the main load-bearing skeleton of concrete."},
+  {cat:"Materials", q:"What is the significance of aggregate impact value and crushing value?", a:"These tests assess an aggregate's resistance to sudden impact and gradual crushing load, indicating its suitability and durability for use in concrete or pavement layers."},
+  {cat:"Materials", q:"What is honeycombing in concrete, and what causes it?", a:"Honeycombing is a porous, void-riddled surface defect caused by inadequate compaction, poor formwork sealing, or a mix too stiff or segregated to fully fill the formwork."},
+  {cat:"Materials", q:"What is the difference between M-sand and river sand?", a:"M-sand (manufactured sand) is produced by crushing hard rock to a controlled gradation, offering consistent quality. River sand is naturally weathered and rounded but its extraction depletes riverbeds."},
+  {cat:"Materials", q:"What is fly ash, and why is it used in concrete?", a:"Fly ash is a byproduct of coal combustion with pozzolanic properties. It improves long-term strength and durability, reduces heat of hydration, and makes use of an industrial waste product."},
+  {cat:"Materials", q:"Explain the difference between air-entrained and non-air-entrained concrete.", a:"Air-entrained concrete has microscopic air bubbles introduced deliberately, improving resistance to freeze-thaw damage. Non-air-entrained concrete lacks this protection and is more vulnerable to cracking."},
+  {cat:"Materials", q:"What is the difference between ready-mix concrete and site-mixed concrete?", a:"Ready-mix concrete is batched precisely at a central plant under controlled conditions. Site-mixed concrete is batched with small mixers on-site, offering flexibility but less consistent quality control."},
+  {cat:"Materials", q:"What is carbonation of concrete, and why is it a concern?", a:"Carbonation is the reaction of atmospheric CO₂ with concrete's alkaline hydration products, gradually lowering its pH. Once carbonation reaches the reinforcement, it destroys the protective layer and leads to corrosion."},
+  {cat:"Materials", q:"What causes efflorescence in concrete or masonry, and how is it prevented?", a:"Efflorescence is a white salt deposit formed when water dissolves soluble salts and evaporates at the surface. It's reduced by using good-quality materials, proper curing, and controlling water ingress."},
+  {cat:"Materials", q:"What is the difference between shrinkage and creep in concrete?", a:"Shrinkage is volume reduction due to moisture loss, occurring even without load. Creep is gradual, time-dependent deformation under sustained load, occurring even when stress stays constant."},
+  {cat:"Materials", q:"What is the purpose of a construction joint versus an expansion joint?", a:"A construction joint is a planned stopping point between successive concrete pours. An expansion joint is a permanent gap that allows for thermal movement and prevents cracking due to expansion and contraction."},
+  {cat:"Materials", q:"What is the difference between rigid and flexible pavement?", a:"Rigid pavement (concrete) distributes load over a wide area through slab bending action. Flexible pavement (asphalt/bitumen) distributes load through layered material to the subgrade and deforms slightly under load."},
+  {cat:"Materials", q:"What is bitumen, and what properties make it suitable for pavements?", a:"Bitumen is a viscous, sticky petroleum byproduct used as a binder in asphalt pavements. Its waterproofing, adhesive, and flexible properties allow it to bind aggregate while accommodating thermal expansion."},
+  {cat:"Materials", q:"What is the difference between brick masonry and stone masonry in terms of use?", a:"Brick masonry uses uniform, manufactured units that are easier to lay consistently. Stone masonry uses natural, often irregular stone, offering high strength and durability but requiring more skilled labor."},
+  {cat:"Materials", q:"What is the significance of the modulus of rupture in concrete testing?", a:"It measures the flexural tensile strength of concrete via a beam bending test, used specifically in rigid pavement design where concrete slabs are checked against traffic-induced tensile stresses."},
+  {cat:"Materials", q:"What is the difference between AAC blocks and conventional clay bricks?", a:"AAC blocks (Autoclaved Aerated Concrete) are lightweight, precisely dimensioned, and provide better thermal insulation. Clay bricks are heavier and have higher compressive strength per unit."},
+  {cat:"Materials", q:"Explain the difference between hot-rolled and cold-formed steel sections.", a:"Hot-rolled sections are shaped at high temperature, giving standard structural shapes with predictable strength. Cold-formed sections are shaped at room temperature from thin sheet steel, used for lighter members."},
+  {cat:"Materials", q:"What is corrosion of reinforcement, and how is it prevented?", a:"Corrosion is the electrochemical degradation of steel bars, usually triggered by chloride ingress or carbonation. It's prevented through adequate concrete cover, low permeability concrete, and coatings."},
+  {cat:"Materials", q:"What is the difference between structural steel grades Fe415 and Fe500?", a:"The number denotes minimum yield strength in N/mm² — Fe415 yields at 415, Fe500 at 500. Fe500 allows less steel for the same load but is slightly less ductile."},
+  {cat:"Materials", q:"What is the purpose of a waterproofing membrane, and where is it used?", a:"It's a barrier layer that prevents water penetration into structural elements, commonly used on roofs, basements, terraces, and bathrooms to protect against seepage and dampness."},
+  {cat:"Materials", q:"What is the difference between plywood and MDF in construction use?", a:"Plywood is made of thin wood veneers glued in alternating grain directions, giving good strength and moisture resistance. MDF is made of compressed wood fibers, offering a smoother surface but lower strength."},
+  {cat:"Materials", q:"What is the significance of workability in concrete, and how is it measured?", a:"Workability describes how easily concrete can be mixed, transported, placed, and compacted without segregation. It's commonly measured using the slump test, compaction factor test, or Vee-Bee test."},
+  {cat:"Materials", q:"What is self-compacting concrete, and when is it used?", a:"It's a highly flowable concrete that compacts fully under its own weight without vibration, useful in congested reinforcement or complex formwork shapes."},
+  {cat:"Materials", q:"What is the difference between precast and cast-in-situ concrete?", a:"Precast elements are manufactured off-site under controlled conditions. Cast-in-situ concrete is poured and cured directly at its final position, offering better monolithic continuity."},
+  {cat:"Materials", q:"What is the purpose of a damp-proof course (DPC) in a building?", a:"A DPC is a horizontal waterproof layer placed in walls near ground level to prevent rising damp from moving up from the foundation into the superstructure."},
+  {cat:"Materials", q:"What is the difference between glass fiber reinforced concrete and normal concrete?", a:"Glass fiber reinforced concrete has short glass fibers mixed throughout, improving tensile strength and impact resistance, and is often used for lightweight cladding panels."},
+  {cat:"Materials", q:"What is the role of coarse aggregate size in concrete strength?", a:"Larger maximum aggregate size generally reduces the paste volume needed but can reduce workability and increase segregation risk, so size is chosen based on section thickness and reinforcement spacing."},
+  {cat:"Materials", q:"What is the difference between quick-setting and ordinary cement?", a:"Quick-setting cement achieves initial and final set much faster, useful for urgent repair work. Ordinary cement has a longer working time, giving more flexibility for regular placement."},
+  {cat:"Materials", q:"What is the significance of the initial and final setting time of cement?", a:"Initial setting time marks when the cement paste starts losing plasticity, defining the time available for placing. Final setting time marks when it has fully hardened."},
+  {cat:"Materials", q:"What causes concrete cracking, and how are the causes classified?", a:"Cracks can be classified as plastic (shrinkage or settlement while fresh), drying shrinkage, thermal, structural (overloading), or chemical (sulfate attack) — each needing a different prevention strategy."},
+  {cat:"Materials", q:"What is the difference between epoxy coating and galvanizing for reinforcement protection?", a:"Epoxy coating applies a protective polymer barrier isolating the bar from moisture and chlorides. Galvanizing applies a zinc coating that both barriers and sacrificially protects the steel electrochemically."},
+
+  // ---------- SURVEYING (40) ----------
+  {cat:"Surveying", q:"What is the difference between a total station and a theodolite?", a:"A theodolite measures only horizontal and vertical angles. A total station combines a theodolite with an electronic distance measurement (EDM) unit, capturing angles and distances simultaneously."},
+  {cat:"Surveying", q:"What is a benchmark, and why is it important in surveying?", a:"A benchmark is a point of known, fixed elevation used as a reference for leveling work. All elevation measurements on a project are tied back to it, ensuring consistency across the site."},
+  {cat:"Surveying", q:"Explain the purpose of a contour map in civil engineering projects.", a:"A contour map shows lines of equal elevation, letting engineers visualize terrain shape, calculate cut-and-fill volumes, plan drainage, and choose road and pipeline alignments."},
+  {cat:"Surveying", q:"What's the difference between plane surveying and geodetic surveying?", a:"Plane surveying assumes the earth's surface is flat and is accurate for smaller areas. Geodetic surveying accounts for the earth's curvature and is used for large-scale work."},
+  {cat:"Surveying", q:"What is the difference between leveling and surveying?", a:"Surveying broadly determines the relative positions of points on the earth's surface. Leveling is a specific branch of surveying dealing only with determining relative vertical elevations of points."},
+  {cat:"Surveying", q:"What is a traverse survey, and what are its types?", a:"A traverse is a series of connected survey lines with measured lengths and angles used to establish control points. It can be an open traverse or a closed traverse, which returns to a known point for error checking."},
+  {cat:"Surveying", q:"What is triangulation, and when is it used?", a:"Triangulation establishes control points by measuring the angles of a network of connected triangles from a known baseline, historically used for large-area surveys before GPS became widespread."},
+  {cat:"Surveying", q:"Explain the difference between a fly level and a check level.", a:"A fly level is a rough, quick leveling run used to carry levels forward quickly. A check level is a more careful run used to verify and close out the accuracy of the fly-leveled data."},
+  {cat:"Surveying", q:"What is the least count of an instrument, and why does it matter?", a:"It's the smallest measurement increment an instrument can reliably read. A smaller least count means higher precision, which matters when project tolerance requires very fine accuracy."},
+  {cat:"Surveying", q:"What is the purpose of a tacheometer?", a:"A tacheometer quickly determines horizontal and vertical distances indirectly using optical stadia methods, without needing direct chaining — useful for quick, rough topographic surveys."},
+  {cat:"Surveying", q:"Explain the difference between GPS and a total station for surveying.", a:"GPS determines position using satellite signals and works well over large, open areas without needing intervisibility. A total station measures angles and distances optically between visible points, requiring line of sight."},
+  {cat:"Surveying", q:"What is a topographic survey used for?", a:"It maps the natural and man-made features of a site along with elevation data, forming the base information needed for site planning, drainage design, and earthwork calculation."},
+  {cat:"Surveying", q:"What is the difference between horizontal and vertical control in surveying?", a:"Horizontal control establishes accurate x-y position of reference points. Vertical control establishes accurate elevations of those points — together they form the framework other measurements tie to."},
+  {cat:"Surveying", q:"What is chaining, and what errors can occur during it?", a:"Chaining is measuring distance directly along the ground using a chain or tape. Common errors include incorrect tape length, poor alignment, sag, and temperature effects."},
+  {cat:"Surveying", q:"What is the purpose of a reduced level (RL) in leveling work?", a:"The reduced level is the elevation of a point relative to a common assumed or fixed datum, allowing all points on a project to be compared on the same vertical reference scale."},
+  {cat:"Surveying", q:"What is the difference between fore sight, back sight, and intermediate sight?", a:"A back sight is a staff reading taken on a point of known elevation. A fore sight is the last reading before moving the instrument. An intermediate sight is any reading taken in between."},
+  {cat:"Surveying", q:"What is a closed traverse, and why must it 'close'?", a:"A closed traverse returns to its starting point or another known point. Closing allows the surveyor to check accumulated measurement errors against known geometry and distribute that error appropriately."},
+  {cat:"Surveying", q:"Explain the concept of a datum in surveying.", a:"A datum is a reference surface or point (like mean sea level) from which elevations or coordinates are measured, ensuring different surveys of the same area remain consistent."},
+  {cat:"Surveying", q:"What is the purpose of setting out (layout) work on a construction site?", a:"Setting out transfers the design's dimensions and positions from drawings onto the actual ground, marking exact locations for foundations, columns, and other elements before construction begins."},
+  {cat:"Surveying", q:"What is the difference between a contour interval and a contour gradient?", a:"Contour interval is the fixed vertical difference between successive contour lines. Contour gradient is the slope along the ground between contour lines, which varies with their horizontal spacing."},
+  {cat:"Surveying", q:"What is the purpose of a boundary survey?", a:"It precisely establishes and documents property lines and corners based on legal descriptions, used to resolve disputes, support land transactions, and guide construction near property limits."},
+  {cat:"Surveying", q:"What is the difference between an angle of elevation and an angle of depression?", a:"An angle of elevation is measured upward from the horizontal to a point above the observer. An angle of depression is measured downward from the horizontal to a point below the observer."},
+  {cat:"Surveying", q:"Explain the difference between temporary and permanent benchmarks.", a:"A temporary benchmark is established for the duration of a specific project. A permanent benchmark is a long-lasting, officially maintained reference point intended for repeated use across many projects."},
+  {cat:"Surveying", q:"What is the difference between plane table surveying and instrument-based surveying?", a:"Plane table surveying combines fieldwork and plotting simultaneously on a drawing board in the field. Instrument-based surveying records numerical data, with plotting done separately, usually in the office."},
+  {cat:"Surveying", q:"What is remote sensing, and how is it used in civil engineering?", a:"Remote sensing gathers data about the earth's surface using satellite or aerial sensors without direct contact. It supports land-use mapping, disaster assessment, and large-scale planning."},
+  {cat:"Surveying", q:"What is a GIS, and how does it support civil engineering projects?", a:"A Geographic Information System stores, analyzes, and visualizes spatially referenced data in layers, combining topography, utilities, and infrastructure data for planning and asset management."},
+  {cat:"Surveying", q:"What is the difference between a cross-section and a longitudinal section in route surveying?", a:"A cross-section shows the ground profile perpendicular to the route's centerline at a given point, used for earthwork quantities. A longitudinal section shows the profile along the centerline, used for vertical alignment."},
+  {cat:"Surveying", q:"What is curvature and refraction error in leveling, and how is it corrected?", a:"The earth's curvature makes distant readings appear lower than true, while refraction bends the line of sight, partially offsetting this. Combined correction formulas are applied, minimized by balancing sight distances."},
+  {cat:"Surveying", q:"What is the purpose of a hydrographic survey?", a:"It maps underwater features like riverbeds, seabeds, and water depths, supporting the design of ports, bridges, dams, and dredging projects."},
+  {cat:"Surveying", q:"Explain the difference between an azimuth and a bearing.", a:"An azimuth is a direction expressed as a single angle measured clockwise from true or magnetic north (0°–360°). A bearing expresses direction relative to the nearest north or south reference with a quadrant."},
+  {cat:"Surveying", q:"What is the significance of a control point in a survey network?", a:"Control points have precisely known coordinates and elevations and serve as the fixed reference framework from which all other survey measurements are derived and checked."},
+  {cat:"Surveying", q:"What is the difference between systematic errors and random errors in surveying?", a:"Systematic errors follow a consistent, predictable pattern and can be corrected mathematically. Random errors are unpredictable, small variations managed statistically rather than eliminated."},
+  {cat:"Surveying", q:"What is a total station's 'resection' method?", a:"Resection determines the instrument's own unknown position by measuring angles or distances to two or more points of known coordinates, useful when setting up over a non-control point."},
+  {cat:"Surveying", q:"What is the purpose of a drone/UAV survey in construction monitoring?", a:"Drone surveys quickly capture high-resolution aerial imagery and elevation data over large or hard-to-access sites, supporting progress monitoring and volume calculations much faster than ground-based methods."},
+  {cat:"Surveying", q:"What is the difference between a spot level and a contour line?", a:"A spot level gives the exact elevation at a single specific point. A contour line connects all points of equal elevation across an area, showing overall terrain shape."},
+  {cat:"Surveying", q:"What is meant by 'balancing a traverse'?", a:"It's the process of distributing the small closing error in a closed traverse's angles and distances proportionally among all the traverse legs, so the final plotted traverse closes exactly."},
+  {cat:"Surveying", q:"What is the difference between EDM and GPS-based distance measurement?", a:"EDM calculates distance by timing a reflected light or infrared signal between two visible points. GPS-based measurement derives distance from satellite positioning of each point independently."},
+  {cat:"Surveying", q:"Explain the significance of the permanent adjustment of a theodolite.", a:"Permanent adjustments correct built-in instrumental errors so the instrument gives accurate readings regardless of orientation — done periodically rather than at every setup."},
+  {cat:"Surveying", q:"What is a leveling staff, and what types are commonly used?", a:"It's a graduated rod read through a level or theodolite to determine elevation differences. Common types include telescopic, folding, and Invar staffs, used for high-precision leveling."},
+  {cat:"Surveying", q:"What is the purpose of establishing a temporary bench mark (TBM) on site?", a:"A TBM provides a convenient, accessible local reference elevation for a specific project, saving time compared to relating every reading back to a distant permanent benchmark."},
+
+  // ---------- PROJECT MANAGEMENT (40) ----------
+  {cat:"Project Mgmt", q:"How do you handle a situation where a project is falling behind schedule?", a:"Identify the critical path activities causing delay, evaluate resequencing, adding resources (crashing), fast-tracking overlapping activities, and communicate transparently with stakeholders about revised timelines."},
+  {cat:"Project Mgmt", q:"What is the critical path in project scheduling, and why does it matter?", a:"It's the longest sequence of dependent tasks that determines the minimum project duration. Any delay on a critical path activity delays the whole project."},
+  {cat:"Project Mgmt", q:"How would you handle a disagreement with a client or contractor about design changes?", a:"Listen to understand their concern, refer to the contract and design codes for objective grounds, present technical trade-offs clearly, and aim for a solution that satisfies safety requirements."},
+  {cat:"Project Mgmt", q:"What's the difference between a Bill of Quantities (BOQ) and an estimate?", a:"An estimate is a preliminary calculation of probable project cost. A BOQ is a detailed, itemized list of quantities and specifications for every work item, used for tendering and payment."},
+  {cat:"Project Mgmt", q:"How do you ensure quality control on a construction site?", a:"Through material testing at approved intervals, checking work against approved drawings at each stage, maintaining inspection checklists, and having a clear approval hierarchy."},
+  {cat:"Project Mgmt", q:"What is the difference between CPM and PERT scheduling techniques?", a:"CPM uses single, deterministic time estimates for each activity, suited to predictable durations. PERT uses three time estimates to account for uncertainty, better suited to novel projects."},
+  {cat:"Project Mgmt", q:"What is a Gantt chart, and how is it used in project monitoring?", a:"A Gantt chart displays project tasks as horizontal bars along a timeline, showing start/end dates and overlaps, giving a quick visual way to track progress against the plan."},
+  {cat:"Project Mgmt", q:"What is earned value management (EVM)?", a:"EVM integrates scope, schedule, and cost data to objectively measure performance, comparing planned value, earned value, and actual cost to forecast whether a project is on budget and schedule."},
+  {cat:"Project Mgmt", q:"What is the difference between a contractor's estimate and a consultant's estimate?", a:"A contractor's estimate is prepared to price a bid competitively. A consultant's estimate is an independent, code-based cost projection used by the owner to benchmark bids."},
+  {cat:"Project Mgmt", q:"What is a variation order, and when is it issued?", a:"It formally documents a change to the original scope, specification, or quantity of work after the contract is signed, along with its cost and time impact."},
+  {cat:"Project Mgmt", q:"Explain the difference between a fixed-price and a cost-plus contract.", a:"In a fixed-price contract, the contractor agrees to a set price, bearing overrun risk. In a cost-plus contract, the owner reimburses actual costs plus a fee, shifting more risk to the owner."},
+  {cat:"Project Mgmt", q:"What is a defects liability period in a construction contract?", a:"It's a specified period after completion during which the contractor is obligated to fix any defects arising from their workmanship or materials, at their own cost."},
+  {cat:"Project Mgmt", q:"What is the purpose of a site diary, and what should it record?", a:"A site diary is a daily log of activities, weather, manpower, equipment, deliveries, and issues — providing a factual record invaluable for resolving disputes or claims later."},
+  {cat:"Project Mgmt", q:"What is the difference between direct cost and indirect cost in project estimation?", a:"Direct costs are directly attributable to specific work items — materials, labor, equipment. Indirect costs (overheads) support the project generally but aren't tied to one task."},
+  {cat:"Project Mgmt", q:"What is a work breakdown structure (WBS)?", a:"A WBS decomposes a project's total scope into progressively smaller, manageable components, forming the basis for scheduling, cost estimation, and assigning responsibility."},
+  {cat:"Project Mgmt", q:"What is the difference between resource leveling and resource smoothing?", a:"Resource leveling adjusts the schedule, potentially extending the project, to keep resource demand within limits. Resource smoothing only adjusts activities within available float."},
+  {cat:"Project Mgmt", q:"Explain the concept of 'float' or 'slack' in project scheduling.", a:"Float is the amount of time an activity can be delayed without affecting the project's overall completion date or the start of the next activity. Critical path activities have zero float."},
+  {cat:"Project Mgmt", q:"What is a bank guarantee, and why is it used in construction contracts?", a:"A bank guarantee is a bank's commitment to pay a specified sum if a party fails to meet its obligations, used to secure performance or bid commitments, protecting the owner financially."},
+  {cat:"Project Mgmt", q:"What is the purpose of a mobilization advance?", a:"It's an upfront payment to the contractor at project start to help fund setup costs, usually recovered through deductions from later payments."},
+  {cat:"Project Mgmt", q:"What is the difference between EPC and item-rate contracts?", a:"An EPC contract makes one contractor responsible for the entire design-to-delivery process at a fixed lump sum. An item-rate contract pays per unit of measured work at agreed rates."},
+  {cat:"Project Mgmt", q:"What is a retention amount in a construction contract, and why is it withheld?", a:"It's a percentage of each payment withheld until project completion, used as security to ensure the contractor completes the work and fixes defects satisfactorily."},
+  {cat:"Project Mgmt", q:"What is the purpose of a method statement before starting a construction activity?", a:"It documents the planned sequence, resources, safety precautions, and quality checks for a specific activity, ensuring consistent, safe execution before work begins."},
+  {cat:"Project Mgmt", q:"How do you manage a situation where a subcontractor is underperforming?", a:"Identify the specific gap against the agreed standard, communicate concerns directly and in writing, agree on a corrective action plan, and escalate to contractual remedies only if performance doesn't improve."},
+  {cat:"Project Mgmt", q:"What is the difference between a risk register and an issue log?", a:"A risk register tracks potential future events that could affect the project. An issue log tracks problems that have already occurred and need resolution."},
+  {cat:"Project Mgmt", q:"What is value engineering, and how is it applied in construction?", a:"Value engineering systematically reviews a design or process to achieve the same or better function at lower cost, without compromising performance."},
+  {cat:"Project Mgmt", q:"What is the purpose of a punch list at project closeout?", a:"A punch list itemizes minor incomplete or defective work identified during final inspection that must be corrected before the project is considered fully complete."},
+  {cat:"Project Mgmt", q:"What is the difference between an RFI (request for information) and a change order?", a:"An RFI is a formal query seeking clarification on drawings or specifications. A change order formally modifies the contract's scope, cost, or schedule."},
+  {cat:"Project Mgmt", q:"How would you prioritize tasks when managing multiple ongoing sites?", a:"Rank tasks by urgency and impact on the critical path across all sites, delegate routine matters to site-level teams, and focus personal attention on issues only a senior role can resolve."},
+  {cat:"Project Mgmt", q:"What is a performance bank guarantee, and how does it differ from a bid bond?", a:"A performance guarantee secures the contractor's obligation to complete the contract properly, held throughout construction. A bid bond guarantees the bidder will accept the contract if awarded."},
+  {cat:"Project Mgmt", q:"What is the purpose of a project baseline, and why is it important?", a:"A baseline is the originally approved plan for scope, schedule, and cost, fixed at a point in time — the reference against which actual performance is measured."},
+  {cat:"Project Mgmt", q:"What is the difference between lead time and lag time in scheduling?", a:"Lead time allows a successor activity to start before its predecessor finishes (overlap). Lag time imposes a required delay between activities."},
+  {cat:"Project Mgmt", q:"How do you handle a situation where actual site conditions differ from the design drawings?", a:"Stop work on the affected area if safety is a concern, document the discrepancy, raise it formally through an RFI to the design team, and proceed only once a resolved instruction is issued."},
+  {cat:"Project Mgmt", q:"What is a snag list, and when is it prepared?", a:"Similar to a punch list, it records minor defects or incomplete items found during inspection near handover, giving the contractor a clear checklist before final acceptance."},
+  {cat:"Project Mgmt", q:"What is the significance of a pre-construction meeting?", a:"It brings together the owner, designer, and contractor before work starts to align on scope, schedule, communication protocols, and site logistics, preventing misunderstandings."},
+  {cat:"Project Mgmt", q:"What is the difference between liquidated damages and penalty clauses?", a:"Liquidated damages are a pre-agreed, genuine pre-estimate of the owner's loss due to delay, and are generally enforceable. Penalty clauses are punitive amounts not tied to actual loss."},
+  {cat:"Project Mgmt", q:"How would you handle cost overruns identified midway through a project?", a:"Analyze the root cause, quantify the impact, present options to control further overrun, and communicate transparently with stakeholders rather than delaying disclosure."},
+  {cat:"Project Mgmt", q:"What is the purpose of a stakeholder register?", a:"It identifies everyone with an interest in or influence over the project, along with their expectations, helping the project team manage engagement proactively."},
+  {cat:"Project Mgmt", q:"What is the difference between arbitration and litigation in resolving construction disputes?", a:"Arbitration is a private process where a neutral arbitrator issues a binding decision, generally faster. Litigation goes through the public court system, which can be slower but allows broader appeal rights."},
+  {cat:"Project Mgmt", q:"What is meant by 'as-built drawings,' and why are they important?", a:"As-built drawings record the actual final construction, including deviations from the original design, critical for future maintenance or expansion work."},
+  {cat:"Project Mgmt", q:"How do you ensure effective communication between design, site, and client teams on a project?", a:"Establish clear channels and regular meeting cadences, use a single shared source of truth for drawings and RFIs, and document decisions in writing."},
+
+  // ---------- GENERAL / HR (40) ----------
+  {cat:"General", q:"Why did you choose civil engineering as a career?", a:"There's no single right answer — interviewers want a genuine, specific reason: a project that inspired you, or an interest in shaping public infrastructure. Give a concrete example rather than a generic statement."},
+  {cat:"General", q:"Describe a challenging situation on a project and how you resolved it.", a:"Use the STAR method — Situation, Task, Action, Result. Pick a real example with a clear obstacle, explain the specific action you took, and quantify the outcome where possible."},
+  {cat:"General", q:"How do you stay updated with the latest codes, materials, and construction technology?", a:"Mention concrete habits: following code updates, technical journals, professional bodies, continuing education courses, or hands-on exposure to tools like BIM."},
+  {cat:"General", q:"What software are you proficient in, and how have you used it on real projects?", a:"Name specific tools relevant to the role — AutoCAD, STAAD.Pro, ETABS, Revit, Primavera — and briefly describe a real task where you used each."},
+  {cat:"General", q:"Where do you see yourself in five years?", a:"Interviewers are checking for ambition aligned with the role and realistic self-awareness. Connect your growth to the kind of work this company actually does."},
+  {cat:"General", q:"What is your greatest strength as a civil engineer?", a:"Pick a genuine strength relevant to the role and back it up with a brief, specific example rather than just naming the trait."},
+  {cat:"General", q:"What is your greatest weakness, and how are you working on it?", a:"Choose a real, moderate weakness, and focus most of the answer on the concrete steps you're taking to improve it."},
+  {cat:"General", q:"Describe a time you had to work under a tight deadline.", a:"Explain the situation briefly, then focus on the practical steps you took — prioritizing tasks, communicating early, or bringing in support — and the outcome achieved."},
+  {cat:"General", q:"How do you handle stress and pressure on a busy construction site?", a:"Describe a practical coping approach: staying organized, breaking problems into steps, communicating early about risks, and keeping a level head under pressure."},
+  {cat:"General", q:"Tell me about a time you made a mistake at work. How did you handle it?", a:"Own the mistake honestly, briefly explain what happened, and spend most of the answer on how you fixed it and what you changed afterward."},
+  {cat:"General", q:"How do you prioritize safety on a construction site?", a:"Describe practical habits — toolbox talks, enforcing PPE use, stopping unsafe work immediately, and reporting near-misses — showing safety as a daily practice."},
+  {cat:"General", q:"Describe a time you worked as part of a team to solve a technical problem.", a:"Highlight your specific contribution within the team effort and the concrete result — avoid claiming sole credit for a team achievement."},
+  {cat:"General", q:"What motivates you to do your best work?", a:"A genuine answer often ties to seeing tangible results — a completed structure or solving a difficult technical problem — rather than generic statements."},
+  {cat:"General", q:"How do you handle criticism of your design or work?", a:"Show that you can separate critique from ego — listen carefully, evaluate feedback objectively against code and logic, and revise your work where valid."},
+  {cat:"General", q:"Why do you want to work for our company specifically?", a:"Research the company's real projects or specialization beforehand and connect them to your own goals — a vague answer signals you haven't done your homework."},
+  {cat:"General", q:"What do you know about our current or past projects?", a:"Reference one or two specific, real projects the company has completed and explain what interests you about their approach or scale."},
+  {cat:"General", q:"Describe your experience with site supervision, if any.", a:"Be specific about the scale and type of work supervised, your responsibilities, and one concrete example of a problem you handled on site."},
+  {cat:"General", q:"How would you explain a complex technical concept to a non-technical client?", a:"Emphasize using analogies, avoiding jargon, focusing on what matters to their decision, and checking their understanding as you go."},
+  {cat:"General", q:"What do you consider your biggest professional achievement so far?", a:"Choose an achievement with a clear, quantifiable impact and briefly explain your specific role in achieving it."},
+  {cat:"General", q:"How do you handle working with people from different backgrounds or disciplines?", a:"Emphasize active listening, adapting communication style to the audience, and focusing on shared project goals rather than disciplinary silos."},
+  {cat:"General", q:"Are you willing to relocate or travel for site postings?", a:"Answer honestly based on your actual constraints, but if flexible, say so clearly, since site-based roles often require mobility."},
+  {cat:"General", q:"How do you keep yourself organized when handling multiple responsibilities?", a:"Mention concrete systems — task lists, scheduling software, daily priority reviews — rather than a vague claim of being 'organized.'"},
+  {cat:"General", q:"Describe a situation where you had to learn something new quickly for a project.", a:"Pick a real example and explain how you approached the learning process and applied it under time pressure."},
+  {cat:"General", q:"What would you do if you noticed a safety violation on site that others ignored?", a:"Emphasize acting immediately regardless of social pressure — stopping the unsafe activity, reporting it, and following up to ensure it's corrected."},
+  {cat:"General", q:"How do you handle a situation where your supervisor's instructions conflict with code requirements?", a:"Raise the conflict respectfully and promptly, citing the specific code clause, and escalate if needed — code compliance can't be compromised regardless of hierarchy."},
+  {cat:"General", q:"What do you think is the biggest challenge facing the civil engineering industry today?", a:"Reasonable answers include sustainable construction practices, aging infrastructure, skilled labor shortages, or climate resilience — pick one and show practical understanding."},
+  {cat:"General", q:"How do you approach a task you've never done before?", a:"Describe a structured approach — researching standards, consulting experienced colleagues, breaking the task into known steps, and verifying your work carefully."},
+  {cat:"General", q:"Tell me about a time you had to give unwelcome news to a client or team member.", a:"Focus on how you prepared the message clearly, delivered it directly but with empathy, and offered constructive next steps."},
+  {cat:"General", q:"What are your salary expectations for this role?", a:"Research typical market rates beforehand, and give a reasonable range rather than a single fixed number, showing flexibility on the full compensation package."},
+  {cat:"General", q:"How would your previous colleagues or professors describe you?", a:"Choose traits that are both genuine and relevant, ideally backed with a brief real example rather than a bare list of adjectives."},
+  {cat:"General", q:"What steps do you take to ensure your work is error-free?", a:"Mention concrete practices — independent checking of calculations, following a design-check checklist, and cross-verifying with codes before finalizing."},
+  {cat:"General", q:"Describe a time you disagreed with a decision made by your team lead.", a:"Show that you raised the disagreement respectfully with supporting reasoning, but could accept and support the final decision professionally once made."},
+  {cat:"General", q:"How comfortable are you with fieldwork versus office-based design work?", a:"Answer honestly based on genuine preference, but show willingness to engage with both, since most roles require a balance of the two."},
+  {cat:"General", q:"What do you do when you don't know the answer to a technical question on-site?", a:"Emphasize honesty over guessing — acknowledging you need to verify, consulting the relevant code or a senior colleague, and following up promptly."},
+  {cat:"General", q:"How do you balance quality, cost, and time when they conflict on a project?", a:"Explain that safety and code compliance are non-negotiable, but beyond that, trade-offs are made transparently with stakeholders using value engineering."},
+  {cat:"General", q:"What internships or practical training have shaped your approach to engineering?", a:"Reference specific hands-on experiences and describe one concrete lesson or skill you carried forward from it."},
+  {cat:"General", q:"How do you handle repetitive tasks that require sustained attention to detail?", a:"Mention practical techniques like checklists, taking short breaks, or double-checking work in batches to avoid fatigue-driven errors."},
+  {cat:"General", q:"Describe your ideal work environment.", a:"Be honest but also show flexibility and awareness of what the role actually offers, since a wildly mismatched answer can raise doubts about fit."},
+  {cat:"General", q:"What questions do you have for us about the role or company?", a:"Always have at least two or three thoughtful questions prepared, since not asking anything can read as a lack of genuine interest."},
+  {cat:"General", q:"Why should we hire you over other candidates?", a:"Summarize your most relevant technical skills and experience, connect them directly to this role's requirements, and reinforce it with one concrete example."}
+];
+
+const categories = ["All", ...Array.from(new Set(questions.map(q=>q.cat)))];
+let activeCat = "All";
+const reviewed = new Set();
+
+const layersEl = document.getElementById('layers');
+const gridEl = document.getElementById('grid');
+const tbCount = document.getElementById('tb-count');
+const tbFill = document.getElementById('tb-fill');
+const tbLayer = document.getElementById('tb-layer');
+
+function buildLayers(){
+  layersEl.innerHTML = categories.map(c =>
+    `<button class="layer-btn${c===activeCat?' active':''}" data-cat="${c}">
+      <span class="dot"></span>${c.toUpperCase()}
+    </button>`
+  ).join('');
+  layersEl.querySelectorAll('.layer-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeCat = btn.dataset.cat;
+      buildLayers();
+      buildGrid();
+      tbLayer.textContent = activeCat.toUpperCase();
+    });
+  });
+}
+
+function checkIcon(){
+  return `<svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0E2A47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function buildGrid(){
+  const list = questions
+    .map((item, idx) => ({...item, idx}))
+    .filter(item => activeCat === "All" || item.cat === activeCat);
+
+  gridEl.innerHTML = list.map(item => {
+    const sheetNo = "Q-" + String(item.idx+1).padStart(3,'0');
+    const isReviewed = reviewed.has(item.idx);
+    return `
+    <div class="card-slot${isReviewed?' reviewed':''}" data-idx="${item.idx}">
+      <div class="card">
+        <div class="face front">
+          <div class="tag-row">
+            <span class="sheet-no">${sheetNo}</span>
+            <span class="cat-tag">${item.cat}</span>
+          </div>
+          <div class="q-text">${item.q}</div>
+          <div class="flip-hint">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3M15 4v4h4M9 20v-4H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            TAP TO REVEAL
+          </div>
+          <div class="reviewed-badge">${checkIcon()}</div>
+        </div>
+        <div class="face back">
+          <div class="label">Reference Notes</div>
+          <div class="a-text">${item.a}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  gridEl.querySelectorAll('.card-slot').forEach(slot=>{
+    slot.addEventListener('click', ()=>{
+      slot.classList.toggle('flipped');
+      const idx = parseInt(slot.dataset.idx);
+      if(slot.classList.contains('flipped')){
+        reviewed.add(idx);
+        slot.classList.add('reviewed');
+        updateProgress();
+      }
+    });
+  });
+}
+
+function updateProgress(){
+  tbCount.textContent = `${reviewed.size} / ${questions.length}`;
+  tbFill.style.width = `${(reviewed.size/questions.length*100).toFixed(0)}%`;
+}
+
+document.getElementById('reset-btn').addEventListener('click', ()=>{
+  reviewed.clear();
+  buildGrid();
+  updateProgress();
+});
+
+buildLayers();
+buildGrid();
+updateProgress();
+</script>
+</body>
+</html>
