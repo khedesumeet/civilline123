@@ -1,30 +1,188 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
+<html>
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CE Disasters</title>
+<meta name="description" content="Overview of major civil engineering disasters, causes, lessons learned, important formulas and practice questions for students and professionals.">
 <style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+  :root{--brand:#0d6efd;--bg:#f5f7fa;--card:#ffffff}
+  body{font-family:Arial,sans-serif;background:var(--bg);margin:0;color:#222}
+  header{background:var(--brand);color:#fff;padding:20px}
+  main{max-width:1000px;margin:24px auto;background:var(--card);padding:25px;border-radius:8px;box-shadow:0 6px 18px rgba(13,110,253,0.06)}
+  h1,h2,h3{color:var(--brand);margin-top:0}
+  p{line-height:1.6}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  figure{margin:0}
+  img{width:100%;height:auto;border-radius:6px;display:block}
+  figcaption{font-size:0.9rem;color:#555;margin-top:8px}
+  .case-study{border-left:4px solid var(--brand);padding:12px 16px;margin:12px 0;background:#fbfdff}
+  ul{margin:0 0 12px 20px}
+  .toc a{color:var(--brand);text-decoration:none}
+  footer{padding:20px;text-align:center;color:#666;margin-top:18px}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+  .mcq{background:#f8f9ff;padding:12px;border-radius:6px;margin:8px 0}
+  .note{background:#fff8e1;padding:10px;border-radius:6px;border:1px solid #ffecb3}
+</style>
+</head>
 <body>
-<header><h1>⚠️ CE Disasters</h1></header>
+<header><h1>⚠️ Civil Engineering Disasters — Case Studies, Causes & Lessons</h1></header>
 <main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
+  <h2>Overview</h2>
+  <p>This page is part of the Civil Engineering Resource Library. It provides concise case studies of historic civil engineering failures, underlying causes, engineering lessons learned, relevant formulas, IS code pointers, interview questions and a short MCQ set for quick revision.</p>
+
+  <nav class="toc">
+    <strong>Contents:</strong>
+    <ul>
+      <li><a href="#cases">Notable Case Studies</a></li>
+      <li><a href="#causes">Common Causes & Failure Mechanisms</a></li>
+      <li><a href="#formulas">Important Formulas & Checks</a></li>
+      <li><a href="#codes">Relevant IS Codes</a></li>
+      <li><a href="#practice">Practice: Interview Qs & MCQs</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </nav>
+
+  <section id="cases">
+    <h2>Notable Case Studies</h2>
+    <p>Short summaries and images for fast revision. Click any image to view full size.</p>
+
+    <div class="grid">
+      <div>
+        <figure>
+          <a href="https://via.placeholder.com/1200x600.png?text=Tacoma+Narrows+Bridge+Collapse" target="_blank" rel="noopener noreferrer">
+            <img src="https://via.placeholder.com/900x400.png?text=Tacoma+Narrows+Bridge+Collapse" alt="Tacoma Narrows Bridge collapse (illustration/placeholder)">
+          </a>
+          <figcaption><strong>Tacoma Narrows Bridge (1940)</strong> — aeroelastic flutter caused dramatic oscillations and collapse. Lesson: aerodynamic effects and torsional stiffness must be considered in long-span bridges.</figcaption>
+        </figure>
+      </div>
+
+      <div>
+        <figure>
+          <a href="https://via.placeholder.com/1200x600.png?text=Hyatt+Regency+Walkway+Collapse" target="_blank" rel="noopener noreferrer">
+            <img src="https://via.placeholder.com/900x400.png?text=Hyatt+Regency+Walkway+Collapse" alt="Hyatt Regency walkway collapse (illustration/placeholder)">
+          </a>
+          <figcaption><strong>Hyatt Regency Walkway (1981)</strong> — connection design changes and oversight failures led to progressive collapse under crowd load. Lesson: maintain design intent and ensure independent checks of connections.</figcaption>
+        </figure>
+      </div>
+
+      <div>
+        <figure>
+          <a href="https://via.placeholder.com/1200x600.png?text=I-35W+Bridge+Collapse" target="_blank" rel="noopener noreferrer">
+            <img src="https://via.placeholder.com/900x400.png?text=I-35W+Bridge+Collapse" alt="I-35W bridge collapse (illustration/placeholder)">
+          </a>
+          <figcaption><strong>I-35W Mississippi River Bridge (2007)</strong> — undersized gusset plates and increased loading contributed to failure. Lesson: consider fatigue, details and adequate factor-of-safety for connection plates.</figcaption>
+        </figure>
+      </div>
+
+      <div>
+        <figure>
+          <a href="https://via.placeholder.com/1200x600.png?text=Morandi+Bridge+Collapse" target="_blank" rel="noopener noreferrer">
+            <img src="https://via.placeholder.com/900x400.png?text=Morandi+Bridge+Collapse" alt="Morandi bridge collapse (illustration/placeholder)">
+          </a>
+          <figcaption><strong>Morandi Bridge, Genoa (2018)</strong> — aging concrete and corrosion of prestressing/cables with insufficient inspection. Lesson: rigorous maintenance, inspection and asset management are critical.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="case-study">
+      <h3>Case study: Hyatt Regency — brief chronology</h3>
+      <ol>
+        <li>Design change in hanger rod connections during shop fabrication.</li>
+        <li>Load path changed so a single connection carried much larger load than intended.</li>
+        <li>During a crowded event, the walkways failed and many lives were lost.</li>
+      </ol>
+      <p class="note"><strong>Engineering takeaway:</strong> Changes in shop drawings must be reviewed for structural load paths; third-party checks and clear responsibility allocation prevent such mistakes.</p>
+    </div>
+
+  </section>
+
+  <section id="causes">
+    <h2>Common Causes & Failure Mechanisms</h2>
+    <ul>
+      <li>Poor design or calculation errors (incorrect assumptions, incomplete load cases)</li>
+      <li>Inadequate connections and detailing</li>
+      <li>Material defects and quality control failures</li>
+      <li>Corrosion, fatigue and lack of maintenance</li>
+      <li>Unexpected loading (overloads, impact, aerodynamic effects)</li>
+      <li>Construction errors and deviations from design</li>
+      <li>Insufficient inspection, testing and asset management</li>
+    </ul>
+  </section>
+
+  <section id="formulas">
+    <h2>Important Formulas & Quick Checks</h2>
+    <p>Below are commonly used checks and formulas (summary only — always consult codes for design):</p>
+    <ul>
+      <li>Axial stress: σ = P / A</li>
+      <li>Bending stress: σ = M y / I</li>
+      <li>Shear stress (average): τ = V / A</li>
+      <li>Euler buckling load (pinned ends): Pcr = (π^2 E I) / (L^2)</li>
+      <li>Fatigue design: use S–N curves and cumulative damage (Miner's rule) for repetitive loads</li>
+      <li>Connection check: ensure bolt/plate capacities + appropriate partial safety factors (γ)</li>
+    </ul>
+    <p>Always run serviceability (deflection), ultimate limit state and connection verifications for safety.</p>
+  </section>
+
+  <section id="codes">
+    <h2>Relevant IS Codes & International Standards (Examples)</h2>
+    <ul>
+      <li>IS 456 — Plain and Reinforced Concrete</li>
+      <li>IS 800 — General Construction in Steel — Code of Practice</li>
+      <li>IS 875 — Dead and Live Loads</li>
+      <li>IS 1893 — Criteria for Earthquake Resistant Design (for seismic checks)</li>
+      <li>Relevant Eurocodes, AASHTO and British Standards for bridge and structural design</li>
+    </ul>
+    <p>Please consult the current edition of each code and local amendments when designing.</p>
+  </section>
+
+  <section id="practice">
+    <h2>Practice: Interview Questions & MCQs</h2>
+    <h3>Short interview prompts</h3>
+    <ul>
+      <li>Explain the difference between ductile and brittle failure with examples.</li>
+      <li>What is a load path? Give an example where the load path changed and caused a failure.</li>
+      <li>How do you assess existing bridges for continued safety?</li>
+      <li>Describe how corrosion affects prestressed concrete.</li>
+    </ul>
+
+    <h3>MCQs (quick revision)</h3>
+    <div class="mcq">
+      <strong>Q1.</strong> The Tacoma Narrows Bridge collapse was primarily caused by:
+      <ol type="A">
+        <li>Excessive live load</li>
+        <li>Aeroelastic flutter</li>
+        <li>Soil liquefaction</li>
+        <li>Poor concrete quality
+      </ol>
+      <p><strong>Answer:</strong> B (Aeroelastic flutter)</p>
+    </div>
+
+    <div class="mcq">
+      <strong>Q2.</strong> A common symptom of fatigue in steel members is:
+      <ol type="A">
+        <li>Gradual deflection increase only</li>
+        <li>Sudden brittle fracture without prior cracks</li>
+        <li>Crack initiation and propagation from stress concentrators</li>
+        <li>Immediate yielding under service load
+      </ol>
+      <p><strong>Answer:</strong> C (Crack initiation and propagation from stress concentrators)</p>
+    </div>
+
+  </section>
+
+  <section id="references">
+    <h2>References & Further Reading</h2>
+    <ul>
+      <li>Engineering case studies and failure investigation reports (search for official investigation reports for each event)</li>
+      <li>Textbooks on structural reliability and structural dynamics</li>
+      <li>Relevant IS codes and design manuals</li>
+    </ul>
+  </section>
+
+  <p><a href="../index.html">← Back to Resource Library</a></p>
+
 </main>
 <footer>© Civil Engineering Resource Library</footer>
-</body></html>
+</body>
+</html>
