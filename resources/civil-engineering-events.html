@@ -1,30 +1,161 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CE Events</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Engineering Conferences | CiviLine</title>
+
+<meta name="description" content="Find upcoming Civil Engineering Conferences in India. Explore conferences, seminars, workshops and call for papers.">
+
 <style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+body{
+    background:#f4f7fa;
+    color:#333;
+}
+header{
+    background:#0d47a1;
+    color:#fff;
+    text-align:center;
+    padding:30px 15px;
+}
+header h1{
+    margin-bottom:10px;
+}
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:auto;
+    padding:30px 0;
+}
+.search{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-bottom:25px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+.card{
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    padding:20px;
+    transition:.3s;
+}
+.card:hover{
+    transform:translateY(-5px);
+}
+.card h3{
+    color:#0d47a1;
+    margin-bottom:10px;
+}
+.info{
+    margin:6px 0;
+}
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    background:#0d47a1;
+    color:#fff;
+    padding:10px 18px;
+    text-decoration:none;
+    border-radius:5px;
+}
+.btn:hover{
+    background:#1565c0;
+}
+footer{
+    background:#0d47a1;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+}
+</style>
+</head>
 <body>
-<header><h1>🎯 CE Events</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+<header>
+<h1>Civil Engineering Conferences</h1>
+<p>Upcoming Conferences, Seminars & Workshops in India</p>
+</header>
+
+<div class="container">
+
+<input type="text" id="search" class="search" placeholder="Search by city or conference name...">
+
+<div class="grid" id="conferenceList">
+
+<div class="card">
+<h3>International Conference on Civil Engineering</h3>
+<p class="info"><strong>📍 City:</strong> Pune</p>
+<p class="info"><strong>📅 Date:</strong> 20 July 2026</p>
+<p class="info"><strong>🏢 Category:</strong> Civil Engineering</p>
+<a href="https://www.conferencealerts.in/india/civil-engineering" target="_blank" class="btn">View Details</a>
+</div>
+
+<div class="card">
+<h3>Structural Engineering Conference</h3>
+<p class="info"><strong>📍 City:</strong> Mumbai</p>
+<p class="info"><strong>📅 Date:</strong> 10 August 2026</p>
+<p class="info"><strong>🏢 Category:</strong> Structural Engineering</p>
+<a href="https://www.conferencealerts.in/india/civil-engineering" target="_blank" class="btn">View Details</a>
+</div>
+
+<div class="card">
+<h3>Construction Management Seminar</h3>
+<p class="info"><strong>📍 City:</strong> Delhi</p>
+<p class="info"><strong>📅 Date:</strong> 28 August 2026</p>
+<p class="info"><strong>🏢 Category:</strong> Construction Management</p>
+<a href="https://www.conferencealerts.in/india/civil-engineering" target="_blank" class="btn">View Details</a>
+</div>
+
+<div class="card">
+<h3>Geotechnical Engineering Workshop</h3>
+<p class="info"><strong>📍 City:</strong> Bengaluru</p>
+<p class="info"><strong>📅 Date:</strong> 15 September 2026</p>
+<p class="info"><strong>🏢 Category:</strong> Geotechnical Engineering</p>
+<a href="https://www.conferencealerts.in/india/civil-engineering" target="_blank" class="btn">View Details</a>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 CiviLine | Civil Engineering Learning Platform</p>
+<p>
+Official Conference Listings:
+<a href="https://www.conferencealerts.in/india/civil-engineering" target="_blank" style="color:#ffd54f;">
+Conference Alerts
+</a>
+</p>
+</footer>
+
+<script>
+const search=document.getElementById("search");
+
+search.addEventListener("keyup",function(){
+let value=this.value.toLowerCase();
+let cards=document.querySelectorAll(".card");
+
+cards.forEach(card=>{
+let text=card.innerText.toLowerCase();
+card.style.display=text.includes(value)?"block":"none";
+});
+});
+</script>
+
+</body>
+</html>
