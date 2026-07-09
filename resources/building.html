@@ -1,34 +1,607 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Building Engineering</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
-header{background:#0b5ed7;color:#fff;padding:20px;text-align:center}
-main{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h2{color:#0b5ed7} ul{line-height:1.8}
-footer{text-align:center;padding:20px;color:#666}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering Materials & Construction | Simplified Notes</title>
+    <style>
+        /* General Reset & Typography */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f4f7f9;
+            color: #1e2b3a;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #0a2942;
+            border-bottom: 4px solid #2b7a78;
+            padding-bottom: 12px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subhead {
+            font-size: 1.1rem;
+            color: #3a5a6f;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        /* Module Accordion */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid #dce3e8;
+            border-radius: 12px;
+            background: #f9fbfc;
+            transition: all 0.2s;
+        }
+
+        details[open] {
+            background: #ffffff;
+            border-color: #b0c4d4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        summary {
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 18px 24px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #eaf0f5;
+            border-radius: 12px;
+            transition: 0.15s;
+            color: #163a4e;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "➕";
+            font-size: 1.4rem;
+            color: #2b7a78;
+            transition: 0.2s;
+        }
+
+        details[open] summary::after {
+            content: "➖";
+        }
+
+        details[open] summary {
+            border-radius: 12px 12px 0 0;
+            background: #dce7ef;
+        }
+
+        /* Content Area */
+        .module-content {
+            padding: 18px 24px 24px;
+        }
+
+        .topic {
+            margin-top: 1.8rem;
+            border-left: 4px solid #2b7a78;
+            padding-left: 18px;
+        }
+
+        .topic h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0f3b4f;
+            margin-bottom: 10px;
+        }
+
+        .topic h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f556b;
+            margin: 18px 0 8px;
+        }
+
+        ul, .topic p {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 22px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .highlight-box {
+            background: #e3f0f3;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 16px 0;
+            border-left: 5px solid #1d7a7a;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin: 18px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #1d4b5e;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        td, th {
+            border: 1px solid #d0dbe3;
+            padding: 8px 12px;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f6fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #1d7a7a;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 650px) {
+            .container { padding: 16px; }
+            h1 { font-size: 1.8rem; }
+            summary { font-size: 1.1rem; padding: 14px 18px; }
+        }
+    </style>
 </head>
 <body>
-<header><h1>Building Engineering</h1></header>
-<main>
-<h2>Overview</h2>
-<p>Building planning, components, foundations, walls, roofs, staircases, doors, windows, building services and NBC basics.</p>
-<h2>Important Topics</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory and Concepts</li>
-<li>Design Principles</li>
-<li>IS Codes / Standards</li>
-<li>Practical Applications</li>
-<li>Interview Questions</li>
-<li>MCQs for Practice</li>
-<li>References and Learning Resources</li>
-</ul>
-</main>
-<footer>© Civil Engineering Knowledge Portal</footer>
+<div class="container">
+    <h1>🏗️ Civil Engineering Materials & Construction</h1>
+    <div class="subhead">BCE03002 · Simplified Lecture Notes · Third Semester</div>
+
+    <!-- ===== MODULE I ===== -->
+    <details open>
+        <summary>📐 Module I – Basic Building Materials I</summary>
+        <div class="module-content">
+
+            <!-- Aggregate -->
+            <div class="topic">
+                <h3>1. Aggregate</h3>
+                <p><strong>What are aggregates?</strong> They are inert granular materials like sand, gravel, or crushed stone. They make up <strong>70–80%</strong> of concrete volume and give it body, strength, and reduce shrinkage.</p>
+
+                <h4>Classification by Shape</h4>
+                <ul>
+                    <li><strong>Rounded:</strong> Natural sea/ river gravel. Good workability, but weak bond. Not for high-strength concrete.</li>
+                    <li><strong>Angular:</strong> Crushed rock. Higher void content but gives 10–20% more compressive strength due to better bonding.</li>
+                    <li><strong>Flaky / Elongated:</strong> Thin or long particles. Not suitable for concrete as they reduce workability and strength.</li>
+                </ul>
+
+                <h4>Classification by Size</h4>
+                <ul>
+                    <li><strong>Fine Aggregate:</strong> Passes through 4.75 mm sieve. e.g., natural sand.</li>
+                    <li><strong>Coarse Aggregate:</strong> Retained on 4.75 mm sieve. e.g., gravel, crushed stone.</li>
+                </ul>
+
+                <h4>Important Properties</h4>
+                <ul>
+                    <li><strong>Grading:</strong> Particle size distribution. Proper grading gives dense, strong concrete.</li>
+                    <li><strong>Fineness Modulus:</strong> A number (2.2–3.2) indicating coarseness. Higher value = coarser sand.</li>
+                    <li><strong>Flakiness &amp; Elongation Index:</strong> Percentage of irregular particles. Should be low.</li>
+                    <li><strong>Specific Gravity:</strong> Usually 2.6–2.8. Higher means stronger aggregate.</li>
+                    <li><strong>Water Absorption:</strong> Important to adjust water-cement ratio. If aggregate is dry, it absorbs mixing water.</li>
+                    <li><strong>Bulking of Sand:</strong> Sand volume increases when moist (up to 40%). Must be considered in volume batching.</li>
+                </ul>
+
+                <h4>Soundness &amp; Alkali-Silica Reaction (ASR)</h4>
+                <ul>
+                    <li><strong>Soundness:</strong> Resistance to weathering (freeze-thaw). Tested using sodium or magnesium sulfate.</li>
+                    <li><strong>ASR (“Concrete Cancer”):</strong> Reaction between alkali in cement and reactive silica in aggregate. Produces a gel that expands and cracks concrete. Can be controlled using fly ash, slag, or silica fume.</li>
+                </ul>
+            </div>
+
+            <!-- Bricks -->
+            <div class="topic">
+                <h3>2. Bricks &amp; Masonry Blocks</h3>
+                <p><strong>Standard Indian brick size:</strong> 190 × 90 × 90 mm (with mortar: 200 × 100 × 100 mm).</p>
+                <h4>Types of Bricks (by Quality)</h4>
+                <ul>
+                    <li><strong>First Class:</strong> Well-burnt, uniform shape, metallic sound. Crushing strength ≥ 10 N/mm². Used for permanent structures.</li>
+                    <li><strong>Second Class:</strong> Slightly irregular, moderate strength (≥ 7 N/mm²). For one-storey buildings.</li>
+                    <li><strong>Third Class:</strong> Under-burnt, soft, irregular. Weak. Used for temporary work.</li>
+                </ul>
+                <h4>Field Tests (Simple checks on site)</h4>
+                <ul>
+                    <li><strong>Shape &amp; Size:</strong> Uniform rectangular, sharp edges.</li>
+                    <li><strong>Hardness:</strong> Scratch with fingernail – no impression should remain.</li>
+                    <li><strong>Soundness:</strong> Strike two bricks – should give a clear metallic ring.</li>
+                    <li><strong>Drop Test:</strong> Drop from 1 m height – should not break.</li>
+                </ul>
+                <h4>Laboratory Tests</h4>
+                <ul>
+                    <li><strong>Water Absorption:</strong> Should not exceed 20% of dry weight.</li>
+                    <li><strong>Compressive Strength:</strong> Minimum 3.5 N/mm² for common bricks.</li>
+                    <li><strong>Efflorescence:</strong> White salt deposits on surface. Should be “slight” or “moderate” at most.</li>
+                </ul>
+            </div>
+
+            <!-- Lime -->
+            <div class="topic">
+                <h3>3. Lime</h3>
+                <p>Lime (calcium oxide) is obtained by burning limestone. It is used in mortar, plaster, and soil stabilization.</p>
+                <h4>Types</h4>
+                <ul>
+                    <li><strong>Quick Lime (CaO):</strong> Unstable, reacts violently with water. Must be slaked before use.</li>
+                    <li><strong>Slaked Lime (Ca(OH)₂):</strong> Quick lime + water. Safe white powder.</li>
+                    <li><strong>Fat Lime (High Calcium):</strong> Pure lime, slakes vigorously. Used for whitewashing, plastering.</li>
+                    <li><strong>Hydraulic Lime:</strong> Contains clay. Sets under water. Used in damp conditions.</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>Good to know:</strong> Lime mortar “self-heals” – if micro-cracks form, free lime dissolves, recrystallizes, and seals them.
+                </div>
+            </div>
+
+            <!-- Cement -->
+            <div class="topic">
+                <h3>4. Cement</h3>
+                <p><strong>Portland cement (OPC)</strong> is the most common type. It is made by heating limestone and clay to 1450°C, then grinding with gypsum.</p>
+                <h4>Bogue Compounds (main minerals)</h4>
+                <ul>
+                    <li><strong>C₃S (Tricalcium silicate):</strong> Responsible for early strength (first 7 days).</li>
+                    <li><strong>C₂S (Dicalcium silicate):</strong> Gives long-term strength (after 28 days).</li>
+                    <li><strong>C₃A (Tricalcium aluminate):</strong> Causes fast setting and high heat generation.</li>
+                    <li><strong>C₄AF (Tetracalcium aluminoferrite):</strong> Helps in clinker formation, gives colour.</li>
+                </ul>
+                <h4>Hydration &amp; Testing</h4>
+                <ul>
+                    <li><strong>Hydration:</strong> Cement + water → chemical reaction (exothermic) → hardens. Needs moisture and time (curing).</li>
+                    <li><strong>Tests:</strong> Fineness (sieve test), Consistency (Vicat apparatus), Setting Time (initial ≥ 30 min, final ≤ 600 min), Compressive Strength (mortar cube test), Soundness (Le Chatelier).</li>
+                </ul>
+            </div>
+
+            <!-- Fly Ash -->
+            <div class="topic">
+                <h3>5. Fly Ash</h3>
+                <p>Fine powder from coal combustion. It is a <strong>pozzolana</strong> – reacts with lime to form cementitious compounds.</p>
+                <ul>
+                    <li><strong>Used in:</strong> Portland Pozzolana Cement (PPC) and fly ash bricks.</li>
+                    <li><strong>Advantages:</strong> Improves workability, reduces heat of hydration, increases durability, and uses industrial waste.</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <!-- ===== MODULE II ===== -->
+    <details>
+        <summary>🧱 Module II – Mortar &amp; Concrete</summary>
+        <div class="module-content">
+
+            <div class="topic">
+                <h3>1. Mortar</h3>
+                <p>Mortar is a mixture of binding material (cement/lime) + fine aggregate (sand) + water. It bonds masonry units.</p>
+                <h4>Types</h4>
+                <ul>
+                    <li><strong>Cement Mortar:</strong> Cement + sand. Strong, for load-bearing walls.</li>
+                    <li><strong>Lime Mortar:</strong> Lime + sand. Flexible, good for old buildings.</li>
+                    <li><strong>Gauged Mortar:</strong> Cement + lime + sand. Combines strength and workability.</li>
+                    <li><strong>Mud Mortar:</strong> Mud + sawdust/cow dung. Used where cement/lime is unavailable.</li>
+                </ul>
+                <h4>Tests on Mortar</h4>
+                <ul>
+                    <li><strong>Consistency:</strong> Using penetrometer.</li>
+                    <li><strong>Compressive Strength:</strong> Cube test.</li>
+                    <li><strong>Water Retention:</strong> How long mortar stays workable.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>2. Concrete</h3>
+                <p>Concrete = cement + fine aggregate + coarse aggregate + water (+ admixtures).</p>
+                <h4>Production Stages</h4>
+                <ul>
+                    <li><strong>Batching:</strong> Measuring materials by volume or weight (weight batching is more accurate).</li>
+                    <li><strong>Mixing:</strong> Hand or machine mixing.</li>
+                    <li><strong>Transporting:</strong> From mixer to site (must avoid segregation).</li>
+                    <li><strong>Placing:</strong> Pouring into forms carefully.</li>
+                    <li><strong>Compacting:</strong> Removing air voids (vibration).</li>
+                    <li><strong>Curing:</strong> Keeping concrete moist to allow hydration. <strong>At least 7 days, ideally 28 days.</strong></li>
+                    <li><strong>Finishing:</strong> Smoothing the surface.</li>
+                </ul>
+
+                <h4>Grades of Concrete (as per IS 456)</h4>
+                <div class="table-wrap">
+                    <table>
+                        <tr><th>Grade</th><th>Mix Ratio</th><th>28-Day Strength (MPa)</th></tr>
+                        <tr><td>M10</td><td>1:3:6</td><td>10</td></tr>
+                        <tr><td>M15</td><td>1:2:4</td><td>15</td></tr>
+                        <tr><td>M20</td><td>1:1.5:3</td><td>20</td></tr>
+                        <tr><td>M25</td><td>1:1:2</td><td>25</td></tr>
+                        <tr><td>M30+</td><td>Design Mix</td><td>30 and above</td></tr>
+                    </table>
+                </div>
+
+                <h4>Properties of Fresh Concrete</h4>
+                <ul>
+                    <li><strong>Workability:</strong> Ease of placing and compacting. Measured by slump test.</li>
+                    <li><strong>Segregation &amp; Bleeding:</strong> Separation of ingredients or water rising to surface – undesirable.</li>
+                </ul>
+
+                <h4>Properties of Hardened Concrete</h4>
+                <ul>
+                    <li><strong>Compressive Strength:</strong> Most important property. Cube test at 7 and 28 days.</li>
+                    <li><strong>Tensile Strength:</strong> Low (~10% of compressive).</li>
+                    <li><strong>Modulus of Elasticity:</strong> Stiffness of concrete.</li>
+                    <li><strong>Durability:</strong> Resistance to weathering, chemical attack, abrasion.</li>
+                </ul>
+
+                <h4>Factors Affecting Strength</h4>
+                <ul>
+                    <li><strong>Water-Cement Ratio:</strong> Lower w/c → higher strength (but less workability).</li>
+                    <li><strong>Quality of materials:</strong> Cement, aggregates, water.</li>
+                    <li><strong>Curing:</strong> Proper moisture and temperature.</li>
+                    <li><strong>Compaction:</strong> 5% voids can reduce strength by 30%!</li>
+                </ul>
+
+                <h4>Admixtures</h4>
+                <ul>
+                    <li><strong>Accelerators:</strong> Speed up setting.</li>
+                    <li><strong>Retarders:</strong> Slow down setting for hot weather.</li>
+                    <li><strong>Plasticizers:</strong> Improve workability with less water.</li>
+                    <li><strong>Air-entraining agents:</strong> Improve freeze-thaw resistance.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>3. Special Concretes</h3>
+                <ul>
+                    <li><strong>Lightweight Concrete:</strong> Density 1400–1840 kg/m³. Uses lightweight aggregates (expanded clay, pumice). Good for insulation.</li>
+                    <li><strong>High-Density Concrete:</strong> Density > 3360 kg/m³. Uses heavy aggregates (barite, magnetite). For radiation shielding.</li>
+                    <li><strong>Vacuum Concrete:</strong> Excess water removed by vacuum after placing. Increases strength and surface durability.</li>
+                    <li><strong>Shotcrete:</strong> Concrete applied at high velocity. Good for vertical/overhead surfaces, tunnels.</li>
+                    <li><strong>SFRC (Steel Fiber Reinforced Concrete):</strong> Steel fibers (0.3–2.5% volume) improve tensile/flexural strength and ductility.</li>
+                    <li><strong>Polymer Concrete:</strong> Uses polymer resin instead of cement. High durability, chemical resistance.</li>
+                    <li><strong>Ferrocement:</strong> Thin cement mortar reinforced with wire mesh. Lightweight, can be shaped easily.</li>
+                    <li><strong>High Performance Concrete (HPC):</strong> High strength (> 80 MPa) and durability. Uses low w/c ratio, superplasticizers, silica fume.</li>
+                    <li><strong>Self-Compacting Concrete (SCC):</strong> Flows under its own weight, no vibration needed. Ideal for congested reinforcement.</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <!-- ===== MODULE III ===== -->
+    <details>
+        <summary>🪨 Module III – Basic Building Materials II</summary>
+        <div class="module-content">
+
+            <div class="topic">
+                <h3>1. Building Stones</h3>
+                <ul>
+                    <li><strong>Granite:</strong> Hard, durable, high strength. Used for foundations, road metal, flooring.</li>
+                    <li><strong>Sandstone:</strong> Easy to dress, used for ornamental work.</li>
+                    <li><strong>Limestone:</strong> Used for cement manufacturing and flooring.</li>
+                    <li><strong>Marble:</strong> Metamorphic, can be polished. Used for flooring, facing, decorative work.</li>
+                    <li><strong>Slate:</strong> Splits into thin sheets. Used for roofing and damp-proofing.</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>Key properties:</strong> Crushing strength (min 3.5 N/mm²), hardness (for wear resistance), durability, porosity (low), and specific gravity (2.4–2.8).
+                </div>
+            </div>
+
+            <div class="topic">
+                <h3>2. Wood &amp; Wood Products</h3>
+                <ul>
+                    <li><strong>Heartwood:</strong> Dark, dead central part. Strong, durable, resistant to decay.</li>
+                    <li><strong>Sapwood:</strong> Outer, light, living part. More moisture, prone to decay.</li>
+                </ul>
+                <h4>Defects in Timber</h4>
+                <ul>
+                    <li><strong>Natural:</strong> Knots, shakes (cracks), burls.</li>
+                    <li><strong>Insects:</strong> Termites, beetles, marine borers.</li>
+                    <li><strong>Fungi:</strong> Dry rot, wet rot.</li>
+                    <li><strong>Seasoning defects:</strong> Warping, splitting, case-hardening.</li>
+                </ul>
+                <h4>Seasoning (Drying)</h4>
+                <ul>
+                    <li><strong>Natural:</strong> Air seasoning – stacking timber in open air (takes months).</li>
+                    <li><strong>Artificial:</strong> Kiln seasoning – controlled heat and humidity (takes days).</li>
+                </ul>
+                <h4>Wood Products</h4>
+                <ul>
+                    <li><strong>Veneer:</strong> Thin slice of wood (0.5–0.85 mm). Used for decorative surfaces.</li>
+                    <li><strong>Plywood:</strong> Layers of veneer glued with grains at 90°. Strong, stable.</li>
+                    <li><strong>Fibreboard:</strong> Wood fibres bonded with resin.</li>
+                    <li><strong>Particle Board:</strong> Wood chips bonded with resin. Cheap, used for furniture.</li>
+                    <li><strong>Block Board:</strong> Softwood strips sandwiched between veneers. Good for doors.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>3. Metals</h3>
+                <ul>
+                    <li><strong>Cast Iron:</strong> > 2% carbon. Brittle, good in compression. Used for pipes, machine parts.</li>
+                    <li><strong>Wrought Iron:</strong> &lt; 0.1% carbon. Ductile, malleable. Used for chains, gates, decorative items.</li>
+                    <li><strong>Steel:</strong> 0.1–2% carbon. Strong, ductile. Used for construction, cars, tools.</li>
+                    <li><strong>Aluminium:</strong> Lightweight, corrosion-resistant. Used for doors, windows, foils.</li>
+                    <li><strong>Copper:</strong> Excellent conductor of heat and electricity. Used for wires, plumbing.</li>
+                </ul>
+                <h4>Tests on Steel Rebar</h4>
+                <ul>
+                    <li><strong>Tensile Test:</strong> Measures yield and ultimate strength.</li>
+                    <li><strong>Bend Test:</strong> Checks ductility.</li>
+                    <li><strong>Hardness Test:</strong> Brinell or Rockwell.</li>
+                    <li><strong>Impact Test:</strong> Measures toughness (ability to absorb energy).</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>4. Glass, Gypsum, Plastic, Paint, Bitumen</h3>
+                <ul>
+                    <li><strong>Glass:</strong> Made from silica sand. Types: annealed (basic), tempered (stronger, safe), laminated (held together by interlayer). Used for windows, facades.</li>
+                    <li><strong>Gypsum (CaSO₄·2H₂O):</strong> Soft mineral. Used for plaster, drywall, cement additive.</li>
+                    <li><strong>Plastic:</strong> Synthetic polymer. <strong>Thermoplastics</strong> (can be remoulded) and <strong>Thermosetting</strong> (cannot be remoulded). Used for pipes, insulation, packaging.</li>
+                    <li><strong>Paint:</strong> Base + pigment + vehicle + drier + thinner. Types: oil paint, enamel, emulsion, cement paint.</li>
+                    <li><strong>Bitumen:</strong> Black, sticky, waterproof. Used for road construction, roofing. Tests: Penetration (hardness), Ductility (stretch), Softening point.</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <!-- ===== MODULE IV ===== -->
+    <details>
+        <summary>🏛️ Module IV – Basic Building Construction</summary>
+        <div class="module-content">
+
+            <div class="topic">
+                <h3>1. Foundations</h3>
+                <p><strong>Purpose:</strong> Transfer building load to the ground safely, prevent settlement, and provide stability.</p>
+                <h4>Types</h4>
+                <ul>
+                    <li><strong>Shallow Foundation:</strong> Depth &lt; width. Used when soil near surface is strong. Examples: spread footing, wall footing, combined footing.</li>
+                    <li><strong>Deep Foundation:</strong> Depth ≥ width. Used when top soil is weak. Examples: pile, pier, caisson.</li>
+                    <li><strong>Pile Foundation:</strong> Slender column driven or bored into ground. Transfers load by <strong>end bearing</strong> (on hard rock) or <strong>skin friction</strong> (along the sides).</li>
+                    <li><strong>Raft Foundation:</strong> Large continuous slab under entire building. Used for poor soil or heavy loads.</li>
+                    <li><strong>Grillage Foundation:</strong> Two or more layers of beams (steel or timber) to distribute heavy loads over a large area.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>2. Brick Masonry</h3>
+                <p>Systematic arrangement of bricks with mortar.</p>
+                <h4>Types of Bonds</h4>
+                <ul>
+                    <li><strong>English Bond:</strong> Alternate courses of headers and stretchers. Strongest, most common.</li>
+                    <li><strong>Flemish Bond:</strong> Headers and stretchers alternate in each course. Better appearance, but weaker than English bond.</li>
+                    <li><strong>Stretcher Bond:</strong> All stretchers. Used for half-brick walls.</li>
+                    <li><strong>Header Bond:</strong> All headers. For thick walls.</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>Merits of English Bond:</strong> Strong, stable, no need for skilled labour.<br>
+                    <strong>Demerits:</strong> Less attractive than Flemish bond.
+                </div>
+            </div>
+
+            <div class="topic">
+                <h3>3. Stone Masonry</h3>
+                <ul>
+                    <li><strong>Rubble Masonry:</strong> Undressed or roughly dressed stones. Cheaper, for low-height walls.</li>
+                    <li><strong>Ashlar Masonry:</strong> Dressed stones with fine joints (≈3 mm). Strong, attractive, expensive.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>4. Cavity Walls &amp; Arches</h3>
+                <ul>
+                    <li><strong>Cavity Wall:</strong> Two leaves (inner &amp; outer) with a gap (4–10 cm). Provides insulation and prevents dampness.</li>
+                    <li><strong>Arch:</strong> Curved structure spanning an opening. Parts: intrados (inner curve), extrados (outer curve), voussoirs (wedge stones), crown (highest point).</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>5. Doors &amp; Windows</h3>
+                <ul>
+                    <li><strong>Doors:</strong> Battened &amp; ledged, framed &amp; panelled, flush, louvered, sliding, rolling shutter.</li>
+                    <li><strong>Windows:</strong> Casement (hinged), sliding, double-hung, bay, louvered, fixed.</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <!-- ===== MODULE V ===== -->
+    <details>
+        <summary>🎨 Module V – Finishing, Services &amp; Special Constructions</summary>
+        <div class="module-content">
+
+            <div class="topic">
+                <h3>1. Wall Finishes</h3>
+                <h4>Plastering</h4>
+                <p>Layer of cement/lime mortar applied to walls. <strong>Purpose:</strong> Protect from weather, provide smooth surface for painting.</p>
+                <ul>
+                    <li><strong>Methods:</strong> Single coat (interior), two coat (common), three coat (superior work).</li>
+                    <li><strong>Defects &amp; solutions:</strong> Cracks (cure properly), blistering (mix well), efflorescence (use salt-free materials).</li>
+                </ul>
+                <h4>Pointing</h4>
+                <p>Finishing mortar joints in masonry. Types: flush, recessed, struck, tuck, V-grooved.</p>
+                <h4>Distempering &amp; Painting</h4>
+                <ul>
+                    <li><strong>Distemper:</strong> Water-based, cheaper, less durable. Used on walls.</li>
+                    <li><strong>Painting:</strong> Protects and decorates. Steps: surface preparation → priming → undercoat → finishing coat.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>2. Vertical Communication</h3>
+                <ul>
+                    <li><strong>Stairs:</strong> Steps + landings. Types: straight, quarter-turn, half-turn (doglegged), spiral, helical.</li>
+                    <li><strong>Ramps:</strong> Sloping surface for wheelchairs, vehicles. Occupies more space.</li>
+                    <li><strong>Lifts (Elevators):</strong> Electric or hydraulic. For buildings > 4 storeys.</li>
+                    <li><strong>Escalators:</strong> Powered stairs for moving large crowds. Reversible, speed 30–40 m/min.</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>Good staircase:</strong> Width ≥ 90 cm (residential), 1.5–2 m (public). Rise 160–175 mm, tread 250 mm. Headroom ≥ 2.1 m. (2R + G = 600–700 mm)
+                </div>
+            </div>
+
+            <div class="topic">
+                <h3>3. Damp Proofing</h3>
+                <p><strong>Causes:</strong> Rain, groundwater, capillary action. <strong>Effects:</strong> Efflorescence, paint peeling, timber decay, health issues.</p>
+                <h4>D.P.C. (Damp Proof Course) Treatments</h4>
+                <ul>
+                    <li><strong>Foundation:</strong> Provide horizontal and vertical DPC (bitumen, felt).</li>
+                    <li><strong>Basement:</strong> Continuous waterproof membrane (asphalt tanking).</li>
+                    <li><strong>Floors:</strong> Hardcore filling + DPC membrane under concrete.</li>
+                    <li><strong>Walls:</strong> DPC at 15 cm above ground level.</li>
+                    <li><strong>Roofs:</strong> Lime concrete terracing, mud phuska, or bitumen felt with tiles.</li>
+                </ul>
+            </div>
+
+            <div class="topic">
+                <h3>4. Fire-Resistant Construction</h3>
+                <p><strong>Principles:</strong> Use non-combustible materials; provide thick sections; protect steel with concrete/plaster.</p>
+                <ul>
+                    <li><strong>Walls &amp; Columns:</strong> Bricks, RCC preferred. Steel must be encased in concrete or fireproof cladding.</li>
+                    <li><strong>Floors &amp; Roofs:</strong> RCC slab, hollow tile, or jack arch. Avoid combustible flooring.</li>
+                    <li><strong>Openings:</strong> Use steel doors/windows, fire-resistant glass.</li>
+                    <li><strong>Escape routes:</strong> Staircases, corridors must remain usable during fire.</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</div>
 </body>
 </html>
