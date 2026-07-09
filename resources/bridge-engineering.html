@@ -1,34 +1,1033 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Bridge Engineering</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
-header{background:#0b5ed7;color:#fff;padding:20px;text-align:center}
-main{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h2{color:#0b5ed7} ul{line-height:1.8}
-footer{text-align:center;padding:20px;color:#666}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Engineering - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0b5ed7 0%, #0d6efd 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            sticky: top;
+            top: 20px;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #0b5ed7;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: #0b5ed7;
+            color: white;
+        }
+
+        section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #0b5ed7;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #0d6efd;
+            font-size: 1.6em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .bridge-type {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 5px solid #0d6efd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .bridge-type:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 20px rgba(13, 110, 253, 0.15);
+        }
+
+        .bridge-type h4 {
+            color: #0b5ed7;
+            font-size: 1.4em;
+            margin-bottom: 12px;
+        }
+
+        .bridge-type .characteristics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .characteristic {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+
+        .characteristic strong {
+            color: #0d6efd;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            color: #0b5ed7;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        table th {
+            background: #0b5ed7;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .comparison-box {
+            background: #e7f3ff;
+            border: 2px dashed #0d6efd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .advantages, .disadvantages {
+            margin: 15px 0;
+        }
+
+        .advantages h5, .disadvantages h5 {
+            color: #0b5ed7;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .advantages {
+            border-left: 4px solid #28a745;
+        }
+
+        .disadvantages {
+            border-left: 4px solid #dc3545;
+        }
+
+        footer {
+            background: #0b5ed7;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background: #0d6efd;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #0b5ed7;
+            transform: translateX(-5px);
+        }
+
+        .formula-box {
+            background: #f0f6ff;
+            border-left: 4px solid #0d6efd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .bridge-type .characteristics {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-<header><h1>Bridge Engineering</h1></header>
-<main>
-<h2>Overview</h2>
-<p>Bridge types, components, bearings, expansion joints, inspection and maintenance.</p>
-<h2>Important Topics</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory and Concepts</li>
-<li>Design Principles</li>
-<li>IS Codes / Standards</li>
-<li>Practical Applications</li>
-<li>Interview Questions</li>
-<li>MCQs for Practice</li>
-<li>References and Learning Resources</li>
-</ul>
-</main>
-<footer>© Civil Engineering Knowledge Portal</footer>
+    <header>
+        <h1>🌉 Bridge Engineering</h1>
+        <p>Comprehensive Guide to Bridge Types, Design, and Construction</p>
+    </header>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Resource Library</a>
+
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#types">Bridge Types</a></li>
+                <li><a href="#components">Components</a></li>
+                <li><a href="#design">Design Principles</a></li>
+                <li><a href="#codes">IS Codes</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#faq">Interview Q&A</a></li>
+            </ul>
+        </nav>
+
+        <!-- Overview Section -->
+        <section id="overview">
+            <h2>📋 Overview</h2>
+            <p>Bridge engineering is a specialized branch of civil engineering that deals with the design, construction, and maintenance of bridges. Bridges are essential structures that span natural or artificial obstacles like rivers, valleys, roads, and railways while maintaining clearance for the passage beneath.</p>
+            
+            <div class="highlight">
+                <strong>Key Facts:</strong> Modern bridges must support heavy loads, withstand environmental stresses, and ensure safety for millions of users annually. Bridge engineering combines structural mechanics, materials science, and construction techniques.
+            </div>
+
+            <h3>Purpose of Bridges</h3>
+            <ul>
+                <li>Connect separated land areas</li>
+                <li>Enable transportation of people and goods</li>
+                <li>Support utilities (water, gas, electricity)</li>
+                <li>Provide pedestrian pathways</li>
+                <li>Control water flow and drainage</li>
+            </ul>
+        </section>
+
+        <!-- Bridge Types Section -->
+        <section id="types">
+            <h2>🏗️ Types of Bridges</h2>
+            <p>Bridges are classified based on their structural design, spanning method, and materials used. Here are the major types:</p>
+
+            <!-- Beam Bridges -->
+            <div class="bridge-type">
+                <h4>1. Beam Bridges (Simple & Continuous)</h4>
+                <p>The simplest form of bridge consisting of a horizontal beam supported by vertical piers.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 30-60 meters (typically)
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Vertical shear and bending moment
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Rivers, valleys, road crossings
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Low to moderate
+                    </div>
+                </div>
+                <div class="advantages">
+                    <h5>✓ Advantages:</h5>
+                    <ul>
+                        <li>Simple design and construction</li>
+                        <li>Easy maintenance</li>
+                        <li>Cost-effective for short spans</li>
+                        <li>Can be easily widened</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h5>✗ Disadvantages:</h5>
+                    <ul>
+                        <li>Limited span length</li>
+                        <li>High deflection for long spans</li>
+                        <li>Requires more piers/supports</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Arch Bridges -->
+            <div class="bridge-type">
+                <h4>2. Arch Bridges</h4>
+                <p>Bridges where the load is transferred outward and downward along the curved arch structure.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 30-300 meters
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Compression along arch
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Scenic crossings, rivers
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Moderate to high
+                    </div>
+                </div>
+                <div class="advantages">
+                    <h5>✓ Advantages:</h5>
+                    <ul>
+                        <li>Beautiful aesthetic appearance</li>
+                        <li>Excellent for long spans</li>
+                        <li>Low deflection under load</li>
+                        <li>Works well with stone/concrete</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h5>✗ Disadvantages:</h5>
+                    <ul>
+                        <li>Complex design and analysis</li>
+                        <li>Requires strong abutments</li>
+                        <li>High horizontal thrust on supports</li>
+                        <li>Difficult to modify</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Suspension Bridges -->
+            <div class="bridge-type">
+                <h4>3. Suspension Bridges</h4>
+                <p>Cables suspend the deck from tall towers, allowing maximum span with minimum material.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 300-3000+ meters
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Tension in cables
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Wide water bodies
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Very high
+                    </div>
+                </div>
+                <div class="advantages">
+                    <h5>✓ Advantages:</h5>
+                    <ul>
+                        <li>Longest possible span</li>
+                        <li>Elegant and iconic appearance</li>
+                        <li>Minimal intermediate supports</li>
+                        <li>Can span major obstacles</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h5>✗ Disadvantages:</h5>
+                    <ul>
+                        <li>Extremely expensive</li>
+                        <li>Susceptible to wind and vibration</li>
+                        <li>Complex maintenance required</li>
+                        <li>Requires specialized expertise</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cable-Stayed Bridges -->
+            <div class="bridge-type">
+                <h4>4. Cable-Stayed Bridges</h4>
+                <p>Cables run directly from towers to the deck, combining efficiency and economy.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 250-1000 meters
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Direct tension to towers
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Modern crossings
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Moderate to high
+                    </div>
+                </div>
+                <div class="advantages">
+                    <h5>✓ Advantages:</h5>
+                    <ul>
+                        <li>Good balance of span and cost</li>
+                        <li>Modern, attractive design</li>
+                        <li>Faster construction than suspension</li>
+                        <li>Efficient material usage</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h5>✗ Disadvantages:</h5>
+                    <ul>
+                        <li>Cable maintenance required</li>
+                        <li>Requires tall towers</li>
+                        <li>Wind-induced oscillations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Truss Bridges -->
+            <div class="bridge-type">
+                <h4>5. Truss Bridges</h4>
+                <p>Framework of triangular elements that distribute forces efficiently throughout the structure.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 50-200 meters
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Axial forces in members
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Railways, highways
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Low to moderate
+                    </div>
+                </div>
+                <div class="advantages">
+                    <h5>✓ Advantages:</h5>
+                    <ul>
+                        <li>High strength-to-weight ratio</li>
+                        <li>Economical for medium spans</li>
+                        <li>Flexible designs available</li>
+                        <li>Easy fabrication</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h5>✗ Disadvantages:</h5>
+                    <ul>
+                        <li>Visual complexity</li>
+                        <li>High maintenance (many joints)</li>
+                        <li>Difficult to inspect</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cantilever Bridges -->
+            <div class="bridge-type">
+                <h4>6. Cantilever Bridges</h4>
+                <p>Beam extends horizontally beyond its support point, acting as a lever.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 100-550 meters
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Moment and shear
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Deep valleys, gorges
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Moderate
+                    </div>
+                </div>
+                <div class="advantages">
+                    <h5>✓ Advantages:</h5>
+                    <ul>
+                        <li>No intermediate supports needed</li>
+                        <li>Useful for deep valleys</li>
+                        <li>Simple construction</li>
+                        <li>Less disruption below</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h5>✗ Disadvantages:</h5>
+                    <ul>
+                        <li>Limited span length</li>
+                        <li>Requires strong abutments</li>
+                        <li>Large anchor forces</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Frame Bridges -->
+            <div class="bridge-type">
+                <h4>7. Frame Bridges (Rigid Frame)</h4>
+                <p>Rigid connections between members form closed loops for load distribution.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Span Length:</strong> 20-100 meters
+                    </div>
+                    <div class="characteristic">
+                        <strong>Load Transfer:</strong> Moment and shear
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Underpasses, flyovers
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Moderate
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moveable Bridges -->
+            <div class="bridge-type">
+                <h4>8. Moveable Bridges</h4>
+                <p>Bridges that move to allow passage of vessels or handle changing loads.</p>
+                <div class="characteristics">
+                    <div class="characteristic">
+                        <strong>Types:</strong> Bascule, Swing, Lift
+                    </div>
+                    <div class="characteristic">
+                        <strong>Best For:</strong> Navigable waterways
+                    </div>
+                    <div class="characteristic">
+                        <strong>Cost:</strong> Very high
+                    </div>
+                    <div class="characteristic">
+                        <strong>Maintenance:</strong> Complex
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bridge Components Section -->
+        <section id="components">
+            <h2>⚙️ Bridge Components</h2>
+            <p>All bridges consist of several key structural and functional elements:</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="icon">🏛️</div>
+                    <h4>Superstructure</h4>
+                    <p>The main load-bearing structure including deck, beams, cables, and arches that directly support traffic.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔨</div>
+                    <h4>Substructure</h4>
+                    <p>Foundation system including piers, abutments, and pile caps that transfer loads to the ground.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🛣️</div>
+                    <h4>Deck</h4>
+                    <p>Surface layer carrying traffic loads, made of concrete, steel, or timber.</p>
+                </div>
+            </div>
+
+            <h3>Detailed Components</h3>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">1. Deck/Roadway</h4>
+            <ul>
+                <li>Surface layer that vehicles travel on</li>
+                <li>Can be reinforced concrete, steel plate, or timber</li>
+                <li>Must be durable and provide good friction</li>
+                <li>Includes drainage system to manage water runoff</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">2. Bearings</h4>
+            <p>Devices that transfer loads from superstructure to substructure while allowing movement:</p>
+            <ul>
+                <li><strong>Fixed Bearings:</strong> Prevent all horizontal and vertical movement</li>
+                <li><strong>Expansion Bearings:</strong> Allow thermal expansion/contraction</li>
+                <li><strong>Rocker Bearings:</strong> Allow rotation about one axis</li>
+                <li><strong>Elastomeric Bearings:</strong> Modern rubber/metal sandwich design</li>
+                <li><strong>Pot Bearings:</strong> Spherical surface for rotation</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">3. Expansion Joints</h4>
+            <ul>
+                <li>Accommodate thermal movement (expansion/contraction)</li>
+                <li>Allow deflection under live loads</li>
+                <li>Prevent stress accumulation in structure</li>
+                <li>Types: Modular joints, finger joints, sliding joints</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">4. Piers</h4>
+            <ul>
+                <li>Vertical supports in the middle of span</li>
+                <li>Transfer loads to foundations</li>
+                <li>Must resist lateral forces (wind, water current)</li>
+                <li>Can be solid columns or hollow shafts</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">5. Abutments</h4>
+            <ul>
+                <li>End supports anchoring the bridge</li>
+                <li>Handle bridge reactions and anchor forces</li>
+                <li>Support embankments</li>
+                <li>Types: Stub abutments, full height abutments, spill-through</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">6. Foundations</h4>
+            <ul>
+                <li><strong>Shallow Foundations:</strong> Spread footings (good soil)</li>
+                <li><strong>Deep Foundations:</strong> Piles, caissons, drilled shafts (poor soil)</li>
+                <li>Must handle bearing capacity and settlement requirements</li>
+                <li>Require geotechnical investigation</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">7. Railings & Parapets</h4>
+            <ul>
+                <li>Safety barriers for pedestrians and vehicles</li>
+                <li>Prevent accidental falls</li>
+                <li>Must meet safety standards (height, load capacity)</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">8. Drainage System</h4>
+            <ul>
+                <li>Drain pipes and gutters</li>
+                <li>Prevent water accumulation on deck</li>
+                <li>Control scour at piers</li>
+            </ul>
+        </section>
+
+        <!-- Design Principles Section -->
+        <section id="design">
+            <h2>📐 Design Principles & Loads</h2>
+
+            <h3>Types of Loads on Bridges</h3>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="icon">⬇️</div>
+                    <h4>Dead Loads</h4>
+                    <p>Permanent loads including self-weight of structure, deck, and utilities.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🚗</div>
+                    <h4>Live Loads</h4>
+                    <p>Temporary loads from traffic, pedestrians, and vehicles.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">💨</div>
+                    <h4>Environmental Loads</h4>
+                    <p>Wind, earthquake, temperature, water pressure, and scour forces.</p>
+                </div>
+            </div>
+
+            <h3>Design Load Combinations (per IS codes)</h3>
+            <div class="formula-box">
+                <strong>Load Case 1 (Strength):</strong> 1.35 × (Dead Load) + 1.50 × (Live Load)<br><br>
+                <strong>Load Case 2 (Serviceability):</strong> 1.0 × (Dead Load) + 1.0 × (Live Load)<br><br>
+                <strong>With Seismic:</strong> 1.0 × (Dead Load) + 0.5 × (Live Load) + Seismic Force
+            </div>
+
+            <h3>Important Design Considerations</h3>
+            <ul>
+                <li><strong>Span-to-Depth Ratio:</strong> Controls deflection and aesthetics</li>
+                <li><strong>Durability:</strong> 100+ year design life (in India)</li>
+                <li><strong>Maintenance Access:</strong> Safe inspection routes</li>
+                <li><strong>Clearance Requirements:</strong> Navigation, traffic headroom</li>
+                <li><strong>Scour Protection:</strong> Prevent riverbed erosion</li>
+                <li><strong>Vibration Control:</strong> Limit dynamic responses</li>
+                <li><strong>Earthquake Resistance:</strong> Ductile design in seismic zones</li>
+            </ul>
+
+            <h3>Analysis Methods</h3>
+            <ul>
+                <li><strong>Linear Elastic Analysis:</strong> Classical approach for normal loads</li>
+                <li><strong>Plastic Analysis:</strong> Consider yield and redistribution</li>
+                <li><strong>Non-linear Analysis:</strong> For large deformations</li>
+                <li><strong>Dynamic Analysis:</strong> For earthquake and wind effects</li>
+                <li><strong>FEM (Finite Element Method):</strong> Numerical analysis for complex structures</li>
+            </ul>
+        </section>
+
+        <!-- IS Codes Section -->
+        <section id="codes">
+            <h2>📚 Indian Standards (IS Codes)</h2>
+            <p>Bridge design in India must comply with various Indian Standards (IS) and specifications:</p>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code Number</th>
+                            <th>Title</th>
+                            <th>Scope</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IS 1893:2016</strong></td>
+                            <td>Code of Practice for Earthquake Resistant Design of Structures</td>
+                            <td>Seismic design of all structures including bridges</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IS 875:2015</strong></td>
+                            <td>Code of Practice for Design Loads for Buildings and Structures</td>
+                            <td>Dead loads, live loads, wind, and snow loads</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IS 456:2000</strong></td>
+                            <td>Code of Practice for Plain and Reinforced Concrete</td>
+                            <td>Concrete design and construction</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IS 800:2007</strong></td>
+                            <td>Code of Practice for General Construction in Steel</td>
+                            <td>Steel structure design and fabrication</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IS 6913:1973</strong></td>
+                            <td>Specification for Steel Girder Bridges</td>
+                            <td>Design of steel bridges</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IS 5177:1969</strong></td>
+                            <td>Specification for Reinforced Concrete Road Bridges</td>
+                            <td>RCC bridge design</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IRC:6-2017</strong></td>
+                            <td>Standard Specifications for Road Bridges (IRC)</td>
+                            <td>Comprehensive road bridge standards</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IRC:21-2018</strong></td>
+                            <td>Standard Specifications for Prestressed Concrete Road Bridges</td>
+                            <td>Prestressed concrete bridges</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>IRC Standards</h3>
+            <p>The Indian Road Congress (IRC) provides the most comprehensive bridge standards:</p>
+            <ul>
+                <li><strong>IRC:5-2015:</strong> Standard Specifications for Road and Bridge Works</li>
+                <li><strong>IRC:6-2017:</strong> Standard Specifications for Road Bridges (Load, Stresses & Defection)</li>
+                <li><strong>IRC:78-2014:</strong> Standard Specifications for Seismic Design of Bridges</li>
+                <li><strong>IRC:24-2015:</strong> General Features of Design for Road Bridges</li>
+                <li><strong>IRC:83-2015:</strong> Recommended Practice for Concrete Road Bridges</li>
+            </ul>
+        </section>
+
+        <!-- Practical Applications Section -->
+        <section id="applications">
+            <h2>🌍 Practical Applications</h2>
+
+            <h3>Iconic Indian Bridges</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h4>Bandra-Worli Sea Link</h4>
+                    <p><strong>Type:</strong> Cable-Stayed Bridge<br>
+                    <strong>Length:</strong> 5.6 km<br>
+                    <strong>Location:</strong> Mumbai, Maharashtra<br>
+                    <strong>Opened:</strong> 2009<br>
+                    A modern engineering marvel connecting two financial hubs.</p>
+                </div>
+                <div class="card">
+                    <h4>Second Vivekananda Bridge</h4>
+                    <p><strong>Type:</strong> Cable-Stayed Bridge<br>
+                    <strong>Length:</strong> 457 m<br>
+                    <strong>Location:</strong> Kolkata, West Bengal<br>
+                    <strong>Opened:</strong> 2007<br>
+                    Elegant design over the Hooghly River.</p>
+                </div>
+                <div class="card">
+                    <h4>Pamban Bridge</h4>
+                    <p><strong>Type:</strong> Arch & Cantilever Bridge<br>
+                    <strong>Length:</strong> 2.2 km<br>
+                    <strong>Location:</strong> Tamil Nadu<br>
+                    <strong>Built:</strong> 1914<br>
+                    Historic bridge with vertical lift span for ships.</p>
+                </div>
+            </div>
+
+            <h3>Design Considerations for Different Scenarios</h3>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">River Crossing Bridges</h4>
+            <ul>
+                <li>Foundation design must account for scour</li>
+                <li>Debris protection systems required</li>
+                <li>Navigation clearance must be ensured</li>
+                <li>Flood level analysis crucial</li>
+                <li>Pier shape optimized for water flow</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">Mountain/Valley Bridges</h4>
+            <ul>
+                <li>Cantilever or suspension design preferred</li>
+                <li>Minimize intermediate supports</li>
+                <li>Foundation on stable rock strata</li>
+                <li>Consider avalanche and rockfall protection</li>
+                <li>Accessibility for construction challenging</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">Urban Flyover/Overpass</h4>
+            <ul>
+                <li>Minimal land acquisition required</li>
+                <li>Frame or beam type common</li>
+                <li>Noise and vibration control important</li>
+                <li>Aesthetic considerations significant</li>
+                <li>Rapid construction methods preferred</li>
+            </ul>
+
+            <h4 style="color: #0d6efd; margin-top: 20px;">Coastal/Marine Bridges</h4>
+                <li>Corrosion protection essential</li>
+                <li>Wave and storm surge analysis</li>
+                <li>Marine life impact assessment</li>
+                <li>Special coatings and materials used</li>
+                <li>Tidal and seismic effects considered</li>
+            </ul>
+        </section>
+
+        <!-- Interview Questions Section -->
+        <section id="faq">
+            <h2>❓ Interview Questions & MCQs</h2>
+
+            <h3>Important Interview Questions</h3>
+
+            <div class="bridge-type">
+                <h4>Q1: What are the main differences between suspension and cable-stayed bridges?</h4>
+                <p><strong>Answer:</strong></p>
+                <ul>
+                    <li><strong>Suspension Bridge:</strong> Cables pass over towers and are anchored at both ends. Load transfer through hanging cables.</li>
+                    <li><strong>Cable-Stayed Bridge:</strong> Cables connect directly from towers to deck. More direct load path.</li>
+                    <li>Suspension bridges span longer distances (up to 3000+ m vs 1000 m)</li>
+                    <li>Cable-stayed bridges are easier to construct and maintain</li>
+                </ul>
+            </div>
+
+            <div class="bridge-type">
+                <h4>Q2: How do you calculate the span-to-depth ratio and its significance?</h4>
+                <p><strong>Answer:</strong> Span-to-depth ratio = Span / Depth of beam</p>
+                <ul>
+                    <li>For beam bridges: typically 15-25</li>
+                    <li>Controls deflection and stiffness</li>
+                    <li>Higher ratio = more flexible, lower ratio = stiffer</li>
+                    <li>Affects material consumption and cost</li>
+                    <li>Influences aesthetic appearance</li>
+                </ul>
+            </div>
+
+            <div class="bridge-type">
+                <h4>Q3: What is bridge scour and how is it prevented?</h4>
+                <p><strong>Answer:</strong> Scour is erosion of riverbed material around bridge foundations.</p>
+                <ul>
+                    <li><strong>Types:</strong> General scour, contraction scour, local scour</li>
+                    <li><strong>Prevention:</strong> Riprap (stone), pile caps, cutoff walls</li>
+                    <li>Streamlined pier shape reduces scour</li>
+                    <li>Adequate foundations below scour depth essential</li>
+                    <li>Regular monitoring required</li>
+                </ul>
+            </div>
+
+            <div class="bridge-type">
+                <h4>Q4: Explain bearing types and their applications.</h4>
+                <p><strong>Answer:</strong></p>
+                <ul>
+                    <li><strong>Fixed Bearings:</strong> For fixed support (no movement)</li>
+                    <li><strong>Elastomeric:</strong> Commonly used for highway bridges (allows rotation & translation)</li>
+                    <li><strong>Pot Bearings:</strong> For large rotations and translations</li>
+                    <li><strong>Spherical Bearings:</strong> Multi-directional movement</li>
+                    <li>Selection based on required movements and loads</li>
+                </ul>
+            </div>
+
+            <div class="bridge-type">
+                <h4>Q5: What are expansion joints and why are they necessary?</h4>
+                <p><strong>Answer:</strong></p>
+                <ul>
+                    <li>Accommodate thermal expansion and contraction (Δ = α × L × ΔT)</li>
+                    <li>Allow for deflection under live loads</li>
+                    <li>Prevent stress accumulation and cracking</li>
+                    <li>Common expansion for each 20-30 meters of span</li>
+                    <li>Types: Modular joints, finger joints, sliding plate joints</li>
+                </ul>
+            </div>
+
+            <h3>Multiple Choice Questions</h3>
+
+            <div class="bridge-type">
+                <h4>MCQ 1: Which type of bridge can span the longest distance?</h4>
+                <p><strong>A)</strong> Beam Bridge<br>
+                <strong>B)</strong> Arch Bridge<br>
+                <strong>C)</strong> Suspension Bridge ✓<br>
+                <strong>D)</strong> Truss Bridge<br>
+                <strong>Explanation:</strong> Suspension bridges can span 3000+ meters due to cable support system. Golden Gate Bridge spans 1280 m, Verrazano Bridge spans 1298 m, and many modern bridges exceed 2000 m.
+                </p>
+            </div>
+
+            <div class="bridge-type">
+                <h4>MCQ 2: What is the typical span-to-depth ratio for a simply supported beam bridge?</h4>
+                <p><strong>A)</strong> 5-10<br>
+                <strong>B)</strong> 15-25 ✓<br>
+                <strong>C)</strong> 35-45<br>
+                <strong>D)</strong> 50-70<br>
+                <strong>Explanation:</strong> For beam bridges, L/d ratio of 15-25 provides optimal balance between deflection control and material economy.
+                </p>
+            </div>
+
+            <div class="bridge-type">
+                <h4>MCQ 3: Which Indian Standard covers earthquake-resistant design?</h4>
+                <p><strong>A)</strong> IS 456:2000<br>
+                <strong>B)</strong> IS 875:2015<br>
+                <strong>C)</strong> IS 1893:2016 ✓<br>
+                <strong>D)</strong> IS 800:2007<br>
+                <strong>Explanation:</strong> IS 1893:2016 is the code of practice for earthquake-resistant design of structures.
+                </p>
+            </div>
+
+            <div class="bridge-type">
+                <h4>MCQ 4: What does IRC stand for?</h4>
+                <p><strong>A)</strong> Indian Road Construction<br>
+                <strong>B)</strong> Indian Road Congress ✓<br>
+                <strong>C)</strong> Indian Rail Code<br>
+                <strong>D)</strong> Indian Reinforcement Code<br>
+                <strong>Explanation:</strong> IRC publishes comprehensive standards for road and bridge design in India.
+                </p>
+            </div>
+
+            <div class="bridge-type">
+                <h4>MCQ 5: Which bearing type allows maximum multi-directional movement?</h4>
+                <p><strong>A)</strong> Fixed Bearing<br>
+                <strong>B)</strong> Rocker Bearing<br>
+                <strong>C)</strong> Pot Bearing ✓<br>
+                <strong>D)</strong> Elastomeric Bearing<br>
+                <strong>Explanation:</strong> Pot bearings have a spherical surface that allows rotation in all directions and translation, making them ideal for complex loading scenarios.
+                </p>
+            </div>
+        </section>
+
+        <!-- Additional Resources -->
+        <section>
+            <h2>📖 Learning Resources & References</h2>
+            <ul>
+                <li><strong>Books:</strong> "Bridge Engineering" by Ashutosh Sharma, "Design of Bridges" by N. Krishnaraju</li>
+                <li><strong>Standards:</strong> Download latest IRC and IS codes from official websites</li>
+                <li><strong>Case Studies:</strong> Study famous bridges like Golden Gate, Millau Viaduct, Akashi Kaikyō</li>
+                <li><strong>Software:</strong> STAAD Pro, SAP2000, ANSYS for structural analysis</li>
+                <li><strong>Online Resources:</strong> Indian Road Congress website, NPTEL lectures on Bridge Engineering</li>
+            </ul>
+
+            <div class="highlight">
+                <strong>Practice Tip:</strong> Regular practice with problem-solving on load calculations, span selection, and design procedures is essential for mastering bridge engineering concepts.
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Civil Engineering Resource Library | Bridge Engineering Module</p>
+        <p>Last Updated: July 2024 | All content complies with Indian Standards (IS & IRC)</p>
+    </footer>
 </body>
 </html>
