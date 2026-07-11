@@ -1,30 +1,358 @@
+
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Construction Equipments</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Machinery Database</title>
+    <style>
+        /* Base Reset & Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Header Animations */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #0ea5e9;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding-bottom: 40px;
+        }
+
+        /* Animated Info Cards */
+        .card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: slideUpFade 0.6s ease-out forwards;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Staggered Load Delays for up to 10 cards */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+        .card:nth-child(7) { animation-delay: 0.7s; }
+        .card:nth-child(8) { animation-delay: 0.8s; }
+        .card:nth-child(9) { animation-delay: 0.9s; }
+        .card:nth-child(10) { animation-delay: 1.0s; }
+
+        /* Card Hover Effects */
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #0ea5e9;
+            box-shadow: 0 20px 25px -5px rgba(14, 165, 233, 0.15), 0 8px 10px -6px rgba(14, 165, 233, 0.1);
+        }
+
+        /* Content Styling */
+        .card h2 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #334155;
+            transition: border-color 0.4s ease;
+        }
+
+        .card:hover h2 {
+            border-bottom: 2px solid #0ea5e9;
+        }
+
+        .card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex-grow: 1; /* Pushes the button to the bottom */
+        }
+
+        /* Animated Specs Table */
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        .specs-table th {
+            text-align: left;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding-bottom: 10px;
+        }
+
+        .specs-table td {
+            padding: 10px 5px;
+            border-top: 1px solid #334155;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            transition: padding-left 0.3s ease, color 0.3s ease;
+        }
+
+        .specs-table tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .specs-table tbody tr:hover {
+            background-color: rgba(14, 165, 233, 0.1);
+        }
+
+        .specs-table tbody tr:hover td {
+            color: #0ea5e9;
+            padding-left: 10px; 
+        }
+
+        /* Wikipedia Button Styling */
+        .wiki-btn {
+            display: inline-block;
+            text-align: center;
+            background: rgba(51, 65, 85, 0.6);
+            color: #f1f5f9;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #475569;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        .wiki-btn:hover {
+            background: #0ea5e9;
+            color: #fff;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+        }
+
+        /* Keyframe Definitions */
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #475569;
+            font-size: 0.9rem;
+            animation: slideUpFade 0.6s ease-out 1.2s forwards;
+            opacity: 0;
+            border-top: 1px solid #1e293b;
+        }
+    </style>
+</head>
 <body>
-<header><h1>🏗️ Construction Equipments</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+    <header>
+        <h1>Civil Engineering Fleet</h1>
+        <p>A comprehensive technical index of earthmoving and structural machinery. Hover over tables for dynamic data and click below to open Wikipedia archives.</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+
+            <!-- Equipment 1 -->
+            <div class="card">
+                <h2>Hydraulic Excavator</h2>
+                <p>Track-driven machinery featuring a specialized boom, stick, and bucket mechanism. Engineered for high-volume trenching and structural demolition.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Operating Weight</td><td>20 - 50 Metric Tons</td></tr>
+                        <tr><td>Engine Power</td><td>110 - 300 kW</td></tr>
+                        <tr><td>Digging Depth</td><td>Up to 7.5 meters</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Excavator" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 2 -->
+            <div class="card">
+                <h2>Tower Crane</h2>
+                <p>Fixed-base structural lifting units dominant in high-rise construction. Provides unparalleled vertical hoisting capacity and horizontal reach.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Max Radius</td><td>40 - 80 Meters</td></tr>
+                        <tr><td>Max Load</td><td>8 - 40 Metric Tons</td></tr>
+                        <tr><td>Power Source</td><td>3-Phase Electric</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Tower_crane" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 3 -->
+            <div class="card">
+                <h2>Crawler Bulldozer</h2>
+                <p>High-traction track equipment utilizing a massive front-mounted steel blade and rear ripper. Designed to shift heavy aggregate and bedrock.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Engine Output</td><td>150 - 600+ HP</td></tr>
+                        <tr><td>Blade Types</td><td>Straight / Universal</td></tr>
+                        <tr><td>Traction Type</td><td>Continuous Track</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Bulldozer" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 4 -->
+            <div class="card">
+                <h2>Soil Compactor (Roller)</h2>
+                <p>Vehicles featuring heavy vibratory steel drums. Required to compress soil sub-bases, gravel, and asphalt to meet strict load capacities.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Operating Mass</td><td>10 - 20 Metric Tons</td></tr>
+                        <tr><td>Vibration Freq.</td><td>30 - 50 Hz</td></tr>
+                        <tr><td>Drum Force</td><td>200 - 350 kN</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Road_roller" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 5 -->
+            <div class="card">
+                <h2>Wheel Loader</h2>
+                <p>Heavy articulated heavy equipment typically used to load asphalt, demolition debris, dirt, snow, or gravel into dump trucks and open pits.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Bucket Capacity</td><td>2.0 - 6.0 m³</td></tr>
+                        <tr><td>Breakout Force</td><td>150 - 250 kN</td></tr>
+                        <tr><td>Tipping Load</td><td>10,000+ kg</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Loader_(equipment)" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 6 -->
+            <div class="card">
+                <h2>Backhoe Loader</h2>
+                <p>A tractor-like unit fitted with a loader-style shovel/bucket on the front and a backhoe on the back. Highly versatile in urban engineering.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Operating Weight</td><td>7 - 10 Metric Tons</td></tr>
+                        <tr><td>Backhoe Dig Depth</td><td>4.0 - 5.5 Meters</td></tr>
+                        <tr><td>Loader Capacity</td><td>1.0 - 1.5 m³</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Backhoe_loader" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 7 -->
+            <div class="card">
+                <h2>Motor Grader</h2>
+                <p>Machine with a long adjustable blade used to create a flat surface during the grading process, essential for road construction sub-bases.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Blade Length</td><td>3.5 - 4.5 Meters</td></tr>
+                        <tr><td>Engine Power</td><td>120 - 300 HP</td></tr>
+                        <tr><td>Articulated Angle</td><td>20 - 30 Degrees</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Grader" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 8 -->
+            <div class="card">
+                <h2>Articulated Hauler</h2>
+                <p>A heavy-duty dump truck used to transport loads over rough terrain. Features a hinge between the cab and the dump box for extreme mobility.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Payload Capacity</td><td>25 - 60 Metric Tons</td></tr>
+                        <tr><td>Heaped Volume</td><td>15 - 35 m³</td></tr>
+                        <tr><td>Drivetrain</td><td>6x6 All-Wheel</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Articulated_hauler" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 9 -->
+            <div class="card">
+                <h2>Concrete Pump</h2>
+                <p>A machine used for transferring liquid concrete by pumping. Boom pumps use a remote-controlled articulating robotic arm to place concrete accurately.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Max Reach</td><td>20 - 65 Meters</td></tr>
+                        <tr><td>Delivery Rate</td><td>90 - 200 m³/hr</td></tr>
+                        <tr><td>Pump Pressure</td><td>70 - 130 Bar</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Concrete_pump" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+            <!-- Equipment 10 -->
+            <div class="card">
+                <h2>Asphalt Paver</h2>
+                <p>Equipment used to lay asphalt on roads and bridges. It distributes the material flat and provides minor compaction before it is rolled by a roller.</p>
+                <table class="specs-table">
+                    <tbody>
+                        <tr><td>Paving Width</td><td>2.5 - 10 Meters</td></tr>
+                        <tr><td>Hopper Capacity</td><td>10 - 15 Tons</td></tr>
+                        <tr><td>Heating System</td><td>Electric / Gas</td></tr>
+                    </tbody>
+                </table>
+                <a href="https://en.wikipedia.org/wiki/Paver_(vehicle)" target="_blank" rel="noopener noreferrer" class="wiki-btn">📖 Read on Wikipedia</a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Engineering Data Directory. Pure HTML/CSS Interactive Layout with Wikipedia References.</p>
+    </footer>
+
+</body>
+</html>
+
