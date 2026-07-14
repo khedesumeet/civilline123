@@ -2,33 +2,373 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Civil Engineering Books</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Drafting Table — Civil Engineering Bookshelf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
-header{background:#0b5ed7;color:#fff;padding:20px;text-align:center}
-main{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h2{color:#0b5ed7} ul{line-height:1.8}
-footer{text-align:center;padding:20px;color:#666}
+  :root{
+    --blueprint: #0E3A5C;
+    --blueprint-deep: #0A2A44;
+    --grid-line: rgba(255,255,255,0.09);
+    --paper: #F3EFE4;
+    --paper-line: #d9d2bd;
+    --ink: #1C1B18;
+    --safety: #E1671E;
+    --safety-deep: #B94F12;
+    --brass: #B79A5D;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+
+  /* ===== HERO / TITLE BLOCK ===== */
+  .hero{
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(160deg, var(--blueprint) 0%, var(--blueprint-deep) 100%);
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+    color:#EAF2F8;
+    padding: 64px 24px 48px;
+    position:relative;
+    border-bottom: 6px solid var(--brass);
+  }
+  .hero-inner{
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #8FC1E8;
+    margin-bottom: 18px;
+    display:flex;
+    gap: 10px;
+    align-items:center;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 28px; height: 1px;
+    background: #8FC1E8;
+    display:inline-block;
+  }
+  .hero h1{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:700;
+    font-size: clamp(32px, 5.2vw, 58px);
+    line-height: 1.05;
+    margin: 0 0 18px;
+    max-width: 780px;
+  }
+  .hero p.lede{
+    max-width: 560px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #C9DBEA;
+    margin: 0 0 36px;
+  }
+  .title-block{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid rgba(255,255,255,0.35);
+    max-width: 640px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .title-block div{
+    padding: 10px 14px;
+    border-right: 1px solid rgba(255,255,255,0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+  }
+  .title-block div:last-child{border-right:none;}
+  .title-block .label{ color:#8FC1E8; display:block; margin-bottom:4px;}
+  .title-block .value{ color:#EAF2F8; font-weight:600;}
+
+  /* ===== SECTION LABEL ===== */
+  .section-label{
+    max-width: 1040px;
+    margin: 56px auto 24px;
+    padding: 0 24px;
+    display:flex;
+    align-items:baseline;
+    gap: 16px;
+  }
+  .section-label h2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blueprint);
+    margin:0;
+    white-space:nowrap;
+  }
+  .section-label .rule{
+    flex:1;
+    height:1px;
+    background: var(--paper-line);
+  }
+  .section-note{
+    max-width: 1040px;
+    margin: 0 auto 8px;
+    padding: 0 24px;
+    font-size: 13px;
+    color: #6b6555;
+  }
+
+  /* ===== GRID ===== */
+  .shelf{
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 8px 24px 80px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 22px;
+  }
+  .card{
+    background: #fffdf8;
+    border: 1px solid var(--paper-line);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px -14px rgba(14,58,92,0.35);
+  }
+  .card::before{ /* dog-ear fold */
+    content:"";
+    position:absolute;
+    top:0; right:0;
+    width:0; height:0;
+    border-style: solid;
+    border-width: 0 22px 22px 0;
+    border-color: transparent var(--paper) transparent transparent;
+    filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.12));
+  }
+  .card-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--brass);
+    padding: 14px 16px 0;
+    letter-spacing: 0.08em;
+  }
+  .card-body{
+    padding: 6px 16px 16px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+  }
+  .card h3{
+    font-size: 16px;
+    line-height: 1.35;
+    margin: 6px 0 8px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .card .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blueprint);
+    background: #E7EFF4;
+    display:inline-block;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  .card .desc{
+    font-size: 13px;
+    color: #55503f;
+    line-height: 1.55;
+    margin: 0 0 18px;
+    flex:1;
+  }
+  .card .cta{
+    margin-top: auto;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background: var(--safety);
+    color: #fff;
+    text-decoration:none;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    padding: 11px 14px;
+    border: 1px solid var(--safety-deep);
+    transition: background 0.15s ease;
+  }
+  .card .cta:hover{ background: var(--safety-deep); }
+  .card .cta svg{ width:13px; height:13px; }
+
+  /* ===== FOOTER ===== */
+  footer{
+    background: var(--blueprint-deep);
+    color: #9FB9CC;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    text-align:center;
+    padding: 28px 24px 32px;
+    letter-spacing: 0.03em;
+  }
+  footer a{ color:#8FC1E8; text-decoration:none; }
+  footer .disc{ max-width: 640px; margin: 10px auto 0; color:#6f8ea3; font-size:11px; line-height:1.6; }
+
+  @media (max-width: 560px){
+    .title-block{ grid-template-columns: repeat(2, 1fr); }
+    .hero{ padding: 48px 18px 36px; }
+  }
 </style>
 </head>
 <body>
-<header><h1>Civil Engineering Books</h1></header>
-<main>
-<h2>Overview</h2>
-<p>Collection of recommended books for structural, geotechnical, transportation, environmental, construction management, surveying, RCC, steel and hydraulics.</p>
-<h2>Important Topics</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory and Concepts</li>
-<li>Design Principles</li>
-<li>IS Codes / Standards</li>
-<li>Practical Applications</li>
-<li>Interview Questions</li>
-<li>MCQs for Practice</li>
-<li>References and Learning Resources</li>
-</ul>
-</main>
-<footer>© Civil Engineering Knowledge Portal</footer>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Sheet No. 01 / Reference Library</div>
+    <h1>The Drafting Table</h1>
+    <p class="lede">A curated shelf of textbooks, design references, and exam guides for civil engineers — from AutoCAD Civil 3D to RCC design and competitive exam prep.</p>
+    <div class="title-block">
+      <div><span class="label">DISCIPLINE</span><span class="value">Civil Engineering</span></div>
+      <div><span class="label">CATALOG</span><span class="value">10 Titles</span></div>
+      <div><span class="label">REGION</span><span class="value">Amazon.in</span></div>
+      <div><span class="label">STATUS</span><span class="value">In Stock</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="section-label">
+  <h2>Design &amp; Software</h2>
+  <div class="rule"></div>
+</div>
+<div class="shelf">
+
+  <div class="card">
+    <div class="card-num">No. 01</div>
+    <div class="card-body">
+      <span class="tag">Software / CAD</span>
+      <h3>Exploring AutoCAD Civil 3D 2020 for Civil Engineers</h3>
+      <p class="desc">A hands-on guide to Civil 3D workflows — surfaces, corridors, grading, and site design for practicing civil engineers.</p>
+      <a class="cta" href="https://www.amazon.in/Exploring-AutoCAD-Civil-2020-Engineers/dp/938989896X?content-id=amzn1.sym.f7d72a1e-5698-491d-8e4e-cca77b240640%3Aamzn1.sym.f7d72a1e-5698-491d-8e4e-cca77b240640&cv_ct_cx=civil+engineer&keywords=civil+engineer&pd_rd_i=938989896X&pd_rd_r=e40285c7-d020-4770-b0d3-191f78fc097f&pd_rd_w=bmHwE&pd_rd_wg=SWLi8&pf_rd_p=f7d72a1e-5698-491d-8e4e-cca77b240640&pf_rd_r=BPSMK8TBBKY84BPGK1H2&qid=1784031949&s=books&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-3-66673dcf-083f-43ba-b782-d4a436cc5cfb-spons&aref=kpDb6ftRr0&sp_csd=d2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM&psc=1&linkCode=ll2&tag=civilline20-21&linkId=0bf96fc09bd376b2573a1ab8a2bf7ff0&ref_=as_li_ss_tl" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 02</div>
+    <div class="card-body">
+      <span class="tag">Structural Design</span>
+      <h3>Illustrated Design of Reinforced Concrete Buildings</h3>
+      <p class="desc">A step-by-step, illustration-led reference for RCC building design — slabs, beams, columns, and footings worked through in detail.</p>
+      <a class="cta" href="https://www.amazon.in/Illustrated-Design-Reinforced-Concrete-Buildings/dp/819037172X?pd_rd_w=1Bfd2&content-id=amzn1.sym.6b3aa144-fd3f-4cac-9ae1-ac2407bcccc2&pf_rd_p=6b3aa144-fd3f-4cac-9ae1-ac2407bcccc2&pf_rd_r=0JTZ0V411N4JPEZ3G64K&pd_rd_wg=1lrYV&pd_rd_r=a058702c-71e6-4929-8639-4ea8f77832d8&pd_rd_i=819037172X&psc=1&linkCode=ll2&tag=civilline20-21&linkId=dab5b93ef240ca1a15d8d932324cb962&ref_=as_li_ss_tl" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 03</div>
+    <div class="card-body">
+      <span class="tag">Reference</span>
+      <h3>Civil Engineering Reference — Title Pending</h3>
+      <p class="desc">Shortened Amazon link — title couldn't be verified automatically. Follow through to confirm details before sharing.</p>
+      <a class="cta" href="https://link.amazon/B04ywfrPt" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="section-label" style="grid-column:1/-1; margin:24px 0 0;">
+    <h2>Exam Preparation</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 04</div>
+    <div class="card-body">
+      <span class="tag">Exam Prep</span>
+      <h3>Testbook Engineering SmartBook — Chapterwise Solutions</h3>
+      <p class="desc">Chapterwise practice questions with detailed solutions, built for competitive civil engineering exams.</p>
+      <a class="cta" href="https://www.amazon.in/Testbook-Engineering-SmartBook-Chapterwise-Solutions/dp/B0F4F1SH3S?crid=2WKRMGXLKDOGQ&dib=eyJ2IjoiMSJ9.pGKaTbAiTcLTGUERZ13t-MIsZAbyh327Eeyw27M8oiEXE81dPEYH5Boz1ZhSUsm6cdrqIDXboCI054Fa-1EQqLMv2G-Ory-BgGlfJ1Zs03JJXxHZmsB7k2bgHf8pwRZCfHC3AXhh7g_UsrrR3Fu-9cBCJjj9CynOJAcJvG8n9fqoa7r5Q9HW45T_A2jnjEctDPU4saUjXvns1x5TtmtMzfWH-ZKKfkduQ6_7cGbVxsc.k476RJFlfGmXug5AKAfzmkWO6S4OczvE_1BaUpm8ZvQ&dib_tag=se&keywords=civil+engineering+exam&qid=1784037674&s=books&sprefix=civil+engineering+exam%2Cstripbooks%2C1955&sr=1-1-spons&aref=vxHNbg7r9Z&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1&linkCode=ll2&tag=civilline20-21&linkId=d32b3a23c3c29e46ad7dbc9ac8b23832&ref_=as_li_ss_tl" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 05</div>
+    <div class="card-body">
+      <span class="tag">Exam Prep</span>
+      <h3>Engineer / Superintendent / Metallurgical Assistant / Supervisor — Exam Guide</h3>
+      <p class="desc">A recruitment exam guide covering technical and general topics for engineering supervisory-grade posts.</p>
+      <a class="cta" href="https://www.amazon.in/Engineer-Superintendent-Metallurgical-Assistant-Supervisor/dp/9373948520?pd_rd_w=wBtPp&content-id=amzn1.sym.6b3aa144-fd3f-4cac-9ae1-ac2407bcccc2&pf_rd_p=6b3aa144-fd3f-4cac-9ae1-ac2407bcccc2&pf_rd_r=SX2P2ARRWMDPA9Z3QH6G&pd_rd_wg=AQIS2&pd_rd_r=a7f0d740-430e-461a-b65b-73daa79f2114&pd_rd_i=9373948520&psc=1&linkCode=ll2&tag=civilline20-21&linkId=7e972f8a65683c05958f17522cf63624&ref_=as_li_ss_tl" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 06</div>
+    <div class="card-body">
+      <span class="tag">Reference</span>
+      <h3>Civil Engineering Reference — Title Pending</h3>
+      <p class="desc">Shortened Amazon link — title couldn't be verified automatically. Follow through to confirm details before sharing.</p>
+      <a class="cta" href="https://link.amazon/B0eCbk18o" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 07</div>
+    <div class="card-body">
+      <span class="tag">Reference</span>
+      <h3>Civil Engineering Reference — Title Pending</h3>
+      <p class="desc">Shortened Amazon link — title couldn't be verified automatically. Follow through to confirm details before sharing.</p>
+      <a class="cta" href="https://link.amazon/B04HwWgWX" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 08</div>
+    <div class="card-body">
+      <span class="tag">Reference</span>
+      <h3>Civil Engineering Reference — Title Pending</h3>
+      <p class="desc">Shortened Amazon link — title couldn't be verified automatically. Follow through to confirm details before sharing.</p>
+      <a class="cta" href="https://link.amazon/B00STx9Bp" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 09</div>
+    <div class="card-body">
+      <span class="tag">Reference</span>
+      <h3>Civil Engineering Reference — Title Pending</h3>
+      <p class="desc">Shortened Amazon link — title couldn't be verified automatically. Follow through to confirm details before sharing.</p>
+      <a class="cta" href="https://link.amazon/B01nQDbpy" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-num">No. 10</div>
+    <div class="card-body">
+      <span class="tag">Reference</span>
+      <h3>Civil Engineering Reference — Title Pending</h3>
+      <p class="desc">Shortened Amazon link — title couldn't be verified automatically. Follow through to confirm details before sharing.</p>
+      <a class="cta" href="https://link.amazon/B0eT3vk6o" target="_blank" rel="noopener">View on Amazon →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Compiled for civil engineers, by <a href="#">The Drafting Table</a>
+  <div class="disc">This page contains affiliate links. As an Amazon Associate, purchases made through these links may earn a commission at no extra cost to you.</div>
+</footer>
+
 </body>
 </html>
