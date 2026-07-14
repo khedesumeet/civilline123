@@ -1,30 +1,1287 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CE Facts</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Civilline — Civil Engineering Facts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e3a5f;
+      --primary-light: #2a5a8a;
+      --accent: #e8b84b;
+      --accent-dark: #c99a2e;
+      --dark: #0f1c2e;
+      --light: #f5f7fa;
+      --white: #ffffff;
+      --gray: #8892a0;
+      --success: #2d8a5e;
+      --danger: #c0392b;
+      --glass: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      overflow-x: hidden;
+    }
+
+    .hero-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      background: linear-gradient(135deg, #0f1c2e 0%, #1e3a5f 50%, #0a1628 100%);
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(232,184,75,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,184,75,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(60px,60px); }
+    }
+
+    .particles {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 15s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      z-index: 1001;
+      transition: width 0.1s;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 1.2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(15,28,46,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+    }
+
+    .hero-content { max-width: 900px; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--white) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: var(--dark);
+      box-shadow: 0 8px 32px rgba(232,184,75,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(232,184,75,0.4);
+    }
+
+    .btn-secondary {
+      background: var(--glass);
+      color: var(--white);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-3px);
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: -3rem auto 0;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .stat-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 0.5rem;
+    }
+
+    section {
+      padding: 6rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+
+    .section-line {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      margin: 1rem auto;
+      border-radius: 2px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .fact-card {
+      background: linear-gradient(145deg, rgba(30,58,95,0.4), rgba(15,28,46,0.6));
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .fact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--primary-light));
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .fact-card:hover::before { transform: scaleX(1); }
+
+    .fact-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(232,184,75,0.3);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    }
+
+    .fact-icon {
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(232,184,75,0.25);
+    }
+
+    .fact-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+
+    .fact-card p {
+      color: var(--gray);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .fact-tag {
+      display: inline-block;
+      background: rgba(232,184,75,0.15);
+      color: var(--accent);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--primary-light), var(--accent));
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 50%;
+      position: relative;
+      margin-bottom: 3rem;
+    }
+
+    .timeline-item:nth-child(even) {
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: 50%;
+    }
+
+    .timeline-content {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 450px;
+      margin: 0 2rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .timeline-content:hover {
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: 2rem;
+      width: 16px; height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      border: 3px solid var(--dark);
+      box-shadow: 0 0 0 4px rgba(232,184,75,0.3);
+    }
+
+    .timeline-year {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .timeline-content h3 {
+      color: var(--white);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-content p {
+      color: var(--gray);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .quiz-container {
+      background: linear-gradient(145deg, rgba(30,58,95,0.3), rgba(15,28,46,0.5));
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .quiz-question {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 2rem;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-option {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--light);
+      font-size: 1rem;
+    }
+
+    .quiz-option:hover {
+      border-color: var(--accent);
+      background: rgba(232,184,75,0.1);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--success);
+      background: rgba(45,138,94,0.2);
+      color: #6ee7b7;
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--danger);
+      background: rgba(192,57,43,0.2);
+      color: #fca5a5;
+    }
+
+    .quiz-score {
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
+    .quiz-btn {
+      background: var(--accent);
+      color: var(--dark);
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+
+    .quiz-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,184,75,0.3);
+    }
+
+    .dyk-banner {
+      background: linear-gradient(135deg, rgba(232,184,75,0.1), rgba(30,58,95,0.2));
+      border: 1px solid rgba(232,184,75,0.2);
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      margin: 4rem auto;
+      max-width: 900px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dyk-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(232,184,75,0.05) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .dyk-label {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--dark);
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dyk-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .dyk-nav {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dyk-nav button {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--white);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1.2rem;
+    }
+
+    .dyk-nav button:hover {
+      background: var(--accent);
+      color: var(--dark);
+      border-color: var(--accent);
+    }
+
+    .materials-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+    }
+
+    .materials-table th,
+    .materials-table td {
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .materials-table th {
+      background: rgba(232,184,75,0.1);
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .materials-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+    .materials-table td {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .materials-table td:first-child {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    footer {
+      background: rgba(10,18,30,0.95);
+      border-top: 1px solid var(--glass-border);
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .footer-tagline {
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    .footer-copy {
+      color: var(--gray);
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .timeline::before { left: 20px; }
+      .timeline-item,
+      .timeline-item:nth-child(even) {
+        justify-content: flex-start;
+        padding-left: 50px;
+        padding-right: 0;
+      }
+      .timeline-dot { left: 20px; }
+      .quiz-options { grid-template-columns: 1fr; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
 <body>
-<header><h1>💡 CE Facts</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="hero-bg"></div>
+  <div class="particles" id="particles"></div>
+
+  <nav id="navbar">
+    <a href="#" class="logo">
+      <div class="logo-icon">⚡</div>
+      Civilline
+    </a>
+    <ul class="nav-links">
+      <li><a href="#facts">Facts</a></li>
+      <li><a href="#timeline">History</a></li>
+      <li><a href="#materials">Materials</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+      <li><a href="#dyk">Discover</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span>🏗️</span> Engineering Excellence Since 2026
+      </div>
+      <h1>Building the World,<br>One Fact at a Time</h1>
+      <p>Explore the fascinating world of civil engineering — from ancient aqueducts to modern skyscrapers. Discover the science behind the structures that shape our civilization.</p>
+      <div class="hero-btns">
+        <a href="#facts" class="btn btn-primary">Explore Facts →</a>
+        <a href="#quiz" class="btn btn-secondary">Test Your Knowledge</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-card fade-in">
+      <span class="stat-number" data-target="4500">0</span>
+      <div class="stat-label">Years of Engineering History</div>
+    </div>
+    <div class="stat-card fade-in">
+      <span class="stat-number" data-target="828">0</span>
+      <div class="stat-label">Meters — Burj Khalifa Height</div>
+    </div>
+    <div class="stat-card fade-in">
+      <span class="stat-number" data-target="55">0</span>
+      <div class="stat-label">Million Tons — Concrete Used Yearly</div>
+    </div>
+    <div class="stat-card fade-in">
+      <span class="stat-number" data-target="191">0</span>
+      <div class="stat-label">Years — Panama Canal Age</div>
+    </div>
+  </div>
+
+  <section id="facts">
+    <div class="section-header fade-in">
+      <h2>Engineering Facts</h2>
+      <div class="section-line"></div>
+      <p>Remarkable truths about the structures and systems that define our built environment</p>
+    </div>
+
+    <div class="facts-grid">
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🏛️</div>
+        <h3>Concrete's Ancient Roots</h3>
+        <p>The Romans developed a form of concrete using volcanic ash (pozzolana) that could set underwater. The Pantheon's dome, built in 126 AD with unreinforced concrete, remains the world's largest unreinforced concrete dome after nearly 2,000 years.</p>
+        <span class="fact-tag">Materials</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🌉</div>
+        <h3>Golden Gate Bridge Flexibility</h3>
+        <p>The Golden Gate Bridge can sway up to 27 feet sideways and its deck can flex by 10 feet vertically during high winds. Engineers designed it to withstand winds of 100 mph — it has only been closed three times in its history due to weather.</p>
+        <span class="fact-tag">Structural</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🏗️</div>
+        <h3>Burj Khalifa's Foundation</h3>
+        <p>The Burj Khalifa's foundation consists of 192 piles bored 50 meters deep into the ground, supporting a massive 3.7-meter thick raft. The concrete pour for the foundation was the largest ever — 12,500 cubic meters poured continuously over 43 hours.</p>
+        <span class="fact-tag">Foundation</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🚇</div>
+        <h3>London's Underground Legacy</h3>
+        <p>The London Underground, opened in 1863, was the world's first underground railway. The original tunnels were dug using the "cut and cover" method — digging a trench, building the tunnel, and covering it back up. It now spans 402 km with 272 stations.</p>
+        <span class="fact-tag">Transport</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🌊</div>
+        <h3>Hoover Dam's Concrete Curing</h3>
+        <p>The Hoover Dam contains enough concrete to pave a 16-foot-wide road from San Francisco to New York. If poured in a single monolith, it would have taken 125 years to cool. Engineers used cooling pipes with river water to reduce curing to 2.5 years.</p>
+        <span class="fact-tag">Hydraulic</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🛣️</div>
+        <h3>Great Wall Engineering</h3>
+        <p>The Great Wall of China isn't a single continuous wall but a series of fortifications built over 2,000 years. The total length of all sections exceeds 21,000 km. Workers used sticky rice flour in the mortar, which has proven more water-resistant than modern cement.</p>
+        <span class="fact-tag">Historical</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🏙️</div>
+        <h3>Tuned Mass Dampers</h3>
+        <p>Taipei 101 houses a 728-ton tuned mass damper — a massive steel pendulum that counteracts building sway during earthquakes and typhoons. It's the largest and heaviest in the world, suspended from the 92nd to 87th floors, and is visible to visitors.</p>
+        <span class="fact-tag">Seismic</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🌉</div>
+        <h3>Millau Viaduct Record</h3>
+        <p>The Millau Viaduct in France is the tallest bridge in the world, with its highest pillar reaching 343 meters — taller than the Eiffel Tower. Designed by Norman Foster and Michel Virlogeux, it spans 2.5 km across the Tarn River valley.</p>
+        <span class="fact-tag">Bridge</span>
+      </div>
+
+      <div class="fact-card fade-in">
+        <div class="fact-icon">🏭</div>
+        <h3>Steel Recycling Champion</h3>
+        <p>Steel is the most recycled material on Earth. The structural steel industry recycles over 80 million tons annually in the U.S. alone. A single ton of recycled steel saves 2,500 pounds of iron ore, 1,400 pounds of coal, and 120 pounds of limestone.</p>
+        <span class="fact-tag">Sustainability</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="section-header fade-in">
+      <h2>Engineering Milestones</h2>
+      <div class="section-line"></div>
+      <p>Key moments that shaped civil engineering across millennia</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 2560 BC</div>
+          <h3>Great Pyramid of Giza</h3>
+          <p>The oldest of the Seven Wonders of the Ancient World. Built with approximately 2.3 million stone blocks, each weighing 2.5 tons on average. Remained the tallest man-made structure for over 3,800 years.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 312 BC</div>
+          <h3>Roman Aqueducts</h3>
+          <p>The Aqua Appia, Rome's first aqueduct, transported water 16 km into the city using gravity alone. Roman engineers built over 11 aqueducts serving Rome, with some channels running underground for up to 50 km.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 1825</div>
+          <h3>Erie Canal</h3>
+          <p>Connecting the Hudson River to Lake Erie, this 584 km canal transformed American commerce. Built without trained engineers — surveyors and self-taught builders completed it in 8 years, creating the "Empire State."</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 1883</div>
+          <h3>Brooklyn Bridge</h3>
+          <p>The first steel-wire suspension bridge, designed by John Roebling. Its 486-meter main span was the longest in the world. Roebling died before construction; his son Washington and daughter-in-law Emily completed it.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 1936</div>
+          <h3>Hoover Dam</h3>
+          <p>Standing 221 meters high, it was the world's tallest dam at completion. It generates 4 billion kWh annually and created Lake Mead, the largest reservoir in the U.S. by volume when full.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 1994</div>
+          <h3>Channel Tunnel</h3>
+          <p>The "Chunnel" stretches 50.45 km under the English Channel, with 37.9 km underwater — the longest undersea tunnel in the world. It took 6 years to build and used 11 massive tunnel boring machines.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-year">📅 2010</div>
+          <h3>Burj Khalifa</h3>
+          <p>At 828 meters, it's the tallest building ever constructed. The Y-shaped plan was inspired by the Hymenocallis flower to maximize views and reduce wind forces. It holds 17 world records.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="materials">
+    <div class="section-header fade-in">
+      <h2>Material Properties</h2>
+      <div class="section-line"></div>
+      <p>Comparative analysis of common construction materials</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="materials-table fade-in">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Compressive Strength (MPa)</th>
+            <th>Tensile Strength (MPa)</th>
+            <th>Density (kg/m³)</th>
+            <th>Elastic Modulus (GPa)</th>
+            <th>Key Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Structural Steel</td>
+            <td>250–550</td>
+            <td>400–550</td>
+            <td>7,850</td>
+            <td>200</td>
+            <td>Frames, bridges, high-rises</td>
+          </tr>
+          <tr>
+            <td>Reinforced Concrete</td>
+            <td>20–50</td>
+            <td>2–5 (concrete) / 400–500 (steel)</td>
+            <td>2,400</td>
+            <td>25–30</td>
+            <td>Foundations, slabs, columns</td>
+          </tr>
+          <tr>
+            <td>Timber (Douglas Fir)</td>
+            <td>30–50</td>
+            <td>40–90</td>
+            <td>500–600</td>
+            <td>12–14</td>
+            <td>Residential, formwork, aesthetics</td>
+          </tr>
+          <tr>
+            <td>Aluminum Alloy</td>
+            <td>70–700</td>
+            <td>90–700</td>
+            <td>2,700</td>
+            <td>69</td>
+            <td>Curtain walls, lightweight structures</td>
+          </tr>
+          <tr>
+            <td>Glass (Tempered)</td>
+            <td>1,000–1,500</td>
+            <td>30–90</td>
+            <td>2,500</td>
+            <td>70</td>
+            <td>Facades, skylights, partitions</td>
+          </tr>
+          <tr>
+            <td>Masonry (Brick)</td>
+            <td>5–30</td>
+            <td>0.5–2</td>
+            <td>1,800–2,200</td>
+            <td>2–10</td>
+            <td>Walls, facades, partitions</td>
+          </tr>
+          <tr>
+            <td>CFRP (Carbon Fiber)</td>
+            <td>600–3,000</td>
+            <td>1,500–3,500</td>
+            <td>1,600</td>
+            <td>150–300</td>
+            <td>Retrofitting, aerospace, bridges</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="section-header fade-in">
+      <h2>Engineering Challenge</h2>
+      <div class="section-line"></div>
+      <p>Test your civil engineering knowledge with these questions</p>
+    </div>
+
+    <div class="quiz-container fade-in">
+      <div class="quiz-question" id="quizQuestion">Loading question...</div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-score" id="quizScore">Score: 0 / 0</div>
+      <button class="quiz-btn" id="quizNext" style="display:none;" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </section>
+
+  <section id="dyk">
+    <div class="section-header fade-in">
+      <h2>Did You Know?</h2>
+      <div class="section-line"></div>
+      <p>Surprising facts that will change how you see the built world</p>
+    </div>
+
+    <div class="dyk-banner fade-in">
+      <div class="dyk-label">Did You Know?</div>
+      <div class="dyk-text" id="dykText">The Eiffel Tower grows by 15 cm in summer due to thermal expansion of its iron structure.</div>
+      <div class="dyk-nav">
+        <button onclick="prevDyk()">←</button>
+        <button onclick="nextDyk()">→</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Civilline</div>
+    <p class="footer-tagline">Engineering knowledge for the curious mind</p>
+    <div class="footer-links">
+      <a href="#facts">Facts</a>
+      <a href="#timeline">History</a>
+      <a href="#materials">Materials</a>
+      <a href="#quiz">Quiz</a>
+    </div>
+    <p class="footer-copy">© 2026 Civilline. Built with passion for engineering.</p>
+  </footer>
+
+  <script>
+    // Particle system
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 15 + 's';
+      p.style.animationDuration = (10 + Math.random() * 10) + 's';
+      p.style.width = (2 + Math.random() * 4) + 'px';
+      p.style.height = p.style.width;
+      particlesContainer.appendChild(p);
+    }
+
+    // Scroll progress
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('scrollProgress').style.width = scrolled + '%';
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        nav.style.padding = '0.8rem 4rem';
+        nav.style.background = 'rgba(15,28,46,0.95)';
+      } else {
+        nav.style.padding = '1.2rem 4rem';
+        nav.style.background = 'rgba(15,28,46,0.85)';
+      }
+    });
+
+    // Intersection Observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Animated counters
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target);
+          let current = 0;
+          const increment = target / 60;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              el.textContent = target.toLocaleString();
+              clearInterval(timer);
+            } else {
+              el.textContent = Math.floor(current).toLocaleString();
+            }
+          }, 25);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-number').forEach(el => counterObserver.observe(el));
+
+    // Quiz System
+    const quizData = [
+      {
+        q: "What is the primary purpose of a tuned mass damper in a skyscraper?",
+        options: ["Generate electricity", "Reduce building sway", "Support the foundation", "Improve WiFi signal"],
+        correct: 1
+      },
+      {
+        q: "Which ancient civilization developed concrete that could set underwater?",
+        options: ["Egyptians", "Greeks", "Romans", "Mayans"],
+        correct: 2
+      },
+      {
+        q: "What is the tallest bridge in the world by pillar height?",
+        options: ["Golden Gate Bridge", "Millau Viaduct", "Akashi Kaikyo", "Tower Bridge"],
+        correct: 1
+      },
+      {
+        q: "How much can the Golden Gate Bridge sway sideways during high winds?",
+        options: ["5 feet", "15 feet", "27 feet", "40 feet"],
+        correct: 2
+      },
+      {
+        q: "What material did ancient Chinese builders use in mortar for water resistance?",
+        options: ["Lime", "Sticky rice flour", "Clay", "Bitumen"],
+        correct: 1
+      },
+      {
+        q: "Which is the most recycled material on Earth?",
+        options: ["Plastic", "Aluminum", "Steel", "Glass"],
+        correct: 2
+      },
+      {
+        q: "The Burj Khalifa's Y-shaped plan was inspired by which flower?",
+        options: ["Rose", "Hymenocallis", "Lotus", "Sunflower"],
+        correct: 1
+      },
+      {
+        q: "How long would the Hoover Dam's concrete take to cool without cooling pipes?",
+        options: ["10 years", "50 years", "75 years", "125 years"],
+        correct: 3
+      }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let answered = false;
+
+    function loadQuestion() {
+      answered = false;
+      const q = quizData[currentQ];
+      document.getElementById('quizQuestion').textContent = q.q;
+      const optsDiv = document.getElementById('quizOptions');
+      optsDiv.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        optsDiv.appendChild(btn);
+      });
+      document.getElementById('quizNext').style.display = 'none';
+      document.getElementById('quizScore').textContent = `Score: ${score} / ${currentQ}`;
+    }
+
+    function checkAnswer(idx) {
+      if (answered) return;
+      answered = true;
+      const q = quizData[currentQ];
+      const opts = document.querySelectorAll('.quiz-option');
+      opts.forEach((opt, i) => {
+        opt.style.pointerEvents = 'none';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === idx) opt.classList.add('wrong');
+      });
+      if (idx === q.correct) score++;
+      document.getElementById('quizScore').textContent = `Score: ${score} / ${currentQ + 1}`;
+      document.getElementById('quizNext').style.display = 'inline-block';
+      if (currentQ >= quizData.length - 1) {
+        document.getElementById('quizNext').textContent = 'Finish Quiz ✓';
+      }
+    }
+
+    function nextQuestion() {
+      currentQ++;
+      if (currentQ >= quizData.length) {
+        document.getElementById('quizQuestion').innerHTML = `<span style="color: var(--accent); font-size: 2rem;">🎉 Quiz Complete!</span><br><br>You scored ${score} out of ${quizData.length}`;
+        document.getElementById('quizOptions').innerHTML = '';
+        document.getElementById('quizNext').style.display = 'none';
+        setTimeout(() => {
+          currentQ = 0; score = 0;
+          loadQuestion();
+          document.getElementById('quizNext').textContent = 'Next Question →';
+        }, 4000);
+        return;
+      }
+      loadQuestion();
+    }
+
+    loadQuestion();
+
+    // Did You Know carousel
+    const dykFacts = [
+      "The Eiffel Tower grows by 15 cm in summer due to thermal expansion of its iron structure.",
+      "The Channel Tunnel's underwater section is longer than the entire width of the English Channel at that point because it follows a curved path.",
+      "The Panama Canal uses a system of locks that raise ships 85 feet above sea level using gravity-fed water.",
+      "The Great Wall of China is not visible from the Moon with the naked eye — this is a common myth.",
+      "The Brooklyn Bridge was the first bridge to be lit by electricity at night, in 1883.",
+      "Dubai's Palm Islands required 94 million cubic meters of sand — enough to fill 2.5 Empire State Buildings.",
+      "The Three Gorges Dam in China is so massive it slowed Earth's rotation by 0.06 microseconds per day when filled.",
+      "Ancient Roman concrete actually gets stronger over time due to continued chemical reactions with seawater.",
+      "The Akashi Kaikyo Bridge's main span is 1,991 meters — long enough to fit the Eiffel Tower lying down with room to spare.",
+      "Sydney Opera House's roof contains 1,056,006 tiles — all self-cleaning and never needing replacement."
+    ];
+
+    let dykIndex = 0;
+    const dykText = document.getElementById('dykText');
+
+    function updateDyk() {
+      dykText.style.opacity = '0';
+      dykText.style.transform = 'translateY(10px)';
+      setTimeout(() => {
+        dykText.textContent = dykFacts[dykIndex];
+        dykText.style.opacity = '1';
+        dykText.style.transform = 'translateY(0)';
+      }, 300);
+    }
+
+    function nextDyk() {
+      dykIndex = (dykIndex + 1) % dykFacts.length;
+      updateDyk();
+    }
+
+    function prevDyk() {
+      dykIndex = (dykIndex - 1 + dykFacts.length) % dykFacts.length;
+      updateDyk();
+    }
+
+    setInterval(nextDyk, 8000);
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
