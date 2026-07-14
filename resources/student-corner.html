@@ -1,30 +1,217 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Student Corner</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering Student Corner</title>
+    <style>
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #3498db; 
+            --bg: #f4f7f6; 
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --shadow-hover: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            background-color: var(--bg); 
+            color: var(--text-main);
+            margin: 0; 
+            padding: 20px; 
+        }
+
+        .container { 
+            max-width: 1000px; 
+            margin: auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: var(--shadow); 
+            
+            /* --- NEW ANIMATION ON LOAD --- */
+            opacity: 0;
+            animation: fadeInSlideUp 0.8s ease-out forwards;
+        }
+
+        /* Keyframes for load animation */
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1, h2 { 
+            color: var(--primary); 
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 10px; 
+            margin-top: 20px; 
+        }
+
+        .company-card { 
+            padding: 15px; 
+            border: 1px solid #eee; 
+            border-radius: 5px; 
+            text-align: center; 
+            background: #fff; 
+            
+            /* --- NEW TRANSITIONS FOR INTERACTION --- */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            will-change: transform, box-shadow;
+        }
+
+        /* --- HOVER EFFECT ON COMPANY CARDS --- */
+        .company-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: var(--shadow-hover);
+            background-color: #fbfdff;
+            border-color: var(--accent);
+        }
+
+        .company-card a { 
+            text-decoration: none; 
+            color: var(--accent); 
+            font-weight: 600; 
+            font-size: 0.95em; 
+            display: block; /* Makes the whole card clickable */
+        }
+
+        .interview-section { 
+            margin-top: 40px; 
+            padding: 25px; 
+            background: #eef2f3; 
+            border-radius: 8px; 
+            border-left: 5px solid var(--accent);
+        }
+
+        .guide-step { 
+            margin-bottom: 20px; 
+            padding: 10px;
+            border-radius: 4px;
+            
+            /* --- NEW TRANSITION FOR INTERACTION --- */
+            transition: transform 0.3s ease, background-color 0.2s ease;
+        }
+        
+        /* --- HOVER EFFECT ON GUIDE STEPS --- */
+        .guide-step:hover {
+            transform: translateX(10px);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .guide-step h3 { 
+            color: var(--accent); 
+            margin: 0 0 5px 0; 
+            font-size: 1.2em;
+        }
+
+        .guide-step p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
 <body>
-<header><h1>👨‍🎓 Student Corner</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+<div class="container">
+    <h1>Civil Engineering Student Corner</h1>
+    <p>Your comprehensive resource for career opportunities and professional growth. Hover over items to explore.</p>
+
+    <h2>50+ Top Civil Engineering Companies</h2>
+    <div class="grid-container">
+        <!-- List of 50 Companies - Links open in new tab -->
+        <div class="company-card"><a href="https://www.aecom.com" target="_blank">AECOM</a></div>
+        <div class="company-card"><a href="https://www.arup.com" target="_blank">Arup</a></div>
+        <div class="company-card"><a href="https://www.bechtel.com" target="_blank">Bechtel</a></div>
+        <div class="company-card"><a href="https://www.jacobs.com" target="_blank">Jacobs</a></div>
+        <div class="company-card"><a href="https://www.wsp.com" target="_blank">WSP</a></div>
+        <div class="company-card"><a href="https://www.mottmac.com" target="_blank">Mott MacDonald</a></div>
+        <div class="company-card"><a href="https://www.atkinsrealis.com" target="_blank">AtkinsRéalis</a></div>
+        <div class="company-card"><a href="https://www.fluor.com" target="_blank">Fluor</a></div>
+        <div class="company-card"><a href="https://www.kbr.com" target="_blank">KBR</a></div>
+        <div class="company-card"><a href="https://www.parsons.com" target="_blank">Parsons</a></div>
+        <div class="company-card"><a href="https://www.tetratech.com" target="_blank">Tetra Tech</a></div>
+        <div class="company-card"><a href="https://www.hdrinc.com" target="_blank">HDR Inc.</a></div>
+        <div class="company-card"><a href="https://www.stantec.com" target="_blank">Stantec</a></div>
+        <div class="company-card"><a href="https://www.cdmsmith.com" target="_blank">CDM Smith</a></div>
+        <div class="company-card"><a href="https://www.skanska.com" target="_blank">Skanska</a></div>
+        <div class="company-card"><a href="https://www.turnerconstruction.com" target="_blank">Turner Construction</a></div>
+        <div class="company-card"><a href="https://www.balfourbeatty.com" target="_blank">Balfour Beatty</a></div>
+        <div class="company-card"><a href="https://www.laingorourke.com" target="_blank">Laing O'Rourke</a></div>
+        <div class="company-card"><a href="https://www.vinci.com" target="_blank">VINCI Construction</a></div>
+        <div class="company-card"><a href="https://www.bouygues-construction.com" target="_blank">Bouygues</a></div>
+        <div class="company-card"><a href="https://www.ferrovial.com" target="_blank">Ferrovial</a></div>
+        <div class="company-card"><a href="https://www.hochtief.com" target="_blank">HOCHTIEF</a></div>
+        <div class="company-card"><a href="https://www.aecon.com" target="_blank">Aecon Group</a></div>
+        <div class="company-card"><a href="https://www.graniteconstruction.com" target="_blank">Granite Construction</a></div>
+        <div class="company-card"><a href="https://www.kiewit.com" target="_blank">Kiewit</a></div>
+        <div class="company-card"><a href="https://www.mccarthy.com" target="_blank">McCarthy Building</a></div>
+        <div class="company-card"><a href="https://www.clarkconstruction.com" target="_blank">Clark Construction</a></div>
+        <div class="company-card"><a href="https://www.gilbaneco.com" target="_blank">Gilbane Building Co.</a></div>
+        <div class="company-card"><a href="https://www.dpr.com" target="_blank">DPR Construction</a></div>
+        <div class="company-card"><a href="https://www.whiting-turner.com" target="_blank">Whiting-Turner</a></div>
+        <div class="company-card"><a href="https://www.mortenson.com" target="_blank">Mortenson</a></div>
+        <div class="company-card"><a href="https://www.pcl.com" target="_blank">PCL Construction</a></div>
+        <div class="company-card"><a href="https://www.lendlease.com" target="_blank">Lendlease</a></div>
+        <div class="company-card"><a href="https://www.larsentoubro.com" target="_blank">Larsen & Toubro (L&T)</a></div>
+        <div class="company-card"><a href="https://www.tataprojects.com" target="_blank">Tata Projects</a></div>
+        <div class="company-card"><a href="https://www.afcons.com" target="_blank">Afcons Infrastructure</a></div>
+        <div class="company-card"><a href="https://www.shapoorjipallonji.com" target="_blank">Shapoorji Pallonji</a></div>
+        <div class="company-card"><a href="https://www.hccindia.com" target="_blank">Hindustan Construction (HCC)</a></div>
+        <div class="company-card"><a href="https://www.gmrgroup.in" target="_blank">GMR Group</a></div>
+        <div class="company-card"><a href="https://www.gammonindia.com" target="_blank">Gammon India</a></div>
+        <div class="company-card"><a href="https://www.kalpataru.com" target="_blank">Kalpataru Power</a></div>
+        <div class="company-card"><a href="https://www.oberoirealty.com" target="_blank">Oberoi Realty</a></div>
+        <div class="company-card"><a href="https://www.lodhagroup.in" target="_blank">Lodha Group</a></div>
+        <div class="company-card"><a href="https://www.dlf.in" target="_blank">DLF Limited</a></div>
+        <div class="company-card"><a href="https://www.godrejproperties.com" target="_blank">Godrej Properties</a></div>
+        <div class="company-card"><a href="https://www.acclimited.com" target="_blank">ACC Limited</a></div>
+        <div class="company-card"><a href="https://www.ultratechcement.com" target="_blank">UltraTech Cement</a></div>
+        <div class="company-card"><a href="https://www.jsw.in" target="_blank">JSW Steel/Infrastructure</a></div>
+        <div class="company-card"><a href="https://www.bhel.com" target="_blank">BHEL</a></div>
+        <div class="company-card"><a href="https://www.nbccindia.com" target="_blank">NBCC India</a></div>
+    </div>
+
+    <section class="interview-section">
+        <h2>Interview Guidance for Civil Engineers</h2>
+        
+        <div class="guide-step">
+            <h3>1. Technical Mastery</h3>
+            <p>Brush up on core subjects like Strength of Materials, Structural Analysis, Geotechnical Engineering, and Concrete Technology. Be prepared to answer questions about site safety and building codes.</p>
+        </div>
+
+        <div class="guide-step">
+            <h3>2. The STAR Method (Behavioral)</h3>
+            <p>Use <strong>Situation, Task, Action, Result</strong> to structure your answers. When asked about conflict or teamwork, clearly define the problem and the specific action
