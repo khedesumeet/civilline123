@@ -1,34 +1,1464 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Free Magazines & White Papers</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
-header{background:#0b5ed7;color:#fff;padding:20px;text-align:center}
-main{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h2{color:#0b5ed7} ul{line-height:1.8}
-footer{text-align:center;padding:20px;color:#666}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Civil Engineering Magazines & White Papers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.8em;
+            color: #f5f5f5;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            color: #a0a0a0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00e5ff;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 12px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: 500;
+        }
+        
+        .tab-btn:hover, .tab-btn.active {
+            background: rgba(0, 229, 255, 0.2);
+            border-color: #00e5ff;
+            color: #00e5ff;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            border-color: #00e5ff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .search-box input::placeholder {
+            color: #666;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #f5f5f5;
+            margin-bottom: 25px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #00e5ff, #00b8d4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 229, 255, 0.3);
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #f5f5f5;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .card-publisher {
+            font-size: 0.85em;
+            color: #888;
+        }
+        
+        .free-badge {
+            background: linear-gradient(135deg, #00c853, #00e676);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        .oa-badge {
+            background: linear-gradient(135deg, #ff9100, #ffc400);
+            color: #1a1a2e;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85em;
+            color: #a0a0a0;
+        }
+        
+        .card-topics {
+            margin: 15px 0;
+        }
+        
+        .topic-tag {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.15);
+            color: #00e5ff;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin: 3px;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+        
+        .card-description {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 10px 0;
+            flex-grow: 1;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00e5ff, #00b8d4);
+            color: #0f2027;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #00b8d4, #0097a7);
+            transform: scale(1.02);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .resource-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .resource-section h2 {
+            color: #f5f5f5;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #00e5ff;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .resource-card h3 {
+            color: #00e5ff;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .resource-card p {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .resource-link {
+            color: #00e5ff;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 1.1em;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+        
+        .featured-banner {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(0, 184, 212, 0.1));
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .featured-banner h3 {
+            color: #00e5ff;
+            margin-bottom: 10px;
+        }
+        
+        .featured-banner p {
+            color: #a0a0a0;
+            font-size: 0.95em;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                gap: 15px;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-<header><h1>Free Magazines & White Papers</h1></header>
-<main>
-<h2>Overview</h2>
-<p>Free industry magazines, technical white papers, standards updates and construction technology articles.</p>
-<h2>Important Topics</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory and Concepts</li>
-<li>Design Principles</li>
-<li>IS Codes / Standards</li>
-<li>Practical Applications</li>
-<li>Interview Questions</li>
-<li>MCQs for Practice</li>
-<li>References and Learning Resources</li>
-</ul>
-</main>
-<footer>© Civil Engineering Knowledge Portal</footer>
+    <div class="container">
+        <header>
+            <h1>📰 Free Civil Engineering Resources</h1>
+            <p>Curated directory of free magazines, white papers, and technical reports for civil engineers. All resources listed offer free PDF downloads or open access content.</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Free Magazines</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">White Papers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Access</div>
+                </div>
+            </div>
+            
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search magazines, white papers, or topics...">
+            </div>
+            
+            <div class="tab-container">
+                <button class="tab-btn active" data-tab="magazines">📖 Magazines</button>
+                <button class="tab-btn" data-tab="whitepapers">📄 White Papers</button>
+                <button class="tab-btn" data-tab="reports">📊 Technical Reports</button>
+                <button class="tab-btn" data-tab="resources">🔗 More Resources</button>
+            </div>
+        </header>
+
+        <!-- MAGAZINES SECTION -->
+        <div class="content-section active" id="magazines">
+            <div class="featured-banner">
+                <h3>🆓 Free Magazine Downloads</h3>
+                <p>These publications offer free digital editions, back issues, or sample issues at no cost. Click "Download PDF" to access directly.</p>
+            </div>
+            
+            <div class="grid" id="magazinesGrid">
+                <div class="card" data-category="magazine infrastructure general">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Civil Engineering Magazine (ASCE)</div>
+                            <div class="card-publisher">American Society of Civil Engineers</div>
+                        </div>
+                        <span class="free-badge">Free Sample</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Monthly</div>
+                        <div class="meta-item">🌍 USA/Global</div>
+                        <div class="meta-item">📱 Digital + Print</div>
+                    </div>
+                    <div class="card-description">
+                        ASCE's flagship publication covering infrastructure, project profiles, policy updates, and professional development. Free digital sample issues available.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Infrastructure</span>
+                        <span class="topic-tag">Policy</span>
+                        <span class="topic-tag">Projects</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.asce.org/publications-and-news/civil-engineering-source/civil-engineering-magazine/issues" class="btn btn-primary" target="_blank">📄 Read Online</a>
+                        <a href="https://www.asce.org/publications-and-news/civil-engineering-source/civil-engineering-magazine/issues" class="btn btn-secondary" target="_blank">Archive</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine uk infrastructure">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">New Civil Engineer (NCE)</div>
+                            <div class="card-publisher">Institution of Civil Engineers (ICE)</div>
+                        </div>
+                        <span class="free-badge">Free Issues</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Weekly</div>
+                        <div class="meta-item">🇬🇧 UK Focus</div>
+                        <div class="meta-item">📱 App Available</div>
+                    </div>
+                    <div class="card-description">
+                        Leading UK civil engineering magazine covering major projects, industry news, and technical innovations. Free digital edition archive for ICE members and selected free issues.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">UK Projects</span>
+                        <span class="topic-tag">Industry News</span>
+                        <span class="topic-tag">Innovation</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.newcivilengineer.com/digital-edition/" class="btn btn-primary" target="_blank">📄 Digital Edition</a>
+                        <a href="https://www.newcivilengineer.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine ireland construction">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Plant & Civil Engineer</div>
+                            <div class="card-publisher">Plant & Civil Engineer Ltd</div>
+                        </div>
+                        <span class="free-badge">100% Free</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Bi-Monthly</div>
+                        <div class="meta-item">🇮🇪 Ireland/UK</div>
+                        <div class="meta-item">💰 Free Download</div>
+                    </div>
+                    <div class="card-description">
+                        Premier publication for plant, construction, quarrying, and civil engineering industries in Ireland. All back issues completely free to download as PDF.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Plant Machinery</span>
+                        <span class="topic-tag">Construction</span>
+                        <span class="topic-tag">Quarrying</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://plantandcivilengineer.com/download-magazine/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://plantandcivilengineer.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine south-africa infrastructure">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Civil Engineering Magazine (SAICE)</div>
+                            <div class="card-publisher">South African Institution of Civil Engineering</div>
+                        </div>
+                        <span class="free-badge">Open Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Monthly</div>
+                        <div class="meta-item">🇿🇦 South Africa</div>
+                        <div class="meta-item">📄 PDF Archive</div>
+                    </div>
+                    <div class="card-description">
+                        SAICE's official magazine covering civil engineering in Southern Africa. Selected articles and back issues available free online for members and public.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Southern Africa</span>
+                        <span class="topic-tag">Infrastructure</span>
+                        <span class="topic-tag">Water</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://saice.org.za/civil-engineering-magazine/" class="btn btn-primary" target="_blank">📄 Browse Issues</a>
+                        <a href="https://saice.org.za/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine bim software">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">AEC Magazine</div>
+                            <div class="card-publisher">X3DMedia</div>
+                        </div>
+                        <span class="free-badge">Free Digital</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Bi-Monthly</div>
+                        <div class="meta-item">🌍 Global</div>
+                        <div class="meta-item">💻 Digital Focus</div>
+                    </div>
+                    <div class="card-description">
+                        Free digital magazine covering BIM, digital construction, AI in AEC, and software reviews. Registration required for free download.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">BIM</span>
+                        <span class="topic-tag">Digital Twins</span>
+                        <span class="topic-tag">Software</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.aecmag.com/" class="btn btn-primary" target="_blank">📄 Free Download</a>
+                        <a href="https://www.aecmag.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine surveying geospatial">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Geospatial World Magazine</div>
+                            <div class="card-publisher">Geospatial Media</div>
+                        </div>
+                        <span class="free-badge">Free Digital</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Monthly</div>
+                        <div class="meta-item">🌍 Global</div>
+                        <div class="meta-item">📡 Geospatial</div>
+                    </div>
+                    <div class="card-description">
+                        Free digital magazine covering surveying, GIS, remote sensing, and geospatial technology applications in civil engineering and construction.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">GIS</span>
+                        <span class="topic-tag">Surveying</span>
+                        <span class="topic-tag">Remote Sensing</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.geospatialworld.net/magazine/" class="btn btn-primary" target="_blank">📄 Read Online</a>
+                        <a href="https://www.geospatialworld.net/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine infrastructure sustainability">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Infrastructure Intelligence</div>
+                            <div class="card-publisher">Infrastructure Intelligence Ltd</div>
+                        </div>
+                        <span class="free-badge">Free Digital</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Monthly</div>
+                        <div class="meta-item">🇬🇧 UK Focus</div>
+                        <div class="meta-item">🏗️ Infrastructure</div>
+                    </div>
+                    <div class="card-description">
+                        Free digital magazine covering UK infrastructure projects, investment, and policy. Features major project profiles and industry interviews.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Investment</span>
+                        <span class="topic-tag">Policy</span>
+                        <span class="topic-tag">Major Projects</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.infrastructure-intelligence.com/" class="btn btn-primary" target="_blank">📄 Read Online</a>
+                        <a href="https://www.infrastructure-intelligence.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine construction equipment">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Construction Equipment</div>
+                            <div class="card-publisher">ForConstructionPros.com</div>
+                        </div>
+                        <span class="free-badge">Free Digital</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Monthly</div>
+                        <div class="meta-item">🇺🇸 USA</div>
+                        <div class="meta-item">🚜 Equipment</div>
+                    </div>
+                    <div class="card-description">
+                        Free digital magazine covering construction equipment, technology, and management. Offers free subscription to digital edition.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Equipment</span>
+                        <span class="topic-tag">Technology</span>
+                        <span class="topic-tag">Management</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.forconstructionpros.com/construction-equipment-magazine" class="btn btn-primary" target="_blank">📄 Subscribe Free</a>
+                        <a href="https://www.forconstructionpros.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine water environment">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">World Water Magazine</div>
+                            <div class="card-publisher">FML Global</div>
+                        </div>
+                        <span class="free-badge">Free Digital</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Bi-Monthly</div>
+                        <div class="meta-item">🌍 Global</div>
+                        <div class="meta-item">💧 Water</div>
+                    </div>
+                    <div class="card-description">
+                        Free digital magazine covering water engineering, wastewater treatment, and environmental infrastructure. Free subscription available.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Water</span>
+                        <span class="topic-tag">Wastewater</span>
+                        <span class="topic-tag">Environment</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.worldwatermagazine.com/" class="btn btn-primary" target="_blank">📄 Subscribe Free</a>
+                        <a href="https://www.worldwatermagazine.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="magazine bridge transportation">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Bridge Design & Engineering</div>
+                            <div class="card-publisher">Hemming Group</div>
+                        </div>
+                        <span class="free-badge">Free Sample</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Quarterly</div>
+                        <div class="meta-item">🌍 Global</div>
+                        <div class="meta-item">🌉 Bridges</div>
+                    </div>
+                    <div class="card-description">
+                        Leading bridge engineering magazine. Selected free articles and sample issues available. Covers design, construction, and maintenance of bridges worldwide.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Bridge Design</span>
+                        <span class="topic-tag">Construction</span>
+                        <span class="topic-tag">Maintenance</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.bridgeweb.com/" class="btn btn-primary" target="_blank">📄 Sample Issues</a>
+                        <a href="https://www.bridgeweb.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHITE PAPERS SECTION -->
+        <div class="content-section" id="whitepapers">
+            <div class="featured-banner">
+                <h3>📄 Free White Papers & Reports</h3>
+                <p>Downloadable research reports, policy briefs, and technical white papers from leading organizations. All listed resources offer free PDF downloads.</p>
+            </div>
+            
+            <div class="grid" id="whitepapersGrid">
+                <div class="card" data-category="whitepaper ai infrastructure">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">AI in Infrastructure: Global Survey Report</div>
+                            <div class="card-publisher">Infrastructure Policy Advancement / Bentley</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 March 2026</div>
+                        <div class="meta-item">🤖 AI Focus</div>
+                        <div class="meta-item">🌍 Global</div>
+                    </div>
+                    <div class="card-description">
+                        Comprehensive survey examining AI deployment across infrastructure sectors. Covers implementation hurdles, adoption trends, and strategic recommendations for engineering firms and owner-operators.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Artificial Intelligence</span>
+                        <span class="topic-tag">Digital Transformation</span>
+                        <span class="topic-tag">Survey Data</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://infrastructurepolicyadvancement.com/knowledge-hub/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://infrastructurepolicyadvancement.com/" class="btn btn-secondary" target="_blank">Source</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper sponge-cities flooding">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Creating Sponge Cities to Tackle Surface Water Flooding</div>
+                            <div class="card-publisher">Infrastructure Policy Advancement</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 March 2025</div>
+                        <div class="meta-item">🇬🇧 UK Focus</div>
+                        <div class="meta-item">🌧️ Climate</div>
+                    </div>
+                    <div class="card-description">
+                        Vital contribution to nature-based infrastructure solutions. Explores pluvial flooding risks and sponge city concepts for resilient urban development in the face of climate change.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Sponge Cities</span>
+                        <span class="topic-tag">Flood Resilience</span>
+                        <span class="topic-tag">Nature-Based</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://infrastructurepolicyadvancement.com/knowledge-hub/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://infrastructurepolicyadvancement.com/" class="btn btn-secondary" target="_blank">Source</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper systems-thinking projects">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Systems Thinking for Complex Infrastructure Projects</div>
+                            <div class="card-publisher">Infrastructure Policy Advancement</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Feb 2025</div>
+                        <div class="meta-item">📊 Research</div>
+                        <div class="meta-item">🌍 Global</div>
+                    </div>
+                    <div class="card-description">
+                        Two-part review on using systems thinking to improve delivery of complex infrastructure. Examines why two-thirds of mega projects disappoint on cost, schedule, or outcomes.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Systems Thinking</span>
+                        <span class="topic-tag">Project Delivery</span>
+                        <span class="topic-tag">Mega Projects</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://infrastructurepolicyadvancement.com/knowledge-hub/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://infrastructurepolicyadvancement.com/" class="btn btn-secondary" target="_blank">Source</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper mobility pricing">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">The Future of Mobility Pricing</div>
+                            <div class="card-publisher">Infrastructure Policy Advancement</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 May 2024</div>
+                        <div class="meta-item">🚗 Transport</div>
+                        <div class="meta-item">💰 Economics</div>
+                    </div>
+                    <div class="card-description">
+                        Explores pay-as-you-drive systems, road user charging, and the transition from fuel duty to usage-based pricing for sustainable transport funding.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Road Pricing</span>
+                        <span class="topic-tag">Transport Policy</span>
+                        <span class="topic-tag">EV Charging</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://infrastructurepolicyadvancement.com/knowledge-hub/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://infrastructurepolicyadvancement.com/" class="btn btn-secondary" target="_blank">Source</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper climate resilience">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Maintaining Highway Infrastructure from Extreme Weather</div>
+                            <div class="card-publisher">Infrastructure Policy Advancement</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 Oct 2024</div>
+                        <div class="meta-item">🌡️ Climate</div>
+                        <div class="meta-item">🛣️ Highways</div>
+                    </div>
+                    <div class="card-description">
+                        Examines climate impacts on aging UK infrastructure. Covers flooding, temperature extremes, storms, and strategies for future-proofing transport networks.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Climate Resilience</span>
+                        <span class="topic-tag">Highway Maintenance</span>
+                        <span class="topic-tag">Extreme Weather</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://infrastructurepolicyadvancement.com/knowledge-hub/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://infrastructurepolicyadvancement.com/" class="btn btn-secondary" target="_blank">Source</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper ai construction">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">AI in the Construction Industry - The 1x1 Guide</div>
+                            <div class="card-publisher">Syniotec</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2026</div>
+                        <div class="meta-item">🤖 AI</div>
+                        <div class="meta-item">🏗️ Construction</div>
+                    </div>
+                    <div class="card-description">
+                        Practical guide to AI implementation in construction. Covers use cases for construction sites, machine rental, data protection, compliance, and strategic integration steps.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">AI Basics</span>
+                        <span class="topic-tag">Construction Sites</span>
+                        <span class="topic-tag">Best Practices</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://syniotec.com/whitepaper/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://syniotec.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper circular-economy sustainability">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Our Shared Understanding: Circular Economy</div>
+                            <div class="card-publisher">Ellen MacArthur Foundation</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2025</div>
+                        <div class="meta-item">♻️ Sustainability</div>
+                        <div class="meta-item">🌍 Global</div>
+                    </div>
+                    <div class="card-description">
+                        Core concepts for transitioning to a circular economy in the built environment. Aligns policies and strategies for sustainable infrastructure development.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Circular Economy</span>
+                        <span class="topic-tag">Sustainability</span>
+                        <span class="topic-tag">Built Environment</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://ellenmacarthurfoundation.org/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://ellenmacarthurfoundation.org/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper carbon infrastructure">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Whole-Life Carbon in Infrastructure</div>
+                            <div class="card-publisher">Institution of Civil Engineers (ICE)</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2025</div>
+                        <div class="meta-item">🌱 Carbon</div>
+                        <div class="meta-item">🏗️ Infrastructure</div>
+                    </div>
+                    <div class="card-description">
+                        Addresses the 70% of global carbon emissions linked to infrastructure. Guidance for civil engineers on understanding and reducing whole-life carbon.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Carbon Reduction</span>
+                        <span class="topic-tag">Whole-Life Costing</span>
+                        <span class="topic-tag">Net Zero</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.ice.org.uk/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://www.ice.org.uk/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper infrastructure-report usa">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">ASCE Infrastructure Report Card 2025</div>
+                            <div class="card-publisher">American Society of Civil Engineers</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2025</div>
+                        <div class="meta-item">🇺🇸 USA</div>
+                        <div class="meta-item">📊 Assessment</div>
+                    </div>
+                    <div class="card-description">
+                        Comprehensive quadrennial assessment of U.S. infrastructure across 18 categories. Grades, investment needs, and recommendations for policymakers.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Infrastructure Grades</span>
+                        <span class="topic-tag">Investment</span>
+                        <span class="topic-tag">Policy</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://infrastructurereportcard.org/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://www.asce.org/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper bim structural">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">BIM for Structural Engineering White Papers</div>
+                            <div class="card-publisher">Graitec / Autodesk</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2025-2026</div>
+                        <div class="meta-item">💻 BIM</div>
+                        <div class="meta-item">🏗️ Structural</div>
+                    </div>
+                    <div class="card-description">
+                        Collection of free white papers on BIM implementation, structural analysis software, and digital workflows for civil engineering projects.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">BIM</span>
+                        <span class="topic-tag">Structural Analysis</span>
+                        <span class="topic-tag">Software</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://graitec.com/uk/resources/expert-content/white-papers/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://graitec.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper net-zero construction">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">The Road to Net Zero White Paper</div>
+                            <div class="card-publisher">Intertek</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2025</div>
+                        <div class="meta-item">🌱 Net Zero</div>
+                        <div class="meta-item">🏗️ Construction</div>
+                    </div>
+                    <div class="card-description">
+                        Guide to halting carbon emissions in construction. Covers Paris Agreement targets, business accountability, and practical steps for achieving net zero.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Net Zero</span>
+                        <span class="topic-tag">Carbon Footprint</span>
+                        <span class="topic-tag">Climate Action</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.intertek.com/knowledge-education/whitepapers/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://www.intertek.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="whitepaper epd sustainability">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Environmental Product Declarations (EPDs) Guide</div>
+                            <div class="card-publisher">Intertek Assuris</div>
+                        </div>
+                        <span class="free-badge">Free PDF</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📅 2025</div>
+                        <div class="meta-item">🌱 EPDs</div>
+                        <div class="meta-item">🏗️ Materials</div>
+                    </div>
+                    <div class="card-description">
+                        Explains EPD creation process, environmental performance assessment, and challenges in construction sustainability reporting.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">EPDs</span>
+                        <span class="topic-tag">Sustainability</span>
+                        <span class="topic-tag">Life Cycle</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.intertek.com/knowledge-education/whitepapers/" class="btn btn-primary" target="_blank">📄 Download PDF</a>
+                        <a href="https://www.intertek.com/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TECHNICAL REPORTS SECTION -->
+        <div class="content-section" id="reports">
+            <div class="featured-banner">
+                <h3>📊 Free Technical Reports & Government Publications</h3>
+                <p>Open-access technical reports, standards, and research publications from government agencies and research institutions.</p>
+            </div>
+            
+            <div class="grid" id="reportsGrid">
+                <div class="card" data-category="report government usa">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">National Technical Reports Library (NTRL)</div>
+                            <div class="card-publisher">U.S. Department of Commerce</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 2M+ Reports</div>
+                        <div class="meta-item">🇺🇸 USA</div>
+                        <div class="meta-item">📄 PDF Download</div>
+                    </div>
+                    <div class="card-description">
+                        Access to over 2 million U.S. Federal government technical reports in science and technology. Free registration required; 5 downloads per session.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Federal Reports</span>
+                        <span class="topic-tag">Science & Tech</span>
+                        <span class="topic-tag">Engineering</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://ntrl.ntis.gov/NTRL/" class="btn btn-primary" target="_blank">📄 Access Library</a>
+                        <a href="https://ntrl.ntis.gov/NTRL/" class="btn btn-secondary" target="_blank">Register</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report government energy">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">OSTI SciTech Connect</div>
+                            <div class="card-publisher">U.S. Department of Energy</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 Millions of Docs</div>
+                        <div class="meta-item">⚡ Energy</div>
+                        <div class="meta-item">📄 Full Text</div>
+                    </div>
+                    <div class="card-description">
+                        Consolidated database of DOE research and development reports. Covers energy technologies, engineering, materials, environmental sciences, and more from 1948-present.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Energy</span>
+                        <span class="topic-tag">R&D</span>
+                        <span class="topic-tag">Environment</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.osti.gov/scitech/" class="btn btn-primary" target="_blank">📄 Search Reports</a>
+                        <a href="https://www.osti.gov/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report government defense">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">DTIC Public Technical Reports</div>
+                            <div class="card-publisher">Defense Technical Information Center</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 1974-Present</div>
+                        <div class="meta-item">🛡️ Defense</div>
+                        <div class="meta-item">📄 Full Text</div>
+                    </div>
+                    <div class="card-description">
+                        Unclassified unlimited defense technical reports. Citations from 1974, full text from 1998. Covers engineering, materials, construction for defense infrastructure.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Defense</span>
+                        <span class="topic-tag">Engineering</span>
+                        <span class="topic-tag">Infrastructure</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://discover.dtic.mil/" class="btn btn-primary" target="_blank">📄 Search Database</a>
+                        <a href="https://www.dtic.mil/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report government environment">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">EPA NEPIS Archive</div>
+                            <div class="card-publisher">U.S. Environmental Protection Agency</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 7,000+ Docs</div>
+                        <div class="meta-item">🌱 Environment</div>
+                        <div class="meta-item">📄 Full Text</div>
+                    </div>
+                    <div class="card-description">
+                        Full text access to over 7,000 EPA publications. Search, view, and print complete documents including original page images. Covers water, sanitation, and environmental engineering.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Environment</span>
+                        <span class="topic-tag">Water</span>
+                        <span class="topic-tag">Sanitation</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://nepis.epa.gov/" class="btn btn-primary" target="_blank">📄 Search Archive</a>
+                        <a href="https://www.epa.gov/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report government transport">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">TRID - Transport Research Database</div>
+                            <div class="card-publisher">TRB / OECD</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 Global Database</div>
+                        <div class="meta-item">🚗 Transport</div>
+                        <div class="meta-item">📄 Citations + PDF</div>
+                    </div>
+                    <div class="card-description">
+                        World's largest and most comprehensive bibliographic resource on transportation research. Includes citations and links to full-text documents from TRB and OECD.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Transport</span>
+                        <span class="topic-tag">Highways</span>
+                        <span class="topic-tag">Research</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://trid.trb.org/" class="btn btn-primary" target="_blank">📄 Search TRID</a>
+                        <a href="https://www.trb.org/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report government space">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">NASA Technical Reports Server (NTRS)</div>
+                            <div class="card-publisher">National Aeronautics and Space Administration</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 Aerospace</div>
+                        <div class="meta-item">🚀 Space</div>
+                        <div class="meta-item">📄 Full Text</div>
+                    </div>
+                    <div class="card-description">
+                        Access to NASA's technical literature including aerospace engineering, materials science, and structural analysis. Citations, full-text documents, images, and videos.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Aerospace</span>
+                        <span class="topic-tag">Materials</span>
+                        <span class="topic-tag">Structures</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://ntrs.nasa.gov/" class="btn btn-primary" target="_blank">📄 Search NTRS</a>
+                        <a href="https://www.nasa.gov/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report ciria construction">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">CIRIA Research Reports</div>
+                            <div class="card-publisher">Construction Industry Research & Information Association</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 UK Standard</div>
+                        <div class="meta-item">🇬🇧 UK</div>
+                        <div class="meta-item">📄 PDF</div>
+                    </div>
+                    <div class="card-description">
+                        Publisher of guidance documents in environmental and construction sectors. Many adopted as industry standards. Free access to selected reports and summaries.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Construction</span>
+                        <span class="topic-tag">Environment</span>
+                        <span class="topic-tag">Best Practice</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://www.ciria.org/" class="btn btn-primary" target="_blank">📄 Browse Reports</a>
+                        <a href="https://www.ciria.org/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+
+                <div class="card" data-category="report open-access repository">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">CORE - Open Access Research Papers</div>
+                            <div class="card-publisher">CORE / Open University</div>
+                        </div>
+                        <span class="free-badge">Free Access</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">📊 Millions of Papers</div>
+                        <div class="meta-item">🌍 Global</div>
+                        <div class="meta-item">📄 Full Text</div>
+                    </div>
+                    <div class="card-description">
+                        World's largest aggregator of open access content. Millions of full-text papers from thousands of repositories, journals, and web resources. Includes civil engineering research.
+                    </div>
+                    <div class="card-topics">
+                        <span class="topic-tag">Open Access</span>
+                        <span class="topic-tag">Research</span>
+                        <span class="topic-tag">Aggregator</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="https://core.ac.uk/" class="btn btn-primary" target="_blank">📄 Search CORE</a>
+                        <a href="https://core.ac.uk/" class="btn btn-secondary" target="_blank">Website</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MORE RESOURCES SECTION -->
+        <div class="content-section" id="resources">
+            <div class="resource-section">
+                <h2>📚 Open Access Journal Directories</h2>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>Directory of Open Access Journals (DOAJ)</h3>
+                        <p>Community-curated directory indexing high-quality, peer-reviewed open access journals across all disciplines including civil engineering.</p>
+                        <a href="https://doaj.org/" class="resource-link" target="_blank">Visit DOAJ →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>arXiv Engineering Repository</h3>
+                        <p>Free open-access archive with scholarly articles in physics, mathematics, computer science, and electrical engineering from Cornell University.</p>
+                        <a href="https://arxiv.org/" class="resource-link" target="_blank">Visit arXiv →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>OpenGrey (European Grey Literature)</h3>
+                        <p>Open access to grey literature produced in Europe. Includes science, technology, biomedical sciences, economics, and humanities.</p>
+                        <a href="https://opengrey.eu/" class="resource-link" target="_blank">Visit OpenGrey →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Directory of Open Access Books (DOAB)</h3>
+                        <p>Academic open access books from hundreds of participating publishers. Searchable database of peer-reviewed monographs.</p>
+                        <a href="https://www.doabooks.org/" class="resource-link" target="_blank">Visit DOAB →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resource-section">
+                <h2>🏛️ Professional Institution Resources</h2>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>Institution of Civil Engineers (ICE)</h3>
+                        <p>UK's independent professional association with over 93,000 members. Free knowledge hub, sample articles, and industry reports.</p>
+                        <a href="https://www.ice.org.uk/" class="resource-link" target="_blank">Visit ICE →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>ASCE Library Free Content</h3>
+                        <p>American Society of Civil Engineers library with free access to selected articles, magazine content, and open access papers.</p>
+                        <a href="https://ascelibrary.org/" class="resource-link" target="_blank">Visit ASCE Library →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Royal Academy of Engineering</h3>
+                        <p>UK's national academy of engineering. Free reports, policy briefs, and research publications on engineering challenges.</p>
+                        <a href="https://www.raeng.org.uk/" class="resource-link" target="_blank">Visit RAEng →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>WHO Water & Sanitation Publications</h3>
+                        <p>Full text access to WHO publications on water, sanitation, and health. Essential for environmental and water engineers.</p>
+                        <a href="https://www.who.int/publications" class="resource-link" target="_blank">Visit WHO →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resource-section">
+                <h2>🔧 Software & BIM Resources</h2>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>Autodesk University Learning</h3>
+                        <p>Free classes, tutorials, and white papers on AutoCAD, Revit, Civil 3D, and BIM for infrastructure. Includes video lectures and handouts.</p>
+                        <a href="https://www.autodesk.com/autodesk-university/" class="resource-link" target="_blank">Visit AU →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Bentley Learn</h3>
+                        <p>Free learning resources for MicroStation, OpenRoads, STAAD, and infrastructure engineering software. Video tutorials and documentation.</p>
+                        <a href="https://learn.bentley.com/" class="resource-link" target="_blank">Visit Bentley Learn →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>buildingSMART International</h3>
+                        <p>OpenBIM standards, IFC specifications, and free technical documentation for BIM interoperability in construction.</p>
+                        <a href="https://www.buildingsmart.org/" class="resource-link" target="_blank">Visit buildingSMART →</a>
+                    </div>
+                    <div class="resource-card">
+                        <h3>USGS Publications Warehouse</h3>
+                        <p>U.S. Geological Survey publications on geotechnical engineering, hydrology, and earth sciences. Free digital downloads.</p>
+                        <a href="https://pubs.er.usgs.gov/" class="resource-link" target="_blank">Visit USGS →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results hidden" id="noResults">
+            No resources found matching your search. Try adjusting your search terms or browse all tabs.
+        </div>
+
+        <footer>
+            <p>📰 Free Civil Engineering Resources Directory | All links verified for free access | Last updated: July 2026</p>
+            <p style="margin-top: 10px; font-size: 0.85em; color: #555;">
+                Disclaimer: Free access policies may change. Some resources require free registration. Always respect copyright and licensing terms when downloading content.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === tabId) {
+                        section.classList.add('active');
+                    }
+                });
+                
+                // Clear search when switching tabs
+                document.getElementById('searchInput').value = '';
+                filterContent();
+            });
+        });
+        
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        
+        function filterContent() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeSection = document.querySelector('.content-section.active');
+            const cards = activeSection.querySelectorAll('.card, .resource-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title, h3')?.textContent.toLowerCase() || '';
+                const publisher = card.querySelector('.card-publisher, p')?.textContent.toLowerCase() || '';
+                const topics = Array.from(card.querySelectorAll('.topic-tag')).map(t => t.textContent.toLowerCase()).join(' ');
+                const description = card.querySelector('.card-description, p')?.textContent.toLowerCase() || '';
+                
+                const matchesSearch = title.includes(searchTerm) || publisher.includes(searchTerm) || topics.includes(searchTerm) || description.includes(searchTerm);
+                
+                if (matchesSearch) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            if (visibleCount === 0 && searchTerm !== '') {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+        
+        searchInput.addEventListener('input', filterContent);
+    </script>
 </body>
 </html>
