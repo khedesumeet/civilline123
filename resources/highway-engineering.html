@@ -1,34 +1,1299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Highway Engineering</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
-header{background:#0b5ed7;color:#fff;padding:20px;text-align:center}
-main{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h2{color:#0b5ed7} ul{line-height:1.8}
-footer{text-align:center;padding:20px;color:#666}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Highway Engineering — Civil Engineering</title>
+    <style>
+        :root {
+            --road: #263238;
+            --asphalt: #37474f;
+            --stripe: #ffc107;
+            --stripe-light: #ffeb3b;
+            --white: #ffffff;
+            --gray: #eceff1;
+            --dark: #1a1a2e;
+            --green: #2e7d32;
+            --red: #c62828;
+            --blue: #1565c0;
+            --orange: #ef6c00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--gray);
+            color: var(--road);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Mobile Navigation */
+        nav {
+            background: var(--road);
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-bottom: 3px solid var(--stripe);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 1.25rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .logo::before {
+            content: "▬";
+            color: var(--stripe);
+            font-size: 1.4rem;
+            font-weight: 900;
+        }
+
+        .hamburger {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--asphalt);
+            padding: 0.5rem 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-links.active {
+            display: block;
+        }
+
+        .nav-links li {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-links a {
+            display: block;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 1rem 1.5rem;
+            transition: background 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:active {
+            background: var(--stripe);
+            color: var(--road);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(160deg, var(--dark) 0%, var(--road) 60%, var(--asphalt) 100%);
+            color: white;
+            padding: 3rem 1.25rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 20px,
+                rgba(255, 193, 7, 0.04) 20px,
+                rgba(255, 193, 7, 0.04) 22px
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--stripe);
+        }
+
+        .hero p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 1.75rem;
+            background: var(--stripe);
+            color: var(--road);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border: 2px solid var(--stripe);
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--stripe-light);
+            color: var(--stripe-light);
+            margin-top: 0.75rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 2.5rem 1.25rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--road);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--stripe);
+            margin: 0.6rem auto 0;
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--asphalt);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        /* Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--stripe);
+            transition: transform 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .card h3 {
+            color: var(--road);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .card p, .card li {
+            color: #455a64;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .card ul {
+            margin-top: 0.6rem;
+            padding-left: 1.1rem;
+        }
+
+        .card ul li {
+            margin-bottom: 0.25rem;
+        }
+
+        .formula-box {
+            background: #fffde7;
+            border: 2px solid #ffe082;
+            border-radius: 10px;
+            padding: 0.875rem;
+            text-align: center;
+            margin: 0.75rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--road);
+            font-weight: 600;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Notes */
+        .notes-section {
+            background: #fff8e1;
+            padding: 2.5rem 1.25rem;
+            border-top: 3px solid #ffe082;
+            border-bottom: 3px solid #ffe082;
+        }
+
+        .notes-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .note-paper {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            margin-bottom: 1.25rem;
+            position: relative;
+            border-left: 4px solid var(--orange);
+        }
+
+        .note-paper::before {
+            content: "📝 NOTE";
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            background: var(--orange);
+            color: white;
+            padding: 0.15rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .note-paper h4 {
+            color: var(--road);
+            margin-bottom: 0.6rem;
+            margin-top: 0.4rem;
+            font-size: 1rem;
+        }
+
+        .note-paper ul {
+            padding-left: 1.1rem;
+        }
+
+        .note-paper li {
+            margin-bottom: 0.35rem;
+            font-size: 0.9rem;
+            color: #37474f;
+        }
+
+        .highlight {
+            background: #ffecb3;
+            padding: 0.1rem 0.25rem;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #e65100;
+        }
+
+        /* Calculator */
+        .calc-wrapper {
+            background: linear-gradient(160deg, var(--road), var(--asphalt));
+            border-radius: 16px;
+            padding: 1.75rem;
+            max-width: 900px;
+            margin: 2rem auto;
+            color: white;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .calc-wrapper h2 {
+            text-align: center;
+            margin-bottom: 0.4rem;
+            font-size: 1.35rem;
+        }
+
+        .calc-wrapper h2 span {
+            color: var(--stripe);
+        }
+
+        .calc-wrapper > p {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .calc-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calc-group label {
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85rem;
+        }
+
+        .calc-group input, .calc-group select {
+            padding: 0.875rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transition: all 0.2s;
+            min-height: 48px;
+        }
+
+        .calc-group input:focus, .calc-group select:focus {
+            outline: none;
+            border-color: var(--stripe);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .calc-group input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        .calc-group select option {
+            background: var(--road);
+            color: white;
+        }
+
+        .calc-results {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .calc-result {
+            background: rgba(255, 193, 7, 0.15);
+            border: 2px solid var(--stripe);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .calc-result p {
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .calc-result .big-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--stripe-light);
+        }
+
+        .calc-result .unit {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        .calc-warning {
+            background: rgba(198, 40, 40, 0.2);
+            border: 1px solid #ef5350;
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .calc-warning.active {
+            display: block;
+        }
+
+        .calc-warning p {
+            color: #ffcdd2;
+            font-size: 0.85rem;
+        }
+
+        /* Table */
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.85rem;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--road);
+            color: white;
+            padding: 0.875rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.875rem 0.75rem;
+            border-bottom: 1px solid #eceff1;
+            color: #455a64;
+        }
+
+        tr:hover {
+            background: var(--gray);
+        }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .badge-green { background: #c8e6c9; color: #2e7d32; }
+        .badge-blue { background: #bbdefb; color: #1565c0; }
+        .badge-red { background: #ffcdd2; color: #c62828; }
+        .badge-orange { background: #ffe0b2; color: #ef6c00; }
+
+        /* Quick Ref */
+        .quick-ref {
+            background: white;
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-top: 1.5rem;
+        }
+
+        .quick-ref h3 {
+            color: var(--road);
+            margin-bottom: 0.875rem;
+            font-size: 1.1rem;
+        }
+
+        .formula-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .formula-item {
+            background: var(--gray);
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid var(--stripe);
+        }
+
+        .formula-item h4 {
+            color: var(--road);
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .formula-item .eq {
+            font-family: 'Courier New', monospace;
+            color: var(--asphalt);
+            font-size: 0.95rem;
+            font-weight: 600;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            display: block;
+            margin: 0.3rem 0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .formula-item p {
+            color: #607d8b;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Road Signs / Types */
+        .sign-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .sign-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem 0.75rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border-bottom: 3px solid var(--asphalt);
+        }
+
+        .sign-card .emoji {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .sign-card h4 {
+            color: var(--road);
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .sign-card p {
+            color: #78909c;
+            font-size: 0.75rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--road);
+            color: #90a4ae;
+            padding: 2.5rem 1.25rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            margin-bottom: 0.875rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: #b0bec5;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #455a64;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.8rem;
+        }
+
+        /* Tablet+ */
+        @media (min-width: 640px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            .calc-grid { grid-template-columns: 1fr 1fr; }
+            .calc-results { grid-template-columns: 1fr 1fr; }
+            .formula-grid { grid-template-columns: repeat(2, 1fr); }
+            .sign-grid { grid-template-columns: repeat(3, 1fr); }
+            .footer-grid { grid-template-columns: repeat(4, 1fr); }
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 1.75rem; }
+        }
+
+        @media (min-width: 1024px) {
+            .grid { grid-template-columns: repeat(3, 1fr); }
+            .sign-grid { grid-template-columns: repeat(6, 1fr); }
+            .nav-links {
+                display: flex !important;
+                position: static;
+                background: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            .nav-links li { border: none; }
+            .nav-links a { padding: 0.5rem; font-size: 0.8rem; }
+            .hamburger { display: none; }
+        }
+
+        /* Animations */
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: rise 0.5s ease-out forwards;
+        }
+    </style>
 </head>
 <body>
-<header><h1>Highway Engineering</h1></header>
-<main>
-<h2>Overview</h2>
-<p>Highway planning, geometric design, pavements, traffic engineering and IRC standards.</p>
-<h2>Important Topics</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory and Concepts</li>
-<li>Design Principles</li>
-<li>IS Codes / Standards</li>
-<li>Practical Applications</li>
-<li>Interview Questions</li>
-<li>MCQs for Practice</li>
-<li>References and Learning Resources</li>
-</ul>
-</main>
-<footer>© Civil Engineering Knowledge Portal</footer>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">HighwayEng</div>
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navMenu">
+                <li><a href="#home" onclick="closeMenu()">Home</a></li>
+                <li><a href="#geometry" onclick="closeMenu()">Geometry</a></li>
+                <li><a href="#notes" onclick="closeMenu()">Notes</a></li>
+                <li><a href="#pavement" onclick="closeMenu()">Pavement</a></li>
+                <li><a href="#traffic" onclick="closeMenu()">Traffic</a></li>
+                <li><a href="#calculator" onclick="closeMenu()">Calculator</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Highway <span>Engineering</span></h1>
+            <p>Geometric design, pavement engineering, traffic analysis, intersection design, and highway materials — optimized for mobile study and field reference.</p>
+            <div>
+                <a href="#notes" class="btn">Study Notes</a>
+                <a href="#calculator" class="btn btn-outline">SSD Calculator</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Geometric Design -->
+    <section class="section" id="geometry">
+        <h2 class="section-title">Highway Geometric Design</h2>
+        <p class="section-subtitle">Key elements controlling safety and comfort</p>
+        
+        <div class="grid">
+            <div class="card">
+                <span class="card-icon">📏</span>
+                <h3>Sight Distance</h3>
+                <p>Length of roadway visible to the driver. Critical for safe stopping, passing, and decision-making.</p>
+                <div class="formula-box">SSD = vt + v²/(2gf)</div>
+                <ul>
+                    <li><strong>SSD:</strong> Stopping Sight Distance</li>
+                    <li><strong>PSD:</strong> Passing Sight Distance</li>
+                    <li><strong>ISD:</strong> Intersection Sight Distance</li>
+                    <li>Design speed is the primary control</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🔄</span>
+                <h3>Horizontal Alignment</h3>
+                <p>Circular curves with transition spirals. Superelevation counteracts centrifugal force.</p>
+                <div class="formula-box">e + f = V²/(127R)</div>
+                <ul>
+                    <li>e = superelevation rate (%)</li>
+                    <li>f = side friction factor</li>
+                    <li>R = radius of curve (m)</li>
+                    <li>Spiral length for comfort: L_s = V³/(CR)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">📐</span>
+                <h3>Vertical Alignment</h3>
+                <p>Grades and vertical curves (summit and valley) provide safe stopping sight and comfortable ride.</p>
+                <div class="formula-box">L = NS²/(√(2h₁) + √(2h₂))²</div>
+                <ul>
+                    <li><strong>Summit curves:</strong> SSD governs length</li>
+                    <li><strong>Valley curves:</strong> Headlight sight distance</li>
+                    <li>Comfort: L = NV²/395 (m/s² criteria)</li>
+                    <li>Appearance: L = 30–60 m for flat terrain</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">↔️</span>
+                <h3>Cross-Section Elements</h3>
+                <p>Lane width, shoulders, medians, side slopes, and drainage features define the highway envelope.</p>
+                <ul>
+                    <li><strong>Lane width:</strong> 3.5–3.75 m (standard)</li>
+                    <li><strong>Shoulder:</strong> 2.5 m paved (highways)</li>
+                    <li><strong>Median:</strong> 4.5–12 m (divided)</li>
+                    <li><strong>Side slope:</strong> 2:1 (fill), 3:1 (cut)</li>
+                    <li><strong>Camber:</strong> 2–3% for drainage</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🛣️</span>
+                <h3>Design Speed & Class</h3>
+                <p>Design speed determines all geometric features. IRC and AASHTO classify roads by function and terrain.</p>
+                <ul>
+                    <li><strong>NH/SH:</strong> 80–120 km/h</li>
+                    <li><strong>MDR:</strong> 60–80 km/h</li>
+                    <li><strong>ODR:</strong> 40–60 km/h</li>
+                    <li><strong>VR:</strong> 20–30 km/h</li>
+                    <li>Terrain: Plain, Rolling, Mountainous, Steep</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🌉</span>
+                <h3>Intersection Design</h3>
+                <p>At-grade and grade-separated intersections control conflict points and capacity.</p>
+                <ul>
+                    <li><strong>Channelization:</strong> Guide traffic paths</li>
+                    <li><strong>Roundabouts:</strong> Reduce severe crashes</li>
+                    <li><strong>Signal warrants:</strong> MUTCD/IRC criteria</li>
+                    <li><strong>LOS:</strong> A (best) to F (worst)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Study Notes -->
+    <section class="notes-section" id="notes">
+        <div class="notes-container">
+            <h2 class="section-title">Highway Engineering Notes</h2>
+            <p class="section-subtitle">Quick revision for exams and field use</p>
+
+            <div class="note-paper">
+                <h4>📘 Sight Distance — Key Points</h4>
+                <ul>
+                    <li><span class="highlight">SSD Formula (IRC):</span> SSD = 0.278Vt + V²/(254f) where V in km/h, t = reaction time (2.5 s IRC, 2.0 s AASHTO), f = longitudinal friction (0.35–0.40).</li>
+                    <li><span class="highlight">PSD:</span> Minimum 4 times SSD on two-lane highways. PSD = d₁ + d₂ + d₃ + d₄ (initial maneuver, opposite lane, clearance, opposing vehicle).</li>
+                    <li><span class="highlight">Headlight Sight Distance:</span> For valley curves, h₁ = 0.75 m (headlight), β = 1° upward beam. L = NS²/(1.5 + 0.035S) when S < L.</li>
+                    <li><span class="highlight">Set-back Distance:</span> m = R − (R − d)cos(α/2) for sight line obstruction at horizontal curves. α = 28.65S/R (degrees).</li>
+                </ul>
+            </div>
+
+            <div class="note-paper">
+                <h4>📗 Superelevation & Curves — Key Points</h4>
+                <ul>
+                    <li><span class="highlight">IRC Max e:</span> 7% for plain/rolling, 10% for hilly terrain (not snow-bound). AASHTO max: 6–12% depending on climate.</li>
+                    <li><span class="highlight">Minimum Radius:</span> R_min = V²/(127(e_max + f_max)). If R < R_min, speed must be restricted or curve realigned.</li>
+                    <li><span class="highlight">Transition Curve:</span> Spiral (clothoid) provides gradual introduction of centrifugal force. Rate of change of centrifugal acceleration: C = 80/(75+V) ≤ 0.6 m/s³ (IRC).</li>
+                    <li><span class="highlight">Widening:</span> Extra width on curves: W_e = n·l²/(2R) + V/(9.5√R) (IRC). Mechanical widening + psychological widening.</li>
+                    <li><span class="highlight">Grade Compensation:</span> For curves on steep grades, reduce grade by 30+R (max 75/R)% to maintain traction. Not needed if grade < 4%.</li>
+                </ul>
+            </div>
+
+            <div class="note-paper">
+                <h4>📙 Pavement Design — Key Points</h4>
+                <ul>
+                    <li><span class="highlight">Flexible (IRC:37):</span> Design based on cumulative standard axles (MSA) and subgrade CBR. Vertical strain at top of subgrade ≤ f(N). Rutting criterion: ε_z ≤ 2.8×10⁻² × N^(-0.357).</li>
+                    <li><span class="highlight">Rigid (IRC:58):</span> Design based on flexural strength of concrete, modulus of subgrade reaction (k), and traffic. Westergaard stress equations for corner, edge, interior loading. Dowel bars for load transfer, tie bars for longitudinal joints.</li>
+                    <li><span class="highlight">ESAL:</span> Equivalent Single Axle Load = W·(axle load/80 kN)⁴. Fourth power law: pavement damage ∝ (load)⁴. Legal axle load limit: 10.2 tonnes (India), 18 tonnes tandem.</li>
+                    <li><span class="highlight">CBR Test:</span> Penetration resistance at 2.5 mm and 5.0 mm. CBR = (test load / standard load) × 100. Soaked CBR for design (4 days immersion).</li>
+                </ul>
+            </div>
+
+            <div class="note-paper">
+                <h4>📕 Traffic Engineering — Key Points</h4>
+                <ul>
+                    <li><span class="highlight">PCU:</span> Passenger Car Unit converts mixed traffic to equivalent cars. Truck/bus ≈ 3.0, motorcycle ≈ 0.5, cycle ≈ 0.2, animal cart ≈ 1.5 (IRC values).</li>
+                    <li><span class="highlight">Capacity:</span> Basic capacity ≈ 2000 PCU/h/lane (ideal). Design capacity ≈ 1000–1600 PCU/h/lane. Level of Service (LOS) A–F based on V/C ratio and speed.</li>
+                    <li><span class="highlight">Weaving:</span> Weaving length ≥ weaving width. Capacity of rotary: Q_w = (280w(1+e/w)(1-p/3))/(1+w/l) vehicles/hour (IRC formula).</li>
+                    <li><span class="highlight">Signal Design:</span> Webster's optimum cycle: C₀ = (1.5L + 5)/(1 − Y) where Y = y₁ + y₂ + ... (sum of critical flow ratios). Lost time per phase ≈ 2–4 s.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pavement Types -->
+    <section class="section" style="background: white; max-width: 100%;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.25rem;">
+            <h2 class="section-title">Pavement Types</h2>
+            <p class="section-subtitle">Structural systems for road construction</p>
+            
+            <div class="sign-grid">
+                <div class="sign-card">
+                    <span class="emoji">🛣️</span>
+                    <h4>Flexible</h4>
+                    <p>Asphalt layers on granular base. Distributes load through layered system.</p>
+                </div>
+                <div class="sign-card">
+                    <span class="emoji">🧱</span>
+                    <h4>Rigid</h4>
+                    <p>Concrete slab on subbase. High flexural strength, load via bending.</p>
+                </div>
+                <div class="sign-card">
+                    <span class="emoji">⚪</span>
+                    <h4>Composite</h4>
+                    <p>Concrete base + asphalt overlay. Combines benefits of both.</p>
+                </div>
+                <div class="sign-card">
+                    <span class="emoji">🟤</span>
+                    <h4>Semi-Rigid</h4>
+                    <p>Cement-stabilized base under asphalt. Intermediate stiffness.</p>
+                </div>
+                <div class="sign-card">
+                    <span class="emoji">♻️</span>
+                    <h4>Recycled</h4>
+                    <p>RAP (Reclaimed Asphalt Pavement) in new mixes. Sustainable.</p>
+                </div>
+                <div class="sign-card">
+                    <span class="emoji">🟢</span>
+                    <h4>Permeable</h4>
+                    <p>Porous asphalt/concrete for stormwater management.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Traffic & Intersections -->
+    <section class="section" id="traffic">
+        <h2 class="section-title">Traffic & Intersection Design</h2>
+        <p class="section-subtitle">Controlling flow and conflict points</p>
+        
+        <div class="grid">
+            <div class="card">
+                <span class="card-icon">🚦</span>
+                <h3>Signalized Intersections</h3>
+                <p>Fixed-time or vehicle-actuated signals control conflicting traffic streams. Design involves phase plan, cycle length, and green time allocation.</p>
+                <div class="formula-box">g_i = (y_i/Y)(C − L) + l_i − a_i</div>
+                <ul>
+                    <li>Webster's C₀ = (1.5L + 5)/(1 − Y)</li>
+                    <li>Amber time: 2–5 s (function of approach speed)</li>
+                    <li>All-red clearance: 1–3 s</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">⭕</span>
+                <h3>Roundabouts</h3>
+                <p>Circular intersections with yield control on entries. Reduce severe crashes by eliminating crossing conflicts.</p>
+                <ul>
+                    <li>IRC recommended: 10–30 m entry radius</li>
+                    <li>Central island: 4–30 m radius</li>
+                    <li>Weaving width: 7–18 m</li>
+                    <li>Capacity: 3000–5000 PCU/hour</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🚧</span>
+                <h3>Channelization</h3>
+                <p>Traffic islands and markings guide vehicle paths, reduce conflict area, and control speed at intersections.</p>
+                <ul>
+                    <li>Divisional islands separate opposing flows</li>
+                    <li>Directional islands guide turning movements</li>
+                    <li>Pedestrian refuge islands improve safety</li>
+                    <li>Splitter islands at roundabouts</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formula Reference -->
+    <section class="section">
+        <h2 class="section-title">Formula Quick Reference</h2>
+        <p class="section-subtitle">Essential highway engineering equations</p>
+
+        <div class="quick-ref">
+            <h3>📐 Geometric Design</h3>
+            <div class="formula-grid">
+                <div class="formula-item">
+                    <h4>Stopping Sight Distance</h4>
+                    <div class="eq">SSD = 0.278Vt + V²/(254f)</div>
+                    <p>V in km/h, t = 2.5 s, f = 0.35–0.40</p>
+                </div>
+                <div class="formula-item">
+                    <h4>Superelevation</h4>
+                    <div class="eq">e + f = V²/(127R)</div>
+                    <p>e in decimal, V in km/h, R in meters</p>
+                </div>
+                <div class="formula-item">
+                    <h4>Transition Spiral Length</h4>
+                    <div class="eq">L_s = V³/(CR) = 0.0215V³/(CR)</div>
+                    <p>C = rate of change of acceleration (m/s³)</p>
+                </div>
+                <div class="formula-item">
+                    <h4>Valley Curve (Comfort)</h4>
+                    <div class="eq">L = NV²/395</div>
+                    <p>N = grade change (%), V in km/h</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-ref" style="margin-top: 1rem;">
+            <h3>🛣️ Pavement & Traffic</h3>
+            <div class="formula-grid">
+                <div class="formula-item">
+                    <h4>ESAL Factor</h4>
+                    <div class="eq">F = (L/80)⁴</div>
+                    <p>L = axle load in kN; 80 kN = standard axle</p>
+                </div>
+                <div class="formula-item">
+                    <h4>Rotary Capacity (IRC)</h4>
+                    <div class="eq">Q_w = 280w(1+e/w)(1−p/3)/(1+w/l)</div>
+                    <p>w = weaving width, l = length, p = proportion</p>
+                </div>
+                <div class="formula-item">
+                    <h4>Webster's Optimum Cycle</h4>
+                    <div class="eq">C₀ = (1.5L + 5)/(1 − Y)</div>
+                    <p>L = total lost time, Y = sum y_i</p>
+                </div>
+                <div class="formula-item">
+                    <h4>Curve Widening (IRC)</h4>
+                    <div class="eq">W_e = nl²/(2R) + V/(9.5√R)</div>
+                    <p>n = lanes, l = wheelbase (6 m), R = radius</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SSD Calculator -->
+    <section class="section" id="calculator">
+        <div class="calc-wrapper">
+            <h2>🧮 <span>SSD & Curve</span> Calculator</h2>
+            <p>Calculate stopping sight distance and minimum curve radius</p>
+            
+            <div class="calc-grid">
+                <div class="calc-group">
+                    <label for="calc-v">Design Speed V (km/h)</label>
+                    <input type="number" id="calc-v" step="5" value="80">
+                </div>
+
+                <div class="calc-group">
+                    <label for="calc-t">Reaction Time t (s)</label>
+                    <input type="number" id="calc-t" step="0.1" value="2.5">
+                </div>
+
+                <div class="calc-group">
+                    <label for="calc-f">Friction Factor f</label>
+                    <input type="number" id="calc-f" step="0.01" value="0.35">
+                </div>
+
+                <div class="calc-group">
+                    <label for="calc-grade">Grade G (%)</label>
+                    <input type="number" id="calc-grade" step="0.1" value="0">
+                    <small style="color:rgba(255,255,255,0.5); margin-top:0.2rem;">+ uphill, − downhill</small>
+                </div>
+
+                <div class="calc-group">
+                    <label for="calc-e">Superelevation e (%)</label>
+                    <input type="number" id="calc-e" step="0.1" value="7">
+                </div>
+
+                <div class="calc-group">
+                    <label for="calc-fmax">Side Friction f_max</label>
+                    <input type="number" id="calc-fmax" step="0.01" value="0.15">
+                </div>
+
+                <div class="calc-results">
+                    <div class="calc-result">
+                        <p>Stopping Sight Distance</p>
+                        <div class="big-number" id="res-ssd">---</div>
+                        <div class="unit">meters</div>
+                    </div>
+                    <div class="calc-result">
+                        <p>Min Horizontal Radius</p>
+                        <div class="big-number" id="res-r">---</div>
+                        <div class="unit">meters</div>
+                    </div>
+                    <div class="calc-result">
+                        <p>SSD on Grade</p>
+                        <div class="big-number" id="res-ssdg">---</div>
+                        <div class="unit">meters</div>
+                    </div>
+                    <div class="calc-result">
+                        <p>Super Rate Check</p>
+                        <div class="big-number" id="res-echeck">---</div>
+                        <div class="unit">% required</div>
+                    </div>
+                </div>
+
+                <div class="calc-warning" id="warn-box">
+                    <p>⚠️ <span id="warn-msg"></span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Standards -->
+    <section class="section">
+        <h2 class="section-title">Highway Design Codes</h2>
+        <p class="section-subtitle">International and national standards</p>
+        
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Standard</th>
+                        <th>Region</th>
+                        <th>Scope</th>
+                        <th>Key Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>IRC:37</strong></td>
+                        <td>India</td>
+                        <td><span class="badge badge-green">Flexible</span></td>
+                        <td>Design of flexible pavements using CBR and MSA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IRC:58</strong></td>
+                        <td>India</td>
+                        <td><span class="badge badge-blue">Rigid</span></td>
+                        <td>Design of rigid pavements (CC pavement)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IRC:38</strong></td>
+                        <td>India</td>
+                        <td><span class="badge badge-orange">Hilly</span></td>
+                        <td>Guidelines for highway design in hill roads</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IRC:73</strong></td>
+                        <td>India</td>
+                        <td><span class="badge badge-green">Geometric</span></td>
+                        <td>Geometric design standards for rural highways</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AASHTO Green Book</strong></td>
+                        <td>USA</td>
+                        <td><span class="badge badge-green">Geometric</span></td>
+                        <td>Policy on geometric design of highways and streets</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AASHTO GDPS</strong></td>
+                        <td>USA</td>
+                        <td><span class="badge badge-blue">Pavement</span></td>
+                        <td>Guide for design of pavement structures (DARWin)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MUTCD</strong></td>
+                        <td>USA</td>
+                        <td><span class="badge badge-red">Traffic</span></td>
+                        <td>Manual on uniform traffic control devices</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HD 24/26 (DMRB)</strong></td>
+                        <td>UK</td>
+                        <td><span class="badge badge-green">Pavement</span></td>
+                        <td>Design manual for roads and bridges — pavement</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Design</h4>
+                <ul>
+                    <li><a href="#">Geometric</a></li>
+                    <li><a href="#">Pavement</a></li>
+                    <li><a href="#">Drainage</a></li>
+                    <li><a href="#">Intersections</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Materials</h4>
+                <ul>
+                    <li><a href="#">Bitumen</a></li>
+                    <li><a href="#">Aggregates</a></li>
+                    <li><a href="#">Concrete</a></li>
+                    <li><a href="#">Soil Stabilization</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Traffic</h4>
+                <ul>
+                    <li><a href="#">Signals</a></li>
+                    <li><a href="#">Signs</a></li>
+                    <li><a href="#">Markings</a></li>
+                    <li><a href="#">Safety</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Tools</h4>
+                <ul>
+                    <li><a href="#">IRC:37 Calculator</a></li>
+                    <li><a href="#">SSD Tables</a></li>
+                    <li><a href="#">Super Charts</a></li>
+                    <li><a href="#">Highway Capacity</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+             HighwayEng. Mobile-Optimized Highway Engineering Reference.
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+        function closeMenu() {
+            document.getElementById('navMenu').classList.remove('active');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Calculator
+        const vInput = document.getElementById('calc-v');
+        const tInput = document.getElementById('calc-t');
+        const fInput = document.getElementById('calc-f');
+        const gInput = document.getElementById('calc-grade');
+        const eInput = document.getElementById('calc-e');
+        const fmaxInput = document.getElementById('calc-fmax');
+
+        const resSsd = document.getElementById('res-ssd');
+        const resR = document.getElementById('res-r');
+        const resSsdg = document.getElementById('res-ssdg');
+        const resEcheck = document.getElementById('res-echeck');
+        const warnBox = document.getElementById('warn-box');
+        const warnMsg = document.getElementById('warn-msg');
+
+        function calculate() {
+            const V = parseFloat(vInput.value) || 80;
+            const t = parseFloat(tInput.value) || 2.5;
+            const f = parseFloat(fInput.value) || 0.35;
+            const G = parseFloat(gInput.value) || 0;
+            const e = parseFloat(eInput.value) || 7;
+            const fmax = parseFloat(fmaxInput.value) || 0.15;
+
+            // SSD = 0.278*V*t + V²/(254f)
+            const ssd = 0.278 * V * t + (V * V) / (254 * f);
+
+            // SSD on grade: denominator becomes 254(f ± 0.01G)
+            const gradeFactor = 254 * (f + 0.01 * G);
+            const ssdg = 0.278 * V * t + (V * V) / gradeFactor;
+
+            // Min radius: R = V² / (127(e + f_max))
+            const R = (V * V) / (127 * (e/100 + fmax));
+
+            // Required e for given R and V
+            const e_req = ((V * V) / (127 * Math.max(R, 1)) - fmax) * 100;
+
+            resSsd.textContent = ssd.toFixed(1);
+            resR.textContent = R.toFixed(1);
+            resSsdg.textContent = ssdg.toFixed(1);
+            resEcheck.textContent = Math.max(0, e_req).toFixed(2);
+
+            // Warnings
+            let warnings = [];
+            if (e > 10) warnings.push("Superelevation > 10% may be unsafe in icy conditions");
+            if (f < 0.3) warnings.push("Friction factor below 0.3 is optimistic for wet conditions");
+            if (ssdg > 300) warnings.push("SSD exceeds 300 m — check for intermediate obstructions");
+            if (R < 100 && V > 60) warnings.push("Very tight curve for this speed — consider speed restriction");
+
+            if (warnings.length > 0) {
+                warnBox.classList.add('active');
+                warnMsg.innerHTML = warnings.join('<br>');
+            } else {
+                warnBox.classList.remove('active');
+            }
+        }
+
+        [vInput, tInput, fInput, gInput, eInput, fmaxInput].forEach(el => {
+            el.addEventListener('input', calculate);
+        });
+
+        calculate();
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .note-paper, .sign-card, .formula-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
