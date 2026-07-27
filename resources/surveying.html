@@ -1,34 +1,753 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Surveying</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
-header{background:#0b5ed7;color:#fff;padding:20px;text-align:center}
-main{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-h2{color:#0b5ed7} ul{line-height:1.8}
-footer{text-align:center;padding:20px;color:#666}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Surveying - Precision Engineering</title>
+    <style>
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2c5282;
+            --accent: #f6ad55;
+            --light: #f7fafc;
+            --dark: #1a202c;
+            --success: #48bb78;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+        
+        /* Navigation */
+        nav {
+            background: var(--primary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo::before {
+            content: "▲";
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            background: var(--accent);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(246, 173, 85, 0.4);
+        }
+        
+        /* Sections */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--accent);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+        }
+        
+        .card p {
+            color: #4a5568;
+            line-height: 1.7;
+        }
+        
+        /* Types Section */
+        .types-section {
+            background: white;
+        }
+        
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tool-card {
+            background: linear-gradient(145deg, #ffffff, #f0f4f8);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .tool-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .tool-card .emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Calculator Section */
+        .calculator {
+            background: var(--primary);
+            color: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem auto;
+            max-width: 800px;
+        }
+        
+        .calculator h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        
+        .calc-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .calc-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .calc-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .calc-group input, .calc-group select {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .calc-result {
+            grid-column: 1 / -1;
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .calc-result span {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        /* Methods Table */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:hover {
+            background: #f7fafc;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            text-align: left;
+        }
+        
+        .footer-col h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-col a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .calc-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
 </head>
 <body>
-<header><h1>Surveying</h1></header>
-<main>
-<h2>Overview</h2>
-<p>Chain survey, compass survey, levelling, theodolite, total station, GPS, EDM and surveying calculations.</p>
-<h2>Important Topics</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory and Concepts</li>
-<li>Design Principles</li>
-<li>IS Codes / Standards</li>
-<li>Practical Applications</li>
-<li>Interview Questions</li>
-<li>MCQs for Practice</li>
-<li>References and Learning Resources</li>
-</ul>
-</main>
-<footer>© Civil Engineering Knowledge Portal</footer>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">CivilSurvey Pro</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#types">Survey Types</a></li>
+                <li><a href="#tools">Equipment</a></li>
+                <li><a href="#methods">Methods</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Precision Surveying for Civil Engineering</h1>
+            <p>Accurate measurements, reliable data, and professional land surveying solutions for construction, infrastructure, and development projects.</p>
+            <a href="#types" class="btn">Explore Survey Types</a>
+        </div>
+    </section>
+
+    <!-- Survey Types Section -->
+    <section class="section types-section" id="types">
+        <h2 class="section-title">Types of Surveying</h2>
+        <p class="section-subtitle">Essential surveying disciplines in civil engineering practice</p>
+        
+        <div class="grid">
+            <div class="card animate">
+                <div class="card-icon">📐</div>
+                <h3>Topographic Survey</h3>
+                <p>Measures and maps the elevation, contour lines, and natural/man-made features of a land surface. Essential for planning construction projects and understanding terrain characteristics.</p>
+            </div>
+            
+            <div class="card animate">
+                <div class="card-icon">🛣️</div>
+                <h3>Route Survey</h3>
+                <p>Used for designing roads, railways, pipelines, and transmission lines. Involves horizontal and vertical alignment calculations to optimize path efficiency and cost.</p>
+            </div>
+            
+            <div class="card animate">
+                <div class="card-icon">🏗️</div>
+                <h3>Construction Survey</h3>
+                <p>Provides staking and layout for buildings, bridges, utilities, and infrastructure. Ensures structures are built in the correct location, elevation, and orientation per design plans.</p>
+            </div>
+            
+            <div class="card animate">
+                <div class="card-icon">🌊</div>
+                <h3>Hydrographic Survey</h3>
+                <p>Maps underwater topography of oceans, rivers, and lakes. Critical for port construction, dredging operations, bridge foundations, and flood control planning.</p>
+            </div>
+            
+            <div class="card animate">
+                <div class="card-icon">📍</div>
+                <h3>Boundary Survey</h3>
+                <p>Determines property lines and corners using legal descriptions and historical records. Resolves land disputes and establishes exact parcel boundaries for development.</p>
+            </div>
+            
+            <div class="card animate">
+                <div class="card-icon">🛰️</div>
+                <h3>Geodetic Survey</h3>
+                <p>Large-scale surveys accounting for Earth's curvature using GPS and satellite technology. Used for national mapping, continental drift monitoring, and precise control networks.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipment Section -->
+    <section class="section" id="tools">
+        <h2 class="section-title">Surveying Equipment</h2>
+        <p class="section-subtitle">Modern and traditional instruments used in the field</p>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <span class="emoji">🔭</span>
+                <h4>Total Station</h4>
+                <p>Electronic/optical instrument measuring angles and distances with integrated data logging.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">🛰️</span>
+                <h4>GPS/GNSS Receiver</h4>
+                <p>Satellite-based positioning for precise coordinate determination anywhere on Earth.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">📊</span>
+                <h4>Auto Level</h4>
+                <p>Optical instrument for establishing height differences and level planes.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">🤖</span>
+                <h4>Drone (UAV)</h4>
+                <p>Aerial photogrammetry and LiDAR scanning for rapid large-area mapping.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">📏</span>
+                <h4>Measuring Tape</h4>
+                <p>Steel or fiberglass tapes for manual distance measurement in chain surveying.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">🧭</span>
+                <h4>Theodolite</h4>
+                <p>Precision instrument for measuring horizontal and vertical angles.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">💻</span>
+                <h4>GIS Software</h4>
+                <p>ArcGIS, QGIS, and CAD platforms for data processing and map generation.</p>
+            </div>
+            
+            <div class="tool-card">
+                <span class="emoji">🌐</span>
+                <h4>3D Laser Scanner</h4>
+                <p>Terrestrial LiDAR capturing millions of points for detailed 3D modeling.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methods Section -->
+    <section class="section" id="methods">
+        <h2 class="section-title">Surveying Methods & Applications</h2>
+        <p class="section-subtitle">Comparison of techniques used in civil engineering projects</p>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Application</th>
+                        <th>Accuracy</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Traverse Survey</strong></td>
+                        <td>Establishing control points; property boundaries</td>
+                        <td>1:10,000 to 1:50,000</td>
+                        <td>Linear projects, land subdivision</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leveling</strong></td>
+                        <td>Height determination; contour mapping</td>
+                        <td>±0.5 mm to ±5 mm/km</td>
+                        <td>Drainage, road design, foundations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Triangulation</strong></td>
+                        <td>Large area control networks</td>
+                        <td>1:50,000 to 1:250,000</td>
+                        <td>Geodetic surveys, mapping frameworks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trilateration</strong></td>
+                        <td>GPS positioning; distance-based networks</td>
+                        <td>Centimeter to millimeter</td>
+                        <td> deformation monitoring, precise layout</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Photogrammetry</strong></td>
+                        <td>3D modeling; terrain mapping from photos</td>
+                        <td>1:1,000 to 1:50,000</td>
+                        <td>Topographic maps, volume calculations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LiDAR Scanning</strong></td>
+                        <td>High-density point cloud generation</td>
+                        <td>±2 mm to ±25 mm</td>
+                        <td>As-built surveys, heritage documentation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="section" id="calculator">
+        <div class="calculator">
+            <h2>🔧 Slope Distance Calculator</h2>
+            <div class="calc-form">
+                <div class="calc-group">
+                    <label for="hd">Horizontal Distance (m)</label>
+                    <input type="number" id="hd" placeholder="e.g., 100" step="0.01">
+                </div>
+                
+                <div class="calc-group">
+                    <label for="vd">Vertical Distance (m)</label>
+                    <input type="number" id="vd" placeholder="e.g., 15" step="0.01">
+                </div>
+                
+                <div class="calc-group">
+                    <label for="angle">Slope Angle (°)</label>
+                    <input type="number" id="angle" placeholder="Optional" step="0.01">
+                </div>
+                
+                <div class="calc-group">
+                    <label for="calc-type">Calculation Mode</label>
+                    <select id="calc-type">
+                        <option value="slope">Find Slope Distance</option>
+                        <option value="horizontal">Find Horizontal from Slope</option>
+                    </select>
+                </div>
+                
+                <div class="calc-result">
+                    <p>Result:</p>
+                    <span id="result">---</span>
+                    <p id="result-unit">meters</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Standards Section -->
+    <section class="section">
+        <h2 class="section-title">Industry Standards</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>📋 Accuracy Classes</h3>
+                <p><strong>First Order:</strong> 1:100,000 ratio — Used for national geodetic networks.<br><br>
+                <strong>Second Order:</strong> 1:50,000 ratio — State and provincial control surveys.<br><br>
+                <strong>Third Order:</strong> 1:10,000 ratio — Local engineering and construction projects.</p>
+            </div>
+            
+            <div class="card">
+                <h3>⚖️ Error Sources</h3>
+                <p><strong>Instrumental:</strong> Calibration errors, wear, and manufacturing imperfections.<br><br>
+                <strong>Personal:</strong> Observer bias, reading errors, and setup mistakes.<br><br>
+                <strong>Natural:</strong> Temperature refraction, wind, humidity, and curvature of Earth.</p>
+            </div>
+            
+            <div class="card">
+                <h3>📐 Coordinate Systems</h3>
+                <p><strong>Geographic:</strong> Latitude/Longitude (WGS84, NAD83).<br><br>
+                <strong>Projected:</strong> UTM Zones, State Plane Coordinates.<br><br>
+                <strong>Local:</strong> Arbitrary grids established per project requirements.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Survey Types</h4>
+                <ul>
+                    <li><a href="#">Topographic</a></li>
+                    <li><a href="#">Construction</a></li>
+                    <li><a href="#">Hydrographic</a></li>
+                    <li><a href="#">Geodetic</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Surveying Manuals</a></li>
+                    <li><a href="#">Coordinate Tools</a></li>
+                    <li><a href="#">Datum Conversions</a></li>
+                    <li><a href="#">Error Analysis</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Software</h4>
+                <ul>
+                    <li><a href="#">AutoCAD Civil 3D</a></li>
+                    <li><a href="#">Bentley MicroStation</a></li>
+                    <li><a href="#">Trimble Business Center</a></li>
+                    <li><a href="#">QGIS Open Source</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Organizations</h4>
+                <ul>
+                    <li><a href="#">NSPS</a></li>
+                    <li><a href="#">FIG International</a></li>
+                    <li><a href="#">ACSM</a></li>
+                    <li><a href="#">PLS Standards</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 2rem; color: #718096;"> Civil Surveying Pro. Built for Civil Engineers.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Calculator functionality
+        const hdInput = document.getElementById('hd');
+        const vdInput = document.getElementById('vd');
+        const angleInput = document.getElementById('angle');
+        const calcType = document.getElementById('calc-type');
+        const resultSpan = document.getElementById('result');
+        const resultUnit = document.getElementById('result-unit');
+
+        function calculate() {
+            const mode = calcType.value;
+            const hd = parseFloat(hdInput.value) || 0;
+            const vd = parseFloat(vdInput.value) || 0;
+            const angle = parseFloat(angleInput.value) || 0;
+
+            let result = 0;
+
+            if (mode === 'slope') {
+                if (hd && vd) {
+                    result = Math.sqrt(hd * hd + vd * vd);
+                } else if (hd && angle) {
+                    result = hd / Math.cos(angle * Math.PI / 180);
+                } else if (vd && angle) {
+                    result = vd / Math.sin(angle * Math.PI / 180);
+                }
+                resultUnit.textContent = 'meters (slope distance)';
+            } else {
+                if (hd) {
+                    result = hd * Math.cos(angle * Math.PI / 180);
+                }
+                resultUnit.textContent = 'meters (horizontal distance)';
+            }
+
+            if (result > 0) {
+                resultSpan.textContent = result.toFixed(3);
+            } else {
+                resultSpan.textContent = '---';
+            }
+        }
+
+        [hdInput, vdInput, angleInput, calcType].forEach(el => {
+            el.addEventListener('input', calculate);
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
