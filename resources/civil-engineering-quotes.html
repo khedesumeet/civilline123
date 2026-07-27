@@ -1,30 +1,209 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CE Quotes</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Engineering Quotes</title>
+
 <style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+}
+
+header{
+    text-align:center;
+    padding:40px 20px;
+}
+
+header h1{
+    font-size:40px;
+}
+
+header p{
+    margin-top:10px;
+    color:#ddd;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+    padding-bottom:40px;
+}
+
+.quote-card{
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    padding:25px;
+    transition:.4s;
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.quote-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 10px 20px rgba(0,0,0,.4);
+}
+
+.quote{
+    font-size:20px;
+    line-height:1.6;
+    color:#fff;
+}
+
+.author{
+    margin-top:20px;
+    text-align:right;
+    color:#ffd54f;
+    font-weight:bold;
+}
+
+button{
+    margin:30px auto;
+    display:block;
+    padding:15px 35px;
+    border:none;
+    border-radius:30px;
+    background:#ff9800;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#e68900;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:#111;
+    color:#aaa;
+}
+</style>
+
+</head>
 <body>
-<header><h1>💭 CE Quotes</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+<header>
+<h1>🏗 Civil Engineering Quotes</h1>
+<p>Inspirational Quotes for Civil Engineers & Future Builders</p>
+</header>
+
+<div class="container" id="quotes">
+
+<div class="quote-card">
+<div class="quote">
+"Engineers don't just build structures; they build the future."
+</div>
+<div class="author">— Unknown</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Great buildings begin with great foundations."
+</div>
+<div class="author">— Civil Engineering Wisdom</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Concrete may crack, but determination never should."
+</div>
+<div class="author">— Engineer's Quote</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Every bridge connects more than two places—it connects people."
+</div>
+<div class="author">— Unknown</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Measure twice, build once."
+</div>
+<div class="author">— Construction Proverb</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Safety first, quality always."
+</div>
+<div class="author">— Site Rule</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Civil Engineers shape the world one project at a time."
+</div>
+<div class="author">— Unknown</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"The strength of a nation lies in its infrastructure."
+</div>
+<div class="author">— Engineering Quote</div>
+</div>
+
+<div class="quote-card">
+<div class="quote">
+"Blueprints become reality through knowledge and teamwork."
+</div>
+<div class="author">— Construction Team</div>
+</div>
+
+</div>
+
+<button onclick="randomQuote()">Show Random Quote</button>
+
+<footer>
+© 2026 Civil Engineering Quotes | Designed with ❤️ for Engineers
+</footer>
+
+<script>
+
+const quotes=[
+"Engineering is the art of directing nature for the use of mankind.",
+"The best engineers never stop learning.",
+"Build with quality, inspect with integrity.",
+"Civil engineering is where imagination meets calculation.",
+"Every skyscraper begins with a single line on paper.",
+"Strong foundations create strong futures.",
+"Engineering transforms dreams into reality.",
+"Quality is remembered long after cost is forgotten.",
+"Construction is teamwork in action.",
+"A true engineer solves problems before they exist.",
+"Infrastructure is the backbone of development.",
+"Build safely, build smart.",
+"Precision is the engineer's greatest tool.",
+"Every road tells a story of engineering excellence.",
+"Design for today. Build for tomorrow."
+];
+
+function randomQuote(){
+
+let q=quotes[Math.floor(Math.random()*quotes.length)];
+
+alert(q);
+
+}
+
+</script>
+
+</body>
+</html>
