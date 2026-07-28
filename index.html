@@ -1,231 +1,746 @@
-<!DOCTYPE html>
+
+# Create the complete mobile-optimized HTML file
+mobile_html = '''<!DOCTYPE html>
 <html lang="en">
-<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184504243491630"
-     crossorigin="anonymous"></script>
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F4F2EC">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1c2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>CIVILINE — Civil Engineering Knowledge Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184504243491630" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1120;
+    --bg-2: #111827;
+    --surface: #1f2937;
+    --surface-2: #374151;
+    --text: #f9fafb;
+    --text-2: #d1d5db;
+    --text-3: #9ca3af;
+    --accent: #0d9488;
+    --accent-2: #14b8a6;
+    --accent-light: #ccfbf1;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --border: rgba(255,255,255,0.08);
+  }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Civil Engineering MCQs</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f3f4f6;
-      color: #1f2937;
-      padding: 20px;
-    }
-    .quiz-container {
-      max-width: 700px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    .quiz-header { text-align: center; margin-bottom: 24px; }
-    .quiz-header h1 { color: #0f766e; font-size: 1.6rem; margin-bottom: 6px; }
-    .quiz-header p { color: #6b7280; font-size: 0.95rem; }
-    .progress-bar {
-      width: 100%; height: 8px; background: #e5e7eb;
-      border-radius: 4px; margin-bottom: 24px; overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%; background: #0d9488; width: 0%;
-      transition: width 0.4s ease; border-radius: 4px;
-    }
-    .question-card {
-      background: #ffffff; border: 1px solid #e5e7eb;
-      border-radius: 12px; padding: 20px; margin-bottom: 16px;
-    }
-    .question-number {
-      font-size: 0.8rem; font-weight: 600; color: #0d9488;
-      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
-    }
-    .question-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
-    .options { display: flex; flex-direction: column; gap: 10px; }
-    .option-btn {
-      text-align: left; padding: 12px 16px;
-      border: 1.5px solid #d1d5db; border-radius: 8px;
-      background: #f9fafb; cursor: pointer; font-size: 0.95rem;
-      transition: all 0.2s ease; color: #374151;
-    }
-    .option-btn:hover { border-color: #0d9488; background: #f0fdfa; }
-    .option-btn.selected-correct { border-color: #16a34a; background: #dcfce7; color: #14532d; font-weight: 600; }
-    .option-btn.selected-wrong { border-color: #dc2626; background: #fee2e2; color: #7f1d1d; }
-    .option-btn.correct-answer { border-color: #16a34a; background: #dcfce7; color: #14532d; font-weight: 600; }
-    .explanation {
-      margin-top: 14px; padding: 12px; background: #f0f9ff;
-      border-left: 4px solid #0ea5e9; border-radius: 0 8px 8px 0;
-      font-size: 0.9rem; color: #0c4a6e; display: none;
-    }
-    .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
-    .btn {
-      padding: 10px 20px; border: none; border-radius: 8px;
-      font-size: 0.95rem; cursor: pointer; transition: background 0.2s;
-    }
-    .btn-primary { background: #0d9488; color: white; }
-    .btn-primary:hover { background: #0f766e; }
-    .btn-secondary { background: #e5e7eb; color: #374151; }
-    .btn-secondary:hover { background: #d1d5db; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .score-display { text-align: center; padding: 40px 20px; }
-    .score-display h2 { color: #0f766e; font-size: 1.8rem; margin-bottom: 12px; }
-    .score-display p { color: #4b5563; font-size: 1.1rem; }
-    .score-circle {
-      width: 120px; height: 120px; border-radius: 50%;
-      background: #f0fdfa; border: 4px solid #0d9488;
-      display: flex; align-items: center; justify-content: center;
-      margin: 20px auto; font-size: 2rem; font-weight: 700; color: #0f766e;
-    }
-    .hidden { display: none; }
-  </style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== UTILS ===== */
+  .hidden { display: none !important; }
+  .mono { font-family: 'Space Grotesk', monospace; letter-spacing: 0.02em; }
+
+  /* ===== NAV ===== */
+  .top-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 1rem;
+    background: rgba(11,17,32,0.92);
+    backdrop-filter: blur(20px) saturate(1.2);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo .mark {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: #fff;
+  }
+  .hamburger {
+    width: 36px; height: 36px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+    background: none; border: none; cursor: pointer;
+  }
+  .hamburger span {
+    display: block; width: 20px; height: 2.2px;
+    background: var(--text); border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .mobile-drawer {
+    position: fixed; top: 0; right: -100%;
+    width: 78%; max-width: 300px; height: 100vh;
+    background: rgba(17,24,39,0.98);
+    backdrop-filter: blur(30px);
+    border-left: 1px solid var(--border);
+    z-index: 1001;
+    padding: 4.5rem 1.2rem 2rem;
+    transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .mobile-drawer.open { right: 0; }
+  .mobile-drawer a {
+    color: var(--text-2); text-decoration: none;
+    font-size: 1rem; font-weight: 500;
+    padding: 0.85rem 1rem; border-radius: 12px;
+    transition: all 0.2s; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .mobile-drawer a:active { background: rgba(13,148,136,0.12); color: var(--accent-2); }
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    z-index: 999; opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 5.5rem 1.1rem 2.5rem;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(13,148,136,0.08) 0%, transparent 60%);
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(13,148,136,0.12);
+    color: var(--accent-2);
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.7rem, 7vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+  }
+  .hero h1 .accent { color: var(--accent-2); }
+  .hero p {
+    color: var(--text-3);
+    font-size: 0.95rem;
+    max-width: 90%;
+    margin: 0 auto 1.5rem;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .h-stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 0.6rem;
+    text-align: center;
+  }
+  .h-stat .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--accent-2);
+  }
+  .h-stat .lbl {
+    font-size: 0.68rem; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-top: 0.2rem;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    padding: 2.2rem 1.1rem;
+  }
+  .section-head {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .section-head .tag {
+    display: inline-block;
+    color: var(--accent-2);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .section-head h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.4rem, 5.5vw, 1.9rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .section-head p {
+    color: var(--text-3);
+    font-size: 0.9rem;
+  }
+
+  /* ===== RESOURCES ===== */
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-pill {
+    flex-shrink: 0;
+    padding: 0.55rem 1rem;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .filter-pill.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .filter-pill:active { transform: scale(0.96); }
+
+  .search-wrap {
+    position: relative;
+    margin-bottom: 0.8rem;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.6rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.95rem;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .search-wrap input::placeholder { color: var(--text-3); }
+  .search-wrap::before {
+    content: "🔍";
+    position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+    font-size: 0.9rem; opacity: 0.6;
+  }
+
+  .result-count {
+    font-size: 0.8rem;
+    color: var(--text-3);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .resource-group {
+    margin-bottom: 1.8rem;
+  }
+  .group-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-2);
+    margin-bottom: 0.7rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .group-title .count {
+    background: var(--surface-2);
+    color: var(--text-3);
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+  }
+  .resource-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .resource-card:active {
+    transform: scale(0.97);
+    border-color: var(--accent);
+    background: rgba(13,148,136,0.08);
+  }
+  .resource-card .icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+  .resource-card h4 {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-2);
+    line-height: 1.35;
+  }
+
+  /* ===== QUIZ ===== */
+  .quiz-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+  }
+  .quiz-header { text-align: center; margin-bottom: 1.2rem; }
+  .quiz-header h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem; color: var(--accent-2);
+    margin-bottom: 0.2rem;
+  }
+  .quiz-header p { color: var(--text-3); font-size: 0.85rem; }
+
+  .q-progress {
+    width: 100%; height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+  }
+  .q-progress .fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .q-meta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+  .q-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .q-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .q-option {
+    text-align: left;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid var(--surface-2);
+    border-radius: 12px;
+    background: var(--bg-2);
+    color: var(--text-2);
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    min-height: 48px;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .q-option::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--text-3);
+    min-width: 22px;
+  }
+  .q-option:active { border-color: var(--accent); background: rgba(13,148,136,0.08); }
+  .q-option.correct { border-color: var(--success); background: rgba(34,197,94,0.12); color: #86efac; }
+  .q-option.wrong { border-color: var(--danger); background: rgba(239,68,68,0.12); color: #fca5a5; }
+  .q-option.disabled { pointer-events: none; opacity: 0.7; }
+
+  .q-explain {
+    margin-top: 0.8rem;
+    padding: 0.9rem 1rem;
+    background: rgba(14,165,233,0.1);
+    border-left: 3px solid #0ea5e9;
+    border-radius: 0 10px 10px 0;
+    font-size: 0.85rem;
+    color: #7dd3fc;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .q-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.2rem;
+    gap: 0.8rem;
+  }
+  .q-btn {
+    padding: 0.75rem 1.4rem;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 44px;
+  }
+  .q-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .q-btn-primary { background: var(--accent); color: #fff; }
+  .q-btn-primary:active { transform: scale(0.97); }
+  .q-btn-secondary { background: var(--surface-2); color: var(--text-2); }
+  .q-btn-secondary:active { transform: scale(0.97); }
+
+  .score-screen {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  .score-screen h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem;
+    color: var(--accent-2);
+    margin-bottom: 1rem;
+  }
+  .score-circle {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(13,148,136,0.15), rgba(20,184,166,0.08));
+    border: 3px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem; font-weight: 700; color: var(--accent-2);
+  }
+  .score-screen p { color: var(--text-2); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+  /* ===== ABOUT ===== */
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.4rem;
+  }
+  .about-card p {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.65;
+  }
+  .about-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .about-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    color: var(--text-2);
+    font-size: 0.88rem;
+  }
+  .about-list .idx {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-2);
+    background: rgba(13,148,136,0.12);
+    padding: 0.2rem 0.45rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  /* ===== CALLOUTS ===== */
+  .callout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .callout-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .callout-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .callout-card.blue::before { background: linear-gradient(90deg, #3b82f6, transparent); }
+  .callout-card.ink::before { background: linear-gradient(90deg, #a855f7, transparent); }
+  .callout-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .callout-card p {
+    color: var(--text-3);
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+  .callout-card a {
+    color: var(--accent-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 1.1rem 2rem;
+  }
+  .foot-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .foot-brand .mark {
+    width: 26px; height: 26px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: #fff;
+  }
+  .foot-desc {
+    color: var(--text-3);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+  .foot-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .foot-col h5 {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .foot-col a {
+    display: block;
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 0.82rem;
+    padding: 0.3rem 0;
+  }
+  .foot-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    line-height: 1.6;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 4px; }
+
+  /* ===== ANIMATIONS ===== */
+  .fade-up {
+    opacity: 0; transform: translateY(18px);
+    transition: all 0.55s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
-<nav>
-  <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
-  <div class="nav-links" id="navLinks">
-    <a href="index.html">Home</a>
-    <a href="#resources">Resources</a>
-    <a href="video-library.html">Video Library</a>
-    <a href="Infranews.html">Infra News</a>
-    <a href="#about">About</a>
-  </div>
-  <a href="#resources" class="btn btn-primary">Explore Resources</a>
-  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+
+<!-- NAV -->
+<header class="top-nav">
+  <a href="#" class="nav-logo">
+    <div class="mark">C</div>CIVILINE
+  </a>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<nav class="mobile-drawer" id="mobileDrawer">
+  <a href="#home" onclick="toggleDrawer()">🏠 Home</a>
+  <a href="#resources" onclick="toggleDrawer()">📚 Resources</a>
+  <a href="#quiz" onclick="toggleDrawer()">📝 MCQ Quiz</a>
+  <a href="#about" onclick="toggleDrawer()">ℹ️ About</a>
+  <a href="video-library.html" onclick="toggleDrawer()">🎬 Video Library</a>
+  <a href="Infranews.html" onclick="toggleDrawer()">📰 Infra News</a>
 </nav>
 
-<div class="hero">
-  <div class="tick-bl"></div><div class="tick-br"></div>
-  <div class="eyebrow mono">// Free resources · Curated for self-study</div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-eyebrow mono">Free resources · Curated for self-study</div>
   <h1>Civil Engineering Knowledge,<br>organized <span class="accent">for every need.</span></h1>
-
-  <div class="scale-strip">
-    <div class="scale-tick"><div class="num">12</div><div class="lbl mono">Branches Covered</div></div>
-    <div class="scale-tick"><div class="num">20+</div><div class="lbl mono">Knowledge Topics</div></div>
-    <div class="scale-tick"><div class="num">4</div><div class="lbl mono">Resource Libraries</div></div>
-    <div class="scale-tick"><div class="num">100%</div><div class="lbl mono">Free to Access</div></div>
+  <p>One directory for journals, books, software guides, branch notes, and NPTEL lectures.</p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="num">12</div><div class="lbl mono">Branches</div></div>
+    <div class="h-stat"><div class="num">20+</div><div class="lbl mono">Topics</div></div>
+    <div class="h-stat"><div class="num">4</div><div class="lbl mono">Libraries</div></div>
+    <div class="h-stat"><div class="num">100%</div><div class="lbl mono">Free</div></div>
   </div>
-</div>
+</section>
 
-<section id="resources">
+<!-- RESOURCES -->
+<section class="section" id="resources">
   <div class="section-head">
-    <div>
-      <div class="tag mono">// Resources &amp; Knowledge Center</div>
-      <h2>Everything, in one directory</h2>
-    </div>
-    <p>Filter by category or search directly — every link opens the matching page in <code>/resources</code>.</p>
-<div class="quiz-container">
-  <div class="quiz-header">
-    <h1>Civil Engineering MCQs</h1>
-    <p>Test your knowledge with 10 fundamental questions</p>
+    <div class="tag mono">Resources &amp; Knowledge Center</div>
+    <h2>Everything, in one directory</h2>
+    <p>Filter by category or search directly.</p>
   </div>
 
-  <div class="directory-controls">
-    <button class="filter-tab active" data-filter="all">All</button>
-    <button class="filter-tab" data-filter="library">Journals, Books &amp; Softwares</button>
-    <button class="filter-tab" data-filter="knowledge">Knowledge Center</button>
-    <button class="filter-tab" data-filter="branches">Branches</button>
-    <div class="search-box">
-      <input type="text" id="resourceSearch" placeholder="Search topics…">
-    </div>
+  <div class="filter-bar">
+    <button class="filter-pill active" data-filter="all" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-pill" data-filter="library" onclick="setFilter(this,'library')">Journals, Books &amp; Software</button>
+    <button class="filter-pill" data-filter="knowledge" onclick="setFilter(this,'knowledge')">Knowledge Center</button>
+    <button class="filter-pill" data-filter="branches" onclick="setFilter(this,'branches')">Branches</button>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" id="resourceSearch" placeholder="Search topics…" oninput="applyFilters()">
   </div>
   <div class="result-count" id="resultCount">39 topics</div>
 
-  <div class="resource-container">
-    <div class="resource-group" data-group="library">
-      <h3 class="group-title">Journals, Books &amp; Softwares <span class="count">4</span></h3>
-      <div class="resource-grid">
-        <a href="resources/softwares.html" class="resource-card"><div class="resource-icon">💻</div><h4>Civil Engineering Softwares</h4></a>
-        <a href="resources/civil-engineering-books.html" class="resource-card"><div class="resource-icon">📚</div><h4>Civil Engineering Books</h4></a>
-        <a href="resources/journals-and-magazines.html" class="resource-card"><div class="resource-icon">📖</div><h4>Civil Engineering Journals</h4></a>
-        <a href="resources/magazines-white-papers.html" class="resource-card"><div class="resource-icon">📑</div><h4>Free Magazines &amp; White Papers</h4></a>
+  <!-- Library -->
+  <div class="resource-group" data-group="library">
+    <div class="group-title">Journals, Books &amp; Softwares <span class="count">4</span></div>
+    <div class="resource-grid">
+      <a href="resources/softwares.html" class="resource-card"><span class="icon">💻</span><h4>Softwares</h4></a>
+      <a href="resources/civil-engineering-books.html" class="resource-card"><span class="icon">📚</span><h4>Books</h4></a>
+      <a href="resources/journals-and-magazines.html" class="resource-card"><span class="icon">📖</span><h4>Journals</h4></a>
+      <a href="resources/magazines-white-papers.html" class="resource-card"><span class="icon">📑</span><h4>White Papers</h4></a>
+    </div>
+  </div>
+
+  <!-- Knowledge -->
+  <div class="resource-group" data-group="knowledge">
+    <div class="group-title">Knowledge Center <span class="count">20</span></div>
+    <div class="resource-grid">
+      <a href="resources/mix-design.html" class="resource-card"><span class="icon">🔬</span><h4>Mix Design</h4></a>
+      <a href="resources/interviews.html" class="resource-card"><span class="icon">💬</span><h4>Interviews</h4></a>
+      <a href="resources/civil-engineering-tools.html" class="resource-card"><span class="icon">🧮</span><h4>Tools</h4></a>
+      <a href="resources/project-reports.html" class="resource-card"><span class="icon">📊</span><h4>Project Reports</h4></a>
+      <a href="resources/research-papers.html" class="resource-card"><span class="icon">📝</span><h4>MCQs</h4></a>
+      <a href="resources/student-corner.html" class="resource-card"><span class="icon">👨‍🎓</span><h4>Student Corner</h4></a>
+      <a href="resources/material-testing.html" class="resource-card"><span class="icon">⚗️</span><h4>Material Testing</h4></a>
+      <a href="resources/construction-terms.html" class="resource-card"><span class="icon">📋</span><h4>Construction Terms</h4></a>
+      <a href="resources/measurement-units.html" class="resource-card"><span class="icon">📏</span><h4>Measurement Units</h4></a>
+      <a href="resources/civil-engineering-facts.html" class="resource-card"><span class="icon">💡</span><h4>CE Facts</h4></a>
+      <a href="resources/famous-civil-engineers.html" class="resource-card"><span class="icon">🏛️</span><h4>Famous Engineers</h4></a>
+      <a href="resources/civil-engineering-events.html" class="resource-card"><span class="icon">🎯</span><h4>CE Events</h4></a>
+      <a href="resources/construction-equipments.html" class="resource-card"><span class="icon">🏗️</span><h4>Equipments</h4></a>
+      <a href="resources/civil-engineering-disasters.html" class="resource-card"><span class="icon">⚠️</span><h4>Disasters</h4></a>
+      <a href="resources/civil-engineering-information.html" class="resource-card"><span class="icon">ℹ️</span><h4>Information</h4></a>
+      <a href="resources/civil-engineering-presentations.html" class="resource-card"><span class="icon">🎬</span><h4>Presentations</h4></a>
+      <a href="resources/civil-engineering-quotes.html" class="resource-card"><span class="icon">💭</span><h4>Quotes</h4></a>
+      <a href="resources/civil-engineering-videos.html" class="resource-card"><span class="icon">🎥</span><h4>Videos</h4></a>
+      <a href="resources/civil-engineering-wonders.html" class="resource-card"><span class="icon">🌉</span><h4>Wonders</h4></a>
+      <a href="resources/civil-engineering-notes-from-universities.html" class="resource-card"><span class="icon">🎓</span><h4>Uni Notes</h4></a>
+    </div>
+  </div>
+
+  <!-- Branches -->
+  <div class="resource-group" data-group="branches">
+    <div class="group-title">Civil Engineering Branches <span class="count">12</span></div>
+    <div class="resource-grid">
+      <a href="resources/building.html" class="resource-card"><span class="icon">🏢</span><h4>Building</h4></a>
+      <a href="resources/surveying.html" class="resource-card"><span class="icon">🗺️</span><h4>Surveying</h4></a>
+      <a href="resources/steelworks.html" class="resource-card"><span class="icon">⚙️</span><h4>Steelworks</h4></a>
+      <a href="resources/hydraulics.html" class="resource-card"><span class="icon">💧</span><h4>Hydraulics</h4></a>
+      <a href="resources/soil-engineering.html" class="resource-card"><span class="icon">🌍</span><h4>Soil Engg</h4></a>
+      <a href="resources/piles-engineering.html" class="resource-card"><span class="icon">🔩</span><h4>Piles</h4></a>
+      <a href="resources/timber-engineering.html" class="resource-card"><span class="icon">🌳</span><h4>Timber</h4></a>
+      <a href="resources/bridge-engineering.html" class="resource-card"><span class="icon">🌉</span><h4>Bridge</h4></a>
+      <a href="resources/marine-engineering.html" class="resource-card"><span class="icon">⛵</span><h4>Marine</h4></a>
+      <a href="resources/concrete-engineering.html" class="resource-card"><span class="icon">🏗️</span><h4>Concrete</h4></a>
+      <a href="resources/highway-engineering.html" class="resource-card"><span class="icon">🛣️</span><h4>Highway</h4></a>
+      <a href="resources/prestress-engineering.html" class="resource-card"><span class="icon">🔨</span><h4>Prestress</h4></a>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-box" id="quiz">
+    <div class="quiz-header">
+      <h3>📝 Civil Engineering MCQs</h3>
+      <p>Test your knowledge with 10 fundamental questions</p>
+    </div>
+    <div class="q-progress"><div class="fill" id="qFill"></div></div>
+
+    <div id="quizContent">
+      <div class="q-meta" id="qMeta">Question 1 of 10</div>
+      <div class="q-text" id="qText"></div>
+      <div class="q-options" id="qOptions"></div>
+      <div class="q-explain" id="qExplain"></div>
+      <div class="q-controls">
+        <button class="q-btn q-btn-secondary" id="qPrev" onclick="prevQ()" disabled>Previous</button>
+        <button class="q-btn q-btn-primary" id="qNext" onclick="nextQ()" disabled>Next</button>
       </div>
     </div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
-    <div class="resource-group" data-group="knowledge">
-      <h3 class="group-title">Knowledge Center <span class="count">20</span></h3>
-      <div class="resource-grid">
-        <a href="resources/mix-design.html" class="resource-card"><div class="resource-icon">🔬</div><h4>Mix Design</h4></a>
-        <a href="resources/interviews.html" class="resource-card"><div class="resource-icon">💬</div><h4>Interviews</h4></a>
-        <a href="resources/civil-engineering-tools.html" class="resource-card"><div class="resource-icon">🧮</div><h4>Tools &amp; Calculators</h4></a>
-        <a href="resources/project-reports.html" class="resource-card"><div class="resource-icon">📊</div><h4>Project Reports</h4></a>
-        <a href="resources/research-papers.html" class="resource-card"><div class="resource-icon">📝</div><h4>Civil Engineering MCQS</h4></a>
-        <a href="resources/student-corner.html" class="resource-card"><div class="resource-icon">👨‍🎓</div><h4>Student Corner</h4></a>
-        <a href="resources/material-testing.html" class="resource-card"><div class="resource-icon">⚗️</div><h4>Material Testing</h4></a>
-        <a href="resources/construction-terms.html" class="resource-card"><div class="resource-icon">📋</div><h4>Construction Terms</h4></a>
-        <a href="resources/measurement-units.html" class="resource-card"><div class="resource-icon">📏</div><h4>Measurement Units</h4></a>
-        <a href="resources/civil-engineering-facts.html" class="resource-card"><div class="resource-icon">💡</div><h4>CE Facts</h4></a>
-        <a href="resources/famous-civil-engineers.html" class="resource-card"><div class="resource-icon">🏛️</div><h4>Famous Civil Engineers</h4></a>
-        <a href="resources/civil-engineering-events.html" class="resource-card"><div class="resource-icon">🎯</div><h4>CE Events</h4></a>
-        <a href="resources/construction-equipments.html" class="resource-card"><div class="resource-icon">🏗️</div><h4>Construction Equipments</h4></a>
-        <a href="resources/civil-engineering-disasters.html" class="resource-card"><div class="resource-icon">⚠️</div><h4>CE Disasters</h4></a>
-        <a href="resources/civil-engineering-information.html" class="resource-card"><div class="resource-icon">ℹ️</div><h4>CE Information</h4></a>
-        <a href="resources/civil-engineering-presentations.html" class="resource-card"><div class="resource-icon">🎬</div><h4>CE Presentations</h4></a>
-        <a href="resources/civil-engineering-quotes.html" class="resource-card"><div class="resource-icon">💭</div><h4>CE Quotes</h4></a>
-        <a href="resources/civil-engineering-videos.html" class="resource-card"><div class="resource-icon">🎥</div><h4>CE Videos</h4></a>
-        <a href="resources/civil-engineering-wonders.html" class="resource-card"><div class="resource-icon">🌉</div><h4>CE Wonders</h4></a>
-        <a href="resources/civil-engineering-notes-from-universities.html" class="resource-card"><div class="resource-icon">🎓</div><h4>CE Notes From Universities</h4></a>
-      </div>
-  <div id="quizContent">
-    <div class="question-card">
-      <div class="question-number" id="qNumber">Question 1 of 10</div>
-      <div class="question-text" id="qText"></div>
-      <div class="options" id="optionsContainer"></div>
-      <div class="explanation" id="explanationBox"></div>
-    </div>
-
-    <div class="resource-group" data-group="branches">
-      <h3 class="group-title">Civil Engineering Branches <span class="count">12</span></h3>
-      <div class="resource-grid">
-        <a href="resources/building.html" class="resource-card"><div class="resource-icon">🏢</div><h4>Building</h4></a>
-        <a href="resources/surveying.html" class="resource-card"><div class="resource-icon">🗺️</div><h4>Surveying</h4></a>
-        <a href="resources/steelworks.html" class="resource-card"><div class="resource-icon">⚙️</div><h4>Steelworks</h4></a>
-        <a href="resources/hydraulics.html" class="resource-card"><div class="resource-icon">💧</div><h4>Hydraulics</h4></a>
-        <a href="resources/soil-engineering.html" class="resource-card"><div class="resource-icon">🌍</div><h4>Soil Engineering</h4></a>
-        <a href="resources/piles-engineering.html" class="resource-card"><div class="resource-icon">🔩</div><h4>Piles Engineering</h4></a>
-        <a href="resources/timber-engineering.html" class="resource-card"><div class="resource-icon">🌳</div><h4>Timber Engineering</h4></a>
-        <a href="resources/bridge-engineering.html" class="resource-card"><div class="resource-icon">🌉</div><h4>Bridge Engineering</h4></a>
-        <a href="resources/marine-engineering.html" class="resource-card"><div class="resource-icon">⛵</div><h4>Marine Engineering</h4></a>
-        <a href="resources/concrete-engineering.html" class="resource-card"><div class="resource-icon">🏗️</div><h4>Concrete Engineering</h4></a>
-        <a href="resources/highway-engineering.html" class="resource-card"><div class="resource-icon">🛣️</div><h4>Highway Engineering</h4></a>
-        <a href="resources/prestress-engineering.html" class="resource-card"><div class="resource-icon">🔨</div><h4>Prestress Engineering</h4></a>
-      </div>
-    <div class="controls">
-      <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+    <div class="score-screen hidden" id="qScore">
+      <h3>Quiz Completed!</h3>
+      <div class="score-circle" id="qCircle">0/10</div>
+      <p id="qMsg"></p>
+      <button class="q-btn q-btn-primary" onclick="restartQ()" style="width:100%;">Restart Quiz</button>
     </div>
   </div>
 </section>
 
-<section id="about">
+<!-- ABOUT -->
+<section class="section" id="about">
   <div class="section-head">
-    <div>
-      <div class="tag mono">// About Civiline</div>
-      <h2>Built for self-study, kept simple</h2>
-    </div>
-  <div class="score-display hidden" id="scoreScreen">
-    <h2>Quiz Completed!</h2>
-    <div class="score-circle" id="scoreCircle">0/10</div>
-    <p id="scoreMessage"></p>
-    <button class="btn btn-primary" style="margin-top:20px;" onclick="restartQuiz()">Restart Quiz</button>
+    <div class="tag mono">About Civiline</div>
+    <h2>Built for self-study, kept simple</h2>
   </div>
-  <div class="about-wrap">
-    <div>
-      <p>CIVILINE brings together the scattered corners of civil engineering learning — journals, textbooks, software guides, and branch-specific notes — into one directory that's organized the way students and practicing engineers actually search: by branch, by topic, and by what they need to do next.</p>
-      <p>Video lectures are sourced from NPTEL, one of India's most trusted platforms for engineering education, and every written resource on this site is free to access.</p>
-    </div>
+  <div class="about-card">
+    <p>CIVILINE brings together the scattered corners of civil engineering learning — journals, textbooks, software guides, and branch-specific notes — into one directory organized the way students and practicing engineers actually search: by branch, by topic, and by what they need to do next.</p>
+    <p style="margin-bottom:1.2rem;">Video lectures are sourced from NPTEL, one of India's most trusted platforms for engineering education, and every written resource on this site is free to access.</p>
     <ul class="about-list">
       <li><span class="idx">01</span> Organized by branch, not just alphabetically</li>
       <li><span class="idx">02</span> No paywalls, no sign-up required</li>
@@ -233,10 +748,8 @@
       <li><span class="idx">04</span> Built by and for self-taught engineers</li>
     </ul>
   </div>
-</section>
 
-<section>
-  <div class="callout-grid">
+  <div class="callout-grid" style="margin-top:1.2rem;">
     <div class="callout-card blue">
       <h3>Watch the Video Library</h3>
       <p>NPTEL lecture series organized by branch and semester, ready to stream.</p>
@@ -250,32 +763,37 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="foot-grid">
-    <div class="foot-brand">
-      <div class="logo"><div class="mark"><span>C</span></div>CIVILINE</div>
-      <p>A free, self-study knowledge hub for civil engineering — journals, books, tools, and branch-specific notes in one place.</p>
-    </div>
+  <div class="foot-brand"><div class="mark">C</div>CIVILINE</div>
+  <p class="foot-desc">A free, self-study knowledge hub for civil engineering — journals, books, tools, and branch-specific notes in one place.</p>
+  <div class="foot-links">
     <div class="foot-col">
-      <h5 class="mono">Library</h5>
+      <h5>Library</h5>
       <a href="resources/softwares.html">Softwares</a>
       <a href="resources/civil-engineering-books.html">Books</a>
       <a href="resources/journals-and-magazines.html">Journals</a>
       <a href="resources/magazines-white-papers.html">White Papers</a>
     </div>
     <div class="foot-col">
-      <h5 class="mono">Knowledge Center</h5>
+      <h5>Knowledge</h5>
       <a href="resources/mix-design.html">Mix Design</a>
-      <a href="resources/research-papers.html">Research Papers</a>
+      <a href="resources/research-papers.html">MCQs</a>
       <a href="resources/student-corner.html">Student Corner</a>
-      <a href="resources/civil-engineering-videos.html">CE Videos</a>
+      <a href="resources/civil-engineering-videos.html">Videos</a>
     </div>
     <div class="foot-col">
-      <h5 class="mono">Branches</h5>
-      <a href="resources/bridge-engineering.html">Bridge Engineering</a>
-      <a href="resources/highway-engineering.html">Highway Engineering</a>
-      <a href="resources/concrete-engineering.html">Concrete Engineering</a>
-      <a href="resources/soil-engineering.html">Soil Engineering</a>
+      <h5>Branches</h5>
+      <a href="resources/bridge-engineering.html">Bridge</a>
+      <a href="resources/highway-engineering.html">Highway</a>
+      <a href="resources/concrete-engineering.html">Concrete</a>
+      <a href="resources/soil-engineering.html">Soil</a>
+    </div>
+    <div class="foot-col">
+      <h5>More</h5>
+      <a href="video-library.html">Video Library</a>
+      <a href="Infranews.html">Infra News</a>
+      <a href="#about">About</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -283,224 +801,149 @@
     <div>Built for self-study · Video lectures courtesy NPTEL</div>
   </div>
 </footer>
-</div>
 
 <script>
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active');
-  });
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('active'));
-  });
+  // ===== DRAWER =====
+  function toggleDrawer() {
+    document.getElementById('hamburger').classList.toggle('active');
+    document.getElementById('mobileDrawer').classList.toggle('open');
+    document.getElementById('drawerOverlay').classList.toggle('open');
+    const open = document.getElementById('mobileDrawer').classList.contains('open');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
 
-  // Directory filter + search
-  const tabs = document.querySelectorAll('.filter-tab');
-  const groups = document.querySelectorAll('.resource-group');
-  const cards = document.querySelectorAll('.resource-card');
-  const searchInput = document.getElementById('resourceSearch');
-  const resultCount = document.getElementById('resultCount');
+  // ===== RESOURCE FILTER =====
   let activeFilter = 'all';
-
-  function applyFilters(){
-    const q = searchInput.value.trim().toLowerCase();
-    let visibleCount = 0;
-
-    groups.forEach(group => {
-      const groupName = group.dataset.group;
-      const groupMatchesFilter = activeFilter === 'all' || activeFilter === groupName;
-      let groupHasVisible = false;
-
-      group.querySelectorAll('.resource-card').forEach(card => {
-        const text = card.querySelector('h4').textContent.toLowerCase();
-        const matchesSearch = text.includes(q);
-        const show = groupMatchesFilter && matchesSearch;
-        card.classList.toggle('hidden', !show);
-        if (show){ visibleCount++; groupHasVisible = true; }
+  function setFilter(btn, filter) {
+    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = filter;
+    applyFilters();
+  }
+  function applyFilters() {
+    const q = document.getElementById('resourceSearch').value.trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.resource-group').forEach(g => {
+      const groupName = g.dataset.group;
+      const groupMatch = activeFilter === 'all' || activeFilter === groupName;
+      let hasVisible = false;
+      g.querySelectorAll('.resource-card').forEach(c => {
+        const text = c.querySelector('h4').textContent.toLowerCase();
+        const show = groupMatch && text.includes(q);
+        c.classList.toggle('hidden', !show);
+        if (show) { visible++; hasVisible = true; }
       });
+      g.style.display = hasVisible ? '' : 'none';
+    });
+    document.getElementById('resultCount').textContent = visible + ' topic' + (visible === 1 ? '' : 's');
+  }
 
-      group.style.display = groupHasVisible ? '' : 'none';
+  // ===== QUIZ =====
   const questions = [
-    {
-      q: "The unit weight of reinforced concrete is generally taken as:",
-      options: ["2200 kg/m³", "2400 kg/m³", "2500 kg/m³", "2800 kg/m³"],
-      correct: 2,
-      explanation: "The unit weight of reinforced concrete is generally taken as 2500 kg/m³ (or 25 kN/m³). Plain concrete is 2400 kg/m³."
-    },
-    {
-      q: "In a simply supported beam, the maximum bending moment occurs at:",
-      options: ["The supports", "One-third of the span", "The centre of the span", "At the quarter points"],
-      correct: 2,
-      explanation: "For a simply supported beam with uniformly distributed load, the maximum bending moment occurs at the centre of the span."
-    },
-    {
-      q: "The modulus of elasticity of steel (Es) is approximately:",
-      options: ["150 GPa", "200 GPa", "250 GPa", "300 GPa"],
-      correct: 1,
-      explanation: "The modulus of elasticity of steel is approximately 200 GPa (or 2×10⁵ N/mm²)."
-    },
-    {
-      q: "The minimum grade of concrete recommended for reinforced cement concrete (RCC) work is:",
-      options: ["M15", "M20", "M25", "M30"],
-      correct: 1,
-      explanation: "As per IS 456:2000, the minimum grade of concrete for RCC work is M20."
-    },
-    {
-      q: "The effective span of a simply supported slab is:",
-      options: ["Clear span + effective depth", "Clear span - effective depth", "Clear span only", "Clear span + 2 × effective depth"],
-      correct: 0,
-      explanation: "The effective span of a simply supported slab = clear span + effective depth (or centre-to-centre of supports, whichever is less)."
-    },
-    {
-      q: "Poisson's ratio for concrete generally ranges between:",
-      options: ["0.05 to 0.10", "0.10 to 0.20", "0.20 to 0.30", "0.30 to 0.40"],
-      correct: 1,
-      explanation: "Poisson's ratio for concrete generally ranges between 0.10 to 0.20 (commonly taken as 0.15)."
-    },
-    {
-      q: "The water-cement ratio for high-strength concrete is usually kept:",
-      options: ["Above 0.6", "Between 0.5 and 0.6", "Between 0.4 and 0.5", "Below 0.4"],
-      correct: 3,
-      explanation: "For high-strength concrete, the water-cement ratio is usually kept below 0.4 to achieve higher strength."
-    },
-    {
-      q: "The minimum cover to the main reinforcement in a slab (exposed to moderate conditions) is:",
-      options: ["15 mm", "20 mm", "25 mm", "30 mm"],
-      correct: 1,
-      explanation: "As per IS 456:2000, the minimum cover for slabs in moderate exposure conditions is 20 mm."
-    },
-    {
-      q: "The standard consistency of cement is determined by:",
-      options: ["Le Chatelier apparatus", "Vicat apparatus", "Blaine's air permeability apparatus", "Slump cone"],
-      correct: 1,
-      explanation: "The standard consistency of cement is determined using the Vicat apparatus."
-    },
-    {
-      q: "The ratio of lateral strain to linear strain is known as:",
-      options: ["Bulk modulus", "Shear modulus", "Poisson's ratio", "Young's modulus"],
-      correct: 2,
-      explanation: "Poisson's ratio is defined as the ratio of lateral strain to linear (longitudinal) strain within the elastic limit."
-    }
+    { q: "The unit weight of reinforced concrete is generally taken as:", options: ["2200 kg/m³", "2400 kg/m³", "2500 kg/m³", "2800 kg/m³"], correct: 2, explain: "Reinforced concrete unit weight is ~2500 kg/m³ (25 kN/m³). Plain concrete is 2400 kg/m³." },
+    { q: "In a simply supported beam, the maximum bending moment occurs at:", options: ["The supports", "One-third of the span", "The centre of the span", "At the quarter points"], correct: 2, explain: "For a simply supported beam with UDL, max BM occurs at the centre." },
+    { q: "The modulus of elasticity of steel (Es) is approximately:", options: ["150 GPa", "200 GPa", "250 GPa", "300 GPa"], correct: 1, explain: "Steel modulus of elasticity ≈ 200 GPa (2×10⁵ N/mm²)." },
+    { q: "Minimum grade of concrete recommended for RCC work is:", options: ["M15", "M20", "M25", "M30"], correct: 1, explain: "As per IS 456:2000, minimum grade for RCC is M20." },
+    { q: "The effective span of a simply supported slab is:", options: ["Clear span + effective depth", "Clear span - effective depth", "Clear span only", "Clear span + 2×effective depth"], correct: 0, explain: "Effective span = clear span + effective depth (or c/c of supports, whichever is less)." },
+    { q: "Poisson's ratio for concrete generally ranges between:", options: ["0.05–0.10", "0.10–0.20", "0.20–0.30", "0.30–0.40"], correct: 1, explain: "Poisson's ratio for concrete ≈ 0.10–0.20, commonly 0.15." },
+    { q: "The water-cement ratio for high-strength concrete is usually kept:", options: ["Above 0.6", "0.5–0.6", "0.4–0.5", "Below 0.4"], correct: 3, explain: "High-strength concrete uses w/c ratio below 0.4." },
+    { q: "Minimum cover to main reinforcement in a slab (moderate conditions) is:", options: ["15 mm", "20 mm", "25 mm", "30 mm"], correct: 1, explain: "IS 456:2000 specifies 20 mm minimum cover for slabs in moderate exposure." },
+    { q: "Standard consistency of cement is determined by:", options: ["Le Chatelier apparatus", "Vicat apparatus", "Blaine's apparatus", "Slump cone"], correct: 1, explain: "Vicat apparatus determines standard consistency of cement." },
+    { q: "The ratio of lateral strain to linear strain is known as:", options: ["Bulk modulus", "Shear modulus", "Poisson's ratio", "Young's modulus"], correct: 2, explain: "Poisson's ratio = lateral strain / longitudinal strain within elastic limit." }
   ];
 
-  let current = 0;
-  let answers = new Array(questions.length).fill(null);
-  let score = 0;
+  let qIndex = 0, qScore = 0, qAnswers = new Array(questions.length).fill(null);
 
-  function loadQuestion() {
-    const q = questions[current];
-    document.getElementById('qNumber').textContent = `Question ${current + 1} of ${questions.length}`;
+  function loadQ() {
+    const q = questions[qIndex];
+    document.getElementById('qMeta').textContent = 'Question ' + (qIndex+1) + ' of ' + questions.length;
     document.getElementById('qText').textContent = q.q;
-    document.getElementById('explanationBox').style.display = 'none';
-    document.getElementById('explanationBox').textContent = '';
-
-    const opts = document.getElementById('optionsContainer');
+    document.getElementById('qExplain').style.display = 'none';
+    const opts = document.getElementById('qOptions');
     opts.innerHTML = '';
-    q.options.forEach((opt, idx) => {
+    q.options.forEach((opt, i) => {
       const btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
-      btn.onclick = () => selectOption(idx);
+      btn.className = 'q-option';
+      btn.setAttribute('data-label', String.fromCharCode(65+i));
+      btn.textContent = opt;
+      btn.onclick = () => pickQ(i);
       opts.appendChild(btn);
     });
-
-    resultCount.textContent = `${visibleCount} topic${visibleCount === 1 ? '' : 's'}`;
-    updateProgress();
-    updateControls();
-
-    if (answers[current] !== null) {
-      const btns = opts.querySelectorAll('.option-btn');
-      const ans = answers[current];
-      if (ans.isCorrect) btns[ans.selected].classList.add('selected-correct');
-      else {
-        btns[ans.selected].classList.add('selected-wrong');
-        btns[q.correct].classList.add('correct-answer');
-      }
-      showExplanation();
-      disableOptions();
+    document.getElementById('qFill').style.width = ((qIndex+1)/questions.length*100) + '%';
+    updateQCtrl();
+    if (qAnswers[qIndex] !== null) {
+      const ans = qAnswers[qIndex];
+      const btns = opts.querySelectorAll('.q-option');
+      if (ans.isCorrect) btns[ans.selected].classList.add('correct');
+      else { btns[ans.selected].classList.add('wrong'); btns[q.correct].classList.add('correct'); }
+      document.getElementById('qExplain').textContent = q.explain;
+      document.getElementById('qExplain').style.display = 'block';
+      btns.forEach(b => b.classList.add('disabled'));
     }
   }
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      activeFilter = tab.dataset.filter;
-      applyFilters();
-    });
-  });
-  function selectOption(idx) {
-    if (answers[current] !== null) return;
-    const q = questions[current];
+  function pickQ(idx) {
+    if (qAnswers[qIndex] !== null) return;
+    const q = questions[qIndex];
     const isCorrect = idx === q.correct;
-    answers[current] = { selected: idx, isCorrect: isCorrect };
-    const btns = document.getElementById('optionsContainer').querySelectorAll('.option-btn');
-    if (isCorrect) { btns[idx].classList.add('selected-correct'); score++; }
-    else { btns[idx].classList.add('selected-wrong'); btns[q.correct].classList.add('correct-answer'); }
-    showExplanation();
-    disableOptions();
-    updateControls();
+    qAnswers[qIndex] = { selected: idx, isCorrect: isCorrect };
+    const btns = document.getElementById('qOptions').querySelectorAll('.q-option');
+    if (isCorrect) { btns[idx].classList.add('correct'); qScore++; }
+    else { btns[idx].classList.add('wrong'); btns[q.correct].classList.add('correct'); }
+    document.getElementById('qExplain').textContent = q.explain;
+    document.getElementById('qExplain').style.display = 'block';
+    btns.forEach(b => b.classList.add('disabled'));
+    updateQCtrl();
   }
-
-  function showExplanation() {
-    const box = document.getElementById('explanationBox');
-    box.textContent = questions[current].explanation;
-    box.style.display = 'block';
+  function updateQCtrl() {
+    document.getElementById('qPrev').disabled = qIndex === 0;
+    const answered = qAnswers[qIndex] !== null;
+    const last = qIndex === questions.length - 1;
+    const nb = document.getElementById('qNext');
+    nb.disabled = !answered;
+    nb.textContent = last ? 'Finish' : 'Next';
   }
-
-  function disableOptions() {
-    document.getElementById('optionsContainer').querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+  function nextQ() {
+    if (qIndex < questions.length - 1) { qIndex++; loadQ(); }
+    else { showQScore(); }
   }
-
-  function updateProgress() {
-    const pct = ((current + 1) / questions.length) * 100;
-    document.getElementById('progressFill').style.width = pct + '%';
+  function prevQ() {
+    if (qIndex > 0) { qIndex--; loadQ(); }
   }
-
-  searchInput.addEventListener('input', applyFilters);
-  function updateControls() {
-    document.getElementById('prevBtn').disabled = current === 0;
-    const answered = answers[current] !== null;
-    const isLast = current === questions.length - 1;
-    const nextBtn = document.getElementById('nextBtn');
-    nextBtn.disabled = !answered;
-    nextBtn.textContent = isLast ? 'Finish' : 'Next';
-  }
-
-  function nextQuestion() {
-    if (current < questions.length - 1) { current++; loadQuestion(); }
-    else { showScore(); }
-  }
-
-  function prevQuestion() {
-    if (current > 0) { current--; loadQuestion(); }
-  }
-
-  function showScore() {
+  function showQScore() {
     document.getElementById('quizContent').classList.add('hidden');
-    document.getElementById('scoreScreen').classList.remove('hidden');
-    document.getElementById('scoreCircle').textContent = `${score}/${questions.length}`;
-    const pct = (score / questions.length) * 100;
+    document.getElementById('qScore').classList.remove('hidden');
+    document.getElementById('qCircle').textContent = qScore + '/' + questions.length;
+    const pct = (qScore / questions.length) * 100;
     let msg = '';
     if (pct >= 80) msg = 'Excellent! You have strong fundamentals in Civil Engineering.';
     else if (pct >= 60) msg = 'Good job! Keep practicing to strengthen your concepts.';
     else if (pct >= 40) msg = 'Not bad. Review the explanations and try again.';
     else msg = 'Keep learning! Civil Engineering takes time and practice.';
-    document.getElementById('scoreMessage').textContent = msg;
+    document.getElementById('qMsg').textContent = msg;
   }
-
-  function restartQuiz() {
-    current = 0; score = 0;
-    answers = new Array(questions.length).fill(null);
-    document.getElementById('scoreScreen').classList.add('hidden');
+  function restartQ() {
+    qIndex = 0; qScore = 0;
+    qAnswers = new Array(questions.length).fill(null);
+    document.getElementById('qScore').classList.add('hidden');
     document.getElementById('quizContent').classList.remove('hidden');
-    loadQuestion();
+    loadQ();
   }
+  loadQ();
 
-  loadQuestion();
+  // ===== SCROLL ANIMATIONS =====
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 </script>
 
 </body>
-</html>
+</html>'''
+
+# Save to output
+output_path = '/mnt/agents/output/civilline-mobile.html'
+with open(output_path, 'w', encoding='utf-8') as f:
+    f.write(mobile_html)
+
+print(f"Saved: {output_path}")
+print(f"Size: {len(mobile_html)} chars")
