@@ -2,126 +2,141 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Civil Engineering Formula Book</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CivilLine — Civil Engineering Premium Notes</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f8fafc;color:#1e293b}
+header{background:linear-gradient(135deg,#0b5ed7 0%,#2563eb 100%);color:#fff;text-align:center;padding:35px 20px;box-shadow:0 4px 20px rgba(11,94,215,.25)}
+header h1{font-size:2.4rem;letter-spacing:1px;margin-bottom:6px}
+header .tagline{font-size:1.05rem;opacity:.9}
+header .price{display:inline-block;margin-top:12px;background:rgba(255,255,255,.15);padding:6px 18px;border-radius:30px;font-weight:600;font-size:1rem}
 
-body{
-    min-height:100vh;
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
+.container{max-width:1150px;margin:auto;padding:24px 20px}
 
-.container{
-    width:95%;
-    max-width:1200px;
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(12px);
-    border-radius:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,.4);
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.2);
-}
+/* Exam strip */
+.exam-strip{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:18px 24px;margin-bottom:22px;text-align:center}
+.exam-strip h2{font-size:1rem;color:#64748b;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px}
+.exam-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.exam-tags span{background:#eef2ff;color:#3730a3;padding:7px 16px;border-radius:20px;font-size:.88rem;font-weight:500;border:1px solid #c7d2fe;white-space:nowrap;transition:.2s}
+.exam-tags span:hover{background:#3730a3;color:#fff;transform:translateY(-1px)}
+.exam-note{text-align:center;color:#475569;font-size:.95rem;margin-top:14px}
 
-.header{
-    text-align:center;
-    padding:25px;
-    color:#fff;
-    background:linear-gradient(90deg,#1565C0,#42A5F5);
-}
+/* Unlock box */
+.unlock-box{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:24px;margin-bottom:22px;text-align:center}
+.unlock-box h2{font-size:1.25rem;margin-bottom:10px;color:#0f172a}
+.unlock-box p{color:#475569;margin-bottom:12px}
+input[type=password]{padding:12px 14px;width:280px;max-width:90%;border:1px solid #cbd5e1;border-radius:8px;font-size:1rem;outline:none;transition:.2s}
+input[type=password]:focus{border-color:#0b5ed7;box-shadow:0 0 0 3px rgba(11,94,215,.12)}
+button{padding:12px 22px;border:none;border-radius:8px;background:#0b5ed7;color:#fff;font-size:1rem;cursor:pointer;margin-left:8px;transition:.2s}
+button:hover{background:#094bb5}
+#status{margin-top:12px;font-weight:600;min-height:22px}
+.whatsapp-btn{display:inline-block;margin-top:14px;padding:11px 22px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:600;transition:.2s}
+.whatsapp-btn:hover{background:#1da851}
 
-.header h1{
-    font-size:36px;
-}
+/* PDF Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:18px;text-align:center;transition:.2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.card h3{font-size:1.05rem;color:#1e293b;margin-bottom:12px}
+a.pdf{display:inline-block;padding:10px 18px;border-radius:8px;background:#198754;color:#fff;text-decoration:none;font-weight:600;font-size:.9rem;pointer-events:none;opacity:.4;transition:.2s}
+a.pdf.unlocked{pointer-events:auto;opacity:1}
+a.pdf.unlocked:hover{background:#146c43}
 
-.header p{
-    margin-top:8px;
-    opacity:.9;
-}
-
-.button-area{
-    text-align:center;
-    padding:20px;
-    background:#ffffff10;
-}
-
-.button-area a{
-    display:inline-block;
-    padding:14px 35px;
-    background:#ff9800;
-    color:white;
-    text-decoration:none;
-    font-size:18px;
-    border-radius:40px;
-    font-weight:bold;
-    transition:.3s;
-}
-
-.button-area a:hover{
-    background:#ff6f00;
-    transform:scale(1.05);
-}
-
-iframe{
-    width:100%;
-    height:700px;
-    border:none;
-}
-
-.footer{
-    text-align:center;
-    color:white;
-    padding:15px;
-    background:#00000055;
-}
-
-@media(max-width:768px){
-    .header h1{
-        font-size:26px;
-    }
-
-    iframe{
-        height:500px;
-    }
+@media(max-width:600px){
+  header h1{font-size:1.7rem}
+  button{margin-left:0;margin-top:10px;width:280px;max-width:90%}
+  input[type=password]{width:280px;max-width:90%}
 }
 </style>
-
+<script>
+function unlock(){
+  let p=document.getElementById('pwd').value;
+  let s=document.getElementById('status');
+  if(p==="sumeet123"){
+    document.querySelectorAll('.pdf').forEach(x=>{x.classList.add('unlocked');x.style.pointerEvents='auto';x.style.opacity='1';});
+    s.style.color='#16a34a';
+    s.innerHTML='✅ Password verified. All PDFs are now unlocked.';
+  }else{
+    s.style.color='#dc2626';
+    s.innerHTML='❌ Incorrect password. Please try again.';
+  }
+}
+</script>
+<base target="_blank">
 </head>
 <body>
+<header>
+  <h1>⚡ CivilLine</h1>
+  <p class="tagline">Civil Engineering Premium Notes</p>
+  <p class="price">Price: ₹199</p>
+</header>
 
 <div class="container">
 
-    <div class="header">
-        <h1>📘 Civil Engineering Formula Book</h1>
-        <p>All Civil Engineering Formulae at One Place</p>
+  <!-- Exam Description -->
+  <div class="exam-strip">
+    <h2>Exam Description</h2>
+    <div class="exam-tags">
+      <span>UPSC ESE/IES</span>
+      <span>State Engineering Services</span>
+      <span>PSU Recruitment</span>
+      <span>BHEL</span>
+      <span>NTPC</span>
+      <span>NHPC</span>
+      <span>DRDO</span>
+      <span>SAIL</span>
+      <span>HAL</span>
+      <span>BSNL</span>
+      <span>BPCL</span>
+      <span>NPCIL</span>
     </div>
+    <p class="exam-note">These notes are useful for competitive examinations, university preparation, interviews, and technical job recruitment.</p>
+  </div>
 
-    <div class="button-area">
-        <a href="https://drive.google.com/file/d/1Ocl8CEbPie8GYoWrAIMiw_ObEJxUCroj/view" target="_blank">
-            📖 Open Full PDF
-        </a>
-    </div>
+  <!-- Unlock -->
+  <div class="unlock-box">
+    <h2>🔐 Unlock Notes</h2>
+    <p>Enter your password below to unlock all PDFs.</p>
+    <input type="password" id="pwd" placeholder="Enter Password">
+    <button onclick="unlock()">Unlock</button>
+    <p id="status"></p>
+    <p style="color:#475569;margin-top:10px"><b>Don't have the password?</b></p>
+    <a class="whatsapp-btn" href="https://wa.me/919975304937?text=Hello%20Sir,%20I%20would%20like%20to%20request%20the%20password%20to%20access%20the%20Civil%20Engineering%20Notes.%20Please%20share%20the%20details.%20Thank%20you." target="_blank">💬 Request on WhatsApp</a>
+  </div>
 
-    <iframe
-    src="https://drive.google.com/file/d/1Ocl8CEbPie8GYoWrAIMiw_ObEJxUCroj/preview"
-    allow="autoplay">
-    </iframe>
-
-    <div class="footer">
-        © 2026 Civil Engineering Formula Handbook
-    </div>
+  <!-- PDFs -->
+  <div class="grid">
+    <div class="card"><h3>Building Material</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQQJofmalfpkTL1UAoWG3nFcAcskFZlWkQoMjh9yPcjjIJc" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Environmental Engineering 1</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQQoklyCjB2qTKLUMuYVBjoiAZF_27eevrxQnnXd54qiCYI" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Environmental Engineering 2</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQT_gsiW19ZIQLtp2zOQupo1AapbmPEYwfJOkJL56ZXeOoc" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Fluid Mechanics</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQRuUy1ZbubTTqgi-uevPGMEAdYVBZwPWyE_2oZmWYF00L4" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Geotechnical Engineering</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQTlqwGitHpPSrEcri9C6saVAfMKdZIvB0kWBhfcY3yZ9gY" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Highway Engineering</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQTsMi_gBOPBTavGbB-Q955BASOY7uvNWnmkZvEVTBAtGoE" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Hydraulic Mechanics</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQRqGCIfZQRVSq5BM1uijvZRAUoMoaglyrXZNIBP82RTIwQ" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Hydrology</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQTF6ecalRWqTox9edrd5542AQ34EpaYkvBvD54I1KIAHlw" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>RCC 1</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQRC69CFBpJ5TIFbVWSLi6NoATpsci2dsHVuqPMgqljyXNA" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>RCC 2</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQRe-F1mrzrvS6Fo9YtuBXvrAVZeZU2xWGi6LXDRiiFOlQ0" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Irrigation Engineering</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQRZqUP_6NncSIg3YnbFUSY_AVavZoWTYz9dPnlLs9gb0hE" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>SOM</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQTW3Z6LXj3qSLRderEDCe9_AR58NGiQfzvag8c_GwxzzGg" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Steel Structure</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQTv8TEih-4UQZqmZJSmEWMxATooZAHcVRROcTpt8IFDidM" target="_blank">Open PDF</a></div>
+    <div class="card"><h3>Surveying</h3><a class="pdf" href="https://1drv.ms/b/c/866a92dc50b99ccf/IQRF_s0Dc5uxTZduASqHktKkAaIbbCDG_jABUk1CXQHxmhk" target="_blank">Open PDF</a></div>
+  </div>
 
 </div>
-
 </body>
 </html>
+
+
+Jarvis logo
+Ctrl+J
+
+
+Jarvis logo
+
+English
+
+
+
+
+
