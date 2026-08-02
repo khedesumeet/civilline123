@@ -6,44 +6,20 @@
   <title>Site Engineer — Estimation & Costing</title>
   <style>
     :root {
-      --bg: #f4f6f8;
-      --surface: #ffffff;
-      --surface-raised: #fafbfc;
-      --surface-strong: #eef1f5;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-tertiary: #94a3b8;
-      --border: #e2e8f0;
-      --accent: #0ea5e9;
-      --accent-light: #e0f2fe;
-      --positive: #059669;
-      --positive-light: #d1fae5;
-      --danger: #dc2626;
-      --danger-light: #fee2e2;
-      --warning: #d97706;
-      --warning-light: #fef3c7;
+      --bg: #f4f6f8; --surface: #ffffff; --surface-raised: #fafbfc; --surface-strong: #eef1f5;
+      --text-primary: #0f172a; --text-secondary: #475569; --text-tertiary: #94a3b8; --border: #e2e8f0;
+      --accent: #0ea5e9; --accent-light: #e0f2fe; --positive: #059669; --positive-light: #d1fae5;
+      --danger: #dc2626; --danger-light: #fee2e2; --warning: #d97706; --warning-light: #fef3c7;
       --engineer: #1e3a5f;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --font-mono: "SF Mono", Monaco, "Cascadia Code", "Courier New", monospace;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0b1120;
-        --surface: #1e293b;
-        --surface-raised: #334155;
-        --surface-strong: #0f172a;
-        --text-primary: #f1f5f9;
-        --text-secondary: #cbd5e1;
-        --text-tertiary: #64748b;
-        --border: #334155;
-        --accent: #38bdf8;
-        --accent-light: rgba(56,189,248,0.15);
-        --positive: #34d399;
-        --positive-light: rgba(52,211,153,0.15);
-        --danger: #f87171;
-        --danger-light: rgba(248,113,113,0.15);
-        --warning: #fbbf24;
-        --warning-light: rgba(251,191,36,0.15);
+        --bg: #0b1120; --surface: #1e293b; --surface-raised: #334155; --surface-strong: #0f172a;
+        --text-primary: #f1f5f9; --text-secondary: #cbd5e1; --text-tertiary: #64748b; --border: #334155;
+        --accent: #38bdf8; --accent-light: rgba(56,189,248,0.15); --positive: #34d399; --positive-light: rgba(52,211,153,0.15);
+        --danger: #f87171; --danger-light: rgba(248,113,113,0.15); --warning: #fbbf24; --warning-light: rgba(251,191,36,0.15);
         --engineer: #38bdf8;
       }
     }
@@ -64,20 +40,11 @@
     }
     .btn:active { transform: scale(0.98); opacity: 0.9; }
     .btn.secondary { background: var(--surface-raised); color: var(--text-primary); border: 1.5px solid var(--border); }
-    .btn.accent { background: var(--accent); }
-    .btn.danger { background: var(--danger); }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .card {
       background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
       padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
-    .card-header {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .card-header .icon { font-size: 22px; }
-    .card-header .title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-    .card-header .subtitle { font-size: 12px; color: var(--text-tertiary); }
     .stat-row {
       display: flex; justify-content: space-between; align-items: center;
       padding: 10px 0; border-bottom: 1px solid var(--border);
@@ -85,7 +52,6 @@
     .stat-row:last-child { border-bottom: none; }
     .stat-label { font-size: 14px; color: var(--text-secondary); }
     .stat-value { font-size: 15px; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono); }
-    .stat-value.small { font-size: 13px; }
     .level-card {
       background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px;
       padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s;
@@ -114,8 +80,6 @@
     .feedback.show { display: block; }
     .feedback.correct { background: var(--positive-light); color: var(--positive); }
     .feedback.wrong { background: var(--danger-light); color: var(--danger); }
-    .feedback.info { background: var(--accent-light); color: var(--accent); }
-    .feedback.warning { background: var(--warning-light); color: var(--warning); }
     .top-bar {
       display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;
       border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10;
@@ -148,36 +112,14 @@
     .rate-table td { color: var(--text-secondary); }
     .rate-table td.mono { font-family: var(--font-mono); font-weight: 600; color: var(--text-primary); }
     .rate-table tr:last-child td { border-bottom: none; font-weight: 700; color: var(--text-primary); }
-    .rate-table tr.total-row td { border-top: 2px solid var(--border); border-bottom: none; padding-top: 10px; }
     .stars { display: flex; justify-content: center; gap: 6px; margin: 12px 0; }
-    .star { font-size: 32px; color: var(--text-quaternary); }
+    .star { font-size: 32px; color: var(--text-tertiary); }
     .star.filled { color: var(--warning); }
     .tag {
       display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
       margin-right: 6px; margin-bottom: 6px;
     }
     .tag.is-code { background: var(--accent-light); color: var(--accent); }
-    .tag.unit { background: var(--surface-strong); color: var(--text-secondary); }
-    .tag.rate { background: var(--positive-light); color: var(--positive); }
-    .boq-summary {
-      background: var(--surface-strong); border-radius: 12px; padding: 14px; margin: 12px 0;
-      border-left: 4px solid var(--engineer);
-    }
-    .boq-summary .boq-title { font-size: 13px; font-weight: 700; color: var(--engineer); margin-bottom: 8px; }
-    .step-indicator {
-      display: flex; justify-content: center; gap: 6px; margin: 10px 0;
-    }
-    .step-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--border);
-    }
-    .step-dot.active { background: var(--accent); }
-    .step-dot.done { background: var(--positive); }
-    .progress-bar {
-      height: 6px; background: var(--surface-strong); border-radius: 3px; overflow: hidden; margin-top: 6px;
-    }
-    .progress-fill {
-      height: 100%; background: var(--engineer); border-radius: 3px; transition: width 0.3s ease;
-    }
     .note {
       font-size: 12px; color: var(--text-tertiary); padding: 10px; background: var(--surface-strong);
       border-radius: 8px; margin: 10px 0; line-height: 1.5;
@@ -191,6 +133,17 @@
       border-bottom: 1px dashed var(--border);
     }
     .formula-line:last-child { border-bottom: none; font-weight: 700; color: var(--text-primary); font-size: 14px; }
+    .boq-summary {
+      background: var(--surface-strong); border-radius: 12px; padding: 14px; margin: 12px 0;
+      border-left: 4px solid var(--engineer);
+    }
+    .boq-summary .boq-title { font-size: 13px; font-weight: 700; color: var(--engineer); margin-bottom: 8px; }
+    .progress-bar {
+      height: 6px; background: var(--surface-strong); border-radius: 3px; overflow: hidden; margin-top: 6px;
+    }
+    .progress-fill {
+      height: 100%; background: var(--engineer); border-radius: 3px; transition: width 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -200,15 +153,15 @@
 <div class="top-bar" id="top-bar" style="display:none;">
   <button class="back-btn" onclick="goBack()">&#8592;</button>
   <div class="title" id="top-title">Site Engineer</div>
-  <div class="score" id="top-score">₹0</div>
+  <div class="score" id="top-score">Rs.0</div>
 </div>
 
 <!-- Screen: Home -->
 <div class="screen active" id="screen-home">
   <div style="text-align:center; padding: 24px 0 16px 0;">
-    <div style="font-size: 52px; margin-bottom: 6px;">🏗️</div>
+    <div style="font-size: 52px; margin-bottom: 6px;">&#127959;</div>
     <h1 style="font-size: 24px; color: var(--engineer);">Site Engineer</h1>
-    <p style="text-align:center; max-width: 300px; margin: 0 auto 20px auto; font-size: 14px;">Estimation & Costing as per Indian Standard Codes</p>
+    <p style="text-align:center; max-width: 300px; margin: 0 auto 20px auto; font-size: 14px;">Estimation &amp; Costing as per Indian Standard Codes</p>
     <div style="display:flex; justify-content:center; gap: 6px; flex-wrap: wrap;">
       <span class="tag is-code">IS 1200</span>
       <span class="tag is-code">IS 456</span>
@@ -217,16 +170,16 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-header" style="border-bottom:none; margin-bottom:0;">
-      <div class="icon">📊</div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border);">
+      <div style="font-size: 22px;">&#128202;</div>
       <div>
-        <div class="title">Career Stats</div>
-        <div class="subtitle">Your estimation performance</div>
+        <div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">Career Stats</div>
+        <div style="font-size: 12px; color: var(--text-tertiary);">Your estimation performance</div>
       </div>
     </div>
     <div class="stat-row">
       <span class="stat-label">Total Earnings</span>
-      <span class="stat-value" id="home-score">₹0</span>
+      <span class="stat-value" id="home-score">Rs.0</span>
     </div>
     <div class="stat-row">
       <span class="stat-label">Projects Completed</span>
@@ -238,46 +191,46 @@
     </div>
     <div class="progress-bar"><div class="progress-fill" id="home-progress" style="width:0%"></div></div>
   </div>
-  <button class="btn" onclick="showScreen('levels')">▶️ Start New Project</button>
-  <button class="btn secondary" onclick="showScreen('help')">📖 IS Code Reference</button>
-  <button class="btn secondary" onclick="resetProgress()" style="margin-top: 16px; opacity: 0.7;">🗑️ Reset Career</button>
+  <button class="btn" onclick="showScreen('levels')">&#9654; Start New Project</button>
+  <button class="btn secondary" onclick="showScreen('help')">&#128214; IS Code Reference</button>
+  <button class="btn secondary" onclick="resetProgress()" style="margin-top: 16px; opacity: 0.7;">&#128465; Reset Career</button>
 </div>
 
 <!-- Screen: Levels -->
 <div class="screen" id="screen-levels">
   <h1>Select Project</h1>
   <div id="levels-list"></div>
-  <button class="btn secondary" onclick="showScreen('home')">← Back to Office</button>
+  <button class="btn secondary" onclick="showScreen('home')">&larr; Back to Office</button>
 </div>
 
 <!-- Screen: Help -->
 <div class="screen" id="screen-help">
   <h1>IS Code Reference</h1>
   <div class="card">
-    <div class="card-header" style="border-bottom:none;">
-      <div class="icon">📏</div>
-      <div><div class="title">IS 1200 (Part 1 to 28)</div><div class="subtitle">Methods of Measurement of Building Works</div></div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+      <div style="font-size: 22px;">&#128207;</div>
+      <div><div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">IS 1200 (Part 1 to 28)</div><div style="font-size: 12px; color: var(--text-tertiary);">Methods of Measurement of Building Works</div></div>
     </div>
     <p style="font-size:13px;">Governs how quantities are measured — earthwork in excavation (Part 1), concrete (Part 2), brickwork (Part 3), woodwork (Part 4), etc. All quantities in this game follow IS 1200 rules.</p>
   </div>
   <div class="card">
-    <div class="card-header" style="border-bottom:none;">
-      <div class="icon">🧱</div>
-      <div><div class="title">IS 456 : 2000</div><div class="subtitle">Plain and Reinforced Concrete</div></div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+      <div style="font-size: 22px;">&#129521;</div>
+      <div><div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">IS 456 : 2000</div><div style="font-size: 12px; color: var(--text-tertiary);">Plain and Reinforced Concrete</div></div>
     </div>
     <p style="font-size:13px;">RCC design parameters, concrete grades, steel cover, and reinforcement percentages. Used for RCC rate analysis and steel estimation.</p>
   </div>
   <div class="card">
-    <div class="card-header" style="border-bottom:none;">
-      <div class="icon">⚙️</div>
-      <div><div class="title">IS 800 : 2007</div><div class="subtitle">General Construction in Steel</div></div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+      <div style="font-size: 22px;">&#9881;</div>
+      <div><div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">IS 800 : 2007</div><div style="font-size: 12px; color: var(--text-tertiary);">General Construction in Steel</div></div>
     </div>
     <p style="font-size:13px;">Steel structural work measurement and costing. Used for structural steel rate analysis.</p>
   </div>
   <div class="card">
-    <div class="card-header" style="border-bottom:none;">
-      <div class="icon">💰</div>
-      <div><div class="title">DSR / CSR / PWD Schedule</div><div class="subtitle">Delhi / Central / State Schedule of Rates</div></div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+      <div style="font-size: 22px;">&#128176;</div>
+      <div><div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">DSR / CSR / PWD Schedule</div><div style="font-size: 12px; color: var(--text-tertiary);">Delhi / Central / State Schedule of Rates</div></div>
     </div>
     <p style="font-size:13px;">Government-approved rates for labour, material, and machinery. Rates in this game are derived from DSR 2024 patterns.</p>
   </div>
@@ -288,60 +241,60 @@
 <div class="screen" id="screen-l1">
   <h2>Project 1: Foundation Earthwork</h2>
   <p>Calculate excavation quantity for a building foundation as per <strong>IS 1200 (Part 1)</strong>.</p>
-  <div class="timer" id="l1-timer">⏱️ Time: 90s</div>
+  <div class="timer" id="l1-timer">&#9201; Time: 90s</div>
 
   <div class="drawing-box">
-    <div class="drawing-title">DRAWING — Plan & Section</div>
-    <div class="dimension-row"><span class="dim-label">Building plan size</span><span class="dim-value" id="l1-plan">5.0 m × 4.0 m</span></div>
+    <div class="drawing-title">DRAWING - Plan &amp; Section</div>
+    <div class="dimension-row"><span class="dim-label">Building plan size</span><span class="dim-value" id="l1-plan">5.0 m x 4.0 m</span></div>
     <div class="dimension-row"><span class="dim-label">Foundation width</span><span class="dim-value" id="l1-width">1.0 m</span></div>
     <div class="dimension-row"><span class="dim-label">Foundation depth</span><span class="dim-value" id="l1-depth">1.5 m</span></div>
     <div class="dimension-row"><span class="dim-label">Offset beyond building</span><span class="dim-value" id="l1-offset">0.5 m (all sides)</span></div>
-    <div class="note">As per IS 1200, earthwork is measured in m³ (length × width × depth). No deduction for concrete/footing up to 0.5 m².</div>
+    <div class="note">As per IS 1200, earthwork is measured in m3 (length x width x depth). No deduction for concrete/footing up to 0.5 m2.</div>
   </div>
 
   <div class="calc-workspace">
-    <h4>🧮 Your Calculation Workspace</h4>
-    <div class="formula-line" id="l1-work-l">Length of trench (L) = ?</div>
-    <div class="formula-line" id="l1-work-w">Width of trench (W) = ?</div>
+    <h4>&#129518; Your Calculation Workspace</h4>
+    <div class="formula-line" id="l1-work-l">Length of pit (L) = ?</div>
+    <div class="formula-line" id="l1-work-w">Width of pit (W) = ?</div>
     <div class="formula-line" id="l1-work-d">Depth of excavation (D) = ?</div>
-    <div class="formula-line" id="l1-work-v">Volume = L × W × D = ?</div>
+    <div class="formula-line" id="l1-work-v">Volume = L x W x D = ?</div>
   </div>
 
   <div class="input-group">
-    <label>Quantity of Earthwork Excavation (m³)</label>
+    <label>Quantity of Earthwork Excavation (m3)</label>
     <input type="number" id="l1-answer" step="0.01" placeholder="e.g. 45.00">
   </div>
 
   <div class="feedback" id="l1-feedback"></div>
   <button class="btn" id="l1-submit" onclick="checkL1()">Submit Quantity</button>
-  <button class="btn secondary" id="l1-next" style="display:none;" onclick="nextL1()">Next Item →</button>
+  <button class="btn secondary" id="l1-next" style="display:none;" onclick="nextL1()">Next Item &rarr;</button>
   <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Item <span id="l1-qnum">1</span> / 4</p>
 </div>
 
 <!-- Screen: Level 2 — PCC & RCC -->
 <div class="screen" id="screen-l2">
-  <h2>Project 2: PCC & RCC Footing</h2>
+  <h2>Project 2: PCC &amp; RCC Footing</h2>
   <p>Estimate concrete and steel quantities as per <strong>IS 456</strong> and <strong>IS 1200 (Part 2)</strong>.</p>
-  <div class="timer" id="l2-timer">⏱️ Time: 120s</div>
+  <div class="timer" id="l2-timer">&#9201; Time: 120s</div>
 
   <div class="drawing-box">
-    <div class="drawing-title">DRAWING — Footing Details</div>
-    <div class="dimension-row"><span class="dim-label">PCC bed size</span><span class="dim-value" id="l2-pcc-size">2.2 m × 2.2 m</span></div>
+    <div class="drawing-title">DRAWING - Footing Details</div>
+    <div class="dimension-row"><span class="dim-label">PCC bed size</span><span class="dim-value" id="l2-pcc-size">2.2 m x 2.2 m</span></div>
     <div class="dimension-row"><span class="dim-label">PCC thickness</span><span class="dim-value" id="l2-pcc-th">0.10 m</span></div>
-    <div class="dimension-row"><span class="dim-label">RCC footing size</span><span class="dim-value" id="l2-rcc-size">2.0 m × 2.0 m</span></div>
+    <div class="dimension-row"><span class="dim-label">RCC footing size</span><span class="dim-value" id="l2-rcc-size">2.0 m x 2.0 m</span></div>
     <div class="dimension-row"><span class="dim-label">RCC footing depth</span><span class="dim-value" id="l2-rcc-th">0.30 m</span></div>
     <div class="dimension-row"><span class="dim-label">Steel % in RCC</span><span class="dim-value" id="l2-steel-pct">1.5%</span></div>
-    <div class="note">Concrete is measured in m³. Steel is measured in kg (1% steel ≈ 78.5 kg/m³ of RCC). PCC is plain cement concrete (1:3:6).</div>
+    <div class="note">Concrete is measured in m3. Steel is measured in kg (1% steel = 78.5 kg/m3 of RCC). PCC is plain cement concrete (1:3:6).</div>
   </div>
 
   <div class="input-row">
     <div class="input-group">
-      <label>PCC Quantity (m³)</label>
-      <input type="number" id="l2-pcc" step="0.01" placeholder="m³">
+      <label>PCC Quantity (m3)</label>
+      <input type="number" id="l2-pcc" step="0.01" placeholder="m3">
     </div>
     <div class="input-group">
-      <label>RCC Quantity (m³)</label>
-      <input type="number" id="l2-rcc" step="0.01" placeholder="m³">
+      <label>RCC Quantity (m3)</label>
+      <input type="number" id="l2-rcc" step="0.01" placeholder="m3">
     </div>
   </div>
   <div class="input-group">
@@ -351,39 +304,39 @@
 
   <div class="feedback" id="l2-feedback"></div>
   <button class="btn" id="l2-submit" onclick="checkL2()">Submit Quantities</button>
-  <button class="btn secondary" id="l2-next" style="display:none;" onclick="nextL2()">Next Footing →</button>
+  <button class="btn secondary" id="l2-next" style="display:none;" onclick="nextL2()">Next Footing &rarr;</button>
   <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Footing <span id="l2-qnum">1</span> / 3</p>
 </div>
 
 <!-- Screen: Level 3 — Brickwork & Plastering -->
 <div class="screen" id="screen-l3">
-  <h2>Project 3: Brickwork & Plaster</h2>
-  <p>Calculate brick masonry and internal/external plaster as per <strong>IS 1200 (Part 3 & 12)</strong>.</p>
-  <div class="timer" id="l3-timer">⏱️ Time: 120s</div>
+  <h2>Project 3: Brickwork &amp; Plaster</h2>
+  <p>Calculate brick masonry and internal/external plaster as per <strong>IS 1200 (Part 3 &amp; 12)</strong>.</p>
+  <div class="timer" id="l3-timer">&#9201; Time: 120s</div>
 
   <div class="drawing-box">
-    <div class="drawing-title">DRAWING — Wall Schedule</div>
-    <div class="dimension-row"><span class="dim-label">Room size (int.)</span><span class="dim-value" id="l3-room">4.0 m × 3.0 m × 3.0 m (ht)</span></div>
-    <div class="dimension-row"><span class="dim-label">Wall thickness</span><span class="dim-value" id="l3-thick">0.23 m (9" brick)</span></div>
-    <div class="dimension-row"><span class="dim-label">Door opening (D1)</span><span class="dim-value" id="l3-door">1.0 m × 2.1 m</span></div>
-    <div class="dimension-row"><span class="dim-label">Window opening (W1)</span><span class="dim-value" id="l3-win">1.2 m × 1.2 m</span></div>
-    <div class="note">Brickwork is measured in m³. Deductions > 0.1 m² are made for openings. Plaster is measured in m² (both sides of wall for int. plaster, one side for ext.).</div>
+    <div class="drawing-title">DRAWING - Wall Schedule</div>
+    <div class="dimension-row"><span class="dim-label">Room size (int.)</span><span class="dim-value" id="l3-room">4.0 m x 3.0 m x 3.0 m (ht)</span></div>
+    <div class="dimension-row"><span class="dim-label">Wall thickness</span><span class="dim-value" id="l3-thick">0.23 m (9&quot; brick)</span></div>
+    <div class="dimension-row"><span class="dim-label">Door opening (D1)</span><span class="dim-value" id="l3-door">1.0 m x 2.1 m</span></div>
+    <div class="dimension-row"><span class="dim-label">Window opening (W1)</span><span class="dim-value" id="l3-win">1.2 m x 1.2 m</span></div>
+    <div class="note">Brickwork is measured in m3. Deductions &gt; 0.1 m2 are made for openings. Plaster is measured in m2 (both sides of wall for int. plaster).</div>
   </div>
 
   <div class="input-row">
     <div class="input-group">
-      <label>Brickwork (m³)</label>
-      <input type="number" id="l3-brick" step="0.01" placeholder="m³">
+      <label>Brickwork (m3)</label>
+      <input type="number" id="l3-brick" step="0.01" placeholder="m3">
     </div>
     <div class="input-group">
-      <label>Int. Plaster (m²)</label>
-      <input type="number" id="l3-plaster" step="0.01" placeholder="m²">
+      <label>Int. Plaster (m2)</label>
+      <input type="number" id="l3-plaster" step="0.01" placeholder="m2">
     </div>
   </div>
 
   <div class="feedback" id="l3-feedback"></div>
   <button class="btn" id="l3-submit" onclick="checkL3()">Submit Quantities</button>
-  <button class="btn secondary" id="l3-next" style="display:none;" onclick="nextL3()">Next Room →</button>
+  <button class="btn secondary" id="l3-next" style="display:none;" onclick="nextL3()">Next Room &rarr;</button>
   <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Room <span id="l3-qnum">1</span> / 3</p>
 </div>
 
@@ -391,41 +344,41 @@
 <div class="screen" id="screen-l4">
   <h2>Project 4: Rate Analysis</h2>
   <p>Prepare a rate analysis and total cost as per <strong>DSR 2024</strong> schedule.</p>
-  <div class="timer" id="l4-timer">⏱️ Time: 150s</div>
+  <div class="timer" id="l4-timer">&#9201; Time: 150s</div>
 
   <div class="card">
-    <div class="card-header" style="border-bottom:none; margin-bottom:4px;">
-      <div class="icon">📋</div>
-      <div><div class="title">Work Item</div><div class="subtitle" id="l4-item">M-20 RCC (1:1.5:3)</div></div>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+      <div style="font-size: 22px;">&#128203;</div>
+      <div><div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">Work Item</div><div style="font-size: 12px; color: var(--text-tertiary);" id="l4-item">M-20 RCC (1:1.5:3)</div></div>
     </div>
-    <div class="stat-row" style="padding:6px 0;"><span class="stat-label">Quantity required</span><span class="stat-value" id="l4-qty">10.00 m³</span></div>
+    <div class="stat-row" style="padding:6px 0;"><span class="stat-label">Quantity required</span><span class="stat-value" id="l4-qty">10.00 m3</span></div>
   </div>
 
   <div class="card">
-    <h3>Rate Analysis (per m³)</h3>
+    <h3>Rate Analysis (per m3)</h3>
     <table class="rate-table">
-      <thead><tr><th>Description</th><th>Unit</th><th>Rate (₹)</th></tr></thead>
+      <thead><tr><th>Description</th><th>Unit</th><th style="text-align:right;">Rate (Rs.)</th></tr></thead>
       <tbody id="l4-rate-body">
-        <tr><td>Cement (8 bags)</td><td>bag</td><td class="mono">₹350</td></tr>
-        <tr><td>20mm Aggregate</td><td>m³</td><td class="mono">₹1,200</td></tr>
-        <tr><td>Sand</td><td>m³</td><td class="mono">₹800</td></tr>
-        <tr><td>Mason</td><td>day</td><td class="mono">₹850</td></tr>
-        <tr><td>Mazdoor (unskilled)</td><td>day</td><td class="mono">₹550</td></tr>
-        <tr><td>Bhisti</td><td>day</td><td class="mono">₹500</td></tr>
-        <tr class="total-row"><td>Total per m³</td><td></td><td class="mono" id="l4-rate-total">₹5,750</td></tr>
+        <tr><td>Cement (8 bags)</td><td>bag</td><td class="mono" style="text-align:right;">350</td></tr>
+        <tr><td>20mm Aggregate</td><td>m3</td><td class="mono" style="text-align:right;">1,200</td></tr>
+        <tr><td>Sand</td><td>m3</td><td class="mono" style="text-align:right;">800</td></tr>
+        <tr><td>Mason</td><td>day</td><td class="mono" style="text-align:right;">850</td></tr>
+        <tr><td>Mazdoor (unskilled)</td><td>day</td><td class="mono" style="text-align:right;">550</td></tr>
+        <tr><td>Bhisti</td><td>day</td><td class="mono" style="text-align:right;">500</td></tr>
+        <tr style="border-top:2px solid var(--border);"><td>Total per m3</td><td></td><td class="mono" style="text-align:right;" id="l4-rate-total">5,750</td></tr>
       </tbody>
     </table>
-    <div class="note">Add 1.5% water charge + 10% contractor profit & overhead on total cost. GST @ 18% on final bill.</div>
+    <div class="note">Add 1.5% water charge + 10% contractor profit &amp; overhead on total cost. GST @ 18% on final bill.</div>
   </div>
 
   <div class="input-group">
-    <label>Total Estimated Cost (₹)</label>
+    <label>Total Estimated Cost (Rs.)</label>
     <input type="number" id="l4-answer" step="1" placeholder="e.g. 75000">
   </div>
 
   <div class="feedback" id="l4-feedback"></div>
   <button class="btn" id="l4-submit" onclick="checkL4()">Submit Cost</button>
-  <button class="btn secondary" id="l4-next" style="display:none;" onclick="nextL4()">Next Item →</button>
+  <button class="btn secondary" id="l4-next" style="display:none;" onclick="nextL4()">Next Item &rarr;</button>
   <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Item <span id="l4-qnum">1</span> / 3</p>
 </div>
 
@@ -433,37 +386,37 @@
 <div class="screen" id="screen-l5">
   <h2>Project 5: Full BOQ Preparation</h2>
   <p>Prepare a complete Bill of Quantities for a <strong>single room building</strong> as per IS 1200.</p>
-  <div class="timer" id="l5-timer">⏱️ Time: 180s</div>
+  <div class="timer" id="l5-timer">&#9201; Time: 180s</div>
 
   <div class="drawing-box">
     <div class="drawing-title">ARCHITECTURAL SCHEDULE</div>
-    <div class="dimension-row"><span class="dim-label">Room internal</span><span class="dim-value" id="l5-room">5.0 m × 4.0 m × 3.2 m</span></div>
-    <div class="dimension-row"><span class="dim-label">Wall thickness</span><span class="dim-value">0.23 m (9")</span></div>
-    <div class="dimension-row"><span class="dim-label">Foundation</span><span class="dim-value">1.0 m wide × 1.2 m deep</span></div>
-    <div class="dimension-row"><span class="dim-label">PCC bed</span><span class="dim-value">1.2 m wide × 0.10 m thk</span></div>
-    <div class="dimension-row"><span class="dim-label">RCC plinth beam</span><span class="dim-value">0.23 m × 0.30 m</span></div>
+    <div class="dimension-row"><span class="dim-label">Room internal</span><span class="dim-value" id="l5-room">5.0 m x 4.0 m x 3.2 m</span></div>
+    <div class="dimension-row"><span class="dim-label">Wall thickness</span><span class="dim-value">0.23 m (9&quot;)</span></div>
+    <div class="dimension-row"><span class="dim-label">Foundation</span><span class="dim-value">1.0 m wide x 1.2 m deep</span></div>
+    <div class="dimension-row"><span class="dim-label">PCC bed</span><span class="dim-value">1.2 m wide x 0.10 m thk</span></div>
+    <div class="dimension-row"><span class="dim-label">RCC plinth beam</span><span class="dim-value">0.23 m x 0.30 m</span></div>
     <div class="dimension-row"><span class="dim-label">Roof slab</span><span class="dim-value">0.12 m thk, 150 mm o/hang</span></div>
-    <div class="dimension-row"><span class="dim-label">Door (D1)</span><span class="dim-value">1.0 m × 2.1 m — 1 No.</span></div>
-    <div class="dimension-row"><span class="dim-label">Window (W1)</span><span class="dim-value">1.5 m × 1.2 m — 2 Nos.</span></div>
+    <div class="dimension-row"><span class="dim-label">Door (D1)</span><span class="dim-value">1.0 m x 2.1 m - 1 No.</span></div>
+    <div class="dimension-row"><span class="dim-label">Window (W1)</span><span class="dim-value">1.5 m x 1.2 m - 2 Nos.</span></div>
     <div class="note">Prepare quantities for: (1) Earthwork, (2) PCC, (3) RCC (footing+beam+slab), (4) Brickwork, (5) Plaster. Use standard wastage: concrete 5%, steel 5%, brickwork 5%.</div>
   </div>
 
   <div class="boq-summary">
-    <div class="boq-title">BILL OF QUANTITIES — Enter totals</div>
+    <div class="boq-title">BILL OF QUANTITIES - Enter totals</div>
     <div class="input-row">
       <div class="input-group">
-        <label>Earthwork (m³)</label>
-        <input type="number" id="l5-earth" step="0.01" placeholder="m³">
+        <label>Earthwork (m3)</label>
+        <input type="number" id="l5-earth" step="0.01" placeholder="m3">
       </div>
       <div class="input-group">
-        <label>PCC (m³)</label>
-        <input type="number" id="l5-pcc" step="0.01" placeholder="m³">
+        <label>PCC (m3)</label>
+        <input type="number" id="l5-pcc" step="0.01" placeholder="m3">
       </div>
     </div>
     <div class="input-row">
       <div class="input-group">
-        <label>RCC (m³)</label>
-        <input type="number" id="l5-rcc" step="0.01" placeholder="m³">
+        <label>RCC (m3)</label>
+        <input type="number" id="l5-rcc" step="0.01" placeholder="m3">
       </div>
       <div class="input-group">
         <label>Steel (kg)</label>
@@ -472,33 +425,33 @@
     </div>
     <div class="input-row">
       <div class="input-group">
-        <label>Brickwork (m³)</label>
-        <input type="number" id="l5-brick" step="0.01" placeholder="m³">
+        <label>Brickwork (m3)</label>
+        <input type="number" id="l5-brick" step="0.01" placeholder="m3">
       </div>
       <div class="input-group">
-        <label>Plaster (m²)</label>
-        <input type="number" id="l5-plaster" step="0.01" placeholder="m²">
+        <label>Plaster (m2)</label>
+        <input type="number" id="l5-plaster" step="0.01" placeholder="m2">
       </div>
     </div>
   </div>
 
   <div class="feedback" id="l5-feedback"></div>
   <button class="btn" id="l5-submit" onclick="checkL5()">Submit BOQ</button>
-  <button class="btn secondary" id="l5-next" style="display:none;" onclick="nextL5()">Next Project →</button>
-  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Final Project — <span id="l5-qnum">1</span> / 2</p>
+  <button class="btn secondary" id="l5-next" style="display:none;" onclick="nextL5()">Next Project &rarr;</button>
+  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Final Project - <span id="l5-qnum">1</span> / 2</p>
 </div>
 
 <!-- Screen: Complete -->
 <div class="screen" id="screen-complete">
   <div style="text-align:center; padding: 30px 0;">
-    <div style="font-size: 48px; margin-bottom: 8px;">🎉</div>
+    <div style="font-size: 48px; margin-bottom: 8px;">&#127881;</div>
     <h1 id="complete-title">Project Complete!</h1>
     <div class="stars" id="complete-stars"></div>
   </div>
   <div class="card">
     <div class="stat-row">
       <span class="stat-label">Earnings</span>
-      <span class="stat-value" id="complete-score">₹0</span>
+      <span class="stat-value" id="complete-score">Rs.0</span>
     </div>
     <div class="stat-row">
       <span class="stat-label">Accuracy</span>
@@ -506,7 +459,7 @@
     </div>
     <div class="stat-row">
       <span class="stat-label">Time Bonus</span>
-      <span class="stat-value" id="complete-bonus">₹0</span>
+      <span class="stat-value" id="complete-bonus">Rs.0</span>
     </div>
   </div>
   <button class="btn" onclick="showScreen('levels')">Next Project</button>
@@ -516,17 +469,17 @@
 <!-- Screen: Game Over -->
 <div class="screen" id="screen-gameover">
   <div style="text-align:center; padding: 30px 0;">
-    <div style="font-size: 48px; margin-bottom: 8px;">⏰</div>
+    <div style="font-size: 48px; margin-bottom: 8px;">&#9200;</div>
     <h1>Time Overrun!</h1>
     <p style="text-align:center;">Site delays cost money. Review your IS codes and try again.</p>
   </div>
   <div class="card">
     <div class="stat-row">
       <span class="stat-label">Earnings Lost</span>
-      <span class="stat-value" id="go-score">₹0</span>
+      <span class="stat-value" id="go-score">Rs.0</span>
     </div>
   </div>
-  <button class="btn" onclick="retryLevel()">🔄 Retry Tender</button>
+  <button class="btn" onclick="retryLevel()">&#128260; Retry Tender</button>
   <button class="btn secondary" onclick="showScreen('levels')">Project List</button>
 </div>
 
@@ -542,12 +495,14 @@ let state = {
 };
 
 const LEVELS = [
-  { id:1, title:'Earthwork Excavation', desc:'IS 1200 Part 1 — Foundation trenches', icon:'🚜', time:90, qs:4, locked:false },
-  { id:2, title:'PCC & RCC Footing', desc:'IS 456 + IS 1200 Part 2 — Concrete & Steel', icon:'🧱', time:120, qs:3, locked:true },
-  { id:3, title:'Brickwork & Plaster', desc:'IS 1200 Part 3 & 12 — Masonry & Finishes', icon:'🪜', time:120, qs:3, locked:true },
-  { id:4, title:'Rate Analysis', desc:'DSR 2024 — Labour, Material & Overheads', icon:'💰', time:150, qs:3, locked:true },
-  { id:5, title:'Full BOQ', desc:'Complete Bill of Quantities — Single Room', icon:'📋', time:180, qs:2, locked:true },
+  { id:1, title:'Earthwork Excavation', desc:'IS 1200 Part 1 - Foundation trenches', icon:'&#128690;', time:90, qs:4, locked:false },
+  { id:2, title:'PCC & RCC Footing', desc:'IS 456 + IS 1200 Part 2 - Concrete & Steel', icon:'&#129521;', time:120, qs:3, locked:true },
+  { id:3, title:'Brickwork & Plaster', desc:'IS 1200 Part 3 & 12 - Masonry & Finishes', icon:'&#129517;', time:120, qs:3, locked:true },
+  { id:4, title:'Rate Analysis', desc:'DSR 2024 - Labour, Material & Overheads', icon:'&#128176;', time:150, qs:3, locked:true },
+  { id:5, title:'Full BOQ', desc:'Complete Bill of Quantities - Single Room', icon:'&#128203;', time:180, qs:2, locked:true },
 ];
+
+function fmtMoney(n) { return 'Rs.' + Math.round(n).toLocaleString('en-IN'); }
 
 function saveState() {
   try {
@@ -584,7 +539,7 @@ function showScreen(id) {
   if (id === 'home' || id === 'help') { topBar.style.display = 'none'; }
   else {
     topBar.style.display = 'flex';
-    document.getElementById('top-score').textContent = '₹' + state.totalScore.toLocaleString('en-IN');
+    document.getElementById('top-score').textContent = fmtMoney(state.totalScore);
   }
   if (id === 'levels') renderLevels();
   if (id === 'home') updateHomeStats();
@@ -596,7 +551,7 @@ function goBack() {
 }
 
 function updateHomeStats() {
-  document.getElementById('home-score').textContent = '₹' + state.totalScore.toLocaleString('en-IN');
+  document.getElementById('home-score').textContent = fmtMoney(state.totalScore);
   document.getElementById('home-levels').textContent = state.levelsCompleted.length + '/5';
   const acc = state.totalQuestions > 0 ? Math.round((state.totalCorrect / state.totalQuestions) * 100) : 0;
   document.getElementById('home-accuracy').textContent = acc + '%';
@@ -612,13 +567,13 @@ function renderLevels() {
     const done = state.levelsCompleted.includes(l.id);
     const cls = l.locked ? 'locked' : (done ? 'completed' : '');
     const status = l.locked ? 'locked' : (done ? 'done' : 'open');
-    const statusText = l.locked ? '🔒 Locked' : (done ? '✅ Complete' : '▶️ Tender');
+    const statusText = l.locked ? '&#128274; Locked' : (done ? '&#9989; Complete' : '&#9654; Tender');
     return `<div class="level-card ${cls}" onclick="${l.locked ? '' : `startLevel(${l.id})`}">
       <div class="level-header">
         <span class="level-title">${l.icon} ${l.title}</span>
         <span class="level-badge ${status}">${statusText}</span>
       </div>
-      <div class="level-desc">${l.desc} &nbsp;•&nbsp; ${l.qs} items &nbsp;•&nbsp; ${l.time}s</div>
+      <div class="level-desc">${l.desc} &nbsp;&bull;&nbsp; ${l.qs} items &nbsp;&bull;&nbsp; ${l.time}s</div>
     </div>`;
   }).join('');
 }
@@ -627,12 +582,12 @@ function renderLevels() {
 function startTimer(seconds, displayId, onEnd) {
   state.timeLeft = seconds;
   const el = document.getElementById(displayId);
-  el.textContent = '⏱️ Time: ' + state.timeLeft + 's';
+  el.textContent = String.fromCodePoint(0x23F1) + ' Time: ' + state.timeLeft + 's';
   el.classList.remove('urgent');
   if (state.timer) clearInterval(state.timer);
   state.timer = setInterval(() => {
     state.timeLeft--;
-    el.textContent = '⏱️ Time: ' + state.timeLeft + 's';
+    el.textContent = String.fromCodePoint(0x23F1) + ' Time: ' + state.timeLeft + 's';
     if (state.timeLeft <= 10) el.classList.add('urgent');
     if (state.timeLeft <= 0) { clearInterval(state.timer); state.timer = null; onEnd(); }
   }, 1000);
@@ -648,33 +603,27 @@ function startL1() {
 function generateL1Data() {
   const data = [];
   for (let i = 0; i < 4; i++) {
-    const L = 4 + Math.floor(Math.random() * 6); // building length
-    const B = 3 + Math.floor(Math.random() * 4); // building width
-    const W = 0.8 + Math.floor(Math.random() * 4) * 0.1; // trench width
-    const D = 1.0 + Math.floor(Math.random() * 6) * 0.1; // depth
-    const O = 0.3 + Math.floor(Math.random() * 3) * 0.1; // offset
-    // As per IS 1200: centre-line method for continuous footing
-    const centreL = L + 2 * O;
-    const centreB = B + 2 * O;
-    const perimeter = 2 * (centreL + centreB);
-    // For simplicity in game: rectangular pit method (common for isolated footing estimate)
+    const L = 4 + Math.floor(Math.random() * 6);
+    const B = 3 + Math.floor(Math.random() * 4);
+    const D = 1.0 + Math.floor(Math.random() * 6) * 0.1;
+    const O = 0.3 + Math.floor(Math.random() * 3) * 0.1;
     const pitL = L + 2 * O;
     const pitB = B + 2 * O;
-    const volume = (pitL * pitB * D).toFixed(2);
-    data.push({ L, B, W, D, O, volume: parseFloat(volume), pitL, pitB });
+    const volume = parseFloat((pitL * pitB * D).toFixed(2));
+    data.push({ L, B, D, O, volume, pitL, pitB });
   }
   return data;
 }
 function showL1Question() {
   const d = state.l1data[state.currentQ];
-  document.getElementById('l1-plan').textContent = d.L.toFixed(1) + ' m × ' + d.B.toFixed(1) + ' m';
-  document.getElementById('l1-width').textContent = d.W.toFixed(1) + ' m';
+  document.getElementById('l1-plan').textContent = d.L.toFixed(1) + ' m x ' + d.B.toFixed(1) + ' m';
+  document.getElementById('l1-width').textContent = '1.0 m';
   document.getElementById('l1-depth').textContent = d.D.toFixed(1) + ' m';
   document.getElementById('l1-offset').textContent = d.O.toFixed(1) + ' m (all sides)';
-  document.getElementById('l1-work-l').textContent = 'Pit Length = ' + d.L.toFixed(1) + ' + 2×' + d.O.toFixed(1) + ' = ' + (d.pitL).toFixed(1) + ' m';
-  document.getElementById('l1-work-w').textContent = 'Pit Width = ' + d.B.toFixed(1) + ' + 2×' + d.O.toFixed(1) + ' = ' + (d.pitB).toFixed(1) + ' m';
+  document.getElementById('l1-work-l').textContent = 'Pit Length = ' + d.L.toFixed(1) + ' + 2x' + d.O.toFixed(1) + ' = ' + d.pitL.toFixed(1) + ' m';
+  document.getElementById('l1-work-w').textContent = 'Pit Width = ' + d.B.toFixed(1) + ' + 2x' + d.O.toFixed(1) + ' = ' + d.pitB.toFixed(1) + ' m';
   document.getElementById('l1-work-d').textContent = 'Depth = ' + d.D.toFixed(1) + ' m';
-  document.getElementById('l1-work-v').textContent = 'Volume = ? × ? × ?';
+  document.getElementById('l1-work-v').textContent = 'Volume = ? x ? x ?';
   document.getElementById('l1-answer').value = '';
   document.getElementById('l1-feedback').className = 'feedback';
   document.getElementById('l1-feedback').textContent = '';
@@ -691,12 +640,12 @@ function checkL1() {
   const diff = Math.abs(ans - correct);
   if (diff <= correct * 0.03) {
     fb.className = 'feedback show correct';
-    fb.textContent = '✅ Correct! Earthwork = ' + correct.toFixed(2) + ' m³ (IS 1200 Part 1)';
+    fb.textContent = 'Correct! Earthwork = ' + correct.toFixed(2) + ' m3 (IS 1200 Part 1)';
     state.levelCorrect++;
     state.levelScore += 1000 + (state.timeLeft * 10);
   } else {
     fb.className = 'feedback show wrong';
-    fb.textContent = '❌ Wrong. Correct quantity = ' + correct.toFixed(2) + ' m³';
+    fb.textContent = 'Wrong. Correct quantity = ' + correct.toFixed(2) + ' m3';
   }
   document.getElementById('l1-submit').style.display = 'none';
   document.getElementById('l1-next').style.display = 'block';
@@ -723,19 +672,19 @@ function generateL2Data() {
     const rccL = pccL - 0.2;
     const rccB = pccB - 0.2;
     const rccT = 0.25 + Math.floor(Math.random() * 3) * 0.05;
-    const steelPct = 1.0 + Math.floor(Math.random() * 3) * 0.5; // 1.0 to 2.5%
+    const steelPct = 1.0 + Math.floor(Math.random() * 3) * 0.5;
     const pccQty = parseFloat((pccL * pccB * pccT).toFixed(2));
     const rccQty = parseFloat((rccL * rccB * rccT).toFixed(2));
-    const steelKg = parseFloat((rccQty * steelPct / 100 * 7850).toFixed(1)); // density 7850 kg/m³
+    const steelKg = parseFloat((rccQty * steelPct / 100 * 7850).toFixed(1));
     data.push({ pccL, pccB, pccT, rccL, rccB, rccT, steelPct, pccQty, rccQty, steelKg });
   }
   return data;
 }
 function showL2Question() {
   const d = state.l2data[state.currentQ];
-  document.getElementById('l2-pcc-size').textContent = d.pccL.toFixed(1) + ' m × ' + d.pccB.toFixed(1) + ' m';
+  document.getElementById('l2-pcc-size').textContent = d.pccL.toFixed(1) + ' m x ' + d.pccB.toFixed(1) + ' m';
   document.getElementById('l2-pcc-th').textContent = d.pccT.toFixed(2) + ' m';
-  document.getElementById('l2-rcc-size').textContent = d.rccL.toFixed(1) + ' m × ' + d.rccB.toFixed(1) + ' m';
+  document.getElementById('l2-rcc-size').textContent = d.rccL.toFixed(1) + ' m x ' + d.rccB.toFixed(1) + ' m';
   document.getElementById('l2-rcc-th').textContent = d.rccT.toFixed(2) + ' m';
   document.getElementById('l2-steel-pct').textContent = d.steelPct.toFixed(1) + '%';
   document.getElementById('l2-pcc').value = '';
@@ -762,15 +711,15 @@ function checkL2() {
   const okSteel = Math.abs(steel - d.steelKg) <= d.steelKg * 0.05;
   if (okPcc && okRcc && okSteel) {
     fb.className = 'feedback show correct';
-    fb.textContent = '✅ Correct! PCC=' + d.pccQty.toFixed(2) + 'm³, RCC=' + d.rccQty.toFixed(2) + 'm³, Steel=' + d.steelKg.toFixed(1) + 'kg';
+    fb.textContent = 'Correct! PCC=' + d.pccQty.toFixed(2) + 'm3, RCC=' + d.rccQty.toFixed(2) + 'm3, Steel=' + d.steelKg.toFixed(1) + 'kg';
     state.levelCorrect++;
     state.levelScore += 1500 + (state.timeLeft * 10);
   } else {
-    let msg = '❌ ';
+    let msg = 'Wrong. ';
     if (!okPcc) msg += 'PCC wrong. ';
     if (!okRcc) msg += 'RCC wrong. ';
     if (!okSteel) msg += 'Steel wrong. ';
-    msg += 'Correct: PCC=' + d.pccQty.toFixed(2) + 'm³, RCC=' + d.rccQty.toFixed(2) + 'm³, Steel=' + d.steelKg.toFixed(1) + 'kg';
+    msg += 'Correct: PCC=' + d.pccQty.toFixed(2) + 'm3, RCC=' + d.rccQty.toFixed(2) + 'm3, Steel=' + d.steelKg.toFixed(1) + 'kg';
     fb.className = 'feedback show wrong'; fb.textContent = msg;
   }
   document.getElementById('l2-submit').style.display = 'none';
@@ -800,14 +749,12 @@ function generateL3Data() {
     const doorH = 2.0 + Math.floor(Math.random() * 2) * 0.1;
     const winW = 1.0 + Math.floor(Math.random() * 3) * 0.1;
     const winH = 1.0 + Math.floor(Math.random() * 3) * 0.1;
-    // Long wall short wall method simplified: perimeter × height × thickness minus openings
     const perimeter = 2 * (L + B);
     const grossVol = perimeter * H * T;
     const doorArea = doorW * doorH;
     const winArea = winW * winH;
     const deducVol = (doorArea + winArea) * T;
     const netBrick = parseFloat((grossVol - deducVol).toFixed(2));
-    // Internal plaster: both sides of all walls minus openings
     const grossPlaster = 2 * perimeter * H;
     const netPlaster = parseFloat((grossPlaster - 2 * (doorArea + winArea)).toFixed(2));
     data.push({ L, B, H, T, doorW, doorH, winW, winH, netBrick, netPlaster });
@@ -816,10 +763,10 @@ function generateL3Data() {
 }
 function showL3Question() {
   const d = state.l3data[state.currentQ];
-  document.getElementById('l3-room').textContent = d.L.toFixed(1) + ' m × ' + d.B.toFixed(1) + ' m × ' + d.H.toFixed(1) + ' m (ht)';
+  document.getElementById('l3-room').textContent = d.L.toFixed(1) + ' m x ' + d.B.toFixed(1) + ' m x ' + d.H.toFixed(1) + ' m (ht)';
   document.getElementById('l3-thick').textContent = d.T.toFixed(2) + ' m (9" brick)';
-  document.getElementById('l3-door').textContent = d.doorW.toFixed(1) + ' m × ' + d.doorH.toFixed(1) + ' m';
-  document.getElementById('l3-win').textContent = d.winW.toFixed(1) + ' m × ' + d.winH.toFixed(1) + ' m';
+  document.getElementById('l3-door').textContent = d.doorW.toFixed(1) + ' m x ' + d.doorH.toFixed(1) + ' m';
+  document.getElementById('l3-win').textContent = d.winW.toFixed(1) + ' m x ' + d.winH.toFixed(1) + ' m';
   document.getElementById('l3-brick').value = '';
   document.getElementById('l3-plaster').value = '';
   document.getElementById('l3-feedback').className = 'feedback';
@@ -839,14 +786,14 @@ function checkL3() {
   const okPlaster = Math.abs(plaster - d.netPlaster) <= d.netPlaster * 0.03;
   if (okBrick && okPlaster) {
     fb.className = 'feedback show correct';
-    fb.textContent = '✅ Correct! Brickwork=' + d.netBrick.toFixed(2) + 'm³, Plaster=' + d.netPlaster.toFixed(2) + 'm²';
+    fb.textContent = 'Correct! Brickwork=' + d.netBrick.toFixed(2) + 'm3, Plaster=' + d.netPlaster.toFixed(2) + 'm2';
     state.levelCorrect++;
     state.levelScore += 1500 + (state.timeLeft * 10);
   } else {
-    let msg = '❌ ';
+    let msg = 'Wrong. ';
     if (!okBrick) msg += 'Brickwork wrong. ';
     if (!okPlaster) msg += 'Plaster wrong. ';
-    msg += 'Correct: Brick=' + d.netBrick.toFixed(2) + 'm³, Plaster=' + d.netPlaster.toFixed(2) + 'm²';
+    msg += 'Correct: Brick=' + d.netBrick.toFixed(2) + 'm3, Plaster=' + d.netPlaster.toFixed(2) + 'm2';
     fb.className = 'feedback show wrong'; fb.textContent = msg;
   }
   document.getElementById('l3-submit').style.display = 'none';
@@ -867,11 +814,11 @@ function startL4() {
 }
 function generateL4Data() {
   const items = [
-    { name: 'M-20 RCC (1:1.5:3)', unit: 'm³', qty: [5, 8, 10, 12, 15], rate: 5750 },
-    { name: 'Brickwork (9") in CM 1:6', unit: 'm³', qty: [8, 10, 12, 15, 20], rate: 4200 },
-    { name: '12mm Cement Plaster', unit: 'm²', qty: [50, 80, 100, 120, 150], rate: 185 },
-    { name: 'Earthwork Excavation (manual)', unit: 'm³', qty: [20, 30, 50, 75, 100], rate: 450 },
-    { name: 'PCC (1:3:6) 100mm thick', unit: 'm³', qty: [5, 8, 10, 15, 20], rate: 3200 },
+    { name: 'M-20 RCC (1:1.5:3)', unit: 'm3', qty: [5, 8, 10, 12, 15], rate: 5750 },
+    { name: 'Brickwork (9") in CM 1:6', unit: 'm3', qty: [8, 10, 12, 15, 20], rate: 4200 },
+    { name: '12mm Cement Plaster', unit: 'm2', qty: [50, 80, 100, 120, 150], rate: 185 },
+    { name: 'Earthwork Excavation (manual)', unit: 'm3', qty: [20, 30, 50, 75, 100], rate: 450 },
+    { name: 'PCC (1:3:6) 100mm thick', unit: 'm3', qty: [5, 8, 10, 15, 20], rate: 3200 },
   ];
   const data = [];
   for (let i = 0; i < 3; i++) {
@@ -891,7 +838,7 @@ function showL4Question() {
   const d = state.l4data[state.currentQ];
   document.getElementById('l4-item').textContent = d.name;
   document.getElementById('l4-qty').textContent = d.qty.toFixed(2) + ' ' + d.unit;
-  document.getElementById('l4-rate-total').textContent = '₹' + d.rate.toLocaleString('en-IN') + '/' + d.unit;
+  document.getElementById('l4-rate-total').textContent = d.rate.toLocaleString('en-IN');
   document.getElementById('l4-answer').value = '';
   document.getElementById('l4-feedback').className = 'feedback';
   document.getElementById('l4-feedback').textContent = '';
@@ -908,12 +855,12 @@ function checkL4() {
   const diff = Math.abs(ans - d.total);
   if (diff <= d.total * 0.02) {
     fb.className = 'feedback show correct';
-    fb.textContent = '✅ Correct! Total = ₹' + d.total.toLocaleString('en-IN') + ' (Base ₹' + Math.round(d.base).toLocaleString('en-IN') + ' + Water 1.5% + OH 10% + GST 18%)';
+    fb.textContent = 'Correct! Total = ' + fmtMoney(d.total) + ' (Base ' + fmtMoney(d.base) + ' + Water 1.5% + OH 10% + GST 18%)';
     state.levelCorrect++;
     state.levelScore += 2000 + (state.timeLeft * 10);
   } else {
     fb.className = 'feedback show wrong';
-    fb.textContent = '❌ Wrong. Correct total = ₹' + d.total.toLocaleString('en-IN') + '. (Base ₹' + Math.round(d.base).toLocaleString('en-IN') + ' + 1.5% water + 10% OH + 18% GST)';
+    fb.textContent = 'Wrong. Correct total = ' + fmtMoney(d.total) + '. (Base ' + fmtMoney(d.base) + ' + 1.5% water + 10% OH + 18% GST)';
   }
   document.getElementById('l4-submit').style.display = 'none';
   document.getElementById('l4-next').style.display = 'block';
@@ -938,36 +885,25 @@ function generateL5Data() {
     const B = 3 + Math.floor(Math.random() * 3);
     const H = 3.0 + Math.floor(Math.random() * 3) * 0.1;
     const wallT = 0.23;
-    const fdnW = 1.0;
     const fdnD = 1.0 + Math.floor(Math.random() * 3) * 0.1;
-    const pccW = 1.2;
     const pccT = 0.10;
     const beamH = 0.30;
     const slabT = 0.12;
-    const oh = 0.15; // roof overhang
-    // Earthwork: pit size = (L+2*0.5) × (B+2*0.5) × fdnD
+    const oh = 0.15;
     const pitL = L + 1.0; const pitB = B + 1.0;
     const earth = parseFloat((pitL * pitB * fdnD).toFixed(2));
-    // PCC: (L+1.0) × (B+1.0) × 0.10
     const pcc = parseFloat((pitL * pitB * pccT).toFixed(2));
-    // RCC: footing + plinth beam + roof slab
-    // Footing: L × B × 0.30 (assume 0.3m footing depth)
     const fdnRCC = parseFloat((L * B * 0.30).toFixed(2));
-    // Plinth beam: perimeter × 0.23 × 0.30
     const peri = 2 * (L + B + 2 * wallT);
     const beamRCC = parseFloat((peri * wallT * beamH).toFixed(2));
-    // Slab: (L+2*oh) × (B+2*oh) × 0.12
     const slabL = L + 2 * oh; const slabB = B + 2 * oh;
     const slabRCC = parseFloat((slabL * slabB * slabT).toFixed(2));
     const rcc = parseFloat((fdnRCC + beamRCC + slabRCC).toFixed(2));
-    // Steel: 1.5% of RCC × 7850
     const steel = parseFloat((rcc * 0.015 * 7850).toFixed(1));
-    // Brickwork: perimeter × H × 0.23 minus openings
     const doorA = 1.0 * 2.1;
     const winA = 2 * (1.5 * 1.2);
     const grossBrick = peri * H * wallT;
     const netBrick = parseFloat((grossBrick - (doorA + winA) * wallT).toFixed(2));
-    // Plaster: internal both sides minus openings
     const grossPlaster = 2 * peri * H;
     const netPlaster = parseFloat((grossPlaster - 2 * (doorA + winA)).toFixed(2));
     data.push({ L, B, H, earth, pcc, rcc, steel, netBrick, netPlaster });
@@ -976,7 +912,7 @@ function generateL5Data() {
 }
 function showL5Question() {
   const d = state.l5data[state.currentQ];
-  document.getElementById('l5-room').textContent = d.L.toFixed(1) + ' m × ' + d.B.toFixed(1) + ' m × ' + d.H.toFixed(1) + ' m';
+  document.getElementById('l5-room').textContent = d.L.toFixed(1) + ' m x ' + d.B.toFixed(1) + ' m x ' + d.H.toFixed(1) + ' m';
   document.getElementById('l5-earth').value = '';
   document.getElementById('l5-pcc').value = '';
   document.getElementById('l5-rcc').value = '';
@@ -1011,6 +947,4 @@ function checkL5() {
   const allOk = okEarth && okPcc && okRcc && okSteel && okBrick && okPlaster;
   if (allOk) {
     fb.className = 'feedback show correct';
-    fb.textContent = '✅ BOQ Approved! All quantities match IS 1200 standards.';
-    state.levelCorrect++;
-   
+    fb.textContent = 'BOQ Approved! All quantities match IS
