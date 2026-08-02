@@ -1,1292 +1,1005 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏗️ Concrete Lab Simulator — M25 Mix Design Challenge</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
-
-  :root {
-    --concrete-50: #f7f7f7;
-    --concrete-100: #e3e3e3;
-    --concrete-200: #c8c8c8;
-    --concrete-300: #a4a4a4;
-    --concrete-400: #818181;
-    --concrete-500: #666666;
-    --concrete-600: #515151;
-    --concrete-700: #434343;
-    --concrete-800: #383838;
-    --concrete-900: #313131;
-    --safety-orange: #ff6b35;
-    --safety-yellow: #ffc107;
-    --rebar-red: #d32f2f;
-    --pass-green: #4caf50;
-    --water-blue: #2196f3;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    padding: 20px;
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
-    color: var(--concrete-100);
-    min-height: 100vh;
-  }
-
-  .cls-container {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: var(--concrete-100);
-    padding: 24px;
-    border-radius: 16px;
-    max-width: 900px;
-    margin: 0 auto;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cls-header {
-    text-align: center;
-    margin-bottom: 24px;
-    border-bottom: 2px solid var(--safety-orange);
-    padding-bottom: 16px;
-  }
-
-  .cls-header h1 {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--concrete-50);
-    margin: 0;
-    letter-spacing: -0.5px;
-  }
-
-  .cls-header p {
-    color: var(--concrete-400);
-    margin: 8px 0 0 0;
-    font-size: 14px;
-  }
-
-  .cls-badge {
-    display: inline-block;
-    background: var(--safety-orange);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 8px;
-  }
-
-  .cls-stage-indicator {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .cls-step {
-    width: 40px;
-    height: 6px;
-    border-radius: 3px;
-    background: var(--concrete-700);
-    transition: all 0.4s ease;
-  }
-
-  .cls-step.active { background: var(--safety-orange); width: 60px; }
-  .cls-step.done { background: var(--pass-green); }
-
-  .cls-stage {
-    display: none;
-    animation: fadeIn 0.5s ease;
-  }
-
-  .cls-stage.active { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .cls-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--concrete-700);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-
-  .cls-card h3 {
-    margin: 0 0 12px 0;
-    color: var(--safety-orange);
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .cls-input-group {
-    margin-bottom: 16px;
-  }
-
-  .cls-input-group label {
-    display: block;
-    font-size: 13px;
-    color: var(--concrete-300);
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
-
-  .cls-slider-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .cls-slider {
-    flex: 1;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 6px;
-    background: var(--concrete-700);
-    border-radius: 3px;
-    outline: none;
-  }
-
-  .cls-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--safety-orange);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 3px solid var(--concrete-900);
-    box-shadow: 0 0 10px rgba(255,107,53,0.4);
-  }
-
-  .cls-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--safety-orange);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 3px solid var(--concrete-900);
-    box-shadow: 0 0 10px rgba(255,107,53,0.4);
-  }
-
-  .cls-value {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--concrete-800);
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    min-width: 60px;
-    text-align: center;
-    color: var(--safety-yellow);
-    border: 1px solid var(--concrete-600);
-  }
-
-  .cls-btn {
-    background: linear-gradient(135deg, var(--safety-orange), #e55a2b);
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(255,107,53,0.3);
-    width: 100%;
-    margin-top: 8px;
-  }
-
-  .cls-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255,107,53,0.4);
-  }
-
-  .cls-btn:disabled {
-    background: var(--concrete-700);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-
-  .cls-visual {
-    background: var(--concrete-900);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    min-height: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .cls-mixer {
-    width: 120px;
-    height: 120px;
-    position: relative;
-    margin: 0 auto;
-  }
-
-  .cls-mixer-drum {
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, #555, #333);
-    border-radius: 50%;
-    border: 4px solid var(--concrete-600);
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    animation: rotate 2s linear infinite;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .cls-mixer-drum::before {
-    content: '';
-    position: absolute;
-    width: 80%;
-    height: 80%;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(0,0,0,0.2) 10px,
-      rgba(0,0,0,0.2) 20px
-    );
-    border-radius: 50%;
-  }
-
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .cls-mixer-stand {
-    width: 20px;
-    height: 40px;
-    background: var(--concrete-600);
-    position: absolute;
-    bottom: -20px;
-    left: 50px;
-    border-radius: 0 0 4px 4px;
-  }
-
-  .cls-mixer-base {
-    width: 80px;
-    height: 10px;
-    background: var(--concrete-500);
-    position: absolute;
-    bottom: -20px;
-    left: 20px;
-    border-radius: 4px;
-  }
-
-  .cls-slump-cone {
-    width: 0;
-    height: 0;
-    border-left: 40px solid transparent;
-    border-right: 40px solid transparent;
-    border-top: 80px solid var(--concrete-400);
-    position: relative;
-    margin: 20px auto;
-    transition: all 0.8s ease;
-  }
-
-  .cls-slump-cone.lifting {
-    border-top-color: transparent;
-  }
-
-  .cls-slump-concrete {
-    width: 80px;
-    height: 0;
-    background: var(--concrete-500);
-    border-radius: 4px;
-    position: absolute;
-    top: -80px;
-    left: -40px;
-    transition: height 1s ease, width 1s ease, left 1s ease;
-  }
-
-  .cls-curing-tank {
-    width: 200px;
-    height: 120px;
-    background: linear-gradient(to bottom, rgba(33,150,243,0.3), rgba(33,150,243,0.6));
-    border: 3px solid var(--concrete-600);
-    border-radius: 8px;
-    position: relative;
-    margin: 20px auto;
-    overflow: hidden;
-  }
-
-  .cls-curing-tank::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background: rgba(255,255,255,0.1);
-    animation: wave 2s ease-in-out infinite;
-  }
-
-  @keyframes wave {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-10px); }
-  }
-
-  .cls-cube {
-    width: 30px;
-    height: 30px;
-    background: var(--concrete-400);
-    border: 2px solid var(--concrete-300);
-    position: absolute;
-    bottom: 10px;
-    left: 85px;
-    transition: all 0.3s ease;
-    box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3);
-  }
-
-  .cls-cube.curing { animation: settle 3s ease forwards; }
-
-  @keyframes settle {
-    0% { transform: translateY(-80px) rotate(0deg); opacity: 0; }
-    100% { transform: translateY(0) rotate(360deg); opacity: 1; }
-  }
-
-  .cls-utm {
-    width: 160px;
-    height: 200px;
-    position: relative;
-    margin: 0 auto;
-  }
-
-  .cls-utm-platen-top {
-    width: 140px;
-    height: 20px;
-    background: linear-gradient(to bottom, #777, #555);
-    position: absolute;
-    top: 0;
-    left: 10px;
-    border-radius: 4px;
-    transition: top 0.1s linear;
-  }
-
-  .cls-utm-platen-bottom {
-    width: 140px;
-    height: 20px;
-    background: linear-gradient(to bottom, #555, #777);
-    position: absolute;
-    bottom: 0;
-    left: 10px;
-    border-radius: 4px;
-  }
-
-  .cls-utm-column {
-    width: 20px;
-    height: 160px;
-    background: var(--concrete-600);
-    position: absolute;
-    top: 20px;
-    left: 0;
-  }
-
-  .cls-utm-column-right {
-    left: auto;
-    right: 0;
-  }
-
-  .cls-test-cube {
-    width: 40px;
-    height: 40px;
-    background: var(--concrete-400);
-    border: 2px solid var(--concrete-300);
-    position: absolute;
-    top: 80px;
-    left: 60px;
-    transition: all 0.1s;
-    box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3);
-  }
-
-  .cls-test-cube.cracking {
-    background: var(--concrete-500);
-    box-shadow: inset 0 0 10px rgba(211,47,47,0.5);
-  }
-
-  .cls-test-cube.broken {
-    transform: scaleY(0.3);
-    background: var(--rebar-red);
-    opacity: 0.7;
-  }
-
-  .cls-gauge {
-    width: 120px;
-    height: 60px;
-    background: var(--concrete-800);
-    border-radius: 60px 60px 0 0;
-    border: 3px solid var(--concrete-600);
-    position: relative;
-    margin: 10px auto;
-    overflow: hidden;
-  }
-
-  .cls-gauge-needle {
-    width: 2px;
-    height: 50px;
-    background: var(--safety-orange);
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform-origin: bottom center;
-    transform: rotate(-90deg);
-    transition: transform 0.2s ease;
-  }
-
-  .cls-gauge-label {
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--safety-yellow);
-    margin-top: 4px;
-  }
-
-  .cls-result-panel {
-    text-align: center;
-    padding: 24px;
-  }
-
-  .cls-result-panel h2 {
-    font-size: 32px;
-    margin: 0 0 8px 0;
-  }
-
-  .cls-pass { color: var(--pass-green); }
-  .cls-fail { color: var(--rebar-red); }
-
-  .cls-particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .cls-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--concrete-400);
-    border-radius: 50%;
-    animation: particle-fly 1s ease-out forwards;
-  }
-
-  @keyframes particle-fly {
-    0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-  }
-
-  .cls-info-box {
-    background: rgba(255,107,53,0.1);
-    border-left: 4px solid var(--safety-orange);
-    padding: 12px;
-    border-radius: 0 8px 8px 0;
-    font-size: 13px;
-    color: var(--concrete-200);
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
-
-  .cls-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 16px;
-  }
-
-  .cls-stat {
-    background: var(--concrete-800);
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  .cls-stat-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--safety-yellow);
-  }
-
-  .cls-stat-label {
-    font-size: 11px;
-    color: var(--concrete-400);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-  }
-
-  .cls-progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--concrete-700);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-
-  .cls-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--safety-orange), var(--safety-yellow));
-    border-radius: 4px;
-    transition: width 0.3s ease;
-    width: 0%;
-  }
-
-  .cls-days-counter {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--water-blue);
-    text-shadow: 0 0 20px rgba(33,150,243,0.4);
-  }
-
-  .cls-days-label {
-    font-size: 14px;
-    color: var(--concrete-400);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-
-  .cls-strength-graph {
-    width: 100%;
-    height: 120px;
-    background: var(--concrete-900);
-    border-radius: 8px;
-    position: relative;
-    margin-top: 16px;
-    overflow: hidden;
-  }
-
-  .cls-graph-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-  }
-
-  .cls-graph-path {
-    fill: none;
-    stroke: var(--safety-orange);
-    stroke-width: 2;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: drawLine 2s ease forwards;
-  }
-
-  @keyframes drawLine {
-    to { stroke-dashoffset: 0; }
-  }
-
-  .cls-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  @media (max-width: 600px) {
-    .cls-row { grid-template-columns: 1fr; }
-    .cls-stats { grid-template-columns: 1fr; }
-    .cls-header h1 { font-size: 22px; }
-  }
-
-  .cls-hidden { display: none !important; }
-</style>
-<base target="_blank">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Survey Lab - Civil Engineering Game</title>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface-raised: #fafafa;
+      --surface-strong: #f0f0f2;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-tertiary: #888;
+      --text-quaternary: #bbb;
+      --border: #e0e0e0;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --positive: #16a34a;
+      --positive-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --warning: #f59e0b;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "SF Mono", Monaco, "Cascadia Code", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0a0a0a;
+        --surface: #1a1a1a;
+        --surface-raised: #222;
+        --surface-strong: #2a2a2a;
+        --text-primary: #f0f0f0;
+        --text-secondary: #aaa;
+        --text-tertiary: #777;
+        --text-quaternary: #555;
+        --border: #333;
+        --accent: #3b82f6;
+        --accent-light: rgba(59,130,246,0.15);
+        --positive: #22c55e;
+        --positive-light: rgba(34,197,94,0.15);
+        --danger: #ef4444;
+        --danger-light: rgba(239,68,68,0.15);
+      }
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; background: var(--bg); font-family: var(--font-sans); color: var(--text-primary); overflow-x: hidden; }
+    #app { max-width: 420px; margin: 0 auto; min-height: 100vh; position: relative; }
+    .screen { display: none; padding: 16px; padding-bottom: 80px; animation: fadeIn 0.25s ease; }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    h1 { font-size: 22px; margin: 0 0 12px 0; text-align: center; }
+    h2 { font-size: 17px; margin: 0 0 10px 0; }
+    p { font-size: 14px; color: var(--text-secondary); margin: 0 0 14px 0; line-height: 1.5; }
+    .btn {
+      display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+      background: var(--text-primary); color: var(--surface); font-family: var(--font-sans);
+    }
+    .btn:active { transform: scale(0.98); opacity: 0.9; }
+    .btn.secondary { background: var(--surface-raised); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn.accent { background: var(--accent); color: #fff; }
+    .btn.danger { background: var(--danger); color: #fff; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .stat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { font-size: 14px; color: var(--text-secondary); }
+    .stat-value { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+    .level-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .level-card:active { transform: scale(0.98); }
+    .level-card.locked { opacity: 0.5; cursor: not-allowed; }
+    .level-card.completed { border-color: var(--positive); }
+    .level-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .level-title { font-size: 16px; font-weight: 600; }
+    .level-status { font-size: 12px; padding: 4px 10px; border-radius: 8px; font-weight: 600; }
+    .level-status.locked { background: var(--surface-strong); color: var(--text-tertiary); }
+    .level-status.open { background: var(--accent-light); color: var(--accent); }
+    .level-status.done { background: var(--positive-light); color: var(--positive); }
+    .level-desc { font-size: 13px; color: var(--text-secondary); }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500; }
+    .input-group input, .input-group select {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 12px;
+      font-size: 16px; background: var(--surface); color: var(--text-primary); font-family: var(--font-sans);
+    }
+    .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--text-primary); }
+    .feedback {
+      padding: 12px 16px; border-radius: 12px; margin: 12px 0; font-size: 14px; display: none; font-weight: 500;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: var(--positive-light); color: var(--positive); }
+    .feedback.wrong { background: var(--danger-light); color: var(--danger); }
+    .feedback.info { background: var(--accent-light); color: var(--accent); }
+    .instrument-view {
+      background: var(--surface-strong); border-radius: 16px; padding: 20px; margin: 14px 0;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .staff-reading {
+      font-size: 48px; font-weight: 700; color: var(--text-primary);
+      font-variant-numeric: tabular-nums; margin: 10px 0;
+    }
+    .staff-sub { font-size: 14px; color: var(--text-secondary); }
+    .crosshair {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 70px; height: 2px; background: var(--danger); pointer-events: none;
+    }
+    .crosshair::after {
+      content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 2px; height: 50px; background: var(--danger);
+    }
+    .theodolite-dial {
+      width: 200px; height: 200px; margin: 0 auto; border-radius: 50%;
+      border: 3px solid var(--border); position: relative; background: var(--surface);
+    }
+    .dial-center {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 10px; height: 10px; border-radius: 50%; background: var(--text-primary);
+    }
+    .dial-needle {
+      position: absolute; left: 50%; top: 50%; width: 3px; height: 80px;
+      background: var(--danger); transform-origin: bottom center;
+      transform: translate(-50%, -100%) rotate(0deg); transition: transform 0.5s ease;
+    }
+    .dial-reading {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+    }
+    .contour-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 14px 0;
+    }
+    .contour-cell {
+      aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 600; cursor: pointer; border: 2px solid transparent;
+      transition: all 0.15s; background: var(--surface-raised); color: var(--text-primary);
+      user-select: none;
+    }
+    .contour-cell:active { transform: scale(0.95); }
+    .contour-cell.selected { border-color: var(--accent); background: var(--accent-light); }
+    .contour-cell.correct-sel { border-color: var(--positive); background: var(--positive-light); }
+    .stars { display: flex; justify-content: center; gap: 6px; margin: 12px 0; }
+    .star { font-size: 28px; color: var(--text-quaternary); }
+    .star.filled { color: var(--warning); }
+    .top-bar {
+      display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;
+      border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 10;
+    }
+    .top-bar .back-btn {
+      background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-primary); padding: 4px; width: auto;
+    }
+    .top-bar .title { font-size: 16px; font-weight: 600; position: absolute; left: 50%; transform: translateX(-50%); }
+    .top-bar .score { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+    .timer {
+      font-size: 15px; font-weight: 600; color: var(--text-secondary); text-align: center; margin-bottom: 10px;
+      background: var(--surface); padding: 8px; border-radius: 10px; border: 1px solid var(--border);
+    }
+    .timer.urgent { color: var(--danger); border-color: var(--danger); background: var(--danger-light); }
+    .formula-box {
+      background: var(--surface-raised); border-radius: 10px; padding: 12px; margin: 12px 0;
+      font-size: 14px; color: var(--text-secondary); text-align: center; font-family: var(--font-mono);
+      border: 1px solid var(--border);
+    }
+    .progress-bar {
+      height: 6px; background: var(--surface-strong); border-radius: 3px; overflow: hidden; margin-top: 6px;
+    }
+    .progress-fill {
+      height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s ease;
+    }
+    .badge {
+      display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-right: 6px;
+    }
+    .badge.accent { background: var(--accent-light); color: var(--accent); }
+    .badge.positive { background: var(--positive-light); color: var(--positive); }
+  </style>
 </head>
 <body>
+<div id="app">
 
-<div class="cls-container">
-  <div class="cls-header">
-    <h1>🏗️ Concrete Lab Simulator</h1>
-    <p>IS 456:2000 | IS 10262:2019 Compliant Mix Design Challenge</p>
-    <span class="cls-badge">Civil Engineering Training</span>
+<!-- Top Bar -->
+<div class="top-bar" id="top-bar" style="display:none;">
+  <button class="back-btn" onclick="goBack()">&#8592;</button>
+  <div class="title" id="top-title">Survey Lab</div>
+  <div class="score" id="top-score">0 pts</div>
+</div>
+
+<!-- Screen: Home -->
+<div class="screen active" id="screen-home">
+  <div style="text-align:center; padding: 20px 0;">
+    <div style="font-size: 56px; margin-bottom: 8px;">📐</div>
+    <h1 style="font-size: 26px;">Survey Lab</h1>
+    <p style="text-align:center; max-width: 280px; margin: 0 auto 20px auto;">Master civil engineering surveying through interactive challenges!</p>
   </div>
-
-  <div class="cls-stage-indicator">
-    <div class="cls-step active" id="step1"></div>
-    <div class="cls-step" id="step2"></div>
-    <div class="cls-step" id="step3"></div>
-    <div class="cls-step" id="step4"></div>
-    <div class="cls-step" id="step5"></div>
-  </div>
-
-  <!-- STAGE 1: Project Brief -->
-  <div class="cls-stage active" id="stage1">
-    <div class="cls-card">
-      <h3>📋 Site Order: M25 Grade Concrete</h3>
-      <div class="cls-info-box">
-        <strong>Project:</strong> Ganga Expressway Toll Plaza Foundation<br>
-        <strong>Exposure:</strong> Moderate (IS 456 Table 3)<br>
-        <strong>Required:</strong> Design a concrete mix achieving <strong>25 N/mm²</strong> characteristic strength at 28 days.
-      </div>
-      <p style="font-size:14px; color:var(--concrete-300); line-height:1.6;">
-        You are the Quality Control Engineer. Your task is to design the mix proportion, 
-        ensure proper workability, cure the cubes, and validate compressive strength. 
-        One wrong move and the structure fails. Let's see if you understand Concrete Technology!
-      </p>
+  <div class="card">
+    <div class="stat-row">
+      <span class="stat-label">Total Score</span>
+      <span class="stat-value" id="home-score">0</span>
     </div>
-    <button class="cls-btn" onclick="nextStage()">Start Mix Design →</button>
-  </div>
-
-  <!-- STAGE 2: Mix Design -->
-  <div class="cls-stage" id="stage2">
-    <div class="cls-card">
-      <h3>⚖️ Step 1: Mix Design (IS 10262:2019)</h3>
-      <div class="cls-info-box">
-        Target mean strength = fck + 1.65σ. For M25, target ≈ <strong>33.25 MPa</strong>. 
-        Choose your parameters wisely. Max w/c ratio for moderate exposure = <strong>0.50</strong>.
-      </div>
-
-      <div class="cls-row">
-        <div>
-          <div class="cls-input-group">
-            <label>Water-Cement Ratio</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="wcRatio" min="0.35" max="0.65" step="0.01" value="0.50" oninput="updateMix()">
-              <div class="cls-value" id="wcValue">0.50</div>
-            </div>
-          </div>
-
-          <div class="cls-input-group">
-            <label>Cement Content (kg/m³)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="cement" min="300" max="500" step="10" value="380" oninput="updateMix()">
-              <div class="cls-value" id="cementValue">380</div>
-            </div>
-          </div>
-
-          <div class="cls-input-group">
-            <label>Water Content (kg/m³)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="water" min="150" max="250" step="5" value="190" oninput="updateMix()">
-              <div class="cls-value" id="waterValue">190</div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="cls-input-group">
-            <label>Fine Aggregate (kg/m³)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="fa" min="500" max="900" step="10" value="720" oninput="updateMix()">
-              <div class="cls-value" id="faValue">720</div>
-            </div>
-          </div>
-
-          <div class="cls-input-group">
-            <label>Coarse Aggregate (kg/m³)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="ca" min="800" max="1300" step="10" value="1100" oninput="updateMix()">
-              <div class="cls-value" id="caValue">1100</div>
-            </div>
-          </div>
-
-          <div class="cls-input-group">
-            <label>Superplasticizer (%)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="sp" min="0" max="2.5" step="0.1" value="1.0" oninput="updateMix()">
-              <div class="cls-value" id="spValue">1.0</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="cls-stats">
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="totalVol">2390</div>
-          <div class="cls-stat-label">Total kg/m³</div>
-        </div>
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="predictedStrength">28.5</div>
-          <div class="cls-stat-label">Est. Strength (MPa)</div>
-        </div>
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="mixGrade">M20</div>
-          <div class="cls-stat-label">Achieved Grade</div>
-        </div>
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="durability">⚠️</div>
-          <div class="cls-stat-label">Durability</div>
-        </div>
-      </div>
+    <div class="stat-row">
+      <span class="stat-label">Levels Completed</span>
+      <span class="stat-value" id="home-levels">0/5</span>
     </div>
-    <button class="cls-btn" id="mixBtn" onclick="validateMix()">Batch & Mix Concrete →</button>
+    <div class="stat-row">
+      <span class="stat-label">Accuracy</span>
+      <span class="stat-value" id="home-accuracy">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="home-progress" style="width:0%"></div></div>
   </div>
+  <button class="btn" onclick="showScreen('levels')">▶️ Play</button>
+  <button class="btn secondary" onclick="showScreen('help')">❓ How to Play</button>
+  <button class="btn secondary" onclick="resetProgress()" style="margin-top: 20px; opacity: 0.7;">🗑️ Reset Progress</button>
+</div>
 
-  <!-- STAGE 3: Mixing Animation -->
-  <div class="cls-stage" id="stage3">
-    <div class="cls-visual">
-      <div class="cls-mixer">
-        <div class="cls-mixer-drum" id="mixerDrum">
-          <span style="font-size:24px; z-index:2;">🔄</span>
-        </div>
-        <div class="cls-mixer-stand"></div>
-        <div class="cls-mixer-base"></div>
-      </div>
-      <p style="margin-top:20px; font-size:18px; font-weight:700; color:var(--safety-orange);">Mixing in Progress...</p>
-      <p style="font-size:13px; color:var(--concrete-400);">Transit Mixer | Drum Speed: 6 RPM</p>
-      <div class="cls-progress-bar" style="width:200px; margin:16px auto 0;">
-        <div class="cls-progress-fill" id="mixProgress" style="width:0%"></div>
-      </div>
+<!-- Screen: Levels -->
+<div class="screen" id="screen-levels">
+  <h1>Select Level</h1>
+  <div id="levels-list"></div>
+  <button class="btn secondary" onclick="showScreen('home')">Back to Home</button>
+</div>
+
+<!-- Screen: Help -->
+<div class="screen" id="screen-help">
+  <h1>How to Play</h1>
+  <div class="card">
+    <h2>🎯 Objective</h2>
+    <p>Complete 5 surveying challenges to become a master surveyor. Each level tests a different skill with a countdown timer.</p>
+  </div>
+  <div class="card">
+    <h2>📏 Level 1: Dumpy Level</h2>
+    <p>Read staff measurements and calculate Reduced Levels (RL).<br><strong>Formula:</strong> RL = HI - Staff Reading</p>
+  </div>
+  <div class="card">
+    <h2>🧭 Level 2: Theodolite</h2>
+    <p>Measure horizontal angles between survey stations. Read the dial carefully and enter the angle.</p>
+  </div>
+  <div class="card">
+    <h2>📐 Level 3: Chain Survey</h2>
+    <p>Measure distances with a chain and calculate the area of a survey plot (rectangle, square, triangle, trapezoid).</p>
+  </div>
+  <div class="card">
+    <h2>🗺️ Level 4: Contour Mapping</h2>
+    <p>Identify all grid points that lie on the same elevation contour line from a 5×5 spot level grid.</p>
+  </div>
+  <div class="card">
+    <h2>🏆 Level 5: Final Survey</h2>
+    <p>Combine all skills in a timed comprehensive survey task. Speed and accuracy matter!</p>
+  </div>
+  <button class="btn" onclick="showScreen('home')">Got it!</button>
+</div>
+
+<!-- Screen: Level 1 - Dumpy Level -->
+<div class="screen" id="screen-l1">
+  <h2>📏 Dumpy Level</h2>
+  <p>Read the staff and calculate the Reduced Level (RL).</p>
+  <div class="timer" id="l1-timer">⏱️ Time: 60s</div>
+  <div class="instrument-view">
+    <div class="crosshair"></div>
+    <div class="staff-reading" id="l1-reading">1.250</div>
+    <div class="staff-sub">meters</div>
+  </div>
+  <div class="formula-box">RL = HI − Staff Reading</div>
+  <div class="card">
+    <div class="stat-row">
+      <span class="stat-label">Benchmark (BM)</span>
+      <span class="stat-value" id="l1-bm">100.000 m</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Height of Instrument (HI)</span>
+      <span class="stat-value" id="l1-hi">101.500 m</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Back Sight (BS)</span>
+      <span class="stat-value" id="l1-bs">1.500 m</span>
     </div>
   </div>
+  <div class="input-group">
+    <label>What is the Reduced Level (RL) at this station? (m)</label>
+    <input type="number" id="l1-answer" step="0.001" placeholder="e.g. 99.250">
+  </div>
+  <div class="feedback" id="l1-feedback"></div>
+  <button class="btn" id="l1-submit" onclick="checkL1()">Submit Reading</button>
+  <button class="btn secondary" id="l1-next" style="display:none;" onclick="nextL1()">Next Station →</button>
+  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Question <span id="l1-qnum">1</span> / 5</p>
+</div>
 
-  <!-- STAGE 4: Slump Test -->
-  <div class="cls-stage" id="stage4">
-    <div class="cls-card">
-      <h3>📐 Step 2: Slump Test (IS 1199)</h3>
-      <div class="cls-info-box">
-        For reinforced foundation, target slump is <strong>75-100 mm</strong> (IS 456). 
-        Adjust water or superplasticizer to achieve workability without segregation.
-      </div>
-
-      <div class="cls-row">
-        <div>
-          <div class="cls-input-group">
-            <label>Add Water (+/- 5L)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="slumpWater" min="-20" max="20" step="5" value="0" oninput="updateSlump()">
-              <div class="cls-value" id="slumpWaterVal">0</div>
-            </div>
-          </div>
-          <div class="cls-input-group">
-            <label>Add SP (+/- 0.5%)</label>
-            <div class="cls-slider-container">
-              <input type="range" class="cls-slider" id="slumpSP" min="-1.0" max="1.0" step="0.1" value="0" oninput="updateSlump()">
-              <div class="cls-value" id="slumpSPVal">0</div>
-            </div>
-          </div>
-          <button class="cls-btn" onclick="performSlump()" id="slumpBtn">Lift Cone & Test</button>
-        </div>
-        <div>
-          <div class="cls-visual" style="min-height:180px;">
-            <div class="cls-slump-cone" id="slumpCone">
-              <div class="cls-slump-concrete" id="slumpConcrete"></div>
-            </div>
-            <div style="margin-top:10px; font-family:'JetBrains Mono', monospace; font-size:24px; color:var(--safety-yellow);" id="slumpResult">-- mm</div>
-            <div style="font-size:12px; color:var(--concrete-400);">Slump Value</div>
-          </div>
-        </div>
-      </div>
+<!-- Screen: Level 2 - Theodolite -->
+<div class="screen" id="screen-l2">
+  <h2>🧭 Theodolite</h2>
+  <p>Read the horizontal angle from the theodolite dial.</p>
+  <div class="timer" id="l2-timer">⏱️ Time: 60s</div>
+  <div class="instrument-view">
+    <div class="theodolite-dial" id="l2-dial">
+      <div style="position:absolute; top:4px; left:50%; transform:translateX(-50%); font-size:11px; color:var(--text-tertiary);">N</div>
+      <div class="dial-center"></div>
+      <div class="dial-needle" id="l2-needle"></div>
+      <div class="dial-reading" id="l2-dial-reading">0°00'00"</div>
     </div>
   </div>
-
-  <!-- STAGE 5: Curing -->
-  <div class="cls-stage" id="stage5">
-    <div class="cls-card">
-      <h3>💧 Step 3: Curing (IS 456 Clause 13.5)</h3>
-      <div class="cls-info-box">
-        Concrete must be cured for <strong>minimum 7 days</strong> (OPC) or <strong>10 days</strong> (PPC). 
-        Keep cubes submerged in potable water at 27±2°C. Strength gains over time!
-      </div>
-
-      <div class="cls-visual">
-        <div class="cls-curing-tank">
-          <div class="cls-cube curing" id="curingCube1" style="left:40px;"></div>
-          <div class="cls-cube curing" id="curingCube2" style="left:85px; animation-delay:0.2s;"></div>
-          <div class="cls-cube curing" id="curingCube3" style="left:130px; animation-delay:0.4s;"></div>
-        </div>
-        <div class="cls-days-counter" id="daysCounter">0</div>
-        <div class="cls-days-label">Days Cured</div>
-        <div class="cls-progress-bar" style="width:200px; margin:12px auto 0;">
-          <div class="cls-progress-fill" id="cureProgress" style="width:0%"></div>
-        </div>
-      </div>
-
-      <div class="cls-strength-graph">
-        <svg width="100%" height="100%" viewBox="0 0 400 120" preserveAspectRatio="none">
-          <path id="strengthCurve" d="M0,120 L400,120" fill="none" stroke="#ff6b35" stroke-width="2"/>
-          <line x1="0" y1="120" x2="400" y2="120" stroke="#434343" stroke-width="1" stroke-dasharray="4"/>
-          <text x="10" y="110" fill="#434343" font-size="10">0 MPa</text>
-          <text x="350" y="20" fill="#434343" font-size="10">Target: 25 MPa</text>
-          <line x1="0" y1="20" x2="400" y2="20" stroke="#4caf50" stroke-width="1" stroke-dasharray="4" opacity="0.5"/>
-        </svg>
-      </div>
+  <div class="card">
+    <div class="stat-row">
+      <span class="stat-label">Station A (backsight)</span>
+      <span class="stat-value">0°00'00"</span>
     </div>
-    <button class="cls-btn" id="cureBtn" onclick="startCuring()">Start Curing Process</button>
-  </div>
-
-  <!-- STAGE 6: Compression Test -->
-  <div class="cls-stage" id="stage6">
-    <div class="cls-card">
-      <h3>🧪 Step 4: Compression Test (IS 516)</h3>
-      <div class="cls-info-box">
-        150mm cube subjected to uniform load @ 140 kg/cm²/min. 
-        Failure load / Area = Compressive Strength. Target: ≥ 25 N/mm² for M25.
-      </div>
-
-      <div class="cls-visual">
-        <div class="cls-utm">
-          <div class="cls-utm-column"></div>
-          <div class="cls-utm-column cls-utm-column-right"></div>
-          <div class="cls-utm-platen-top" id="utmPlaten"></div>
-          <div class="cls-test-cube" id="testCube"></div>
-          <div class="cls-utm-platen-bottom"></div>
-        </div>
-        <div class="cls-gauge">
-          <div class="cls-gauge-needle" id="gaugeNeedle"></div>
-        </div>
-        <div class="cls-gauge-label" id="gaugeLabel">0 kN</div>
-        <div class="cls-particles" id="particles"></div>
-      </div>
-
-      <div class="cls-stats">
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="loadValue">0</div>
-          <div class="cls-stat-label">Load (kN)</div>
-        </div>
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="stressValue">0</div>
-          <div class="cls-stat-label">Stress (MPa)</div>
-        </div>
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="strainValue">0</div>
-          <div class="cls-stat-label">Strain (%)</div>
-        </div>
-        <div class="cls-stat">
-          <div class="cls-stat-value" id="testResult">--</div>
-          <div class="cls-stat-label">Status</div>
-        </div>
-      </div>
-    </div>
-    <button class="cls-btn" id="testBtn" onclick="startCompressionTest()">Start Compression Test</button>
-  </div>
-
-  <!-- STAGE 7: Final Result -->
-  <div class="cls-stage" id="stage7">
-    <div class="cls-result-panel">
-      <div id="finalIcon" style="font-size:64px; margin-bottom:16px;">🏆</div>
-      <h2 id="finalTitle" class="cls-pass">STRUCTURE SAFE!</h2>
-      <p id="finalDesc" style="color:var(--concrete-300); font-size:16px; max-width:500px; margin:0 auto 24px; line-height:1.6;">
-        Your M25 mix design passed the compression test. The Ganga Expressway foundation is secure!
-      </p>
-
-      <div class="cls-card" style="max-width:400px; margin:0 auto 24px;">
-        <h3>📊 Final Report</h3>
-        <div style="text-align:left; font-size:14px; line-height:2;">
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--concrete-700); padding:4px 0;">
-            <span style="color:var(--concrete-400);">Mix Grade</span>
-            <span style="font-weight:700;" id="reportGrade">M25</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--concrete-700); padding:4px 0;">
-            <span style="color:var(--concrete-400);">Water-Cement Ratio</span>
-            <span style="font-weight:700;" id="reportWC">0.45</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--concrete-700); padding:4px 0;">
-            <span style="color:var(--concrete-400);">28-Day Strength</span>
-            <span style="font-weight:700; color:var(--pass-green);" id="reportStrength">26.8 MPa</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--concrete-700); padding:4px 0;">
-            <span style="color:var(--concrete-400);">Slump Achieved</span>
-            <span style="font-weight:700;" id="reportSlump">85 mm</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:4px 0;">
-            <span style="color:var(--concrete-400);">Durability Check</span>
-            <span style="font-weight:700; color:var(--pass-green);" id="reportDurability">PASS</span>
-          </div>
-        </div>
-      </div>
-
-      <button class="cls-btn" onclick="resetGame()">Design New Mix ↺</button>
+    <div class="stat-row">
+      <span class="stat-label">Station B (foresight)</span>
+      <span class="stat-value" id="l2-target">?</span>
     </div>
   </div>
+  <div class="input-group">
+    <label>What is the horizontal angle ∠AOB?</label>
+    <input type="text" id="l2-answer" placeholder="e.g. 45°30'00&quot; or 45.5">
+  </div>
+  <div class="feedback" id="l2-feedback"></div>
+  <button class="btn" id="l2-submit" onclick="checkL2()">Submit Angle</button>
+  <button class="btn secondary" id="l2-next" style="display:none;" onclick="nextL2()">Next Reading →</button>
+  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Question <span id="l2-qnum">1</span> / 5</p>
+</div>
+
+<!-- Screen: Level 3 - Chain Survey -->
+<div class="screen" id="screen-l3">
+  <h2>📐 Chain Survey</h2>
+  <p>Measure the sides and calculate the area of the survey plot.</p>
+  <div class="timer" id="l3-timer">⏱️ Time: 90s</div>
+  <div class="card">
+    <p style="margin:0 0 10px 0; font-weight:600; font-size:15px;">Plot Shape: <span id="l3-shape">Rectangle</span></p>
+    <div class="stat-row">
+      <span class="stat-label">Side AB</span>
+      <span class="stat-value" id="l3-ab">30.00 m</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Side BC</span>
+      <span class="stat-value" id="l3-bc">20.00 m</span>
+    </div>
+    <div class="stat-row" id="l3-cd-row">
+      <span class="stat-label">Side CD</span>
+      <span class="stat-value" id="l3-cd">30.00 m</span>
+    </div>
+    <div class="stat-row" id="l3-da-row">
+      <span class="stat-label">Side DA</span>
+      <span class="stat-value" id="l3-da">20.00 m</span>
+    </div>
+    <div class="stat-row" id="l3-diag-row" style="display:none;">
+      <span class="stat-label">Diagonal AC</span>
+      <span class="stat-value" id="l3-diag">?</span>
+    </div>
+  </div>
+  <div class="formula-box" id="l3-formula">Area = length × width</div>
+  <div class="input-group">
+    <label>Calculate the area of the plot (m²)</label>
+    <input type="number" id="l3-answer" step="0.01" placeholder="e.g. 600.00">
+  </div>
+  <div class="feedback" id="l3-feedback"></div>
+  <button class="btn" id="l3-submit" onclick="checkL3()">Calculate Area</button>
+  <button class="btn secondary" id="l3-next" style="display:none;" onclick="nextL3()">Next Plot →</button>
+  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Question <span id="l3-qnum">1</span> / 4</p>
+</div>
+
+<!-- Screen: Level 4 - Contour Mapping -->
+<div class="screen" id="screen-l4">
+  <h2>🗺️ Contour Mapping</h2>
+  <p>Select all grid points that lie on the <strong id="l4-target-contour">100m</strong> contour line.</p>
+  <div class="timer" id="l4-timer">⏱️ Time: 45s</div>
+  <div class="contour-grid" id="l4-grid"></div>
+  <div class="feedback" id="l4-feedback"></div>
+  <button class="btn" id="l4-submit" onclick="checkL4()">Submit Selection</button>
+  <button class="btn secondary" id="l4-next" style="display:none;" onclick="nextL4()">Next Contour →</button>
+  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Question <span id="l4-qnum">1</span> / 3</p>
+</div>
+
+<!-- Screen: Level 5 - Final Survey -->
+<div class="screen" id="screen-l5">
+  <h2>🏆 Final Survey</h2>
+  <p>Complete the comprehensive survey task under time pressure!</p>
+  <div class="timer" id="l5-timer">⏱️ Time: 120s</div>
+  <div id="l5-content"></div>
+  <div class="feedback" id="l5-feedback"></div>
+  <button class="btn" id="l5-submit" onclick="checkL5()">Submit</button>
+  <button class="btn secondary" id="l5-next" style="display:none;" onclick="nextL5()">Next Task →</button>
+  <p style="text-align:center; font-size:13px; margin-top:10px; color: var(--text-tertiary);">Task <span id="l5-qnum">1</span> / 5</p>
+</div>
+
+<!-- Screen: Level Complete -->
+<div class="screen" id="screen-complete">
+  <div style="text-align:center; padding: 30px 0;">
+    <div style="font-size: 48px; margin-bottom: 8px;">🎉</div>
+    <h1 id="complete-title">Level Complete!</h1>
+    <div class="stars" id="complete-stars"></div>
+  </div>
+  <div class="card">
+    <div class="stat-row">
+      <span class="stat-label">Score</span>
+      <span class="stat-value" id="complete-score">0</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Accuracy</span>
+      <span class="stat-value" id="complete-accuracy">0%</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Time Bonus</span>
+      <span class="stat-value" id="complete-bonus">0</span>
+    </div>
+  </div>
+  <button class="btn" onclick="showScreen('levels')">Continue</button>
+  <button class="btn secondary" onclick="showScreen('home')">Home</button>
+</div>
+
+<!-- Screen: Game Over -->
+<div class="screen" id="screen-gameover">
+  <div style="text-align:center; padding: 30px 0;">
+    <div style="font-size: 48px; margin-bottom: 8px;">⏰</div>
+    <h1>Time's Up!</h1>
+    <p style="text-align:center;">Don't worry, surveying takes practice. Try again!</p>
+  </div>
+  <div class="card">
+    <div class="stat-row">
+      <span class="stat-label">Score Earned</span>
+      <span class="stat-value" id="go-score">0</span>
+    </div>
+  </div>
+  <button class="btn" onclick="retryLevel()">🔄 Try Again</button>
+  <button class="btn secondary" onclick="showScreen('levels')">Level Select</button>
+</div>
+
 </div>
 
 <script>
-  let currentStage = 1;
-  let mixParams = {};
-  let slumpMm = 0;
-  let cureDays = 0;
-  let finalStrength = 0;
-  let testRunning = false;
+// ==================== GAME STATE ====================
+let state = {
+  totalScore: 0,
+  levelsCompleted: [],
+  totalQuestions: 0,
+  totalCorrect: 0,
+  currentLevel: null,
+  currentQ: 0,
+  levelScore: 0,
+  levelCorrect: 0,
+  levelQuestions: 0,
+  timer: null,
+  timeLeft: 0,
+  l1data: null, l2data: null, l3data: null, l4data: null, l5data: null,
+  l4selected: new Set(), l5selected: new Set(),
+};
 
-  function nextStage() {
-    document.getElementById('stage' + currentStage).classList.remove('active');
-    document.getElementById('step' + currentStage).classList.remove('active');
-    document.getElementById('step' + currentStage).classList.add('done');
-    currentStage++;
-    document.getElementById('stage' + currentStage).classList.add('active');
-    if (document.getElementById('step' + currentStage)) {
-      document.getElementById('step' + currentStage).classList.add('active');
-    }
+const LEVELS = [
+  { id:1, title:'Dumpy Level', desc:'Read staff & calculate RL', icon:'📏', time:60, qs:5, locked:false },
+  { id:2, title:'Theodolite', desc:'Measure horizontal angles', icon:'🧭', time:60, qs:5, locked:true },
+  { id:3, title:'Chain Survey', desc:'Measure distance & area', icon:'📐', time:90, qs:4, locked:true },
+  { id:4, title:'Contour Mapping', desc:'Identify contour lines', icon:'🗺️', time:45, qs:3, locked:true },
+  { id:5, title:'Final Survey', desc:'Comprehensive timed test', icon:'🏆', time:120, qs:5, locked:true },
+];
 
-    if (currentStage === 3) {
-      animateMixing();
+function saveState() {
+  try {
+    localStorage.setItem('surveyLabState', JSON.stringify({
+      totalScore: state.totalScore,
+      levelsCompleted: state.levelsCompleted,
+      totalQuestions: state.totalQuestions,
+      totalCorrect: state.totalCorrect
+    }));
+  } catch(e) {}
+}
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('surveyLabState'));
+    if (saved) {
+      state.totalScore = saved.totalScore || 0;
+      state.levelsCompleted = saved.levelsCompleted || [];
+      state.totalQuestions = saved.totalQuestions || 0;
+      state.totalCorrect = saved.totalCorrect || 0;
     }
+  } catch(e) {}
+  updateHomeStats();
+}
+function resetProgress() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  state.totalScore = 0; state.levelsCompleted = []; state.totalQuestions = 0; state.totalCorrect = 0;
+  localStorage.removeItem('surveyLabState');
+  updateHomeStats();
+  showScreen('home');
+}
+
+// ==================== NAVIGATION ====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  const topBar = document.getElementById('top-bar');
+  if (id === 'home' || id === 'help') { topBar.style.display = 'none'; }
+  else {
+    topBar.style.display = 'flex';
+    document.getElementById('top-score').textContent = state.totalScore + ' pts';
   }
+  if (id === 'levels') renderLevels();
+  if (id === 'home') updateHomeStats();
+  window.scrollTo(0, 0);
+}
+function goBack() {
+  if (state.timer) clearInterval(state.timer);
+  showScreen('levels');
+}
 
-  function updateMix() {
-    const wc = parseFloat(document.getElementById('wcRatio').value);
-    const cement = parseInt(document.getElementById('cement').value);
-    const water = parseInt(document.getElementById('water').value);
-    const fa = parseInt(document.getElementById('fa').value);
-    const ca = parseInt(document.getElementById('ca').value);
-    const sp = parseFloat(document.getElementById('sp').value);
+function updateHomeStats() {
+  document.getElementById('home-score').textContent = state.totalScore;
+  document.getElementById('home-levels').textContent = state.levelsCompleted.length + '/5';
+  const acc = state.totalQuestions > 0 ? Math.round((state.totalCorrect / state.totalQuestions) * 100) : 0;
+  document.getElementById('home-accuracy').textContent = acc + '%';
+  document.getElementById('home-progress').style.width = (state.levelsCompleted.length / 5 * 100) + '%';
+}
 
-    document.getElementById('wcValue').textContent = wc.toFixed(2);
-    document.getElementById('cementValue').textContent = cement;
-    document.getElementById('waterValue').textContent = water;
-    document.getElementById('faValue').textContent = fa;
-    document.getElementById('caValue').textContent = ca;
-    document.getElementById('spValue').textContent = sp.toFixed(1);
-
-    const total = cement + water + fa + ca + (cement * sp / 100);
-    document.getElementById('totalVol').textContent = Math.round(total);
-
-    // Simplified strength model based on Abram's law-ish behavior
-    let strength = (30 / (wc + 0.1)) * (1 + sp * 0.05) * (cement / 380);
-    strength = Math.max(15, Math.min(45, strength));
-
-    document.getElementById('predictedStrength').textContent = strength.toFixed(1);
-
-    let grade = 'M15';
-    if (strength >= 20) grade = 'M20';
-    if (strength >= 25) grade = 'M25';
-    if (strength >= 30) grade = 'M30';
-    if (strength >= 35) grade = 'M35';
-    if (strength >= 40) grade = 'M40';
-    document.getElementById('mixGrade').textContent = grade;
-
-    const dur = wc <= 0.50 && cement >= 320 ? '✅' : '⚠️';
-    document.getElementById('durability').textContent = dur;
-
-    mixParams = { wc, cement, water, fa, ca, sp, strength };
+function renderLevels() {
+  for (let i = 0; i < LEVELS.length; i++) {
+    LEVELS[i].locked = i > 0 && !state.levelsCompleted.includes(LEVELS[i - 1].id);
   }
+  const list = document.getElementById('levels-list');
+  list.innerHTML = LEVELS.map(l => {
+    const done = state.levelsCompleted.includes(l.id);
+    const cls = l.locked ? 'locked' : (done ? 'completed' : '');
+    const status = l.locked ? 'locked' : (done ? 'done' : 'open');
+    const statusText = l.locked ? '🔒 Locked' : (done ? '✅ Complete' : '▶️ Play');
+    return `<div class="level-card ${cls}" onclick="${l.locked ? '' : `startLevel(${l.id})`}">
+      <div class="level-header">
+        <span class="level-title">${l.icon} ${l.title}</span>
+        <span class="level-status ${status}">${statusText}</span>
+      </div>
+      <div class="level-desc">${l.desc} &nbsp;•&nbsp; ${l.qs} questions &nbsp;•&nbsp; ${l.time}s</div>
+    </div>`;
+  }).join('');
+}
 
-  function validateMix() {
-    if (mixParams.wc > 0.50) {
-      alert('❌ IS 456 Violation: Max w/c ratio for moderate exposure is 0.50!');
-      return;
+// ==================== TIMER ====================
+function startTimer(seconds, displayId, onEnd) {
+  state.timeLeft = seconds;
+  const el = document.getElementById(displayId);
+  el.textContent = '⏱️ Time: ' + state.timeLeft + 's';
+  el.classList.remove('urgent');
+  if (state.timer) clearInterval(state.timer);
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    el.textContent = '⏱️ Time: ' + state.timeLeft + 's';
+    if (state.timeLeft <= 10) el.classList.add('urgent');
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      state.timer = null;
+      onEnd();
     }
-    if (mixParams.cement < 320) {
-      alert('❌ IS 456 Violation: Minimum cement content for moderate exposure is 320 kg/m³!');
-      return;
-    }
-    if (mixParams.strength < 25) {
-      alert('⚠️ Warning: Predicted strength is below M25 target. Adjust mix!');
-      return;
-    }
-    nextStage();
+  }, 1000);
+}
+
+// ==================== LEVEL 1: DUMPY LEVEL ====================
+function startL1() {
+  state.currentQ = 0; state.levelScore = 0; state.levelCorrect = 0; state.levelQuestions = 5;
+  state.l1data = generateL1Data();
+  showL1Question();
+  startTimer(60, 'l1-timer', () => endLevel(false));
+}
+function generateL1Data() {
+  const data = [];
+  for (let i = 0; i < 5; i++) {
+    const bm = 100 + Math.floor(Math.random() * 50);
+    const bs = (Math.random() * 2 + 0.5).toFixed(3);
+    const hi = (bm + parseFloat(bs)).toFixed(3);
+    const is = (Math.random() * 3 + 0.3).toFixed(3);
+    const rl = (parseFloat(hi) - parseFloat(is)).toFixed(3);
+    data.push({ bm, bs, hi, is, rl });
   }
+  return data;
+}
+function showL1Question() {
+  const d = state.l1data[state.currentQ];
+  document.getElementById('l1-reading').textContent = d.is;
+  document.getElementById('l1-bm').textContent = d.bm.toFixed(3) + ' m';
+  document.getElementById('l1-hi').textContent = d.hi + ' m';
+  document.getElementById('l1-bs').textContent = d.bs + ' m';
+  document.getElementById('l1-answer').value = '';
+  document.getElementById('l1-feedback').className = 'feedback';
+  document.getElementById('l1-feedback').textContent = '';
+  document.getElementById('l1-submit').style.display = 'block';
+  document.getElementById('l1-next').style.display = 'none';
+  document.getElementById('l1-qnum').textContent = state.currentQ + 1;
+  document.getElementById('l1-answer').focus();
+}
+function checkL1() {
+  const ans = parseFloat(document.getElementById('l1-answer').value);
+  const correct = parseFloat(state.l1data[state.currentQ].rl);
+  const fb = document.getElementById('l1-feedback');
+  if (isNaN(ans)) { fb.className = 'feedback show wrong'; fb.textContent = 'Enter a valid number!'; return; }
+  const diff = Math.abs(ans - correct);
+  if (diff < 0.005) {
+    fb.className = 'feedback show correct';
+    fb.textContent = '✅ Correct! RL = ' + correct.toFixed(3) + ' m';
+    state.levelCorrect++;
+    state.levelScore += 100 + Math.max(0, state.timeLeft);
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.textContent = '❌ Wrong. Correct RL = ' + correct.toFixed(3) + ' m';
+  }
+  document.getElementById('l1-submit').style.display = 'none';
+  document.getElementById('l1-next').style.display = 'block';
+}
+function nextL1() {
+  state.currentQ++;
+  if (state.currentQ >= state.l1data.length) { endLevel(true); }
+  else { showL1Question(); }
+}
 
-  function animateMixing() {
-    const bar = document.getElementById('mixProgress');
-    let w = 0;
-    const interval = setInterval(() => {
-      w += 2;
-      bar.style.width = w + '%';
-      if (w >= 100) {
-        clearInterval(interval);
-        setTimeout(() => nextStage(), 500);
+// ==================== LEVEL 2: THEODOLITE ====================
+function startL2() {
+  state.currentQ = 0; state.levelScore = 0; state.levelCorrect = 0; state.levelQuestions = 5;
+  state.l2data = generateL2Data();
+  showL2Question();
+  startTimer(60, 'l2-timer', () => endLevel(false));
+}
+function generateL2Data() {
+  const data = [];
+  for (let i = 0; i < 5; i++) {
+    const deg = Math.floor(Math.random() * 180);
+    const min = Math.floor(Math.random() * 60);
+    const sec = Math.floor(Math.random() * 60);
+    const decimal = deg + min / 60 + sec / 3600;
+    data.push({ deg, min, sec, decimal, display: `${deg}°${String(min).padStart(2, '0')}'${String(sec).padStart(2, '0')}"` });
+  }
+  return data;
+}
+function showL2Question() {
+  const d = state.l2data[state.currentQ];
+  document.getElementById('l2-target').textContent = d.display;
+  document.getElementById('l2-needle').style.transform = `translate(-50%, -100%) rotate(${d.decimal}deg)`;
+  document.getElementById('l2-dial-reading').textContent = d.display;
+  document.getElementById('l2-answer').value = '';
+  document.getElementById('l2-feedback').className = 'feedback';
+  document.getElementById('l2-feedback').textContent = '';
+  document.getElementById('l2-submit').style.display = 'block';
+  document.getElementById('l2-next').style.display = 'none';
+  document.getElementById('l2-qnum').textContent = state.currentQ + 1;
+  document.getElementById('l2-answer').focus();
+}
+function parseAngle(str) {
+  str = str.trim();
+  const dms = str.match(/(\d+)°\s*(\d+)'?\s*(\d+)"?/);
+  if (dms) return parseInt(dms[1]) + parseInt(dms[2]) / 60 + parseInt(dms[3]) / 3600;
+  const dm = str.match(/(\d+)°\s*(\d+)'?/);
+  if (dm) return parseInt(dm[1]) + parseInt(dm[2]) / 60;
+  const dec = parseFloat(str);
+  if (!isNaN(dec)) return dec;
+  return NaN;
+}
+function checkL2() {
+  const ans = parseAngle(document.getElementById('l2-answer').value);
+  const correct = state.l2data[state.currentQ].decimal;
+  const fb = document.getElementById('l2-feedback');
+  if (isNaN(ans)) { fb.className = 'feedback show wrong'; fb.textContent = 'Enter angle like 45°30\'00" or 45.5'; return; }
+  const diff = Math.abs(ans - correct);
+  if (diff < 0.05) {
+    fb.className = 'feedback show correct';
+    fb.textContent = '✅ Correct! Angle = ' + state.l2data[state.currentQ].display;
+    state.levelCorrect++;
+    state.levelScore += 100 + Math.max(0, state.timeLeft);
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.textContent = '❌ Wrong. Correct angle = ' + state.l2data[state.currentQ].display;
+  }
+  document.getElementById('l2-submit').style.display = 'none';
+  document.getElementById('l2-next').style.display = 'block';
+}
+function nextL2() {
+  state.currentQ++;
+  if (state.currentQ >= state.l2data.length) { endLevel(true); }
+  else { showL2Question(); }
+}
+
+// ==================== LEVEL 3: CHAIN SURVEY ====================
+function startL3() {
+  state.currentQ = 0; state.levelScore = 0; state.levelCorrect = 0; state.levelQuestions = 4;
+  state.l3data = generateL3Data();
+  showL3Question();
+  startTimer(90, 'l3-timer', () => endLevel(false));
+}
+function generateL3Data() {
+  const shapes = ['Rectangle', 'Square', 'Triangle', 'Trapezoid'];
+  const data = [];
+  for (let i = 0; i < 4; i++) {
+    const shape = shapes[i];
+    let ab, bc, cd, da, diag, area, formula;
+    if (shape === 'Rectangle') {
+      ab = (Math.random() * 40 + 10).toFixed(2); bc = (Math.random() * 30 + 10).toFixed(2);
+      cd = ab; da = bc; area = (parseFloat(ab) * parseFloat(bc)).toFixed(2);
+      formula = 'Area = AB × BC';
+    } else if (shape === 'Square') {
+      ab = (Math.random() * 30 + 10).toFixed(2); bc = ab; cd = ab; da = ab;
+      area = (parseFloat(ab) ** 2).toFixed(2);
+      formula = 'Area = side²';
+    } else if (shape === 'Triangle') {
+      ab = (Math.random() * 30 + 10).toFixed(2); bc = (Math.random() * 30 + 10).toFixed(2);
+      cd = '—'; da = '—'; diag = (Math.random() * 30 + 5).toFixed(2);
+      const a = parseFloat(ab), b = parseFloat(bc), c = parseFloat(diag);
+      const s = (a + b + c) / 2; area = Math.sqrt(s * (s - a) * (s - b) * (s - c)).toFixed(2);
+      formula = 'Area = √(s(s−a)(s−b)(s−c))';
+    } else {
+      ab = (Math.random() * 20 + 20).toFixed(2); bc = (Math.random() * 20 + 10).toFixed(2);
+      cd = (Math.random() * 20 + 10).toFixed(2); da = (Math.random() * 20 + 10).toFixed(2);
+      diag = (Math.random() * 25 + 10).toFixed(2);
+      const a = parseFloat(ab), b = parseFloat(bc), c = parseFloat(cd), dia = parseFloat(diag);
+      const s1 = (a + b + dia) / 2, s2 = (c + parseFloat(da) + dia) / 2;
+      const area1 = Math.sqrt(s1 * (s1 - a) * (s1 - b) * (s1 - dia));
+      const area2 = Math.sqrt(s2 * (s2 - c) * (s2 - parseFloat(da)) * (s2 - dia));
+      area = (area1 + area2).toFixed(2);
+      formula = 'Area = ΔABC + ΔACD';
+    }
+    data.push({ shape, ab, bc, cd, da, diag, area: parseFloat(area), formula });
+  }
+  return data;
+}
+function showL3Question() {
+  const d = state.l3data[state.currentQ];
+  document.getElementById('l3-shape').textContent = d.shape;
+  document.getElementById('l3-ab').textContent = d.ab + ' m';
+  document.getElementById('l3-bc').textContent = d.bc + ' m';
+  document.getElementById('l3-cd').textContent = d.cd + ' m';
+  document.getElementById('l3-da').textContent = d.da + ' m';
+  document.getElementById('l3-diag').textContent = d.diag + ' m';
+  document.getElementById('l3-diag-row').style.display = (d.shape === 'Rectangle' || d.shape === 'Square') ? 'none' : 'flex';
+  document.getElementById('l3-formula').textContent = d.formula;
+  document.getElementById('l3-answer').value = '';
+  document.getElementById('l3-feedback').className = 'feedback';
+  document.getElementById('l3-feedback').textContent = '';
+  document.getElementById('l3-submit').style.display = 'block';
+  document.getElementById('l3-next').style.display = 'none';
+  document.getElementById('l3-qnum').textContent = state.currentQ + 1;
+  document.getElementById('l3-answer').focus();
+}
+function checkL3() {
+  const ans = parseFloat(document.getElementById('l3-answer').value);
+  const correct = state.l3data[state.currentQ].area;
+  const fb = document.getElementById('l3-feedback');
+  if (isNaN(ans)) { fb.className = 'feedback show wrong'; fb.textContent = 'Enter a number!'; return; }
+  const diff = Math.abs(ans - correct);
+  const tol = correct * 0.02;
+  if (diff <= tol) {
+    fb.className = 'feedback show correct';
+    fb.textContent = '✅ Correct! Area ≈ ' + correct.toFixed(2) + ' m²';
+    state.levelCorrect++;
+    state.levelScore += 100 + Math.max(0, state.timeLeft);
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.textContent = '❌ Wrong. Area ≈ ' + correct.toFixed(2) + ' m²';
+  }
+  document.getElementById('l3-submit').style.display = 'none';
+  document.getElementById('l3-next').style.display = 'block';
+}
+function nextL3() {
+  state.currentQ++;
+  if (state.currentQ >= state.l3data.length) { endLevel(true); }
+  else { showL3Question(); }
+}
+
+// ==================== LEVEL 4: CONTOUR MAPPING ====================
+function startL4() {
+  state.currentQ = 0; state.levelScore = 0; state.levelCorrect = 0; state.levelQuestions = 3;
+  state.l4data = generateL4Data();
+  showL4Question();
+  startTimer(45, 'l4-timer', () => endLevel(false));
+}
+function generateL4Data() {
+  const data = [];
+  for (let q = 0; q < 3; q++) {
+    const grid = [];
+    const target = 100 + q * 5;
+    const correct = new Set();
+    for (let r = 0; r < 5; r++) {
+      for (let c = 0; c < 5; c++) {
+        const dist = Math.sqrt((r - 2) ** 2 + (c - 2) ** 2);
+        let val = 100 + (2 - dist) * 8 + Math.floor(Math.random() * 3);
+        val = Math.round(val);
+        grid.push({ r, c, val });
+        if (val === target) correct.add(r * 5 + c);
       }
-    }, 40);
-  }
-
-  function updateSlump() {
-    const wAdj = parseInt(document.getElementById('slumpWater').value);
-    const spAdj = parseFloat(document.getElementById('slumpSP').value);
-    document.getElementById('slumpWaterVal').textContent = (wAdj >= 0 ? '+' : '') + wAdj;
-    document.getElementById('slumpSPVal').textContent = (spAdj >= 0 ? '+' : '') + spAdj.toFixed(1);
-
-    // Base slump from mix water + adjustments
-    let baseSlump = 30 + (mixParams.water - 180) * 1.5 + wAdj * 2 + spAdj * 40;
-    slumpMm = Math.max(0, Math.min(200, Math.round(baseSlump)));
-  }
-
-  function performSlump() {
-    const btn = document.getElementById('slumpBtn');
-    btn.disabled = true;
-
-    const cone = document.getElementById('slumpCone');
-    const concrete = document.getElementById('slumpConcrete');
-
-    cone.classList.add('lifting');
-
-    setTimeout(() => {
-      const slumpHeight = Math.max(10, 80 - slumpMm * 0.3);
-      concrete.style.height = slumpHeight + 'px';
-      concrete.style.width = (80 + (80 - slumpHeight) * 0.5) + 'px';
-      concrete.style.left = (-40 - (80 - slumpHeight) * 0.25) + 'px';
-
-      document.getElementById('slumpResult').textContent = slumpMm + ' mm';
-
-      if (slumpMm >= 75 && slumpMm <= 100) {
-        document.getElementById('slumpResult').style.color = 'var(--pass-green)';
-        setTimeout(() => {
-          alert('✅ Slump test PASSED! Workability is perfect for foundation.');
-          nextStage();
-        }, 1200);
-      } else if (slumpMm < 75) {
-        document.getElementById('slumpResult').style.color = 'var(--safety-yellow)';
-        setTimeout(() => {
-          alert('⚠️ Slump too low (' + slumpMm + 'mm). Add more water or superplasticizer!');
-          btn.disabled = false;
-          cone.classList.remove('lifting');
-          concrete.style.height = '0';
-        }, 1200);
-      } else {
-        document.getElementById('slumpResult').style.color = 'var(--rebar-red)';
-        setTimeout(() => {
-          alert('❌ Slump too high (' + slumpMm + 'mm). Risk of segregation! Reduce water.');
-          btn.disabled = false;
-          cone.classList.remove('lifting');
-          concrete.style.height = '0';
-        }, 1200);
-      }
-    }, 600);
-  }
-
-  function startCuring() {
-    const btn = document.getElementById('cureBtn');
-    btn.disabled = true;
-    btn.textContent = 'Curing in Progress...';
-
-    const counter = document.getElementById('daysCounter');
-    const bar = document.getElementById('cureProgress');
-    const curve = document.getElementById('strengthCurve');
-
-    let days = 0;
-    const targetDays = 28;
-
-    // Strength gain curve based on ACI/IS empirical
-    function getStrength(day) {
-      if (day <= 0) return 0;
-      const ratio = day / (day + 10); // Simplified gain curve
-      return mixParams.strength * ratio * 0.95; // Slight reduction
     }
-
-    const interval = setInterval(() => {
-      days++;
-      counter.textContent = days;
-      bar.style.width = (days / targetDays * 100) + '%';
-
-      // Update graph
-      const points = [];
-      for (let d = 0; d <= days; d += 0.5) {
-        const x = (d / targetDays) * 400;
-        const s = getStrength(d);
-        const y = 120 - (s / 35) * 100;
-        points.push(x + ',' + y);
-      }
-      curve.setAttribute('d', 'M' + points.join(' L'));
-
-      if (days >= targetDays) {
-        clearInterval(interval);
-        finalStrength = getStrength(28);
-        setTimeout(() => nextStage(), 800);
-      }
-    }, 150);
-  }
-
-  function startCompressionTest() {
-    if (testRunning) return;
-    testRunning = true;
-
-    const btn = document.getElementById('testBtn');
-    btn.disabled = true;
-    btn.textContent = 'Testing...';
-
-    const platen = document.getElementById('utmPlaten');
-    const cube = document.getElementById('testCube');
-    const needle = document.getElementById('gaugeNeedle');
-    const gaugeLabel = document.getElementById('gaugeLabel');
-    const loadDisplay = document.getElementById('loadValue');
-    const stressDisplay = document.getElementById('stressValue');
-    const strainDisplay = document.getElementById('strainValue');
-    const resultDisplay = document.getElementById('testResult');
-
-    const targetLoad = finalStrength * 225; // 150x150 mm = 22500 mm², load in kN for MPa
-    const maxLoad = targetLoad * 1.1;
-    let currentLoad = 0;
-    let step = maxLoad / 100;
-    let broken = false;
-
-    const interval = setInterval(() => {
-      currentLoad += step;
-      const stress = currentLoad / 22.5; // MPa
-      const strain = (stress / 25000) * 100; // Approx
-
-      // Animate platen down
-      const displacement = Math.min(60, (currentLoad / maxLoad) * 60);
-      platen.style.top = displacement + 'px';
-      cube.style.transform = 'scaleY(' + (1 - strain/200) + ')';
-
-      // Gauge
-      const angle = -90 + (currentLoad / maxLoad) * 180;
-      needle.style.transform = 'rotate(' + angle + 'deg)';
-
-      gaugeLabel.textContent = Math.round(currentLoad) + ' kN';
-      loadDisplay.textContent = Math.round(currentLoad);
-      stressDisplay.textContent = stress.toFixed(1);
-      strainDisplay.textContent = strain.toFixed(3);
-
-      if (stress >= finalStrength && !broken) {
-        broken = true;
-        cube.classList.add('cracking');
-
-        if (finalStrength >= 25) {
-          // Pass - cube holds, test stops at target
-          resultDisplay.textContent = 'PASS';
-          resultDisplay.style.color = 'var(--pass-green)';
-          clearInterval(interval);
-          setTimeout(() => {
-            createParticles();
-            showFinalResult(true);
-          }, 500);
-        } else {
-          // Fail - cube breaks
-          setTimeout(() => {
-            cube.classList.add('broken');
-            createParticles();
-            resultDisplay.textContent = 'FAIL';
-            resultDisplay.style.color = 'var(--rebar-red)';
-            clearInterval(interval);
-            setTimeout(() => showFinalResult(false), 800);
-          }, 300);
+    if (correct.size < 2) {
+      let forced = 0;
+      for (let i = 0; i < grid.length && forced < 3; i++) {
+        if (!correct.has(i) && Math.abs(grid[i].val - target) <= 1) {
+          grid[i].val = target; correct.add(i); forced++;
         }
       }
-
-      if (currentLoad >= maxLoad && !broken) {
-        clearInterval(interval);
-        showFinalResult(finalStrength >= 25);
-      }
-    }, 50);
-  }
-
-  function createParticles() {
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 30; i++) {
-      const p = document.createElement('div');
-      p.className = 'cls-particle';
-      p.style.left = '80px';
-      p.style.top = '100px';
-      p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
-      p.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
-      p.style.background = finalStrength >= 25 ? 'var(--concrete-400)' : 'var(--rebar-red)';
-      container.appendChild(p);
-      setTimeout(() => p.remove(), 1000);
     }
+    data.push({ target, grid, correct });
   }
-
-  function showFinalResult(passed) {
-    nextStage();
-    const icon = document.getElementById('finalIcon');
-    const title = document.getElementById('finalTitle');
-    const desc = document.getElementById('finalDesc');
-
-    if (passed) {
-      icon.textContent = '🏆';
-      title.textContent = 'STRUCTURE SAFE!';
-      title.className = 'cls-pass';
-      desc.textContent = 'Excellent work, Engineer! Your M25 mix design, workability control, and curing process were perfect. The Ganga Expressway foundation will stand for decades.';
-    } else {
-      icon.textContent = '💥';
-      title.textContent = 'STRUCTURE FAILED!';
-      title.className = 'cls-fail';
-      desc.textContent = 'The cube failed at ' + finalStrength.toFixed(1) + ' MPa. Review your w/c ratio, cement content, or curing duration. Remember: In civil engineering, there is no margin for error when lives are at stake.';
-    }
-
-    document.getElementById('reportGrade').textContent = mixParams.strength >= 25 ? 'M25' : (mixParams.strength >= 20 ? 'M20' : 'M15');
-    document.getElementById('reportWC').textContent = mixParams.wc.toFixed(2);
-    document.getElementById('reportStrength').textContent = finalStrength.toFixed(1) + ' MPa';
-    document.getElementById('reportStrength').style.color = passed ? 'var(--pass-green)' : 'var(--rebar-red)';
-    document.getElementById('reportSlump').textContent = slumpMm + ' mm';
-    document.getElementById('reportDurability').textContent = passed ? 'PASS' : 'FAIL';
-    document.getElementById('reportDurability').style.color = passed ? 'var(--pass-green)' : 'var(--rebar-red)';
+  return data;
+}
+function showL4Question() {
+  const d = state.l4data[state.currentQ];
+  state.l4selected = new Set();
+  document.getElementById('l4-target-contour').textContent = d.target + 'm';
+  const gridEl = document.getElementById('l4-grid');
+  gridEl.innerHTML = '';
+  d.grid.forEach((cell, idx) => {
+    const div = document.createElement('div');
+    div.className = 'contour-cell';
+    div.textContent = cell.val;
+    div.onclick = () => {
+      if (state.l4selected.has(idx)) { state.l4selected.delete(idx); div.classList.remove('selected'); }
+      else { state.l4selected.add(idx); div.classList.add('selected'); }
+    };
+    gridEl.appendChild(div);
+  });
+  document.getElementById('l4-feedback').className = 'feedback';
+  document.getElementById('l4-feedback').textContent = '';
+  document.getElementById('l4-submit').style.display = 'block';
+  document.getElementById('l4-next').style.display = 'none';
+  document.getElementById('l4-qnum').textContent = state.currentQ + 1;
+}
+function checkL4() {
+  const d = state.l4data[state.currentQ];
+  const selected = state.l4selected;
+  const correct = d.correct;
+  let right = 0, wrong = 0;
+  selected.forEach(idx => { if (correct.has(idx)) right++; else wrong++; });
+  const missed = correct.size - right;
+  const fb = document.getElementById('l4-feedback');
+  const cells = document.querySelectorAll('#l4-grid .contour-cell');
+  if (right === correct.size && wrong === 0) {
+    fb.className = 'feedback show correct';
+    fb.textContent = '✅ Perfect! All ' + correct.size + ' points found!';
+    state.levelCorrect++;
+    state.levelScore += 100 + Math.max(0, state.timeLeft);
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.textContent = '❌ ' + right + '/' + correct.size + ' correct. ' + wrong + ' wrong picks, ' + missed + ' missed.';
+    correct.forEach(idx => cells[idx].classList.add('correct-sel'));
   }
+  document.getElementById('l4-submit').style.display = 'none';
+  document.getElementById('l4-next').style.display = 'block';
+}
+function nextL4() {
+  state.currentQ++;
+  if (state.currentQ >= state.l4data.length) { endLevel(true); }
+  else { showL4Question(); }
+}
 
-  function resetGame() {
-    currentStage = 1;
-    testRunning = false;
-
-    // Reset all stages
-    for (let i = 1; i <= 7; i++) {
-      document.getElementById('stage' + i).classList.remove('active');
-    }
-    for (let i = 1; i <= 5; i++) {
-      document.getElementById('step' + i).className = 'cls-step';
-    }
-
-    document.getElementById('stage1').classList.add('active');
-    document.getElementById('step1').classList.add('active');
-
-    // Reset controls
-    document.getElementById('wcRatio').value = 0.50;
-    document.getElementById('cement').value = 380;
-    document.getElementById('water').value = 190;
-    document.getElementById('fa').value = 720;
-    document.getElementById('ca').value = 1100;
-    document.getElementById('sp').value = 1.0;
-    document.getElementById('slumpWater').value = 0;
-    document.getElementById('slumpSP').value = 0;
-
-    document.getElementById('mixBtn').disabled = false;
-    document.getElementById('slumpBtn').disabled = false;
-    document.getElementById('cureBtn').disabled = false;
-    document.getElementById('cureBtn').textContent = 'Start Curing Process';
-    document.getElementById('testBtn').disabled = false;
-    document.getElementById('testBtn').textContent = 'Start Compression Test';
-
-    // Reset visuals
-    document.getElementById('mixProgress').style.width = '0%';
-    document.getElementById('daysCounter').textContent = '0';
-    document.getElementById('cureProgress').style.width = '0%';
-    document.getElementById('strengthCurve').setAttribute('d', 'M0,120 L400,120');
-    document.getElementById('slumpCone').classList.remove('lifting');
-    document.getElementById('slumpConcrete').style.height = '0';
-    document.getElementById('slumpResult').textContent = '-- mm';
-    document.getElementById('slumpResult').style.color = 'var(--safety-yellow)';
-    document.getElementById('utmPlaten').style.top = '0';
-    document.getElementById('testCube').className = 'cls-test-cube';
-    document.getElementById('testCube').style.transform = '';
-    document.getElementById('gaugeNeedle').style.transform = 'rotate(-90deg)';
-    document.getElementById('gaugeLabel').textContent = '0 kN';
-
-    updateMix();
-    updateSlump();
+// ==================== LEVEL 5: FINAL SURVEY ====================
+function startL5() {
+  state.currentQ = 0; state.levelScore = 0; state.levelCorrect = 0; state.levelQuestions = 5;
+  state.l5data = generateL5Data();
+  showL5Question();
+  startTimer(120, 'l5-timer', () => endLevel(false));
+}
+function generateL5Data() {
+  const tasks = [];
+  // Task 1: Dumpy level
+  const bm = 100 + Math.floor(Math.random() * 50);
+  const bs = (Math.random() * 2 + 0.5).toFixed(3);
+  const hi = (bm + parseFloat(bs)).toFixed(3);
+  const is = (Math.random() * 3 + 0.3).toFixed(3);
+  const rl = (parseFloat(hi) - parseFloat(is)).toFixed(3);
+  tasks.push({
+    type: 'level', title: 'Dumpy Level Reading',
+    html: `<div class="instrument-view"><div class="crosshair"></div><div class="staff-reading">${is}</div><div class="staff-sub">meters</div></div>
+    <div class="card"><div class="stat-row"><span class="stat-label">BM</span><span class="stat-value">${bm.toFixed(3)} m</span></div><div class="stat-row"><span class="stat-label">BS</span><span class="stat-value">${bs} m</span></div></div>
+    <div class="formula-box">HI = BM + BS, &nbsp; RL = HI − IS</div>
+    <div class="input-group"><label>Calculate RL (m)</label><input type="number" id="l5-inp" step="0.001" placeholder="e.g. 99.250"></div>`,
+    check: () => { const v = parseFloat(document.getElementById('l5-inp').value); return { val: v, correct: parseFloat(rl), tol: 0.005, msg: 'RL = ' + parseFloat(rl).toFixed(3) + ' m' }; }
+  });
+  // Task 2: Theodolite
+  const deg = Math.floor(Math.random() * 180);
+  const min = Math.floor(Math.random() * 60);
+  const sec = Math.floor(Math.random() * 60);
+  const dec = deg + min / 60 + sec / 3600;
+  const disp = `${deg}°${String(min).padStart(2, '0')}'${String(sec).padStart(2, '0')}"`;
+  tasks.push({
+    type: 'theo', title: 'Theodolite Angle',
+    html: `<div class="instrument-view"><div class="theodolite-dial" style="margin:0 auto;"><div style="position:absolute; top:4px; left:50%; transform:translateX(-50%); font-size:11px; color:var(--text-tertiary);">N</div><div class="dial-center"></div><div class="dial-needle" style="transform:translate(-50%,-100%) rotate(${dec}deg);"></div><div class="dial-reading">${disp}</div></div></div>
+    <div class="input-group"><label>Enter the angle (decimal degrees or DMS)</label><input type="text" id="l5-inp" placeholder='e.g. 45.5 or 45°30&apos;00"'></div>`,
+    check: () => { const v = parseAngle(document.getElementById('l5-inp').value); return { val: v, correct: dec, tol: 0.05, msg: 'Angle = ' + disp }; }
+  });
+  // Task 3: Area
+  const l = (Math.random() * 30 + 10).toFixed(2); const w = (Math.random() * 20 + 10).toFixed(2);
+  const area = (parseFloat(l) * parseFloat(w)).toFixed(2);
+  tasks.push({
+    type: 'area', title: 'Chain Survey Area',
+    html: `<div class="card"><div class="stat-row"><span class="stat-label">Length</span><span class="stat-value">${l} m</span></div><div class="stat-row"><span class="stat-label">Width</span><span class="stat-value">${w} m</span></div></div>
+    <div class="input-group"><label>Area of rectangle (m²)</label><input type="number" id="l5-inp" step="0.01" placeholder="e.g. 600.00"></div>`,
+    check: () => { const v = parseFloat(document.getElementById('l5-inp').value); return { val: v, correct: parseFloat(area), tol: parseFloat(area) * 0.02, msg: 'Area = ' + parseFloat(area).toFixed(2) + ' m²' }; }
+  });
+  // Task 4: Contour
+  const cgrid = []; const ctarget = 105; const ccorrect = new Set();
+  for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) {
+    const dist = Math.sqrt((r - 2) ** 2 + (c - 2) ** 2);
+    let val = 100 + (2 - dist) * 8 + Math.floor(Math.random() * 3); val = Math.round(val);
+    cgrid.push(val); if (val === ctarget) ccorrect.add(r * 5 + c);
   }
+  tasks.push({
+    type: 'contour', title: 'Contour Selection',
+    html: `<p style="text-align:center; font-weight:600; margin-bottom:10px;">Select all ${ctarget}m contour points</p><div class="contour-grid" id="l5-grid"></div>`,
+    setup: () => {
+      const g = document.getElementById('l5-grid'); g.innerHTML = ''; state.l5selected = new Set();
+      cgrid.forEach((v, i) => {
+        const d = document.createElement('div'); d.className = 'contour-cell'; d.textContent = v;
+        d.onclick = () => { if (state.l5selected.has(i)) { state.l5selected.delete(i); d.classList.remove('selected'); } else { state.l5selected.add(i); d.classList.add('selected'); } };
+        g.appendChild(d);
+      });
+    },
+    check: () => { let r = 0, w = 0; state.l5selected.forEach(i => { if (ccorrect.has(i)) r++; else w++; }); return { val: (r === ccorrect.size && w === 0) ? 1 : 0, correct: 1, tol: 0, msg: 'Needed ' + ccorrect.size + ' points, got ' + r + ' correct, ' + w + ' wrong' }; }
+  });
+  // Task 5: Rise and Fall
+  const bs1 = (Math.random() * 2 + 0.5).toFixed(3); const fs1 = (Math.random() * 2 + 0.5).toFixed(3);
+  const rise = parseFloat(bs1) - parseFloat(fs1);
+  tasks.push({
+    type: 'rf', title: 'Rise & Fall Method',
+    html: `<div class="card"><div class="stat-row"><span class="stat-label">BS</span><span class="stat-value">${bs1} m</span></div><div class="stat-row"><span class="stat-label">FS</span><span class="stat-value">${fs1} m</span></div></div>
+    <div class="formula-box">Rise = BS − FS &nbsp;(positive = rise, negative = fall)</div>
+    <div class="input-group"><label>Enter the Rise/Fall value (m)</label><input type="number" id="l5-inp" step="0.001" placeholder="e.g. 0.250 or -0.100"></div>`,
+    check: () => { const v = parseFloat(document.getElementById('l5-inp').value); return { val: v, correct: rise, tol: 0.005, msg: 'Rise/Fall = ' + rise.toFixed(3) + ' m' }; }
+  });
+  return tasks;
+}
+function showL5Question() {
+  const d = state.l5data[state.currentQ];
+  document.getElementById('l5-content').innerHTML = `<h2 style="font-size:17px; margin:0 0 10px 0;">${d.title}</h2>` + d.html;
+  if (d.setup) d.setup();
+  document.getElementById('l5-feedback').className = 'feedback';
+  document.getElementById('l5-feedback').textContent = '';
+  document.getElementById('l5-submit').style.display = 'block';
+  document.getElementById('l5-next').style.display = 'none';
+  document.getElementById('l5-qnum').textContent = state.currentQ + 1;
+  const inp = document.getElementById('l5-inp');
+  if (inp) setTimeout(() => inp.focus(), 100);
+}
+function checkL5() {
+  const d = state.l5data[state.currentQ];
+  const res = d.check();
+  const fb = document.getElementById('l5-feedback');
+  const diff = Math.abs(res.val - res.correct);
+  if ((d.type === 'contour' && res.val === 1) || (d.type !== 'contour' && !isNaN(res.val) && diff <= res.tol)) {
+    fb.className = 'feedback show correct';
+    fb.textContent = '✅ Correct! ' + res.msg;
+    state.levelCorrect++;
+    state.levelScore += 100 + Math.max(0, state.timeLeft);
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.textContent = '❌ Wrong. ' + res.msg;
+  }
+  document.getElementById('l5-submit').style.display = 'none';
+  document.getElementById('l5-next').style.display = 'block';
+}
+function nextL5() {
+  state.currentQ++;
+  if (state.currentQ >= state.l5data.length) { endLevel(true); }
+  else { showL5Question(); }
+}
 
-  // Initialize
-  updateMix();
-  updateSlump();
+// ==================== LEVEL MANAGEMENT ====================
+function startLevel(id) {
+  state.currentLevel = id;
+  state.levelScore = 0; state.levelCorrect = 0;
+  document.getElementById('top-title').textContent = LEVELS[id - 1].title;
+  showScreen('l' + id);
+  if (id === 1) startL1();
+  if (id === 2) startL2();
+  if (id === 3) startL3();
+  if (id === 4) startL4();
+  if (id === 5) startL5();
+}
+function endLevel(completed) {
+  if (state.timer) { clearInterval(state.timer); state.timer = null; }
+  state.totalQuestions += state.levelQuestions;
+  state.totalCorrect += state.levelCorrect;
+  if (completed && state.levelCorrect >= Math.ceil(state.levelQuestions / 2)) {
+    if (!state.levelsCompleted.includes(state.currentLevel)) state.levelsCompleted.push(state.currentLevel);
+    state.totalScore += state.levelScore;
+    saveState();
+    showCompleteScreen();
+  } else {
+    document.getElementById('go-score').textContent = state.levelScore;
+    showScreen('gameover');
+  }
+}
+function showCompleteScreen() {
+  const acc = Math.round((state.levelCorrect / state.levelQuestions) * 100);
+  const stars = acc >= 90 ? 3 : acc >= 70 ? 2 : 1;
+  document.getElementById('complete-title').textContent = 'Level ' + state.currentLevel + ' Complete!';
+  document.getElementById('complete-score').textContent = state.levelScore;
+  document.getElementById('complete-accuracy').textContent = acc + '%';
+  document.getElementById('complete-bonus').textContent = Math.max(0, state.timeLeft) + ' pts';
+  document.getElementById('complete-stars').innerHTML = Array(3).fill(0).map((_, i) => `<span class="star ${i < stars ? 'filled' : ''}">★</span>`).join('');
+  showScreen('complete');
+}
+function retryLevel() {
+  startLevel(state.currentLevel);
+}
+
+// ==================== INIT ====================
+loadState();
 </script>
-
 </body>
 </html>
-
-
-Jarvis logo
-Ctrl+J
-
-
-Jarvis logo
-
