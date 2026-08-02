@@ -1,30 +1,922 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Construction Terms</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;margin:0}
-header{background:#0d6efd;color:#fff;padding:20px}
-main{max-width:1000px;margin:auto;background:#fff;padding:25px}
-h2{color:#0d6efd}
-footer{padding:20px;text-align:center;color:#666}
-</style></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concrete Lab Master — IS 456 Game</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-light: #334155;
+      --accent: #3b82f6;
+      --accent-glow: #60a5fa;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gold: #fbbf24;
+      --text: #f1f5f9;
+      --text-dim: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
+
+    #game-screen { display: none; height: 100vh; flex-direction: column; }
+    #game-screen.active { display: flex; }
+
+    .hud {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px; background: var(--panel); border-bottom: 2px solid var(--accent);
+    }
+    .hud-left { display: flex; gap: 20px; align-items: center; }
+    .hud-stat {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 700;
+    }
+    .hud-stat .icon { font-size: 16px; }
+    .hud-stat .val { color: var(--gold); }
+    .progress-bar {
+      width: 200px; height: 10px; background: var(--panel-light);
+      border-radius: 5px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+      border-radius: 5px; transition: width 0.5s ease;
+    }
+    .level-badge {
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      padding: 4px 14px; border-radius: 12px;
+      font-size: 12px; font-weight: 800; letter-spacing: 1px;
+    }
+
+    .game-area {
+      flex: 1; display: flex; position: relative;
+      padding: 16px; gap: 16px; overflow: auto;
+    }
+    .left-panel { width: 55%; display: flex; flex-direction: column; gap: 12px; }
+    .right-panel { width: 45%; display: flex; flex-direction: column; gap: 12px; }
+
+    .game-card {
+      background: var(--panel); border-radius: 12px;
+      border: 1px solid var(--panel-light); padding: 16px;
+    }
+    .game-card-title {
+      font-size: 14px; font-weight: 700; color: var(--accent-glow);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    }
+
+    .scene {
+      flex: 1; min-height: 260px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 12px; border: 2px solid var(--panel-light);
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 20px;
+    }
+    .scene-floor {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px; background: #334155;
+      border-top: 3px solid #475569;
+    }
+
+    .workbench {
+      position: relative; width: 320px; height: 180px;
+      background: #475569; border-radius: 8px;
+      border: 3px solid #64748b; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .eq-on-bench {
+      position: absolute; cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+      user-select: none;
+    }
+    .eq-on-bench:hover { transform: scale(1.1); filter: brightness(1.2); }
+    .eq-on-bench.disabled { opacity: 0.3; pointer-events: none; }
+    .eq-on-bench.highlight {
+      animation: pulse-glow 1s infinite;
+      filter: drop-shadow(0 0 8px var(--accent-glow));
+    }
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 4px var(--accent-glow)); }
+      50% { filter: drop-shadow(0 0 12px var(--accent-glow)); }
+    }
+
+    .inventory {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      min-height: 60px; padding: 8px;
+      background: var(--bg); border-radius: 8px;
+      border: 2px dashed var(--panel-light);
+    }
+    .inv-item {
+      width: 50px; height: 50px;
+      background: var(--panel-light); border-radius: 8px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: 20px; cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s; position: relative;
+    }
+    .inv-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .inv-item.selected { border-color: var(--gold); background: #3f2e05; }
+    .inv-item .count {
+      position: absolute; bottom: 2px; right: 4px;
+      font-size: 10px; font-weight: 700; color: var(--gold);
+    }
+
+    .steps-list { display: flex; flex-direction: column; gap: 8px; }
+    .step-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 8px;
+      background: var(--bg); border: 1px solid var(--panel-light);
+      font-size: 12px; transition: all 0.3s;
+    }
+    .step-item.done { border-color: var(--success); background: #064e3b20; }
+    .step-item.done .step-check { background: var(--success); }
+    .step-item.current { border-color: var(--accent); background: #1e3a5f20; }
+    .step-item.current .step-check { background: var(--accent); animation: pulse 1s infinite; }
+    .step-item.wrong { border-color: var(--danger); animation: shake 0.4s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    .step-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--panel-light); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 11px; flex-shrink: 0;
+    }
+    .step-text { flex: 1; }
+    .step-text .desc { color: var(--text-dim); font-size: 11px; margin-top: 2px; }
+
+    .action-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .action-btn {
+      padding: 8px 16px; border-radius: 8px;
+      border: none; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      background: var(--panel-light); color: var(--text);
+    }
+    .action-btn:hover { background: var(--accent); transform: translateY(-1px); }
+    .action-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .action-btn.primary { background: var(--accent); }
+    .action-btn.success { background: var(--success); }
+    .action-btn.danger { background: var(--danger); }
+
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--panel); border-radius: 16px;
+      border: 2px solid var(--accent); padding: 24px;
+      max-width: 420px; width: 90%; text-align: center;
+    }
+    .modal-box h2 { font-size: 20px; margin-bottom: 8px; }
+    .modal-box p { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
+    .stars { font-size: 32px; margin: 12px 0; }
+
+    #start-screen {
+      height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 20px;
+    }
+    .game-logo {
+      font-size: 64px; margin-bottom: 8px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .game-title {
+      font-size: 28px; font-weight: 800;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .game-subtitle { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; }
+    .start-btn {
+      padding: 14px 48px; font-size: 16px; font-weight: 800;
+      border: none; border-radius: 12px; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      color: white; transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+    }
+    .start-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(59,130,246,0.6); }
+
+    .level-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+      margin-top: 16px;
+    }
+    .level-card {
+      background: var(--panel); border-radius: 12px;
+      border: 2px solid var(--panel-light); padding: 16px;
+      cursor: pointer; transition: all 0.2s; text-align: left;
+    }
+    .level-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .level-card.locked { opacity: 0.4; pointer-events: none; }
+    .level-card .lvl-num { font-size: 24px; font-weight: 800; color: var(--accent); }
+    .level-card .lvl-name { font-size: 13px; font-weight: 600; margin-top: 4px; }
+    .level-card .lvl-desc { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+    .level-card .lvl-stars { margin-top: 6px; font-size: 14px; }
+
+    .timer-display {
+      font-family: 'Courier New', monospace; font-size: 18px;
+      font-weight: 800; color: var(--gold);
+    }
+
+    .cube-mould {
+      width: 50px; height: 50px;
+      border: 3px solid #475569; background: transparent;
+      position: relative;
+    }
+    .cube-mould .fill {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: #78716c; transition: height 0.5s;
+    }
+
+    .rod-anim {
+      animation: rod-tamp 0.3s ease-in-out 3;
+    }
+    @keyframes rod-tamp {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(15px); }
+    }
+
+    .toast {
+      position: fixed; top: 60px; right: 20px;
+      padding: 10px 16px; border-radius: 8px;
+      font-size: 12px; font-weight: 600;
+      transform: translateX(150%); transition: transform 0.3s;
+      z-index: 3000;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.success { background: var(--success); color: white; }
+    .toast.error { background: var(--danger); color: white; }
+    .toast.info { background: var(--accent); color: white; }
+
+    .ctm-game {
+      position: relative; width: 180px; height: 160px; margin: 0 auto;
+    }
+    .ctm-base { position: absolute; bottom: 0; left: 15px; right: 15px; height: 16px; background: #374151; border-radius: 3px; }
+    .ctm-platen-b { position: absolute; bottom: 16px; left: 25px; right: 25px; height: 6px; background: #6b7280; border-radius: 2px; }
+    .ctm-platen-t { position: absolute; top: 30px; left: 25px; right: 25px; height: 6px; background: #6b7280; border-radius: 2px; transition: top 0.3s; }
+    .ctm-col-l { position: absolute; top: 0; bottom: 0; left: 8px; width: 10px; background: #4b5563; }
+    .ctm-col-r { position: absolute; top: 0; bottom: 0; right: 8px; width: 10px; background: #4b5563; }
+    .ctm-cross { position: absolute; top: 22px; left: 4px; right: 4px; height: 14px; background: #374151; border-radius: 3px; transition: top 0.3s; }
+    .ctm-cube { position: absolute; bottom: 22px; left: 55px; width: 35px; height: 35px; background: #78716c; border: 1px solid #44403c; border-radius: 2px; transition: height 0.3s; }
+    .ctm-gauge {
+      position: absolute; top: 6px; right: 15px; width: 44px; height: 44px;
+      background: #111827; border: 2px solid #374151; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: var(--danger); font-family: monospace;
+    }
+  </style>
+</head>
 <body>
-<header><h1>📋 Construction Terms</h1></header>
-<main>
-<h2>Overview</h2>
-<p>This section is part of the Civil Engineering Resource Library.</p>
-<h2>Topics Covered</h2>
-<ul>
-<li>Introduction</li>
-<li>Theory</li>
-<li>Important formulas</li>
-<li>IS code references</li>
-<li>Practical applications</li>
-<li>Interview questions</li>
-<li>MCQs</li>
-</ul>
-<p><a href="../index.html">← Back to Resource Library</a></p>
-</main>
-<footer>© Civil Engineering Resource Library</footer>
-</body></html>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div class="game-logo">🏗️</div>
+    <div class="game-title">Concrete Lab Master</div>
+    <div class="game-subtitle">Follow IS 456:2000 procedures. Test. Verify. Build.<br>Become a certified concrete technician!</div>
+    <button class="start-btn" onclick="showLevelSelect()">▶ START GAME</button>
+    <div style="margin-top:24px;font-size:11px;color:var(--text-dim);">
+      Based on IS 456:2000 | IS 516:1959 | IS 1199:1959 | IS 383:2016
+    </div>
+  </div>
+
+  <!-- LEVEL SELECT -->
+  <div id="level-select" style="display:none;height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+    <h2 style="font-size:22px;margin-bottom:4px;">🎯 Select Level</h2>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Complete each test to unlock the next</p>
+    <div class="level-grid" style="max-width:400px;width:100%;">
+      <div class="level-card" onclick="startLevel(0)">
+        <div class="lvl-num">01</div>
+        <div class="lvl-name">🧪 Sample Prep</div>
+        <div class="lvl-desc">Weigh materials, check moisture</div>
+        <div class="lvl-stars" id="stars-0">⭐⭐⭐</div>
+      </div>
+      <div class="level-card" id="lvl-1" onclick="startLevel(1)">
+        <div class="lvl-num">02</div>
+        <div class="lvl-name">⚗️ Mix Design</div>
+        <div class="lvl-desc">Calculate mix proportions</div>
+        <div class="lvl-stars" id="stars-1">🔒</div>
+      </div>
+      <div class="level-card locked" id="lvl-2" onclick="startLevel(2)">
+        <div class="lvl-num">03</div>
+        <div class="lvl-name">📐 Slump Test</div>
+        <div class="lvl-desc">Measure workability per IS 1199</div>
+        <div class="lvl-stars" id="stars-2">🔒</div>
+      </div>
+      <div class="level-card locked" id="lvl-3" onclick="startLevel(3)">
+        <div class="lvl-num">04</div>
+        <div class="lvl-name">🧱 Cast Cubes</div>
+        <div class="lvl-desc">Mould, compact, finish per IS 516</div>
+        <div class="lvl-stars" id="stars-3">🔒</div>
+      </div>
+      <div class="level-card locked" id="lvl-4" onclick="startLevel(4)">
+        <div class="lvl-num">05</div>
+        <div class="lvl-name">🌡️ Curing</div>
+        <div class="lvl-desc">Demould and cure at 27±2°C</div>
+        <div class="lvl-stars" id="stars-4">🔒</div>
+      </div>
+      <div class="level-card locked" id="lvl-5" onclick="startLevel(5)">
+        <div class="lvl-num">06</div>
+        <div class="lvl-name">💪 Compression Test</div>
+        <div class="lvl-desc">CTM test & acceptance per IS 456</div>
+        <div class="lvl-stars" id="stars-5">🔒</div>
+      </div>
+    </div>
+    <button class="action-btn" style="margin-top:20px;" onclick="showStart()">← Back</button>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="game-screen">
+    <div class="hud">
+      <div class="hud-left">
+        <div class="level-badge" id="hud-level">LEVEL 1</div>
+        <div class="hud-stat"><span class="icon">⭐</span>Score: <span class="val" id="hud-score">0</span></div>
+        <div class="hud-stat"><span class="icon">⏱️</span><span class="timer-display" id="hud-timer">00:00</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:11px;color:var(--text-dim);">Progress</span>
+        <div class="progress-bar"><div class="progress-fill" id="hud-progress" style="width:0%"></div></div>
+        <button class="action-btn danger" style="padding:6px 12px;font-size:11px;" onclick="quitLevel()">✕ Quit</button>
+      </div>
+    </div>
+
+    <div class="game-area">
+      <div class="left-panel">
+        <div class="game-card" style="flex:1;">
+          <div class="game-card-title" id="scene-title">🔬 Lab Bench</div>
+          <div class="scene" id="scene">
+            <div class="scene-floor"></div>
+            <div class="workbench" id="workbench"></div>
+          </div>
+        </div>
+        <div class="game-card">
+          <div class="game-card-title">🎒 Inventory</div>
+          <div class="inventory" id="inventory"></div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="game-card" style="flex:1;">
+          <div class="game-card-title">📋 Procedure Steps</div>
+          <div class="steps-list" id="steps-list"></div>
+        </div>
+        <div class="game-card">
+          <div class="game-card-title">🎮 Actions</div>
+          <div class="action-bar" id="action-bar"></div>
+        </div>
+        <div class="game-card">
+          <div class="game-card-title">ℹ️ IS Reference</div>
+          <div id="is-ref" style="font-size:11px;color:var(--text-dim);line-height:1.6;">
+            Select a step to see the relevant IS 456 / IS 516 / IS 1199 clause.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEVEL COMPLETE MODAL -->
+  <div class="modal-overlay" id="modal-complete">
+    <div class="modal-box">
+      <div style="font-size:48px;margin-bottom:8px;">🎉</div>
+      <h2 id="modal-title">Level Complete!</h2>
+      <div class="stars" id="modal-stars">⭐⭐⭐</div>
+      <p id="modal-msg">You followed all IS 456 procedures correctly.</p>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:16px;">
+        <button class="action-btn primary" onclick="nextLevel()">Next Level →</button>
+        <button class="action-btn" onclick="showLevelSelect()">Level Select</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let gameState = {
+      score: 0,
+      level: 0,
+      stepIndex: 0,
+      timer: 0,
+      timerInterval: null,
+      unlocked: [true, false, false, false, false, false],
+      stars: [0, 0, 0, 0, 0, 0],
+      mistakes: 0,
+      inventory: [],
+      flags: {}
+    };
+
+    const LEVELS = [
+      {
+        name: "Sample Preparation",
+        icon: "🧪",
+        desc: "Prepare and verify all materials before mixing.",
+        steps: [
+          { text: "Check temperature of lab", desc: "Must be 27±2°C per IS 456", action: "check_temp", is: "IS 456 — Clause 5.6: Testing at 27±2°C" },
+          { text: "Weigh cement (50 kg bag)", desc: "Use electronic balance, 0.1g precision", action: "weigh_cement", is: "IS 516 — Sample prep" },
+          { text: "Weigh fine aggregate (sand)", desc: "Moisture content check first", action: "weigh_sand", is: "IS 2386 (Part 3) — Moisture content" },
+          { text: "Weigh coarse aggregate", desc: "20mm & 10mm as per grading", action: "weigh_agg", is: "IS 383 — Table 2: Coarse aggregate grading" },
+          { text: "Measure water", desc: "W/C ratio control critical", action: "measure_water", is: "IS 456 — Table 5: Max W/C ratio" },
+          { text: "Record all weights in logbook", desc: "Traceability per NABL", action: "record_log", is: "IS 456 — Quality assurance" }
+        ],
+        setup() {
+          setScene("🔬 Lab Bench — Material Station", `
+            <div style="position:absolute;top:10px;left:10px;font-size:28px;cursor:pointer;" onclick="gameAction('check_temp')" id="eq-thermometer" class="eq-on-bench" title="Digital Thermometer">🌡️</div>
+            <div style="position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;" onclick="gameAction('weigh_cement')" id="eq-balance" class="eq-on-bench" title="Electronic Balance">⚖️</div>
+            <div style="position:absolute;bottom:10px;left:20px;font-size:28px;cursor:pointer;" onclick="gameAction('weigh_sand')" id="eq-sand" class="eq-on-bench" title="Fine Aggregate">🏖️</div>
+            <div style="position:absolute;bottom:10px;right:20px;font-size:28px;cursor:pointer;" onclick="gameAction('weigh_agg')" id="eq-agg" class="eq-on-bench" title="Coarse Aggregate">🪨</div>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px;cursor:pointer;" onclick="gameAction('measure_water')" id="eq-water" class="eq-on-bench" title="Water Measuring Jar">💧</div>
+            <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:22px;cursor:pointer;" onclick="gameAction('record_log')" id="eq-logbook" class="eq-on-bench" title="Log Book">📓</div>
+          `);
+          setInventory([
+            { icon: "📋", name: "Log Sheet", count: 1 },
+            { icon: "🧪", name: "Sample ID", count: 1 }
+          ]);
+        }
+      },
+      {
+        name: "Mix Design",
+        icon: "⚗️",
+        desc: "Calculate correct proportions for M20 grade.",
+        steps: [
+          { text: "Select concrete grade M20", desc: "fck = 20 N/mm², Min grade for RCC", action: "select_m20", is: "IS 456 — Table 2 & Clause 6.1.2" },
+          { text: "Set target mean strength", desc: "fcm = fck + 1.65×σ = 20 + 6.6 = 26.6", action: "set_target", is: "IS 456 — Clause 9.2: Target strength" },
+          { text: "Set W/C ratio to 0.50", desc: "Max 0.50 for moderate exposure", action: "set_wc", is: "IS 456 — Table 5: Max W/C ratio" },
+          { text: "Set cement content 300 kg/m³", desc: "Min 250, using 300 for safety", action: "set_cement", is: "IS 456 — Table 5: Min cement content" },
+          { text: "Calculate water = 150 kg", desc: "Water = 300 × 0.50", action: "calc_water", is: "IS 10262 — Mix design calculation" },
+          { text: "Verify mix proportions", desc: "1 : 1.5 : 3 (nominal mix M20)", action: "verify_mix", is: "IS 456 — Table 9: Nominal mix proportions" }
+        ],
+        setup() {
+          setScene("⚗️ Mix Design Station", `
+            <div style="position:absolute;top:10px;left:10px;font-size:32px;">📊</div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+              <div style="background:#0f172a;padding:16px;border-radius:12px;border:2px solid var(--accent);min-width:220px;">
+                <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;text-align:center;">MIX DESIGN CALCULATOR</div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--panel-light);font-size:12px;">
+                  <span>Grade</span><span id="disp-grade" style="color:var(--gold);font-weight:700;">—</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--panel-light);font-size:12px;">
+                  <span>Target Strength</span><span id="disp-target" style="color:var(--accent-glow);font-weight:700;">—</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--panel-light);font-size:12px;">
+                  <span>W/C Ratio</span><span id="disp-wc" style="color:var(--accent-glow);font-weight:700;">—</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--panel-light);font-size:12px;">
+                  <span>Cement</span><span id="disp-cement" style="color:var(--accent-glow);font-weight:700;">—</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;">
+                  <span>Water</span><span id="disp-water" style="color:var(--accent-glow);font-weight:700;">—</span>
+                </div>
+              </div>
+            </div>
+          `);
+          setInventory([
+            { icon: "📐", name: "IS 456", count: 1 },
+            { icon: "📊", name: "Calc Sheet", count: 1 }
+          ]);
+          setActions([
+            { label: "Select M20", action: "select_m20", type: "primary" },
+            { label: "Set Target 26.6", action: "set_target", type: "primary" },
+            { label: "W/C = 0.50", action: "set_wc", type: "primary" },
+            { label: "Cement 300kg", action: "set_cement", type: "primary" },
+            { label: "Water 150kg", action: "calc_water", type: "primary" },
+            { label: "Verify Mix", action: "verify_mix", type: "success" }
+          ]);
+        }
+      },
+      {
+        name: "Slump Test",
+        icon: "📐",
+        desc: "Perform slump test per IS 1199 correctly.",
+        steps: [
+          { text: "Clean and oil the slump cone", desc: "Prevent concrete sticking", action: "clean_cone", is: "IS 1199 — Clause 5.1" },
+          { text: "Place cone on level base plate", desc: "Non-absorbent, horizontal surface", action: "place_cone", is: "IS 1199 — Clause 5.2" },
+          { text: "Fill 1st layer (1/3 height)", desc: "Approx 75mm depth", action: "fill_layer1", is: "IS 1199 — Clause 5.3" },
+          { text: "Tamp 1st layer 25 times", desc: "Uniform distribution over area", action: "tamp_layer1", is: "IS 1199 — Clause 5.3" },
+          { text: "Fill 2nd layer + tamp 25x", desc: "Rod penetrates into 1st layer", action: "fill_layer2", is: "IS 1199 — Clause 5.3" },
+          { text: "Fill 3rd layer + tamp 25x", desc: "Level top with trowel", action: "fill_layer3", is: "IS 1199 — Clause 5.3" },
+          { text: "Lift cone vertically in 5-10 sec", desc: "No twisting or sideways motion", action: "lift_cone", is: "IS 1199 — Clause 5.4" },
+          { text: "Measure slump with scale", desc: "Difference in height = slump", action: "measure_slump", is: "IS 1199 — Clause 5.4" }
+        ],
+        setup() {
+          setScene("📐 Slump Test Area", `
+            <div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;">
+              <div id="slump-cone" style="width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:100px solid #64748b;position:relative;transition:all 0.5s;">
+                <div style="position:absolute;top:100px;left:-40px;width:80px;height:3px;background:#475569;"></div>
+              </div>
+              <div id="slump-mass" style="width:0;height:0;transition:all 0.8s;"></div>
+            </div>
+            <div id="tamping-rod" style="position:absolute;top:20px;right:30px;font-size:32px;transition:all 0.3s;">🔨</div>
+            <div style="position:absolute;top:20px;left:20px;font-size:28px;cursor:pointer;" onclick="gameAction('clean_cone')" id="eq-oil" class="eq-on-bench" title="Oil Can">🛢️</div>
+            <div style="position:absolute;bottom:50px;right:20px;font-size:28px;cursor:pointer;" onclick="gameAction('measure_slump')" id="eq-scale" class="eq-on-bench" title="Measuring Scale">📏</div>
+          `);
+          setInventory([
+            { icon: "🪣", name: "Fresh Concrete", count: 1 },
+            { icon: "🔨", name: "Tamping Rod", count: 1 }
+          ]);
+        }
+      },
+      {
+        name: "Cast Cubes",
+        icon: "🧱",
+        desc: "Cast 150mm cubes per IS 516 procedure.",
+        steps: [
+          { text: "Clean and oil cube moulds", desc: "6 moulds for 7d & 28d tests", action: "oil_moulds", is: "IS 516 — Clause 3.2" },
+          { text: "Place moulds on vibrating table", desc: "Ensure firm seating", action: "place_moulds", is: "IS 516 — Clause 3.2" },
+          { text: "Fill concrete in 2 layers", desc: "Each layer approx 75mm", action: "fill_mould", is: "IS 516 — Clause 3.2" },
+          { text: "Vibrate each layer 2 minutes", desc: "Until air bubbles cease", action: "vibrate", is: "IS 516 — Clause 3.2" },
+          { text: "Strike off excess concrete", desc: "Level with trowel", action: "strike_off", is: "IS 516 — Clause 3.2" },
+          { text: "Label cubes with ID & date", desc: "Unique identification", action: "label_cubes", is: "IS 516 — Sample marking" },
+          { text: "Cover with wet gunny bags", desc: "Prevent moisture loss for 24h", action: "cover_cubes", is: "IS 516 — Clause 4.1" }
+        ],
+        setup() {
+          setScene("🧱 Casting Station", `
+            <div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:flex-end;">
+              <div class="cube-mould" id="mould-1"><div class="fill" id="fill-1"></div></div>
+              <div class="cube-mould" id="mould-2"><div class="fill" id="fill-2"></div></div>
+              <div class="cube-mould" id="mould-3"><div class="fill" id="fill-3"></div></div>
+            </div>
+            <div style="position:absolute;top:20px;left:20px;font-size:28px;cursor:pointer;" onclick="gameAction('oil_moulds')" id="eq-oil2" class="eq-on-bench" title="Oil Can">🛢️</div>
+            <div style="position:absolute;top:20px;right:20px;font-size:28px;cursor:pointer;" onclick="gameAction('vibrate')" id="eq-vibrator" class="eq-on-bench" title="Vibrating Table">📳</div>
+            <div style="position:absolute;bottom:100px;right:20px;font-size:28px;cursor:pointer;" onclick="gameAction('label_cubes')" id="eq-marker" class="eq-on-bench" title="Permanent Marker">🖊️</div>
+            <div style="position:absolute;bottom:100px;left:20px;font-size:28px;cursor:pointer;" onclick="gameAction('cover_cubes')" id="eq-gunny" class="eq-on-bench" title="Wet Gunny Bag">🧺</div>
+          `);
+          setInventory([
+            { icon: "🪣", name: "Concrete", count: 1 },
+            { icon: "🔨", name: "Trowel", count: 1 }
+          ]);
+        }
+      },
+      {
+        name: "Curing",
+        icon: "🌡️",
+        desc: "Demould and cure cubes properly.",
+        steps: [
+          { text: "Wait 24±0.5 hours", desc: "Minimum setting time", action: "wait_24h", is: "IS 516 — Clause 4.1" },
+          { text: "Remove cubes from moulds carefully", desc: "Avoid edge damage", action: "demould", is: "IS 516 — Clause 4.1" },
+          { text: "Place in curing tank", desc: "Water at 27±2°C", action: "place_tank", is: "IS 516 — Clause 4.1" },
+          { text: "Check water pH (7.0-7.5)", desc: "Prevent chemical attack", action: "check_ph", is: "IS 516 — Curing water quality" },
+          { text: "Wait 28 days for testing", desc: "Or 7 days for early check", action: "wait_28d", is: "IS 516 — Standard curing period" },
+          { text: "Remove cubes before testing", desc: "Wipe surface water", action: "remove_test", is: "IS 516 — Clause 5.2" }
+        ],
+        setup() {
+          setScene("🌡️ Curing Room", `
+            <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:200px;height:80px;background:#1e3a5f;border:3px solid var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+              <div style="font-size:11px;color:var(--accent-glow);font-weight:700;">CURING TANK</div>
+              <div style="font-size:10px;color:var(--text-dim);">27±2°C | pH 7.0-7.5</div>
+              <div id="tank-cubes" style="display:flex;gap:4px;margin-top:4px;"></div>
+            </div>
+            <div style="position:absolute;top:20px;left:20px;font-size:28px;cursor:pointer;" onclick="gameAction('check_ph')" id="eq-ph" class="eq-on-bench" title="pH Meter">🧪</div>
+            <div style="position:absolute;top:20px;right:20px;font-size:28px;cursor:pointer;" onclick="gameAction('wait_24h')" id="eq-clock" class="eq-on-bench" title="Timer">⏰</div>
+          `);
+          setInventory([
+            { icon: "🧱", name: "Cube Set", count: 6 }
+          ]);
+        }
+      },
+      {
+        name: "Compression Test",
+        icon: "💪",
+        desc: "Test cubes in CTM per IS 516.",
+        steps: [
+          { text: "Check CTM calibration sticker", desc: "Valid NABL calibration", action: "check_cal", is: "IS 516 — Equipment verification" },
+          { text: "Measure cube dimensions", desc: "150±0.2 mm on all sides", action: "measure_cube", is: "IS 516 — Clause 5.2" },
+          { text: "Place cube centered on platen", desc: "Cast face perpendicular to load", action: "place_ctm", is: "IS 516 — Clause 5.3" },
+          { text: "Apply load at 140 kg/cm²/min", desc: "Constant rate of loading", action: "apply_load", is: "IS 516 — Clause 5.3" },
+          { text: "Record maximum load at failure", desc: "Note crack pattern", action: "record_load", is: "IS 516 — Clause 5.4" },
+          { text: "Calculate compressive strength", desc: "Load / 22500 mm²", action: "calculate", is: "IS 516 — Clause 5.4" },
+          { text: "Check IS 456 acceptance", desc: "Mean ≥ fck+0.825σ, Individual ≥ fck-3", action: "check_accept", is: "IS 456 — Clause 15: Acceptance Criteria" }
+        ],
+        setup() {
+          setScene("💪 CTM Testing Room", `
+            <div class="ctm-game" style="margin-top:20px;">
+              <div class="ctm-col-l"></div>
+              <div class="ctm-col-r"></div>
+              <div class="ctm-cross" id="ctm-cross"></div>
+              <div class="ctm-platen-t" id="ctm-platen-t"></div>
+              <div class="ctm-platen-b"></div>
+              <div class="ctm-base"></div>
+              <div class="ctm-cube" id="ctm-cube"></div>
+              <div class="ctm-gauge" id="ctm-gauge">0</div>
+            </div>
+            <div style="position:absolute;top:20px;left:20px;font-size:28px;cursor:pointer;" onclick="gameAction('check_cal')" id="eq-sticker" class="eq-on-bench" title="Calibration Sticker">🏷️</div>
+            <div style="position:absolute;top:20px;right:20px;font-size:28px;cursor:pointer;" onclick="gameAction('measure_cube')" id="eq-vernier" class="eq-on-bench" title="Vernier Caliper">📏</div>
+          `);
+          setInventory([
+            { icon: "🧱", name: "28d Cube", count: 3 },
+            { icon: "📋", name: "Test Sheet", count: 1 }
+          ]);
+        }
+      }
+    ];
+
+    function showToast(msg, type='info') {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast ' + type;
+      requestAnimationFrame(() => t.classList.add('show'));
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    function showStart() {
+      document.getElementById('start-screen').style.display = 'flex';
+      document.getElementById('level-select').style.display = 'none';
+      document.getElementById('game-screen').classList.remove('active');
+    }
+
+    function showLevelSelect() {
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('level-select').style.display = 'flex';
+      document.getElementById('game-screen').classList.remove('active');
+      document.getElementById('modal-complete').classList.remove('active');
+      updateLevelLocks();
+    }
+
+    function updateLevelLocks() {
+      for (let i = 0; i < 6; i++) {
+        const card = document.getElementById('lvl-' + i);
+        const stars = document.getElementById('stars-' + i);
+        if (!card && i === 0) continue;
+        if (i === 0) {
+          stars.textContent = '⭐'.repeat(gameState.stars[0]) + '☆'.repeat(3 - gameState.stars[0]);
+          continue;
+        }
+        if (gameState.unlocked[i]) {
+          card.classList.remove('locked');
+          stars.textContent = '⭐'.repeat(gameState.stars[i]) + '☆'.repeat(3 - gameState.stars[i]);
+        }
+      }
+    }
+
+    function setScene(title, html) {
+      document.getElementById('scene-title').textContent = title;
+      document.getElementById('workbench').innerHTML = html;
+    }
+
+    function setInventory(items) {
+      const inv = document.getElementById('inventory');
+      inv.innerHTML = items.map((it, i) => `
+        <div class="inv-item" onclick="selectInv(${i})" id="inv-${i}">
+          <span>${it.icon}</span>
+          <span class="count">×${it.count}</span>
+        </div>
+      `).join('');
+    }
+
+    function selectInv(i) {
+      document.querySelectorAll('.inv-item').forEach(el => el.classList.remove('selected'));
+      document.getElementById('inv-' + i)?.classList.add('selected');
+    }
+
+    function setActions(actions) {
+      const bar = document.getElementById('action-bar');
+      bar.innerHTML = actions.map(a => `
+        <button class="action-btn ${a.type || ''}" onclick="gameAction('${a.action}')">${a.label}</button>
+      `).join('');
+    }
+
+    function renderSteps() {
+      const lvl = LEVELS[gameState.level];
+      const list = document.getElementById('steps-list');
+      list.innerHTML = lvl.steps.map((s, i) => {
+        let cls = 'step-item';
+        if (i < gameState.stepIndex) cls += ' done';
+        else if (i === gameState.stepIndex) cls += ' current';
+        return `
+          <div class="${cls}" id="step-${i}" onclick="showISRef(${i})">
+            <div class="step-check">${i < gameState.stepIndex ? '✓' : (i + 1)}</div>
+            <div class="step-text">
+              <div>${s.text}</div>
+              <div class="desc">${s.desc}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      const pct = (gameState.stepIndex / lvl.steps.length) * 100;
+      document.getElementById('hud-progress').style.width = pct + '%';
+    }
+
+    function showISRef(i) {
+      const lvl = LEVELS[gameState.level];
+      document.getElementById('is-ref').innerHTML = `<strong style="color:var(--accent-glow);">${lvl.steps[i].is}</strong>`;
+    }
+
+    function startLevel(lvl) {
+      if (!gameState.unlocked[lvl]) {
+        showToast('Level locked! Complete previous level first.', 'error');
+        return;
+      }
+      gameState.level = lvl;
+      gameState.stepIndex = 0;
+      gameState.mistakes = 0;
+      gameState.timer = 0;
+      gameState.flags = {};
+
+      document.getElementById('level-select').style.display = 'none';
+      document.getElementById('game-screen').classList.add('active');
+      document.getElementById('hud-level').textContent = 'LEVEL ' + (lvl + 1);
+      document.getElementById('hud-score').textContent = gameState.score;
+
+      LEVELS[lvl].setup();
+      renderSteps();
+      highlightNextAction();
+
+      if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+      gameState.timerInterval = setInterval(() => {
+        gameState.timer++;
+        const m = Math.floor(gameState.timer / 60).toString().padStart(2, '0');
+        const s = (gameState.timer % 60).toString().padStart(2, '0');
+        document.getElementById('hud-timer').textContent = m + ':' + s;
+      }, 1000);
+
+      showToast('Level ' + (lvl + 1) + ' started: ' + LEVELS[lvl].name, 'info');
+    }
+
+    function highlightNextAction() {
+      const lvl = LEVELS[gameState.level];
+      const step = lvl.steps[gameState.stepIndex];
+      if (!step) return;
+      document.querySelectorAll('.eq-on-bench').forEach(el => el.classList.remove('highlight'));
+      const eq = document.querySelector(`[onclick*="'${step.action}'"]`);
+      if (eq) eq.classList.add('highlight');
+    }
+
+    function gameAction(action) {
+      const lvl = LEVELS[gameState.level];
+      const expected = lvl.steps[gameState.stepIndex];
+
+      if (!expected) return;
+
+      if (action !== expected.action) {
+        gameState.mistakes++;
+        showToast('Wrong step! Expected: ' + expected.text, 'error');
+        const stepEl = document.getElementById('step-' + gameState.stepIndex);
+        if (stepEl) {
+          stepEl.classList.add('wrong');
+          setTimeout(() => stepEl.classList.remove('wrong'), 500);
+        }
+        return;
+      }
+
+      executeStepEffect(action);
+      gameState.score += 100;
+      document.getElementById('hud-score').textContent = gameState.score;
+      showToast('✓ ' + expected.text, 'success');
+
+      gameState.stepIndex++;
+      renderSteps();
+      highlightNextAction();
+
+      if (gameState.stepIndex >= lvl.steps.length) {
+        completeLevel();
+      }
+    }
+
+    function executeStepEffect(action) {
+      if (action === 'check_temp') showToast('Lab temperature: 27°C ✅', 'success');
+      if (action === 'weigh_cement') showToast('Cement weighed: 300.0 kg ✅', 'success');
+      if (action === 'weigh_sand') showToast('Sand weighed: 450.0 kg ✅', 'success');
+      if (action === 'weigh_agg') showToast('Aggregate weighed: 900.0 kg ✅', 'success');
+      if (action === 'measure_water') showToast('Water measured: 150.0 L ✅', 'success');
+      if (action === 'record_log') showToast('Logbook updated ✅', 'success');
+
+      if (action === 'select_m20') { document.getElementById('disp-grade').textContent = 'M20'; showToast('Grade M20 selected', 'success'); }
+      if (action === 'set_target') { document.getElementById('disp-target').textContent = '26.6 N/mm²'; showToast('Target strength set', 'success'); }
+      if (action === 'set_wc') { document.getElementById('disp-wc').textContent = '0.50'; showToast('W/C ratio set to 0.50', 'success'); }
+      if (action === 'set_cement') { document.getElementById('disp-cement').textContent = '300 kg/m³'; showToast('Cement content set', 'success'); }
+      if (action === 'calc_water') { document.getElementById('disp-water').textContent = '150 kg/m³'; showToast('Water calculated: 150 kg', 'success'); }
+      if (action === 'verify_mix') showToast('Mix verified: 1:1.5:3 ✅', 'success');
+
+      if (action === 'clean_cone') showToast('Cone cleaned and oiled ✅', 'success');
+      if (action === 'place_cone') showToast('Cone placed on level base ✅', 'success');
+      if (action === 'fill_layer1') {
+        const mass = document.getElementById('slump-mass');
+        mass.style.width = '50px'; mass.style.height = '30px';
+        mass.style.background = '#78716c'; mass.style.borderRadius = '25px 25px 0 0';
+      }
+      if (action === 'tamp_layer1') {
+        const rod = document.getElementById('tamping-rod');
+        rod.style.top = '60px'; rod.style.right = '55%';
+        rod.classList.add('rod-anim');
+        setTimeout(() => { rod.classList.remove('rod-anim'); rod.style.top = '20px'; rod.style.right = '30px'; }, 1000);
+      }
+      if (action === 'fill_layer2') {
+        const mass = document.getElementById('slump-mass');
+        mass.style.height = '60px';
+      }
+      if (action === 'fill_layer3') {
+        const mass = document.getElementById('slump-mass');
+        mass.style.height = '90px'; mass.style.borderRadius = '4px 4px 25px 25px';
+      }
+      if (action === 'lift_cone') {
+        const cone = document.getElementById('slump-cone');
+        cone.style.transform = 'translateY(-120px)'; cone.style.opacity = '0';
+        const mass = document.getElementById('slump-mass');
+        setTimeout(() => {
+          mass.style.height = '65px';
+          mass.style.borderRadius = '4px 4px 30px 30px';
+        }, 300);
+      }
+      if (action === 'measure_slump') showToast('Slump measured: 75 mm (Medium workability) ✅', 'success');
+
+      if (action === 'oil_moulds') showToast('6 moulds oiled ✅', 'success');
+      if (action === 'place_moulds') showToast('Moulds placed on vibrator ✅', 'success');
+      if (action === 'fill_mould') {
+        for (let i = 1; i <= 3; i++) document.getElementById('fill-' + i).style.height = '50%';
+      }
+      if (action === 'vibrate') {
+        const wb = document.getElementById('workbench');
+        wb.style.animation = 'shake 0.1s infinite';
+        setTimeout(() => { wb.style.animation = ''; }, 1500);
+        showToast('Vibrating... air bubbles escaping!', 'info');
+      }
+      if (action === 'strike_off') {
+        for (let i = 1; i <= 3; i++) document.getElementById('fill-' + i).style.height = '100%';
+        showToast('Top surface leveled ✅', 'success');
+      }
+      if (action === 'label_cubes') showToast('Cubes labeled: M20-28D-A1 ✅', 'success');
+      if (action === 'cover_cubes') showToast('Cubes covered with wet gunny bags ✅', 'success');
+
+      if (action === 'wait_24h') showToast('⏱️ 24 hours passed...', 'info');
+      if (action === 'demould') showToast('Cubes demoulded carefully ✅', 'success');
+      if (action === 'place_tank') {
+        const tank = document.getElementById('tank-cubes');
+        tank.innerHTML = '<span style="font-size:14px;">🧱🧱🧱</span>';
+        showToast('Cubes placed in curing tank ✅', 'success');
+      }
+      if (action === 'check_ph') showToast('pH reading: 7.2 ✅', 'success');
+      if (action === 'wait_28d') showToast('⏱️ 28 days passed... cubes ready!', 'info');
+      if (action === 'remove_test') showToast('Cubes removed, surface wiped ✅', 'success');
+
+      if (action === 'check_cal') showToast('CTM calibrated: Valid until Dec 2026 ✅', 'success');
+      if (action === 'measure_cube') showToast('Cube dimensions: 150.0 × 150.0 × 150.0 mm ✅', 'success');
+      if (action === 'place_ctm') showToast('Cube centered on platen ✅', 'success');
+      if (action === 'apply_load') animateCTM();
+      if (action === 'record_load') showToast('Max load recorded: 562 kN ✅', 'success');
+      if (action === 'calculate') showToast('Strength = 562000 / 22500 = 24.98 N/mm² ✅', 'success');
+      if (action === 'check_accept') showToast('Mean ≥ 26.6? Check. Individual ≥ 17? PASS ✅', 'success');
+    }
+
+    function animateCTM() {
+      const cross = document.getElementById('ctm-cross');
+      const platen = document.getElementById('ctm-platen-t');
+      const cube = document.getElementById('ctm-cube');
+      const gauge = document.getElementById('ctm-gauge');
+      let load = 0;
+      const target = 562;
+      const intv = setInterval(() => {
+        load += 15;
+        gauge.textContent = Math.round(load);
+        const pct = load / target;
+        cross.style.top = (22 + pct * 45) + 'px';
+        platen.style.top = (30 + pct * 45) + 'px';
+        cube.style.height = Math.max(8, 35 - pct * 25) + 'px';
+        if (load >= target) {
+          clearInterval(intv);
+          gauge.textContent = '562';
+          cube.style.height = '10px';
+          cube.style.background = '#57534e';
+          showToast('Cube failed at 562 kN!', 'success');
+        }
+      }, 40);
+    }
+
+    function completeLevel() {
+      clearInterval(gameState.timerInterval);
+      const lvl = gameState.level;
+      let stars = 3;
+      if (gameState.mistakes > 0) stars = 2;
+      if (gameState.mistakes > 2) stars = 1;
+      if (gameState.timer > 300) stars = Math.max(1, stars - 1);
+      gameState.stars[lvl] = Math.max(gameState.stars[lvl], stars);
+      if (lvl + 1 < 6) gameState.unlocked[lvl + 1] = true;
+      gameState.score += stars * 50;
+
+      document.getElementById('modal-title').textContent = LEVELS[lvl].name + ' Complete!';
+      document.getElementById('modal-stars').textContent = '⭐'.repeat(stars);
+      document.getElementById('modal-msg').innerHTML =
+        `Score: <strong>${gameState.score}</strong> | Mistakes: ${gameState.mistakes} | Time: ${document.getElementById('hud-timer').textContent}`;
+      document.getElementById('modal-complete').classList.add('active');
+    }
+
+    function nextLevel() {
+      document.getElementById('modal-complete').classList.remove('active');
+      if (gameState.level + 1 < 6) {
+        startLevel(gameState.level + 1);
+      } else {
+        showToast('🎉 All levels complete! You are a Concrete Master!', 'success');
+        showLevelSelect();
+      }
+    }
+
+    function quitLevel() {
+      clearInterval(gameState.timerInterval);
+      showLevelSelect();
+    }
+  </script>
+</body>
+</html>
