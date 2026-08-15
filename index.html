@@ -2,1093 +2,1472 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contractor Enquiry Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#17639a">
+
+<title>CivilLine - Civil Engineering Q&A</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f6f8;
-    color:#222;
+*{
+  box-sizing:border-box;
 }
 
-header{
-    background:#123047;
-    color:white;
-    padding:15px 5%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    position:sticky;
-    top:0;
-    z-index:100;
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f7fa;
+  color:#17212b;
+}
+
+/* HEADER */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.nav{
+  max-width:1150px;
+  margin:auto;
+  min-height:64px;
+  padding:8px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 .logo{
-    font-size:22px;
-    font-weight:bold;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:25px;
+  font-weight:800;
+  color:#153b56;
 }
 
-.logo span{
-    color:#ffb000;
+.logo-box{
+  width:42px;
+  height:42px;
+  background:#17639a;
+  color:#fff;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:14px;
+  font-weight:bold;
 }
 
-header button,
-.submit{
-    background:#ffb000;
-    color:#111;
-    border:0;
-    padding:11px 17px;
-    border-radius:7px;
-    font-weight:bold;
-    cursor:pointer;
+.logo-text span{
+  color:#f0a500;
 }
+
+.nav-links{
+  display:flex;
+  gap:20px;
+  font-size:14px;
+  color:#52606d;
+}
+
+.nav-links a:hover{
+  color:#17639a;
+}
+
+/* HERO */
 
 .hero{
-    background:linear-gradient(135deg,#123047,#17639a);
-    color:white;
-    padding:55px 5%;
+  background:linear-gradient(135deg,#153b56,#17639a);
+  color:white;
 }
 
-.container{
-    width:90%;
-    max-width:1100px;
-    margin:auto;
+.hero-inner{
+  max-width:1150px;
+  margin:auto;
+  padding:40px 16px;
 }
 
 .hero h1{
-    font-size:40px;
-    margin:0 0 12px;
+  font-size:clamp(30px,6vw,48px);
+  margin:0 0 10px;
 }
 
 .hero p{
-    max-width:700px;
-    line-height:1.6;
+  max-width:700px;
+  line-height:1.6;
+  color:#e5f0f7;
 }
 
-.search{
-    background:white;
-    max-width:900px;
-    margin-top:25px;
-    padding:10px;
-    border-radius:10px;
-    display:flex;
-    gap:10px;
+.stats{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:22px;
 }
 
-.search input{
-    flex:1;
-    padding:13px;
-    border:1px solid #ddd;
-    border-radius:7px;
+.stat{
+  min-width:130px;
+  padding:12px 16px;
+  border-radius:12px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
 }
 
-.search button{
-    background:#ffb000;
-    border:0;
-    padding:0 20px;
-    border-radius:7px;
-    font-weight:bold;
+.stat b{
+  display:block;
+  font-size:25px;
 }
 
-.section{
-    padding:35px 0;
+/* MAIN */
+
+.container{
+  max-width:1150px;
+  margin:auto;
+  padding:22px 16px;
 }
 
-.section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
+.layout{
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:20px;
 }
 
-.jobs{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:20px;
+/* PANEL */
+
+.panel{
+  background:white;
+  border:1px solid #e3e8ed;
+  border-radius:15px;
+  padding:18px;
+  height:max-content;
+  position:sticky;
+  top:80px;
 }
 
-.job{
-    background:white;
-    border-radius:12px;
-    padding:20px;
-    border:1px solid #e2e2e2;
-    box-shadow:0 3px 10px rgba(0,0,0,.05);
-}
-
-.job h3{
-    color:#123047;
-}
-
-.tag{
-    display:inline-block;
-    background:#edf5fb;
-    color:#17639a;
-    padding:6px 9px;
-    border-radius:20px;
-    font-size:12px;
-    margin:3px;
-}
-
-.budget{
-    color:#198754;
-    font-size:18px;
-    font-weight:bold;
-    margin:12px 0;
-}
-
-.description{
-    color:#555;
-    line-height:1.5;
-}
-
-.job-footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:20px;
-}
-
-.interest{
-    background:#17639a;
-    color:white;
-    border:0;
-    padding:10px 14px;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-.loading,
-.empty{
-    background:white;
-    padding:40px;
-    text-align:center;
-    border-radius:10px;
-    grid-column:1/-1;
-}
-
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.65);
-    z-index:999;
-    padding:20px;
-    overflow:auto;
-}
-
-.modal-box{
-    background:white;
-    max-width:650px;
-    margin:40px auto;
-    padding:25px;
-    border-radius:12px;
-}
-
-.modal-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.close{
-    font-size:28px;
-    cursor:pointer;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.full{
-    grid-column:1/-1;
-}
-
-label{
-    display:block;
-    font-weight:bold;
-    margin-bottom:6px;
+.panel h2{
+  margin-top:0;
 }
 
 input,
-select,
-textarea{
-    width:100%;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:7px;
-    font-size:14px;
+textarea,
+select{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid #d5dbe1;
+  border-radius:9px;
+  font:inherit;
+  margin:5px 0 12px;
+  background:white;
 }
 
 textarea{
-    min-height:120px;
+  resize:vertical;
 }
+
+.primary{
+  width:100%;
+  border:0;
+  background:#17639a;
+  color:white;
+  font-weight:bold;
+  padding:12px;
+  border-radius:9px;
+  cursor:pointer;
+}
+
+.primary:hover{
+  background:#12547f;
+}
+
+.small-text{
+  font-size:12px;
+  color:#687684;
+  line-height:1.5;
+}
+
+/* SEARCH */
+
+.search-area{
+  background:white;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #e3e8ed;
+  margin-bottom:15px;
+}
+
+.search-row{
+  display:grid;
+  grid-template-columns:1fr 180px auto auto;
+  gap:8px;
+}
+
+.search-row input,
+.search-row select{
+  margin:0;
+}
+
+.search-btn{
+  border:0;
+  background:#17639a;
+  color:#fff;
+  border-radius:9px;
+  padding:0 17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.clear-btn{
+  border:1px solid #d5dbe1;
+  background:white;
+  border-radius:9px;
+  padding:0 14px;
+  cursor:pointer;
+}
+
+/* QUESTION CARD */
+
+.card{
+  background:white;
+  border:1px solid #e3e8ed;
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:15px;
+}
+
+.meta{
+  font-size:12px;
+  color:#71808d;
+}
+
+.question{
+  font-size:20px;
+  font-weight:600;
+  line-height:1.45;
+  margin:10px 0;
+}
+
+.category{
+  display:inline-block;
+  background:#eaf4fb;
+  color:#17639a;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.question-image{
+  max-width:100%;
+  max-height:430px;
+  display:block;
+  margin:15px 0;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+}
+
+/* BUTTONS */
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.action-btn{
+  border:1px solid #d8dee4;
+  background:white;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.action-btn:hover{
+  background:#f1f6fa;
+}
+
+/* ANSWERS */
+
+.answers{
+  border-top:1px solid #edf0f2;
+  margin-top:15px;
+  padding-top:12px;
+}
+
+.answer{
+  background:#f7f9fb;
+  border-radius:10px;
+  padding:13px;
+  margin:9px 0;
+}
+
+.answer-name{
+  font-weight:bold;
+  color:#173b55;
+}
+
+.answer-text{
+  line-height:1.55;
+  margin:7px 0;
+  white-space:pre-wrap;
+}
+
+.answer-image{
+  max-width:100%;
+  max-height:400px;
+  display:block;
+  margin:10px 0;
+  border-radius:9px;
+}
+
+.empty{
+  background:white;
+  border:1px solid #e3e8ed;
+  border-radius:14px;
+  padding:35px;
+  text-align:center;
+  color:#687684;
+}
+
+/* FOOTER */
 
 footer{
-    background:#123047;
-    color:white;
-    text-align:center;
-    padding:30px;
+  background:#102d42;
+  color:#dbe7ef;
+  margin-top:20px;
 }
 
-@media(max-width:700px){
+.footer-inner{
+  max-width:1150px;
+  margin:auto;
+  padding:35px 16px;
+  text-align:center;
+  line-height:1.6;
+  font-size:13px;
+}
 
-    .hero h1{
-        font-size:30px;
-    }
+/* MOBILE */
 
-    .search{
-        flex-direction:column;
-    }
+@media(max-width:850px){
 
-    .search button{
-        padding:12px;
-    }
+  .layout{
+    grid-template-columns:1fr;
+  }
 
-    .jobs{
-        grid-template-columns:1fr;
-    }
+  .panel{
+    position:static;
+  }
 
-    .form-grid{
-        grid-template-columns:1fr;
-    }
+  .nav-links{
+    display:none;
+  }
 
-    .full{
-        grid-column:auto;
-    }
+}
 
-    .section-title{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:10px;
-    }
+@media(max-width:650px){
+
+  .container{
+    padding:14px 10px;
+  }
+
+  .hero-inner{
+    padding:28px 14px;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+
+  .stats{
+    gap:7px;
+  }
+
+  .stat{
+    flex:1;
+    min-width:0;
+    padding:10px;
+  }
+
+  .stat b{
+    font-size:21px;
+  }
+
+  .card{
+    padding:14px;
+  }
+
+  .question{
+    font-size:18px;
+  }
+
+  .search-row{
+    grid-template-columns:1fr;
+  }
+
+  .search-btn,
+  .clear-btn{
+    min-height:42px;
+  }
+
+  .logo{
+    font-size:21px;
+  }
+
+  .logo-box{
+    width:37px;
+    height:37px;
+  }
+
+}
+
+@media(max-width:400px){
+
+  .hero h1{
+    font-size:28px;
+  }
+
+  .question{
+    font-size:17px;
+  }
+
+  .actions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .action-btn{
+    width:100%;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<!-- HEADER -->
 
-<div class="logo">
-Civil<span>line</span>
+<header class="header">
+
+<div class="nav">
+
+<a href="#" class="logo">
+
+<div class="logo-box">
+CL
 </div>
 
-<button onclick="openPost()">
-+ Post Enquiry
-</button>
+<div class="logo-text">
+Civil<span>Line</span>
+</div>
+
+</a>
+
+<nav class="nav-links">
+
+<a href="#questions">Questions</a>
+<a href="#about">About</a>
+<a href="#privacy">Privacy</a>
+<a href="#terms">Terms</a>
+
+</nav>
+
+</div>
 
 </header>
 
 
+<!-- HERO -->
+
 <section class="hero">
 
-<div class="container">
+<div class="hero-inner">
 
-<h1>
-Contractor Enquiry Portal
-</h1>
+<h1>Civil Engineering Community</h1>
 
 <p>
-Find construction enquiries, connect with customers,
-and get new civil engineering and contracting work.
+Ask Civil Engineering questions, share practical construction knowledge,
+upload site images and help other engineers and contractors.
 </p>
 
-<div class="search">
+<div class="stats">
+
+<div class="stat">
+<b id="totalQuestions">0</b>
+Questions
+</div>
+
+<div class="stat">
+<b id="totalAnswers">0</b>
+Answers
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+<div class="layout">
+
+
+<!-- ASK QUESTION -->
+
+<aside class="panel">
+
+<h2>Ask a Question</h2>
+
+<p class="small-text">
+Only your name is required.
+Email and phone number are not required.
+</p>
 
 <input
-id="search"
+id="userName"
 type="text"
-placeholder="Search RCC, road, wall, shuttering..."
-oninput="searchJobs()">
+placeholder="Your name *"
+>
 
-<button onclick="searchJobs()">
+<textarea
+id="questionText"
+rows="5"
+placeholder="Write your Civil Engineering question *"
+></textarea>
+
+
+<select id="questionCategory">
+
+<option>General Civil Engineering</option>
+<option>RCC</option>
+<option>Estimation</option>
+<option>Billing</option>
+<option>Quantity Surveying</option>
+<option>Site Engineering</option>
+<option>Construction Materials</option>
+<option>Road Work</option>
+<option>Plum Concrete</option>
+<option>Shuttering</option>
+<option>Bar Bending</option>
+<option>IS Codes</option>
+<option>SSR / Government Rates</option>
+
+</select>
+
+
+<label class="small-text">
+<b>Question Image</b>
+</label>
+
+<input
+id="questionImage"
+type="file"
+accept="image/*"
+>
+
+
+<button
+class="primary"
+onclick="postQuestion()"
+>
+Post Question
+</button>
+
+<p class="small-text">
+Image maximum size: 5 MB
+</p>
+
+</aside>
+
+
+<!-- QUESTIONS -->
+
+<section id="questions">
+
+<h2>Latest Questions</h2>
+
+
+<!-- SEARCH -->
+
+<div class="search-area">
+
+<div class="search-row">
+
+<input
+id="searchInput"
+type="search"
+placeholder="🔍 Search RCC, slab, beam, billing..."
+>
+
+<select id="filterCategory">
+
+<option value="">All Categories</option>
+<option>General Civil Engineering</option>
+<option>RCC</option>
+<option>Estimation</option>
+<option>Billing</option>
+<option>Quantity Surveying</option>
+<option>Site Engineering</option>
+<option>Construction Materials</option>
+<option>Road Work</option>
+<option>Plum Concrete</option>
+<option>Shuttering</option>
+<option>Bar Bending</option>
+<option>IS Codes</option>
+<option>SSR / Government Rates</option>
+
+</select>
+
+<button
+class="search-btn"
+onclick="loadQuestions()"
+>
 Search
 </button>
 
-</div>
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<div class="container">
-
-<div class="section-title">
-
-<h2>
-Latest Construction Enquiries
-</h2>
-
 <button
-class="submit"
-onclick="openPost()">
-
-Post Requirement
-
+class="clear-btn"
+onclick="clearSearch()"
+>
+Clear
 </button>
 
 </div>
 
-<div id="jobs" class="jobs">
-
-<div class="loading">
-Loading enquiries...
 </div>
 
+
+<div id="questionList">
+
+<div class="empty">
+Loading questions...
 </div>
 
 </div>
 
 </section>
 
-
-<!-- POST ENQUIRY -->
-
-<div id="postModal" class="modal">
-
-<div class="modal-box">
-
-<div class="modal-header">
-
-<h2>
-Post Construction Enquiry
-</h2>
-
-<span class="close" onclick="closePost()">
-×
-</span>
-
 </div>
 
-<br>
-
-<form id="postForm">
-
-<div class="form-grid">
-
-<div>
-<label>Name *</label>
-<input name="name" required>
-</div>
-
-<div>
-<label>Phone *</label>
-<input name="phone" type="tel" required>
-</div>
-
-<div>
-<label>Work Type *</label>
-
-<select name="workType" required>
-
-<option value="">Select Work</option>
-<option>Building Construction</option>
-<option>RCC Work</option>
-<option>Plum Concrete</option>
-<option>Retaining Wall</option>
-<option>Road Work</option>
-<option>Shuttering</option>
-<option>Bar Bending</option>
-<option>Tremix Flooring</option>
-<option>Excavation</option>
-<option>Waterproofing</option>
-<option>Painting</option>
-<option>Electrical</option>
-<option>Plumbing</option>
-<option>Other</option>
-
-</select>
-</div>
-
-<div>
-<label>Location *</label>
-<input name="location" required>
-</div>
-
-<div>
-<label>Budget</label>
-<input name="budget" placeholder="₹2,00,000">
-</div>
-
-<div>
-<label>Required Date</label>
-<input name="requiredDate" type="date">
-</div>
-
-<div class="full">
-<label>Description *</label>
-
-<textarea
-name="description"
-placeholder="Describe your construction requirement..."
-required></textarea>
-</div>
-
-<div class="full">
-<label>Project Image URL</label>
-
-<input
-name="imageUrl"
-type="url"
-placeholder="https://example.com/image.jpg">
-</div>
-
-</div>
-
-<br>
-
-<button class="submit" type="submit">
-Submit Enquiry
-</button>
-
-</form>
-
-</div>
-
-</div>
+</main>
 
 
-<!-- INTEREST -->
-
-<div id="interestModal" class="modal">
-
-<div class="modal-box">
-
-<div class="modal-header">
-
-<h2>
-I'm Interested
-</h2>
-
-<span class="close" onclick="closeInterest()">
-×
-</span>
-
-</div>
-
-<br>
-
-<form id="interestForm">
-
-<input
-type="hidden"
-id="enquiryId"
-name="enquiryId">
-
-<label>
-Contractor Name *
-</label>
-
-<input name="contractor" required>
-
-<br><br>
-
-<label>
-Phone / WhatsApp *
-</label>
-
-<input name="phone" type="tel" required>
-
-<br><br>
-
-<label>
-Message *
-</label>
-
-<textarea
-name="message"
-placeholder="Tell the customer about your experience and quotation..."
-required></textarea>
-
-<br><br>
-
-<button class="submit" type="submit">
-Send Response
-</button>
-
-</form>
-
-</div>
-
-</div>
-
+<!-- FOOTER -->
 
 <footer>
 
-<strong>
-Civilline
-</strong>
+<div class="footer-inner">
+
+<div id="about">
+
+<h3>About CivilLine</h3>
 
 <p>
-Construction Enquiry Platform
+CivilLine is a community platform for Civil Engineers,
+Contractors, Site Engineers, Consultants, Students and
+construction professionals.
 </p>
+
+</div>
+
+
+<div id="privacy">
+
+<h3>Privacy Policy</h3>
+
+<p>
+Questions and answers are stored in Google Sheets.
+Uploaded images are stored in Google Drive.
+Please do not upload confidential project documents
+or sensitive personal information.
+</p>
+
+</div>
+
+
+<div id="terms">
+
+<h3>Terms & Conditions</h3>
+
+<p>
+Users should post genuine questions and useful answers.
+Spam, abusive content, misleading information and
+unauthorized copyrighted material may be removed.
+</p>
+
+</div>
+
+
+<p>
+© 2026 CivilLine · About Us · Privacy Policy ·
+Terms & Conditions · Contact Us
+</p>
+
+</div>
 
 </footer>
 
 
 <script>
 
-/* =====================================================
-   NEW APPS SCRIPT URL
-   ===================================================== */
+/* =================================
+   YOUR NEW GOOGLE APPS SCRIPT URL
+================================= */
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbwvGbYKGWxHY7LflutBB_oZer5uNeOnWe7ninp6eJFI-VxCi5pkYb1qnpwuWd1qEL4Qeg/exec";
+"https://script.google.com/macros/s/AKfycbxBImQgae3knrXUKWyu76XfPkZViHPABqPKVJy9rCqZEb3E698JVI1wMcdnXenIYfRiVg/exec";
 
 
-let allJobs = [];
-
-
-/* =====================================================
-   LOAD ENQUIRIES
-   ===================================================== */
-
-async function loadJobs(){
-
-    const box =
-    document.getElementById("jobs");
-
-    box.innerHTML =
-    `<div class="loading">
-    Loading enquiries...
-    </div>`;
-
-    try{
-
-        const response =
-        await fetch(
-            API_URL + "?action=getEnquiries"
-        );
-
-        if(!response.ok){
-
-            throw new Error(
-                "HTTP error " +
-                response.status
-            );
-
-        }
-
-        const data =
-        await response.json();
-
-        console.log(
-            "Apps Script response:",
-            data
-        );
-
-        if(data.success === true){
-
-            allJobs =
-            data.enquiries || [];
-
-            displayJobs(allJobs);
-
-        }else{
-
-            throw new Error(
-                data.error ||
-                "API returned an error"
-            );
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "API ERROR:",
-            error
-        );
-
-        box.innerHTML = `
-
-        <div class="empty">
-
-        <h3>
-        Could not load enquiries
-        </h3>
-
-        <p>
-        ${escapeHTML(error.message)}
-        </p>
-
-        <br>
-
-        <button
-        class="submit"
-        onclick="loadJobs()">
-
-        Try Again
-
-        </button>
-
-        </div>
-
-        `;
-
-    }
-
-}
-
-
-/* =====================================================
-   DISPLAY
-   ===================================================== */
-
-function displayJobs(jobs){
-
-    const box =
-    document.getElementById("jobs");
-
-    if(!jobs.length){
-
-        box.innerHTML = `
-
-        <div class="empty">
-
-        <h3>
-        No enquiries available
-        </h3>
-
-        <p>
-        Post the first construction requirement.
-        </p>
-
-        </div>
-
-        `;
-
-        return;
-    }
-
-    box.innerHTML =
-    jobs.map(function(job){
-
-        let image = "";
-
-        if(job.imageUrl){
-
-            image = `
-
-            <img
-            src="${escapeHTML(job.imageUrl)}"
-            style="
-            width:100%;
-            height:180px;
-            object-fit:cover;
-            border-radius:8px;
-            margin:12px 0;
-            "
-            onerror="this.style.display='none'">
-
-            `;
-
-        }
-
-        return `
-
-        <div class="job">
-
-        <small>
-        ${escapeHTML(job.name)}
-        </small>
-
-        <h3>
-        ${escapeHTML(job.workType)}
-        </h3>
-
-        <span class="tag">
-        📍 ${escapeHTML(job.location)}
-        </span>
-
-        ${
-            job.requiredDate
-            ?
-            `<span class="tag">
-            📅 ${escapeHTML(job.requiredDate)}
-            </span>`
-            :
-            ""
-        }
-
-        <div class="budget">
-
-        ${
-            escapeHTML(job.budget) ||
-            "Budget negotiable"
-        }
-
-        </div>
-
-        <div class="description">
-
-        ${escapeHTML(job.description)}
-
-        </div>
-
-        ${image}
-
-        <div class="job-footer">
-
-        <small>
-        ${escapeHTML(job.date)}
-        </small>
-
-        <button
-        class="interest"
-        onclick="openInterest('${escapeHTML(job.id)}')">
-
-        I'm Interested
-
-        </button>
-
-        </div>
-
-        </div>
-
-        `;
-
-    }).join("");
-
-}
-
-
-/* =====================================================
-   SEARCH
-   ===================================================== */
-
-function searchJobs(){
-
-    const keyword =
-    document
-    .getElementById("search")
-    .value
-    .toLowerCase()
-    .trim();
-
-    if(!keyword){
-
-        displayJobs(allJobs);
-        return;
-
-    }
-
-    const results =
-    allJobs.filter(function(job){
-
-        const text = `
-
-        ${job.name || ""}
-        ${job.workType || ""}
-        ${job.location || ""}
-        ${job.description || ""}
-        ${job.budget || ""}
-
-        `.toLowerCase();
-
-        return text.includes(keyword);
-
-    });
-
-    displayJobs(results);
-
-}
-
-
-/* =====================================================
-   SEND TO APPS SCRIPT
-   ===================================================== */
-
-async function sendData(
-    action,
-    formData
-){
-
-    const data = {
-        action:action
-    };
-
-    for(
-        const [key,value]
-        of formData.entries()
-    ){
-
-        data[key] = value;
-
-    }
-
-    const response =
-    await fetch(
-
-        API_URL,
-
-        {
-            method:"POST",
-
-            headers:{
-                "Content-Type":
-                "text/plain;charset=utf-8"
-            },
-
-            body:
-            JSON.stringify(data)
-        }
-
-    );
-
-    if(!response.ok){
-
-        throw new Error(
-            "HTTP error " +
-            response.status
-        );
-
-    }
-
-    return await response.json();
-
-}
-
-
-/* =====================================================
-   POST ENQUIRY
-   ===================================================== */
-
-document
-.getElementById("postForm")
-.addEventListener(
-"submit",
-async function(e){
-
-    e.preventDefault();
-
-    const form =
-    e.target;
-
-    const button =
-    form.querySelector("button");
-
-    button.disabled = true;
-
-    button.innerText =
-    "Submitting...";
-
-    try{
-
-        const result =
-        await sendData(
-            "postEnquiry",
-            new FormData(form)
-        );
-
-        console.log(
-            "Post result:",
-            result
-        );
-
-        if(result.success){
-
-            alert(
-                "Enquiry submitted successfully!"
-            );
-
-            form.reset();
-
-            closePost();
-
-            loadJobs();
-
-        }else{
-
-            alert(
-                result.error ||
-                "Submission failed"
-            );
-
-        }
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-            "Could not connect to Apps Script."
-        );
-
-    }
-
-    button.disabled = false;
-
-    button.innerText =
-    "Submit Enquiry";
-
-});
-
-
-/* =====================================================
-   CONTRACTOR RESPONSE
-   ===================================================== */
-
-document
-.getElementById("interestForm")
-.addEventListener(
-"submit",
-async function(e){
-
-    e.preventDefault();
-
-    const form =
-    e.target;
-
-    const button =
-    form.querySelector("button");
-
-    button.disabled = true;
-
-    button.innerText =
-    "Sending...";
-
-    try{
-
-        const result =
-        await sendData(
-            "sendResponse",
-            new FormData(form)
-        );
-
-        if(result.success){
-
-            alert(
-                "Your response has been sent!"
-            );
-
-            form.reset();
-
-            closeInterest();
-
-        }else{
-
-            alert(
-                result.error ||
-                "Unable to send response"
-            );
-
-        }
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-            "Could not connect to Apps Script."
-        );
-
-    }
-
-    button.disabled = false;
-
-    button.innerText =
-    "Send Response";
-
-});
-
-
-/* =====================================================
-   MODALS
-   ===================================================== */
-
-function openPost(){
-
-    document
-    .getElementById("postModal")
-    .style.display =
-    "block";
-
-}
-
-function closePost(){
-
-    document
-    .getElementById("postModal")
-    .style.display =
-    "none";
-
-}
-
-function openInterest(id){
-
-    document
-    .getElementById("enquiryId")
-    .value =
-    id;
-
-    document
-    .getElementById("interestModal")
-    .style.display =
-    "block";
-
-}
-
-function closeInterest(){
-
-    document
-    .getElementById("interestModal")
-    .style.display =
-    "none";
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-   ===================================================== */
+/* =================================
+   HTML SECURITY
+================================= */
 
 function escapeHTML(value){
 
-    return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+return String(value || "")
+.replace(/[&<>"']/g,function(char){
+
+return {
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[char];
+
+});
 
 }
 
 
-/* =====================================================
-   CLOSE MODALS
-   ===================================================== */
+/* =================================
+   API POST
+================================= */
 
-window.onclick =
-function(event){
+async function sendAPI(data){
 
-    if(
-        event.target.classList
-        .contains("modal")
-    ){
+const response =
+await fetch(API_URL,{
 
-        event.target.style.display =
-        "none";
+method:"POST",
 
-    }
+headers:{
+"Content-Type":
+"text/plain;charset=utf-8"
+},
+
+body:JSON.stringify(data)
+
+});
+
+return response.json();
+
+}
+
+
+/* =================================
+   IMAGE BASE64
+================================= */
+
+function imageToBase64(file){
+
+return new Promise(function(resolve,reject){
+
+const reader =
+new FileReader();
+
+reader.onload =
+function(){
+
+resolve(
+reader.result.split(",")[1]
+);
+
+};
+
+reader.onerror =
+reject;
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+
+/* =================================
+   POST QUESTION
+================================= */
+
+async function postQuestion(){
+
+const name =
+document.getElementById(
+"userName"
+).value.trim();
+
+const question =
+document.getElementById(
+"questionText"
+).value.trim();
+
+const category =
+document.getElementById(
+"questionCategory"
+).value;
+
+const image =
+document.getElementById(
+"questionImage"
+).files[0];
+
+
+if(!name){
+
+alert("Please enter your name.");
+
+return;
+
+}
+
+
+if(!question){
+
+alert("Please write your question.");
+
+return;
+
+}
+
+
+if(image &&
+image.size > 5 * 1024 * 1024){
+
+alert(
+"Question image must be below 5 MB."
+);
+
+return;
+
+}
+
+
+let imageData = "";
+
+if(image){
+
+imageData =
+await imageToBase64(image);
+
+}
+
+
+const data = {
+
+action:"postQuestion",
+
+name:name,
+
+question:question,
+
+category:category,
+
+imageData:imageData,
+
+imageName:image
+? image.name
+: "",
+
+imageType:image
+? image.type
+: ""
 
 };
 
 
-/* =====================================================
-   START
-   ===================================================== */
+try{
 
-loadJobs();
+const result =
+await sendAPI(data);
+
+
+if(result.success){
+
+alert(
+"Question posted successfully!"
+);
+
+document.getElementById(
+"questionText"
+).value="";
+
+document.getElementById(
+"questionImage"
+).value="";
+
+loadQuestions();
+
+}else{
+
+alert(
+result.error ||
+"Could not post question."
+);
+
+}
+
+}catch(error){
+
+alert(
+"Could not connect to CivilLine server."
+);
+
+}
+
+}
+
+
+/* =================================
+   LOAD QUESTIONS
+================================= */
+
+async function loadQuestions(){
+
+const search =
+document.getElementById(
+"searchInput"
+).value.trim();
+
+const category =
+document.getElementById(
+"filterCategory"
+).value;
+
+
+const url =
+API_URL +
+"?action=getQuestions" +
+"&search=" +
+encodeURIComponent(search) +
+"&category=" +
+encodeURIComponent(category);
+
+
+try{
+
+const [questionsData,statsData] =
+await Promise.all([
+
+fetch(url).then(
+response => response.json()
+),
+
+fetch(
+API_URL +
+"?action=getStats"
+).then(
+response => response.json()
+)
+
+]);
+
+
+document.getElementById(
+"totalQuestions"
+).textContent =
+statsData.totalQuestions || 0;
+
+
+document.getElementById(
+"totalAnswers"
+).textContent =
+statsData.totalAnswers || 0;
+
+
+const list =
+document.getElementById(
+"questionList"
+);
+
+
+if(
+!questionsData.questions ||
+questionsData.questions.length === 0
+){
+
+list.innerHTML = `
+<div class="empty">
+No questions found.
+<br>
+Try another keyword or category.
+</div>
+`;
+
+return;
+
+}
+
+
+list.innerHTML =
+questionsData.questions
+.map(function(item){
+
+return `
+
+<article class="card">
+
+<div class="meta">
+
+<b>
+${escapeHTML(item.name)}
+</b>
+
+·
+
+${escapeHTML(item.date)}
+
+</div>
+
+
+<div class="question">
+
+${escapeHTML(item.question)}
+
+</div>
+
+
+<span class="category">
+
+${escapeHTML(item.category)}
+
+</span>
+
+
+${
+item.imageURL
+?
+
+`
+<img
+class="question-image"
+src="${escapeHTML(item.imageURL)}"
+alt="Question image"
+loading="lazy"
+>
+`
+
+:""
+}
+
+
+<div class="actions">
+
+<button
+class="action-btn"
+onclick="showAnswers('${escapeHTML(item.id)}')"
+>
+
+💬
+
+${item.answerCount || 0}
+
+Answers
+
+</button>
+
+
+<button
+class="action-btn"
+onclick="answerQuestion('${escapeHTML(item.id)}')"
+>
+
+✍️ Answer
+
+</button>
+
+</div>
+
+
+<div
+class="answers"
+id="answers-${escapeHTML(item.id)}"
+></div>
+
+
+</article>
+
+`;
+
+})
+.join("");
+
+
+}catch(error){
+
+document.getElementById(
+"questionList"
+).innerHTML = `
+
+<div class="empty">
+
+Could not load questions.
+
+<br><br>
+
+Please check your Google Apps Script deployment.
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =================================
+   SHOW ANSWERS
+================================= */
+
+async function showAnswers(questionId){
+
+const container =
+document.getElementById(
+"answers-" + questionId
+);
+
+container.innerHTML =
+"Loading answers...";
+
+
+try{
+
+const data =
+await fetch(
+
+API_URL +
+"?action=getAnswers&questionId=" +
+encodeURIComponent(questionId)
+
+).then(
+response => response.json()
+);
+
+
+if(
+!data.answers ||
+data.answers.length === 0
+){
+
+container.innerHTML = `
+
+<div class="small-text">
+
+No answers yet.
+
+Be the first person to answer this question.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+container.innerHTML =
+data.answers.map(function(answer){
+
+return `
+
+<div class="answer">
+
+<div class="answer-name">
+
+${escapeHTML(answer.name)}
+
+</div>
+
+
+<div class="answer-text">
+
+${escapeHTML(answer.answer)}
+
+</div>
+
+
+${
+answer.imageURL
+?
+
+`
+<img
+class="answer-image"
+src="${escapeHTML(answer.imageURL)}"
+alt="Answer image"
+loading="lazy"
+>
+`
+
+:""
+}
+
+
+<div class="meta">
+
+${escapeHTML(answer.date)}
+
+&nbsp; · &nbsp;
+
+👍 ${answer.likes || 0}
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+
+}catch(error){
+
+container.innerHTML =
+"Could not load answers.";
+
+}
+
+}
+
+
+/* =================================
+   ANSWER QUESTION
+================================= */
+
+async function answerQuestion(questionId){
+
+const name =
+prompt("Enter your name:");
+
+if(
+!name ||
+!name.trim()
+){
+
+return;
+
+}
+
+
+const answer =
+prompt("Write your answer:");
+
+if(
+!answer ||
+!answer.trim()
+){
+
+return;
+
+}
+
+
+/*
+Create temporary file selector
+for Answer Image
+*/
+
+const fileInput =
+document.createElement("input");
+
+fileInput.type="file";
+
+fileInput.accept="image/*";
+
+fileInput.style.display="none";
+
+document.body.appendChild(
+fileInput
+);
+
+
+fileInput.click();
+
+
+await new Promise(function(resolve){
+
+fileInput.onchange =
+resolve;
+
+});
+
+
+const image =
+fileInput.files[0];
+
+
+if(
+image &&
+image.size > 5 * 1024 * 1024
+){
+
+alert(
+"Answer image must be below 5 MB."
+);
+
+fileInput.remove();
+
+return;
+
+}
+
+
+let imageData="";
+
+if(image){
+
+imageData =
+await imageToBase64(image);
+
+}
+
+
+const data = {
+
+action:"postAnswer",
+
+questionId:questionId,
+
+name:name.trim(),
+
+answer:answer.trim(),
+
+imageData:imageData,
+
+imageName:image
+? image.name
+: "",
+
+imageType:image
+? image.type
+: ""
+
+};
+
+
+fileInput.remove();
+
+
+try{
+
+const result =
+await sendAPI(data);
+
+
+if(result.success){
+
+alert(
+"Answer posted successfully!"
+);
+
+showAnswers(questionId);
+
+loadQuestions();
+
+}else{
+
+alert(
+result.error ||
+"Could not post answer."
+);
+
+}
+
+}catch(error){
+
+alert(
+"Could not connect to server."
+);
+
+}
+
+}
+
+
+/* =================================
+   CLEAR SEARCH
+================================= */
+
+function clearSearch(){
+
+document.getElementById(
+"searchInput"
+).value="";
+
+
+document.getElementById(
+"filterCategory"
+).value="";
+
+
+loadQuestions();
+
+}
+
+
+/* =================================
+   SEARCH ENTER KEY
+================================= */
+
+document.getElementById(
+"searchInput"
+).addEventListener(
+"keydown",
+function(event){
+
+if(event.key === "Enter"){
+
+loadQuestions();
+
+}
+
+}
+);
+
+
+/* =================================
+   CATEGORY CHANGE
+================================= */
+
+document.getElementById(
+"filterCategory"
+).addEventListener(
+"change",
+function(){
+
+loadQuestions();
+
+}
+);
+
+
+/* =================================
+   START
+================================= */
+
+loadQuestions();
 
 </script>
 
