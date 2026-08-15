@@ -4,281 +4,238 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contractor Enquiries Portal</title>
+<title>Contractor Enquiry Portal</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f5f7fb;
-    color:#17212b;
+*{
+    box-sizing:border-box;
 }
 
-.container{
-    width:92%;
-    max-width:1100px;
-    margin:auto;
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f8;
+    color:#222;
 }
 
 /* HEADER */
+
 header{
-    background:#fff;
-    border-bottom:1px solid #e5e7eb;
+    background:#123047;
+    color:white;
+    padding:16px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     position:sticky;
     top:0;
     z-index:100;
 }
 
-.nav{
-    min-height:65px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
 .logo{
     font-size:22px;
-    font-weight:800;
-    color:#102235;
-    text-decoration:none;
+    font-weight:bold;
 }
 
 .logo span{
-    color:#0b5ed7;
+    color:#ffb000;
 }
 
-.nav-right{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.nav-right a{
-    text-decoration:none;
-    color:#333;
-}
-
-/* BUTTON */
-.btn{
+header button{
+    background:#ffb000;
+    color:#111;
     border:0;
-    padding:11px 17px;
-    border-radius:8px;
+    padding:10px 16px;
+    border-radius:7px;
     font-weight:bold;
     cursor:pointer;
 }
 
-.primary{
-    background:#0b5ed7;
-    color:white;
-}
-
-.primary:hover{
-    background:#084db2;
-}
-
-.btn:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-}
-
 /* HERO */
+
 .hero{
-    background:linear-gradient(135deg,#102235,#0b5ed7);
+    background:linear-gradient(
+        135deg,
+        #123047,
+        #17639a
+    );
     color:white;
-    padding:60px 0;
+    padding:55px 5%;
 }
 
 .hero h1{
-    font-size:42px;
-    margin-bottom:15px;
+    margin:0 0 12px;
+    font-size:40px;
 }
 
 .hero p{
     max-width:700px;
     line-height:1.6;
-    color:#dce9fa;
-    font-size:17px;
+    color:#e4edf4;
 }
 
 /* SEARCH */
-.search-box{
+
+.search{
     background:white;
+    max-width:900px;
     margin-top:25px;
     padding:10px;
-    border-radius:12px;
-    display:grid;
-    grid-template-columns:2fr 1fr auto;
+    border-radius:10px;
+    display:flex;
     gap:10px;
 }
 
-input,
-select,
-textarea{
-    width:100%;
-    padding:12px;
-    border:1px solid #dfe3e8;
-    border-radius:8px;
-    font-size:14px;
+.search input{
+    flex:1;
+    padding:13px;
+    border:1px solid #ddd;
+    border-radius:7px;
     outline:none;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:#0b5ed7;
+.search button{
+    background:#ffb000;
+    border:0;
+    padding:0 20px;
+    border-radius:7px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-textarea{
-    min-height:120px;
-    resize:vertical;
+/* CONTENT */
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:auto;
 }
 
-/* SECTION */
 .section{
     padding:35px 0;
 }
 
-.section-head{
+.section-title{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:20px;
 }
 
-.section-head h2{
-    font-size:26px;
-}
-
-.muted{
-    color:#687789;
-    font-size:14px;
+.section-title h2{
+    margin:0;
 }
 
 /* CARDS */
-.grid{
+
+.jobs{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:18px;
+    gap:20px;
 }
 
-.card{
-    background:#fff;
-    border:1px solid #e2e7ed;
-    border-radius:14px;
+.job{
+    background:white;
+    border-radius:12px;
     padding:20px;
-    box-shadow:0 2px 7px rgba(0,0,0,.04);
+    border:1px solid #e2e2e2;
+    box-shadow:0 3px 10px rgba(0,0,0,.05);
 }
 
-.card h3{
-    margin:7px 0 10px;
-    font-size:20px;
-}
-
-.meta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px;
-    margin:12px 0;
+.job h3{
+    margin:5px 0 12px;
+    color:#123047;
 }
 
 .tag{
-    background:#eef5ff;
-    color:#1555a0;
-    padding:6px 10px;
+    display:inline-block;
+    background:#edf5fb;
+    color:#17639a;
+    padding:6px 9px;
     border-radius:20px;
     font-size:12px;
+    margin:3px;
 }
 
 .budget{
     color:#198754;
-    font-size:17px;
+    font-size:18px;
     font-weight:bold;
-    margin:10px 0;
+    margin:12px 0;
 }
 
 .description{
-    color:#4c5967;
+    color:#555;
     line-height:1.5;
-    margin:10px 0;
 }
 
-.card-bottom{
+.job-footer{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-top:20px;
     gap:10px;
-    margin-top:18px;
 }
 
-.status{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:11px;
-    background:#e8f7ee;
-    color:#198754;
+.interest{
+    background:#17639a;
+    color:white;
+    border:0;
+    padding:10px 14px;
+    border-radius:7px;
+    cursor:pointer;
 }
 
-.no-results{
+/* LOADING */
+
+.loading,
+.empty{
     background:white;
     padding:40px;
     text-align:center;
-    border-radius:12px;
-    color:#687789;
-    grid-column:1/-1;
-}
-
-.loading{
-    text-align:center;
-    padding:35px;
-    color:#687789;
+    border-radius:10px;
     grid-column:1/-1;
 }
 
 /* MODAL */
+
 .modal{
+    display:none;
     position:fixed;
     inset:0;
     background:rgba(0,0,0,.65);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-    z-index:1000;
-}
-
-.modal.active{
-    display:flex;
+    z-index:999;
+    padding:20px;
+    overflow:auto;
 }
 
 .modal-box{
     background:white;
-    width:100%;
-    max-width:700px;
-    max-height:92vh;
-    overflow:auto;
-    border-radius:15px;
+    max-width:650px;
+    margin:40px auto;
     padding:25px;
+    border-radius:12px;
 }
 
 .modal-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
 }
 
 .close{
     font-size:28px;
     cursor:pointer;
-    color:#555;
 }
 
 .form-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:14px;
+    gap:15px;
+}
+
+.form-group{
+    margin-bottom:5px;
 }
 
 .full{
@@ -289,42 +246,59 @@ label{
     display:block;
     font-weight:bold;
     margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:7px;
     font-size:14px;
 }
 
-.form-note{
-    background:#fff3cd;
-    color:#664d03;
-    padding:12px;
-    border-radius:8px;
-    font-size:13px;
-    margin-bottom:18px;
+textarea{
+    min-height:120px;
+}
+
+.submit{
+    background:#17639a;
+    color:white;
+    border:0;
+    padding:12px 20px;
+    border-radius:7px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
 /* FOOTER */
-footer{
-    background:#102235;
-    color:#cbd5e1;
-    padding:30px 0;
-    margin-top:40px;
-}
 
-footer strong{
+footer{
+    background:#123047;
     color:white;
+    text-align:center;
+    padding:30px;
+    margin-top:30px;
 }
 
 /* MOBILE */
+
 @media(max-width:700px){
 
     .hero h1{
-        font-size:32px;
+        font-size:30px;
     }
 
-    .search-box{
-        grid-template-columns:1fr;
+    .search{
+        flex-direction:column;
     }
 
-    .grid{
+    .search button{
+        padding:12px;
+    }
+
+    .jobs{
         grid-template-columns:1fr;
     }
 
@@ -336,14 +310,10 @@ footer strong{
         grid-column:auto;
     }
 
-    .section-head{
-        align-items:flex-start;
+    .section-title{
         flex-direction:column;
+        align-items:flex-start;
         gap:10px;
-    }
-
-    .nav-right a{
-        display:none;
     }
 }
 </style>
@@ -352,68 +322,48 @@ footer strong{
 
 <body>
 
+
 <!-- HEADER -->
+
 <header>
 
-<div class="container nav">
+<div class="logo">
+Civil<span>Connect</span>
+</div>
 
-<a href="#" class="logo">
-Contractor<span>Enquiries</span>
-</a>
-
-<div class="nav-right">
-
-<a href="#enquiries">
-Enquiries
-</a>
-
-<button
-class="btn primary"
-onclick="openModal('postModal')">
-Post Enquiry
+<button onclick="openPost()">
++ Post Enquiry
 </button>
-
-</div>
-
-</div>
 
 </header>
 
 
 <!-- HERO -->
+
 <section class="hero">
 
 <div class="container">
 
 <h1>
-Find Construction Work & Contractors
+Contractor Enquiry Portal
 </h1>
 
 <p>
-Post your construction requirement and connect with civil contractors,
-builders and construction professionals.
+Find construction enquiries, connect with customers,
+and get new civil engineering and contracting work.
 </p>
 
 
-<div class="search-box">
+<div class="search">
 
 <input
+id="search"
 type="text"
-id="searchKeyword"
-placeholder="Search RCC, road work, shuttering..."
-oninput="filterEnquiries()"
+placeholder="Search work, RCC, road, wall, shuttering..."
+oninput="searchJobs()"
 >
 
-<input
-type="text"
-id="searchLocation"
-placeholder="Location"
-oninput="filterEnquiries()"
->
-
-<button
-class="btn primary"
-onclick="filterEnquiries()">
+<button onclick="searchJobs()">
 Search
 </button>
 
@@ -424,32 +374,31 @@ Search
 </section>
 
 
-<!-- ENQUIRIES -->
-<main class="container">
+<!-- JOBS -->
 
-<section
-class="section"
-id="enquiries">
+<section class="section">
 
-<div class="section-head">
+<div class="container">
+
+<div class="section-title">
 
 <div>
 
 <h2>
-Latest Construction Enquiries
+Latest Enquiries
 </h2>
 
-<p class="muted">
-Find construction requirements posted by customers.
+<p>
+Construction requirements posted by customers
 </p>
 
 </div>
 
 <button
-class="btn primary"
-onclick="openModal('postModal')">
+class="submit"
+onclick="openPost()">
 
-+ Post Enquiry
+Post Your Requirement
 
 </button>
 
@@ -457,8 +406,8 @@ onclick="openModal('postModal')">
 
 
 <div
-id="enquiryList"
-class="grid">
+id="jobs"
+class="jobs">
 
 <div class="loading">
 Loading enquiries...
@@ -466,16 +415,16 @@ Loading enquiries...
 
 </div>
 
-</section>
+</div>
 
-</main>
+</section>
 
 
 <!-- POST ENQUIRY MODAL -->
+
 <div
-class="modal"
 id="postModal"
-onclick="closeOutside(event,'postModal')">
+class="modal">
 
 <div class="modal-box">
 
@@ -487,32 +436,27 @@ Post Construction Enquiry
 
 <span
 class="close"
-onclick="closeModal('postModal')">
-&times;
+onclick="closePost()">
+×
 </span>
 
 </div>
 
-
-<div class="form-note">
-
-Your enquiry will be saved to the Google Sheet.
-New enquiries are marked Pending.
-
-</div>
+<br>
 
 
-<form id="enquiryForm">
+<form id="postForm">
 
 <div class="form-grid">
 
 
-<div>
+<div class="form-group">
 
-<label>Your Name *</label>
+<label>
+Name *
+</label>
 
 <input
-type="text"
 name="name"
 required
 >
@@ -520,22 +464,26 @@ required
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>Phone / WhatsApp *</label>
+<label>
+Phone *
+</label>
 
 <input
-type="tel"
 name="phone"
+type="tel"
 required
 >
 
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>Work Type *</label>
+<label>
+Work Type *
+</label>
 
 <select
 name="workType"
@@ -545,15 +493,14 @@ required>
 Select Work
 </option>
 
-<option>RCC Work</option>
 <option>Building Construction</option>
+<option>RCC Work</option>
 <option>Plum Concrete</option>
 <option>Retaining Wall</option>
 <option>Road Work</option>
-<option>Paving Work</option>
-<option>Tremix Flooring</option>
 <option>Shuttering</option>
 <option>Bar Bending</option>
+<option>Tremix Flooring</option>
 <option>Excavation</option>
 <option>Waterproofing</option>
 <option>Painting</option>
@@ -566,12 +513,13 @@ Select Work
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>Location *</label>
+<label>
+Location *
+</label>
 
 <input
-type="text"
 name="location"
 placeholder="Baramati, Pune..."
 required
@@ -580,51 +528,58 @@ required
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>Budget</label>
+<label>
+Budget
+</label>
 
 <input
-type="text"
 name="budget"
-placeholder="₹2,00,000 / Negotiable"
+placeholder="₹2,00,000"
 >
 
 </div>
 
 
-<div>
+<div class="form-group">
 
-<label>Required Date</label>
+<label>
+Required Date
+</label>
 
 <input
-type="date"
 name="requiredDate"
+type="date"
 >
 
 </div>
 
 
-<div class="full">
+<div class="form-group full">
 
-<label>Work Description *</label>
+<label>
+Description *
+</label>
 
 <textarea
 name="description"
-placeholder="Mention quantity, dimensions, scope of work, materials etc."
+placeholder="Describe your construction requirement..."
 required></textarea>
 
 </div>
 
 
-<div class="full">
+<div class="form-group full">
 
-<label>Project Image URL</label>
+<label>
+Project Image URL
+</label>
 
 <input
-type="url"
 name="imageUrl"
-placeholder="https://example.com/image.jpg"
+type="url"
+placeholder="Paste image URL"
 >
 
 </div>
@@ -632,14 +587,13 @@ placeholder="https://example.com/image.jpg"
 
 </div>
 
-
 <br>
 
 <button
-type="submit"
-class="btn primary">
+class="submit"
+type="submit">
 
-Post Enquiry
+Submit Enquiry
 
 </button>
 
@@ -650,11 +604,11 @@ Post Enquiry
 </div>
 
 
-<!-- RESPONSE MODAL -->
+<!-- INTEREST MODAL -->
+
 <div
-class="modal"
-id="responseModal"
-onclick="closeOutside(event,'responseModal')">
+id="interestModal"
+class="modal">
 
 <div class="modal-box">
 
@@ -666,71 +620,64 @@ I'm Interested
 
 <span
 class="close"
-onclick="closeModal('responseModal')">
-&times;
+onclick="closeInterest()">
+×
 </span>
 
 </div>
 
+<br>
 
-<form id="responseForm">
+
+<form id="interestForm">
 
 <input
 type="hidden"
+id="enquiryId"
 name="enquiryId"
-id="responseEnquiryId"
 >
 
 
-<div class="form-grid">
-
-
-<div>
-
-<label>Contractor Name *</label>
+<label>
+Contractor Name *
+</label>
 
 <input
-type="text"
 name="contractor"
 required
 >
 
-</div>
+<br><br>
 
 
-<div>
-
-<label>Phone / WhatsApp *</label>
+<label>
+Phone / WhatsApp *
+</label>
 
 <input
-type="tel"
 name="phone"
+type="tel"
 required
 >
 
-</div>
+<br><br>
 
 
-<div class="full">
-
-<label>Your Message *</label>
+<label>
+Message *
+</label>
 
 <textarea
 name="message"
-placeholder="Tell the customer about your experience, rate and availability."
+placeholder="Tell the customer about your experience and quotation..."
 required></textarea>
 
-</div>
+<br><br>
 
-
-</div>
-
-
-<br>
 
 <button
-type="submit"
-class="btn primary">
+class="submit"
+type="submit">
 
 Send Response
 
@@ -744,65 +691,52 @@ Send Response
 
 
 <!-- FOOTER -->
+
 <footer>
 
-<div class="container">
-
 <strong>
-ContractorEnquiries
+CivilConnect
 </strong>
 
-<br><br>
-
-<small>
-Construction work enquiry portal.
-</small>
-
-</div>
+<p>
+Construction enquiry platform
+</p>
 
 </footer>
 
 
 <script>
 
+
 /* =====================================================
-   GOOGLE APPS SCRIPT API
+   YOUR APPS SCRIPT URL
    ===================================================== */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxEbipqlqddwy9r8xCIl_favL9GyBpqhL0ep8kEKwUM09clUcmGofiuHxUYl75GhPjY/exec";
 
 
-let enquiries = [];
+/* =====================================================
+   DATA
+   ===================================================== */
+
+let allJobs = [];
 
 
 /* =====================================================
-   ESCAPE HTML
+   LOAD JOBS
    ===================================================== */
 
-function escapeHTML(value){
+async function loadJobs(){
 
-    return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
+    const box =
+    document.getElementById("jobs");
 
 
-/* =====================================================
-   LOAD ENQUIRIES FROM GOOGLE SHEETS
-   ===================================================== */
-
-async function loadEnquiries(){
-
-    const list =
-    document.getElementById("enquiryList");
-
-    list.innerHTML =
-    '<div class="loading">Loading enquiries...</div>';
+    box.innerHTML =
+    `<div class="loading">
+    Loading enquiries...
+    </div>`;
 
 
     try{
@@ -813,36 +747,33 @@ async function loadEnquiries(){
         );
 
 
-        if(!response.ok){
-
-            throw new Error(
-                "API request failed"
-            );
-
-        }
-
-
         const data =
         await response.json();
 
 
-        console.log("API Response:",data);
+        console.log(
+            "Google Apps Script:",
+            data
+        );
 
 
-        if(data.success){
+        if(
+            data.success === true
+        ){
 
-            enquiries =
+            allJobs =
             data.enquiries || [];
 
-            renderEnquiries();
+            displayJobs(
+                allJobs
+            );
 
         }
-
         else{
 
             throw new Error(
                 data.error ||
-                "API returned an error"
+                "Unable to get data"
             );
 
         }
@@ -851,18 +782,15 @@ async function loadEnquiries(){
 
     catch(error){
 
-        console.error(
-            "Loading error:",
-            error
-        );
+        console.error(error);
 
 
-        list.innerHTML = `
+        box.innerHTML = `
 
-        <div class="no-results">
+        <div class="empty">
 
             <h3>
-            Unable to load enquiries
+            Could not load enquiries
             </h3>
 
             <p>
@@ -879,34 +807,32 @@ async function loadEnquiries(){
 
 
 /* =====================================================
-   DISPLAY ENQUIRIES
+   DISPLAY JOBS
    ===================================================== */
 
-function renderEnquiries(data){
+function displayJobs(
+    jobs
+){
 
-    if(!data){
-        data = enquiries;
-    }
-
-
-    const list =
-    document.getElementById(
-        "enquiryList"
-    );
+    const box =
+    document.getElementById("jobs");
 
 
-    if(!data.length){
+    if(
+        !jobs ||
+        jobs.length === 0
+    ){
 
-        list.innerHTML = `
+        box.innerHTML = `
 
-        <div class="no-results">
+        <div class="empty">
 
             <h3>
-            No enquiries found
+            No enquiries available
             </h3>
 
             <p>
-            Be the first person to post a construction enquiry.
+            Post the first construction requirement.
             </p>
 
         </div>
@@ -918,123 +844,102 @@ function renderEnquiries(data){
     }
 
 
-    list.innerHTML =
-    data.map(function(item){
+    box.innerHTML =
+    jobs.map(
+    function(job){
 
-        let imageHTML = "";
-
-
-        if(item.imageUrl){
-
-            imageHTML = `
-
-            <img
-            src="${escapeHTML(item.imageUrl)}"
-            alt="Project image"
-            style="
-            width:100%;
-            height:200px;
-            object-fit:cover;
-            border-radius:9px;
-            margin-top:12px;
-            "
-            onerror="this.style.display='none'"
-            >
-
-            `;
-
-        }
+        const image =
+        job.imageUrl
+        ?
+        `
+        <img
+        src="${safe(job.imageUrl)}"
+        style="
+        width:100%;
+        height:180px;
+        object-fit:cover;
+        border-radius:8px;
+        margin:10px 0;
+        "
+        onerror="this.style.display='none'"
+        >
+        `
+        :
+        "";
 
 
         return `
 
-        <article class="card">
+        <div class="job">
 
-            <div class="muted">
-
-                ${escapeHTML(item.name)}
-
-            </div>
-
+            <small>
+            ${safe(job.name)}
+            </small>
 
             <h3>
-
-                ${escapeHTML(item.workType)}
-
+            ${safe(job.workType)}
             </h3>
 
 
-            <div class="meta">
+            <span class="tag">
+            📍 ${safe(job.location)}
+            </span>
 
+
+            ${
+                job.requiredDate
+                ?
+                `
                 <span class="tag">
-
-                    📍
-                    ${escapeHTML(item.location)}
-
+                📅 ${safe(job.requiredDate)}
                 </span>
-
-
-                <span class="tag">
-
-                    📅
-                    ${escapeHTML(item.date)}
-
-                </span>
-
-            </div>
+                `
+                :
+                ""
+            }
 
 
             <div class="budget">
 
-                ${escapeHTML(
-                    item.budget ||
-                    "Budget not specified"
-                )}
+            ${
+                safe(job.budget) ||
+                "Budget negotiable"
+            }
 
             </div>
 
 
             <div class="description">
 
-                ${escapeHTML(
-                    item.description
-                )}
+            ${safe(job.description)}
 
             </div>
 
 
-            ${imageHTML}
+            ${image}
 
 
-            <div class="card-bottom">
+            <div class="job-footer">
 
-                <small class="muted">
-
-                    ${
-                        item.requiredDate
-                        ?
-                        "Required: " +
-                        escapeHTML(
-                            item.requiredDate
-                        )
-                        :
-                        "Date flexible"
-                    }
-
+                <small>
+                Posted:
+                ${safe(job.date)}
                 </small>
 
 
                 <button
-                class="btn primary"
-                onclick="showResponse('${escapeHTML(item.id)}')">
+                class="interest"
+                onclick="openInterest(
+                '${safe(job.id)}'
+                )">
 
-                    I'm Interested
+                I'm Interested
 
                 </button>
 
             </div>
 
-        </article>
+        </div>
 
         `;
 
@@ -1047,101 +952,86 @@ function renderEnquiries(data){
    SEARCH
    ===================================================== */
 
-function filterEnquiries(){
+function searchJobs(){
 
     const keyword =
     document
-    .getElementById(
-        "searchKeyword"
-    )
+    .getElementById("search")
     .value
     .toLowerCase()
     .trim();
 
 
-    const location =
-    document
-    .getElementById(
-        "searchLocation"
-    )
-    .value
-    .toLowerCase()
-    .trim();
+    if(!keyword){
+
+        displayJobs(
+            allJobs
+        );
+
+        return;
+
+    }
 
 
-    const filtered =
-    enquiries.filter(function(item){
+    const results =
+    allJobs.filter(
+    function(job){
 
         const text = `
 
-            ${item.workType || ""}
-
-            ${item.description || ""}
-
-            ${item.name || ""}
-
-            ${item.location || ""}
+        ${job.name || ""}
+        ${job.workType || ""}
+        ${job.location || ""}
+        ${job.description || ""}
+        ${job.budget || ""}
 
         `.toLowerCase();
 
 
-        const itemLocation =
-        String(
-            item.location || ""
-        ).toLowerCase();
-
-
-        return (
-
-            (!keyword ||
-             text.includes(keyword))
-
-            &&
-
-            (!location ||
-             itemLocation.includes(location))
-
+        return text.includes(
+            keyword
         );
 
     });
 
 
-    renderEnquiries(filtered);
+    displayJobs(
+        results
+    );
 
 }
 
 
 /* =====================================================
-   SEND DATA TO APPS SCRIPT
+   POST DATA TO APPS SCRIPT
    ===================================================== */
 
-async function sendToAPI(
+async function sendData(
     action,
-    data
+    formData
 ){
 
-    const payload = {
+    const data = {
 
-        action:action,
-
-        ...data
+        action:action
 
     };
 
 
-    console.log(
-        "Sending:",
-        payload
-    );
+    for(
+        const [key,value]
+        of formData.entries()
+    ){
+
+        data[key] = value;
+
+    }
 
 
     const response =
     await fetch(
-
         API_URL,
-
         {
-
             method:"POST",
 
             headers:{
@@ -1150,20 +1040,9 @@ async function sendToAPI(
             },
 
             body:
-            JSON.stringify(payload)
-
+            JSON.stringify(data)
         }
-
     );
-
-
-    if(!response.ok){
-
-        throw new Error(
-            "API request failed"
-        );
-
-    }
 
 
     return await response.json();
@@ -1176,22 +1055,16 @@ async function sendToAPI(
    ===================================================== */
 
 document
-.getElementById("enquiryForm")
+.getElementById("postForm")
 .addEventListener(
 "submit",
-async function(event){
+async function(e){
 
-    event.preventDefault();
+    e.preventDefault();
 
 
     const form =
-    event.target;
-
-
-    const data =
-    Object.fromEntries(
-        new FormData(form)
-    );
+    e.target;
 
 
     const button =
@@ -1200,7 +1073,8 @@ async function(event){
     );
 
 
-    button.disabled = true;
+    button.disabled =
+    true;
 
     button.innerText =
     "Submitting...";
@@ -1209,117 +1083,79 @@ async function(event){
     try{
 
         const result =
-        await sendToAPI(
+        await sendData(
             "postEnquiry",
-            data
+            new FormData(form)
         );
 
 
         console.log(
-            "Post result:",
             result
         );
 
 
-        if(!result.success){
+        if(
+            result.success
+        ){
 
-            throw new Error(
+            alert(
+                "Enquiry submitted successfully!"
+            );
+
+
+            form.reset();
+
+            closePost();
+
+            loadJobs();
+
+        }
+        else{
+
+            alert(
                 result.error ||
-                "Unable to submit enquiry"
+                "Submission failed"
             );
 
         }
-
-
-        alert(
-            "Enquiry submitted successfully!"
-        );
-
-
-        form.reset();
-
-
-        closeModal(
-            "postModal"
-        );
-
-
-        await loadEnquiries();
 
     }
 
     catch(error){
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         alert(
-            "Unable to submit enquiry.\n\n" +
-            "Please check that your Apps Script " +
-            "Web App is deployed as 'Anyone'."
+            "Unable to connect to Apps Script."
         );
 
     }
 
 
-    finally{
+    button.disabled =
+    false;
 
-        button.disabled = false;
-
-        button.innerText =
-        "Post Enquiry";
-
-    }
+    button.innerText =
+    "Submit Enquiry";
 
 });
 
 
 /* =====================================================
-   OPEN RESPONSE FORM
-   ===================================================== */
-
-function showResponse(
-    enquiryId
-){
-
-    document
-    .getElementById(
-        "responseEnquiryId"
-    )
-    .value =
-    enquiryId;
-
-
-    openModal(
-        "responseModal"
-    );
-
-}
-
-
-/* =====================================================
-   SEND CONTRACTOR RESPONSE
+   INTEREST RESPONSE
    ===================================================== */
 
 document
-.getElementById("responseForm")
+.getElementById("interestForm")
 .addEventListener(
 "submit",
-async function(event){
+async function(e){
 
-    event.preventDefault();
+    e.preventDefault();
 
 
     const form =
-    event.target;
-
-
-    const data =
-    Object.fromEntries(
-        new FormData(form)
-    );
+    e.target;
 
 
     const button =
@@ -1328,7 +1164,8 @@ async function(event){
     );
 
 
-    button.disabled = true;
+    button.disabled =
+    true;
 
     button.innerText =
     "Sending...";
@@ -1337,64 +1174,53 @@ async function(event){
     try{
 
         const result =
-        await sendToAPI(
+        await sendData(
             "sendResponse",
-            data
+            new FormData(form)
         );
 
 
-        console.log(
-            "Response result:",
-            result
-        );
+        if(
+            result.success
+        ){
+
+            alert(
+                "Your response has been sent!"
+            );
 
 
-        if(!result.success){
+            form.reset();
 
-            throw new Error(
+            closeInterest();
+
+        }
+        else{
+
+            alert(
                 result.error ||
                 "Unable to send response"
             );
 
         }
 
-
-        alert(
-            "Your response was sent successfully!"
-        );
-
-
-        form.reset();
-
-
-        closeModal(
-            "responseModal"
-        );
-
     }
 
     catch(error){
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         alert(
-            "Unable to send response."
+            "Unable to connect to Apps Script."
         );
 
     }
 
 
-    finally{
+    button.disabled =
+    false;
 
-        button.disabled = false;
-
-        button.innerText =
-        "Send Response";
-
-    }
+    button.innerText =
+    "Send Response";
 
 });
 
@@ -1403,78 +1229,114 @@ async function(event){
    MODALS
    ===================================================== */
 
-function openModal(id){
+function openPost(){
 
     document
-    .getElementById(id)
-    .classList.add(
-        "active"
-    );
+    .getElementById("postModal")
+    .style.display =
+    "block";
 
 }
 
 
-function closeModal(id){
+function closePost(){
 
     document
-    .getElementById(id)
-    .classList.remove(
-        "active"
-    );
+    .getElementById("postModal")
+    .style.display =
+    "none";
 
 }
 
 
-function closeOutside(
-    event,
+function openInterest(
     id
 ){
 
-    if(
-        event.target.id === id
-    ){
+    document
+    .getElementById("enquiryId")
+    .value =
+    id;
 
-        closeModal(id);
 
-    }
+    document
+    .getElementById("interestModal")
+    .style.display =
+    "block";
+
+}
+
+
+function closeInterest(){
+
+    document
+    .getElementById("interestModal")
+    .style.display =
+    "none";
 
 }
 
 
 /* =====================================================
-   ESC KEY
+   SAFE TEXT
    ===================================================== */
 
-document.addEventListener(
-"keydown",
+function safe(
+    value
+){
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL ON BACKGROUND CLICK
+   ===================================================== */
+
+window.onclick =
 function(event){
 
     if(
-        event.key === "Escape"
+        event.target.classList
+        .contains("modal")
     ){
 
-        document
-        .querySelectorAll(
-            ".modal"
-        )
-        .forEach(function(modal){
-
-            modal.classList.remove(
-                "active"
-            );
-
-        });
+        event.target.style.display =
+        "none";
 
     }
 
-});
+};
 
 
 /* =====================================================
    START
    ===================================================== */
 
-loadEnquiries();
+loadJobs();
 
 </script>
 
