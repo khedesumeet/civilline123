@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#17639a">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#b92b27">
 
 <title>CivilLine - Civil Engineering Q&A</title>
 
@@ -12,32 +12,28 @@
   box-sizing:border-box;
 }
 
-html{
-  scroll-behavior:smooth;
-}
-
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
-  background:#f4f7fa;
-  color:#17212b;
+  background:#f7f7f7;
+  color:#202124;
 }
 
 /* HEADER */
 
-.header{
+header{
+  background:#fff;
+  border-bottom:1px solid #ddd;
   position:sticky;
   top:0;
   z-index:1000;
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
 }
 
 .nav{
-  max-width:1150px;
+  max-width:1050px;
   margin:auto;
-  min-height:64px;
-  padding:8px 16px;
+  height:62px;
+  padding:0 15px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -46,110 +42,103 @@ body{
 .logo{
   display:flex;
   align-items:center;
-  gap:10px;
-  font-size:25px;
-  font-weight:800;
-  color:#153b56;
+  gap:9px;
+  font-size:23px;
+  font-weight:bold;
+  color:#222;
 }
 
-.logo-box{
-  width:42px;
-  height:42px;
-  background:#17639a;
+.logo-icon{
+  width:38px;
+  height:38px;
+  border-radius:8px;
+  background:#b92b27;
   color:#fff;
-  border-radius:10px;
   display:grid;
   place-items:center;
+  font-size:13px;
+}
+
+.logo span{
+  color:#b92b27;
+}
+
+.nav a{
+  margin-left:18px;
+  color:#555;
+  text-decoration:none;
   font-size:14px;
-  font-weight:bold;
-}
-
-.logo-text span{
-  color:#f0a500;
-}
-
-.nav-links{
-  display:flex;
-  gap:20px;
-  font-size:14px;
-  color:#52606d;
-}
-
-.nav-links a:hover{
-  color:#17639a;
 }
 
 /* HERO */
 
 .hero{
-  background:linear-gradient(135deg,#153b56,#17639a);
-  color:white;
+  background:#fff;
+  border-bottom:1px solid #ddd;
 }
 
 .hero-inner{
-  max-width:1150px;
+  max-width:1050px;
   margin:auto;
-  padding:40px 16px;
+  padding:35px 15px;
 }
 
 .hero h1{
-  font-size:clamp(30px,6vw,48px);
-  margin:0 0 10px;
+  margin:0 0 8px;
+  font-size:36px;
 }
 
 .hero p{
-  max-width:700px;
+  margin:0;
+  color:#666;
   line-height:1.6;
-  color:#e5f0f7;
 }
+
+/* STATS */
 
 .stats{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:22px;
+  gap:12px;
+  margin-top:20px;
 }
 
 .stat{
-  min-width:130px;
-  padding:12px 16px;
-  border-radius:12px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.2);
+  background:#f5f5f5;
+  border:1px solid #ddd;
+  padding:12px 18px;
+  border-radius:8px;
 }
 
-.stat b{
+.stat strong{
+  font-size:22px;
   display:block;
-  font-size:25px;
 }
 
 /* MAIN */
 
 .container{
-  max-width:1150px;
+  max-width:1050px;
   margin:auto;
-  padding:22px 16px;
+  padding:22px 15px;
 }
 
 .layout{
   display:grid;
-  grid-template-columns:320px 1fr;
-  gap:20px;
+  grid-template-columns:300px 1fr;
+  gap:18px;
 }
 
-/* PANEL */
+/* ASK QUESTION */
 
-.panel{
-  background:white;
-  border:1px solid #e3e8ed;
-  border-radius:15px;
+.sidebar{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:8px;
   padding:18px;
   height:max-content;
-  position:sticky;
-  top:80px;
 }
 
-.panel h2{
+.sidebar h2{
   margin-top:0;
 }
 
@@ -157,292 +146,281 @@ input,
 textarea,
 select{
   width:100%;
-  padding:11px 12px;
-  border:1px solid #d5dbe1;
-  border-radius:9px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  padding:11px;
+  margin:6px 0 12px;
   font:inherit;
-  margin:5px 0 12px;
-  background:white;
 }
 
 textarea{
   resize:vertical;
 }
 
-.primary{
-  width:100%;
-  border:0;
-  background:#17639a;
-  color:white;
-  font-weight:bold;
-  padding:12px;
-  border-radius:9px;
+button{
+  font:inherit;
   cursor:pointer;
 }
 
-.primary:hover{
-  background:#12547f;
+.primary{
+  width:100%;
+  background:#b92b27;
+  border:0;
+  color:#fff;
+  padding:11px;
+  border-radius:6px;
+  font-weight:bold;
 }
 
-.small-text{
-  font-size:12px;
-  color:#687684;
-  line-height:1.5;
+.primary:hover{
+  background:#a32622;
 }
 
 /* SEARCH */
 
-.search-area{
-  background:white;
-  padding:14px;
-  border-radius:14px;
-  border:1px solid #e3e8ed;
+.search{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:8px;
+  padding:12px;
+  display:grid;
+  grid-template-columns:1fr 180px 80px;
+  gap:8px;
   margin-bottom:15px;
 }
 
-.search-row{
-  display:grid;
-  grid-template-columns:1fr 180px auto auto;
-  gap:8px;
-}
-
-.search-row input,
-.search-row select{
+.search input,
+.search select{
   margin:0;
 }
 
-.search-btn{
+.search button{
   border:0;
-  background:#17639a;
+  background:#b92b27;
   color:#fff;
-  border-radius:9px;
-  padding:0 17px;
-  font-weight:bold;
-  cursor:pointer;
+  border-radius:6px;
 }
 
-.clear-btn{
-  border:1px solid #d5dbe1;
-  background:white;
-  border-radius:9px;
-  padding:0 14px;
-  cursor:pointer;
-}
+/* QUESTION */
 
-/* QUESTION CARD */
-
-.card{
-  background:white;
-  border:1px solid #e3e8ed;
-  border-radius:15px;
+.question-card{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:8px;
   padding:18px;
   margin-bottom:15px;
 }
 
 .meta{
-  font-size:12px;
-  color:#71808d;
+  color:#777;
+  font-size:13px;
 }
 
-.question{
-  font-size:20px;
-  font-weight:600;
+.question-text{
+  font-size:21px;
   line-height:1.45;
+  font-weight:bold;
   margin:10px 0;
 }
 
 .category{
   display:inline-block;
-  background:#eaf4fb;
-  color:#17639a;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:11px;
+  background:#f1f1f1;
+  padding:5px 9px;
+  border-radius:15px;
+  font-size:12px;
+  color:#555;
+}
+
+.question-img{
+  width:100%;
+  max-height:430px;
+  object-fit:contain;
+  margin-top:14px;
+  border-radius:7px;
+}
+
+/* ACTIONS */
+
+.actions{
+  border-top:1px solid #eee;
+  margin-top:15px;
+  padding-top:10px;
+  display:flex;
+  gap:10px;
+}
+
+.action{
+  background:none;
+  border:0;
+  color:#555;
+  padding:8px 5px;
+}
+
+.action:hover{
+  color:#b92b27;
+}
+
+/* ANSWER BOX */
+
+.answer-box{
+  background:#fafafa;
+  border:1px solid #ddd;
+  border-radius:8px;
+  padding:15px;
+  margin-top:14px;
+  display:none;
+}
+
+.answer-box.active{
+  display:block;
+}
+
+.answer-title{
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.answer-submit{
+  background:#b92b27;
+  color:white;
+  border:0;
+  padding:10px 18px;
+  border-radius:6px;
   font-weight:bold;
 }
 
-.question-image{
-  max-width:100%;
-  max-height:430px;
-  display:block;
-  margin:15px 0;
-  border-radius:10px;
-  border:1px solid #e5e7eb;
-}
-
-/* BUTTONS */
-
-.actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
-
-.action-btn{
-  border:1px solid #d8dee4;
-  background:white;
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.action-btn:hover{
-  background:#f1f6fa;
+.cancel{
+  background:#eee;
+  border:0;
+  padding:10px 18px;
+  border-radius:6px;
+  margin-left:6px;
 }
 
 /* ANSWERS */
 
 .answers{
-  border-top:1px solid #edf0f2;
   margin-top:15px;
-  padding-top:12px;
 }
 
 .answer{
-  background:#f7f9fb;
-  border-radius:10px;
-  padding:13px;
-  margin:9px 0;
+  border-top:1px solid #eee;
+  padding:15px 0;
 }
 
 .answer-name{
   font-weight:bold;
-  color:#173b55;
+  font-size:14px;
+}
+
+.answer-date{
+  color:#888;
+  font-size:12px;
 }
 
 .answer-text{
-  line-height:1.55;
-  margin:7px 0;
+  margin-top:8px;
+  line-height:1.6;
   white-space:pre-wrap;
 }
 
-.answer-image{
-  max-width:100%;
+.answer-img{
+  width:100%;
   max-height:400px;
-  display:block;
-  margin:10px 0;
-  border-radius:9px;
+  object-fit:contain;
+  margin-top:12px;
+  border-radius:7px;
 }
 
+/* EMPTY */
+
 .empty{
-  background:white;
-  border:1px solid #e3e8ed;
-  border-radius:14px;
+  background:#fff;
+  border:1px solid #ddd;
   padding:35px;
+  border-radius:8px;
   text-align:center;
-  color:#687684;
+  color:#777;
 }
 
 /* FOOTER */
 
 footer{
-  background:#102d42;
-  color:#dbe7ef;
-  margin-top:20px;
+  background:#222;
+  color:#ddd;
+  margin-top:30px;
 }
 
 .footer-inner{
-  max-width:1150px;
+  max-width:1050px;
   margin:auto;
-  padding:35px 16px;
+  padding:30px 15px;
   text-align:center;
-  line-height:1.6;
   font-size:13px;
+  line-height:1.6;
 }
 
 /* MOBILE */
 
-@media(max-width:850px){
+@media(max-width:800px){
 
-  .layout{
-    grid-template-columns:1fr;
-  }
+.layout{
+  grid-template-columns:1fr;
+}
 
-  .panel{
-    position:static;
-  }
+.sidebar{
+  order:1;
+}
 
-  .nav-links{
-    display:none;
-  }
+#questions{
+  order:2;
+}
 
 }
 
-@media(max-width:650px){
+@media(max-width:600px){
 
-  .container{
-    padding:14px 10px;
-  }
-
-  .hero-inner{
-    padding:28px 14px;
-  }
-
-  .hero h1{
-    font-size:32px;
-  }
-
-  .stats{
-    gap:7px;
-  }
-
-  .stat{
-    flex:1;
-    min-width:0;
-    padding:10px;
-  }
-
-  .stat b{
-    font-size:21px;
-  }
-
-  .card{
-    padding:14px;
-  }
-
-  .question{
-    font-size:18px;
-  }
-
-  .search-row{
-    grid-template-columns:1fr;
-  }
-
-  .search-btn,
-  .clear-btn{
-    min-height:42px;
-  }
-
-  .logo{
-    font-size:21px;
-  }
-
-  .logo-box{
-    width:37px;
-    height:37px;
-  }
-
+.nav{
+  height:58px;
 }
 
-@media(max-width:400px){
+.nav a{
+  display:none;
+}
 
-  .hero h1{
-    font-size:28px;
-  }
+.hero-inner{
+  padding:25px 13px;
+}
 
-  .question{
-    font-size:17px;
-  }
+.hero h1{
+  font-size:29px;
+}
 
-  .actions{
-    display:grid;
-    grid-template-columns:1fr;
-  }
+.container{
+  padding:13px 10px;
+}
 
-  .action-btn{
-    width:100%;
-  }
+.search{
+  grid-template-columns:1fr;
+}
+
+.question-card{
+  padding:14px;
+}
+
+.question-text{
+  font-size:18px;
+}
+
+.stats{
+  gap:7px;
+}
+
+.stat{
+  flex:1;
+  padding:10px;
+}
 
 }
 </style>
@@ -450,60 +428,46 @@ footer{
 
 <body>
 
-<!-- HEADER -->
-
-<header class="header">
+<header>
 
 <div class="nav">
 
-<a href="#" class="logo">
-
-<div class="logo-box">
-CL
-</div>
-
-<div class="logo-text">
+<div class="logo">
+<div class="logo-icon">CL</div>
 Civil<span>Line</span>
 </div>
 
-</a>
-
-<nav class="nav-links">
-
+<div>
 <a href="#questions">Questions</a>
 <a href="#about">About</a>
 <a href="#privacy">Privacy</a>
-<a href="#terms">Terms</a>
-
-</nav>
+</div>
 
 </div>
 
 </header>
 
 
-<!-- HERO -->
-
 <section class="hero">
 
 <div class="hero-inner">
 
-<h1>Civil Engineering Community</h1>
+<h1>Civil Engineering Q&A</h1>
 
 <p>
-Ask Civil Engineering questions, share practical construction knowledge,
-upload site images and help other engineers and contractors.
+Ask questions, share construction knowledge and help other
+Civil Engineers, Contractors and Site Engineers.
 </p>
 
 <div class="stats">
 
 <div class="stat">
-<b id="totalQuestions">0</b>
+<strong id="totalQuestions">0</strong>
 Questions
 </div>
 
 <div class="stat">
-<b id="totalAnswers">0</b>
+<strong id="totalAnswers">0</strong>
 Answers
 </div>
 
@@ -514,36 +478,27 @@ Answers
 </section>
 
 
-<!-- MAIN -->
-
 <main class="container">
 
 <div class="layout">
 
 
-<!-- ASK QUESTION -->
+<!-- QUESTION FORM -->
 
-<aside class="panel">
+<aside class="sidebar">
 
 <h2>Ask a Question</h2>
 
-<p class="small-text">
-Only your name is required.
-Email and phone number are not required.
-</p>
-
 <input
-id="userName"
-type="text"
-placeholder="Your name *"
+id="questionName"
+placeholder="Your name"
 >
 
 <textarea
 id="questionText"
 rows="5"
-placeholder="Write your Civil Engineering question *"
+placeholder="What is your question?"
 ></textarea>
-
 
 <select id="questionCategory">
 
@@ -551,8 +506,8 @@ placeholder="Write your Civil Engineering question *"
 <option>RCC</option>
 <option>Estimation</option>
 <option>Billing</option>
-<option>Quantity Surveying</option>
 <option>Site Engineering</option>
+<option>Quantity Surveying</option>
 <option>Construction Materials</option>
 <option>Road Work</option>
 <option>Plum Concrete</option>
@@ -562,11 +517,6 @@ placeholder="Write your Civil Engineering question *"
 <option>SSR / Government Rates</option>
 
 </select>
-
-
-<label class="small-text">
-<b>Question Image</b>
-</label>
 
 <input
 id="questionImage"
@@ -574,49 +524,39 @@ type="file"
 accept="image/*"
 >
 
-
 <button
 class="primary"
-onclick="postQuestion()"
+onclick="submitQuestion()"
 >
 Post Question
 </button>
 
-<p class="small-text">
-Image maximum size: 5 MB
-</p>
-
 </aside>
 
 
-<!-- QUESTIONS -->
-
 <section id="questions">
 
-<h2>Latest Questions</h2>
+<h2>Questions</h2>
 
 
 <!-- SEARCH -->
 
-<div class="search-area">
-
-<div class="search-row">
+<div class="search">
 
 <input
-id="searchInput"
-type="search"
-placeholder="🔍 Search RCC, slab, beam, billing..."
+id="searchText"
+placeholder="Search questions..."
 >
 
-<select id="filterCategory">
+<select id="searchCategory">
 
 <option value="">All Categories</option>
 <option>General Civil Engineering</option>
 <option>RCC</option>
 <option>Estimation</option>
 <option>Billing</option>
-<option>Quantity Surveying</option>
 <option>Site Engineering</option>
+<option>Quantity Surveying</option>
 <option>Construction Materials</option>
 <option>Road Work</option>
 <option>Plum Concrete</option>
@@ -627,21 +567,9 @@ placeholder="🔍 Search RCC, slab, beam, billing..."
 
 </select>
 
-<button
-class="search-btn"
-onclick="loadQuestions()"
->
+<button onclick="loadQuestions()">
 Search
 </button>
-
-<button
-class="clear-btn"
-onclick="clearSearch()"
->
-Clear
-</button>
-
-</div>
 
 </div>
 
@@ -661,55 +589,28 @@ Loading questions...
 </main>
 
 
-<!-- FOOTER -->
-
 <footer>
 
 <div class="footer-inner">
 
 <div id="about">
-
-<h3>About CivilLine</h3>
-
+<b>About CivilLine</b>
 <p>
 CivilLine is a community platform for Civil Engineers,
-Contractors, Site Engineers, Consultants, Students and
-construction professionals.
+Contractors, Site Engineers, Consultants and Students.
 </p>
-
 </div>
 
-
 <div id="privacy">
-
-<h3>Privacy Policy</h3>
-
+<b>Privacy Policy</b>
 <p>
 Questions and answers are stored in Google Sheets.
 Uploaded images are stored in Google Drive.
-Please do not upload confidential project documents
-or sensitive personal information.
 </p>
-
 </div>
 
-
-<div id="terms">
-
-<h3>Terms & Conditions</h3>
-
 <p>
-Users should post genuine questions and useful answers.
-Spam, abusive content, misleading information and
-unauthorized copyrighted material may be removed.
-</p>
-
-</div>
-
-
-<p>
-© 2026 CivilLine · About Us · Privacy Policy ·
-Terms & Conditions · Contact Us
+© 2026 CivilLine · Privacy Policy · Terms & Conditions
 </p>
 
 </div>
@@ -719,43 +620,70 @@ Terms & Conditions · Contact Us
 
 <script>
 
-/* =================================
-   YOUR NEW GOOGLE APPS SCRIPT URL
-================================= */
+/* YOUR NEW APPS SCRIPT URL */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxBImQgae3knrXUKWyu76XfPkZViHPABqPKVJy9rCqZEb3E698JVI1wMcdnXenIYfRiVg/exec";
 
 
-/* =================================
-   HTML SECURITY
-================================= */
+/* SECURITY */
 
-function escapeHTML(value){
+function esc(value){
 
 return String(value || "")
-.replace(/[&<>"']/g,function(char){
+.replace(/[&<>"']/g,function(c){
 
 return {
-
 "&":"&amp;",
 "<":"&lt;",
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#039;"
 
-}[char];
+}[c];
 
 });
 
 }
 
 
-/* =================================
-   API POST
-================================= */
+/* IMAGE */
 
-async function sendAPI(data){
+function convertImage(file){
+
+return new Promise(function(resolve,reject){
+
+if(!file){
+
+resolve("");
+
+return;
+
+}
+
+const reader =
+new FileReader();
+
+reader.onload=function(){
+
+resolve(
+reader.result.split(",")[1]
+);
+
+};
+
+reader.onerror=reject;
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+
+/* API POST */
+
+async function postAPI(data){
 
 const response =
 await fetch(API_URL,{
@@ -776,48 +704,16 @@ return response.json();
 }
 
 
-/* =================================
-   IMAGE BASE64
-================================= */
+/* POST QUESTION */
 
-function imageToBase64(file){
-
-return new Promise(function(resolve,reject){
-
-const reader =
-new FileReader();
-
-reader.onload =
-function(){
-
-resolve(
-reader.result.split(",")[1]
-);
-
-};
-
-reader.onerror =
-reject;
-
-reader.readAsDataURL(file);
-
-});
-
-}
-
-
-/* =================================
-   POST QUESTION
-================================= */
-
-async function postQuestion(){
+async function submitQuestion(){
 
 const name =
 document.getElementById(
-"userName"
+"questionName"
 ).value.trim();
 
-const question =
+const text =
 document.getElementById(
 "questionText"
 ).value.trim();
@@ -841,57 +737,42 @@ return;
 
 }
 
+if(!text){
 
-if(!question){
-
-alert("Please write your question.");
+alert("Please enter your question.");
 
 return;
 
 }
-
 
 if(image &&
-image.size > 5 * 1024 * 1024){
+image.size > 5*1024*1024){
 
-alert(
-"Question image must be below 5 MB."
-);
+alert("Image must be below 5 MB.");
 
 return;
 
 }
 
 
-let imageData = "";
-
-if(image){
-
-imageData =
-await imageToBase64(image);
-
-}
-
-
-const data = {
+const data={
 
 action:"postQuestion",
 
 name:name,
 
-question:question,
+question:text,
 
 category:category,
 
-imageData:imageData,
+imageData:
+await convertImage(image),
 
-imageName:image
-? image.name
-: "",
+imageName:
+image ? image.name : "",
 
-imageType:image
-? image.type
-: ""
+imageType:
+image ? image.type : ""
 
 };
 
@@ -899,14 +780,12 @@ imageType:image
 try{
 
 const result =
-await sendAPI(data);
+await postAPI(data);
 
 
 if(result.success){
 
-alert(
-"Question posted successfully!"
-);
+alert("Question posted successfully!");
 
 document.getElementById(
 "questionText"
@@ -922,15 +801,17 @@ loadQuestions();
 
 alert(
 result.error ||
-"Could not post question."
+"Question could not be posted."
 );
 
 }
 
 }catch(error){
 
+console.error(error);
+
 alert(
-"Could not connect to CivilLine server."
+"Server connection failed."
 );
 
 }
@@ -938,61 +819,66 @@ alert(
 }
 
 
-/* =================================
-   LOAD QUESTIONS
-================================= */
+/* LOAD QUESTIONS */
 
 async function loadQuestions(){
 
 const search =
 document.getElementById(
-"searchInput"
+"searchText"
 ).value.trim();
 
 const category =
 document.getElementById(
-"filterCategory"
+"searchCategory"
 ).value;
 
 
 const url =
-API_URL +
-"?action=getQuestions" +
-"&search=" +
-encodeURIComponent(search) +
-"&category=" +
+API_URL+
+"?action=getQuestions"+
+"&search="+
+encodeURIComponent(search)+
+"&category="+
 encodeURIComponent(category);
 
 
 try{
 
-const [questionsData,statsData] =
-await Promise.all([
+const response =
+await fetch(url);
 
-fetch(url).then(
-response => response.json()
-),
+const data =
+await response.json();
 
-fetch(
-API_URL +
-"?action=getStats"
+
+if(!data.success){
+
+throw new Error(
+data.error
+);
+
+}
+
+
+const stats =
+await fetch(
+API_URL+"?action=getStats"
 ).then(
-response => response.json()
-)
-
-]);
+r=>r.json()
+);
 
 
 document.getElementById(
 "totalQuestions"
 ).textContent =
-statsData.totalQuestions || 0;
+stats.totalQuestions || 0;
 
 
 document.getElementById(
 "totalAnswers"
 ).textContent =
-statsData.totalAnswers || 0;
+stats.totalAnswers || 0;
 
 
 const list =
@@ -1001,17 +887,17 @@ document.getElementById(
 );
 
 
-if(
-!questionsData.questions ||
-questionsData.questions.length === 0
-){
+if(!data.questions ||
+data.questions.length===0){
 
-list.innerHTML = `
+list.innerHTML=`
+
 <div class="empty">
+
 No questions found.
-<br>
-Try another keyword or category.
+
 </div>
+
 `;
 
 return;
@@ -1020,53 +906,43 @@ return;
 
 
 list.innerHTML =
-questionsData.questions
-.map(function(item){
+data.questions.map(function(q){
 
 return `
 
-<article class="card">
+<article class="question-card">
 
 <div class="meta">
 
-<b>
-${escapeHTML(item.name)}
-</b>
-
+<b>${esc(q.name)}</b>
 ·
-
-${escapeHTML(item.date)}
+${esc(q.date)}
 
 </div>
 
 
-<div class="question">
+<div class="question-text">
 
-${escapeHTML(item.question)}
+${esc(q.question)}
 
 </div>
 
 
 <span class="category">
 
-${escapeHTML(item.category)}
+${esc(q.category)}
 
 </span>
 
 
 ${
-item.imageURL
+q.imageURL
 ?
-
-`
-<img
-class="question-image"
-src="${escapeHTML(item.imageURL)}"
-alt="Question image"
+`<img
+class="question-img"
+src="${esc(q.imageURL)}"
 loading="lazy"
->
-`
-
+>`
 :""
 }
 
@@ -1074,22 +950,20 @@ loading="lazy"
 <div class="actions">
 
 <button
-class="action-btn"
-onclick="showAnswers('${escapeHTML(item.id)}')"
+class="action"
+onclick="showAnswers('${esc(q.id)}')"
 >
 
 💬
-
-${item.answerCount || 0}
-
+${q.answerCount || 0}
 Answers
 
 </button>
 
 
 <button
-class="action-btn"
-onclick="answerQuestion('${escapeHTML(item.id)}')"
+class="action"
+onclick="openAnswerBox('${esc(q.id)}')"
 >
 
 ✍️ Answer
@@ -1099,25 +973,93 @@ onclick="answerQuestion('${escapeHTML(item.id)}')"
 </div>
 
 
-<div
-class="answers"
-id="answers-${escapeHTML(item.id)}"
-></div>
+<!-- QUORA STYLE ANSWER FORM -->
 
+<div
+id="answerBox-${esc(q.id)}"
+class="answer-box"
+>
+
+<div class="answer-title">
+
+Write your answer
+
+</div>
+
+
+<input
+id="answerName-${esc(q.id)}"
+placeholder="Your name"
+>
+
+
+<textarea
+id="answerText-${esc(q.id)}"
+rows="6"
+placeholder="Write a helpful answer..."
+></textarea>
+
+
+<label>
+
+<b>Attach image</b>
+
+</label>
+
+
+<input
+id="answerImage-${esc(q.id)}"
+type="file"
+accept="image/*"
+>
+
+
+<br>
+
+
+<button
+class="answer-submit"
+onclick="submitAnswer('${esc(q.id)}')"
+>
+
+Submit Answer
+
+</button>
+
+
+<button
+class="cancel"
+onclick="closeAnswerBox('${esc(q.id)}')"
+>
+
+Cancel
+
+</button>
+
+</div>
+
+
+<div
+id="answers-${esc(q.id)}"
+class="answers"
+>
+
+</div>
 
 </article>
 
 `;
 
-})
-.join("");
+}).join("");
 
 
 }catch(error){
 
+console.error(error);
+
 document.getElementById(
 "questionList"
-).innerHTML = `
+).innerHTML=`
 
 <div class="empty">
 
@@ -1125,7 +1067,7 @@ Could not load questions.
 
 <br><br>
 
-Please check your Google Apps Script deployment.
+${esc(error.message)}
 
 </div>
 
@@ -1136,59 +1078,231 @@ Please check your Google Apps Script deployment.
 }
 
 
-/* =================================
-   SHOW ANSWERS
-================================= */
+/* OPEN ANSWER */
 
-async function showAnswers(questionId){
+function openAnswerBox(id){
 
-const container =
+const box =
 document.getElementById(
-"answers-" + questionId
+"answerBox-"+id
 );
 
-container.innerHTML =
-"Loading answers...";
+box.classList.add("active");
+
+box.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+}
 
 
-try{
+/* CLOSE ANSWER */
 
-const data =
-await fetch(
+function closeAnswerBox(id){
 
-API_URL +
-"?action=getAnswers&questionId=" +
-encodeURIComponent(questionId)
+document.getElementById(
+"answerBox-"+id
+).classList.remove("active");
 
-).then(
-response => response.json()
-);
+}
 
 
-if(
-!data.answers ||
-data.answers.length === 0
-){
+/* SUBMIT ANSWER */
 
-container.innerHTML = `
+async function submitAnswer(questionId){
 
-<div class="small-text">
+const name =
+document.getElementById(
+"answerName-"+questionId
+).value.trim();
 
-No answers yet.
+const text =
+document.getElementById(
+"answerText-"+questionId
+).value.trim();
 
-Be the first person to answer this question.
+const image =
+document.getElementById(
+"answerImage-"+questionId
+).files[0];
 
-</div>
 
-`;
+if(!name){
+
+alert("Please enter your name.");
 
 return;
 
 }
 
 
-container.innerHTML =
-data.answers.map(function(answer){
+if(!text){
+
+alert("Please write your answer.");
+
+return;
+
+}
+
+
+if(image &&
+image.size > 5*1024*1024){
+
+alert(
+"Answer image must be below 5 MB."
+);
+
+return;
+
+}
+
+
+/* Disable submit while uploading */
+
+const buttons =
+document.querySelectorAll(
+"#answerBox-"+questionId+
+" .answer-submit"
+);
+
+buttons.forEach(
+b=>b.disabled=true
+);
+
+
+try{
+
+const result =
+await postAPI({
+
+action:"postAnswer",
+
+questionId:questionId,
+
+name:name,
+
+answer:text,
+
+imageData:
+await convertImage(image),
+
+imageName:
+image ? image.name : "",
+
+imageType:
+image ? image.type : ""
+
+});
+
+
+if(result.success){
+
+alert(
+"Answer submitted successfully!"
+);
+
+
+/* Clear form */
+
+document.getElementById(
+"answerName-"+questionId
+).value="";
+
+document.getElementById(
+"answerText-"+questionId
+).value="";
+
+document.getElementById(
+"answerImage-"+questionId
+).value="";
+
+
+closeAnswerBox(questionId);
+
+
+/* Reload answers */
+
+await showAnswers(questionId);
+
+loadQuestions();
+
+
+}else{
+
+alert(
+result.error ||
+"Answer could not be submitted."
+);
+
+}
+
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Answer submission failed: "+
+error.message
+);
+
+}
+
+
+buttons.forEach(
+b=>b.disabled=false
+);
+
+}
+
+
+/* SHOW ANSWERS */
+
+async function showAnswers(questionId){
+
+const box =
+document.getElementById(
+"answers-"+questionId
+);
+
+box.innerHTML=
+"Loading answers...";
+
+
+try{
+
+const response =
+await fetch(
+
+API_URL+
+"?action=getAnswers"+
+"&questionId="+
+encodeURIComponent(questionId)
+
+);
+
+
+const data =
+await response.json();
+
+
+if(
+!data.success ||
+!data.answers ||
+data.answers.length===0
+){
+
+box.innerHTML=
+"<div class='meta'>No answers yet.</div>";
+
+return;
+
+}
+
+
+box.innerHTML =
+data.answers.map(function(a){
 
 return `
 
@@ -1196,44 +1310,35 @@ return `
 
 <div class="answer-name">
 
-${escapeHTML(answer.name)}
+${esc(a.name)}
+
+</div>
+
+
+<div class="answer-date">
+
+${esc(a.date)}
 
 </div>
 
 
 <div class="answer-text">
 
-${escapeHTML(answer.answer)}
+${esc(a.answer)}
 
 </div>
 
 
 ${
-answer.imageURL
+a.imageURL
 ?
-
-`
-<img
-class="answer-image"
-src="${escapeHTML(answer.imageURL)}"
-alt="Answer image"
+`<img
+class="answer-img"
+src="${esc(a.imageURL)}"
 loading="lazy"
->
-`
-
+>`
 :""
 }
-
-
-<div class="meta">
-
-${escapeHTML(answer.date)}
-
-&nbsp; · &nbsp;
-
-👍 ${answer.likes || 0}
-
-</div>
 
 </div>
 
@@ -1244,7 +1349,9 @@ ${escapeHTML(answer.date)}
 
 }catch(error){
 
-container.innerHTML =
+console.error(error);
+
+box.innerHTML=
 "Could not load answers.";
 
 }
@@ -1252,220 +1359,34 @@ container.innerHTML =
 }
 
 
-/* =================================
-   ANSWER QUESTION
-================================= */
+/* ENTER SEARCH */
 
-async function answerQuestion(questionId){
+document.getElementById(
+"searchText"
+).addEventListener(
+"keydown",
+function(e){
 
-const name =
-prompt("Enter your name:");
+if(e.key==="Enter"){
 
-if(
-!name ||
-!name.trim()
-){
-
-return;
+loadQuestions();
 
 }
-
-
-const answer =
-prompt("Write your answer:");
-
-if(
-!answer ||
-!answer.trim()
-){
-
-return;
-
-}
-
-
-/*
-Create temporary file selector
-for Answer Image
-*/
-
-const fileInput =
-document.createElement("input");
-
-fileInput.type="file";
-
-fileInput.accept="image/*";
-
-fileInput.style.display="none";
-
-document.body.appendChild(
-fileInput
-);
-
-
-fileInput.click();
-
-
-await new Promise(function(resolve){
-
-fileInput.onchange =
-resolve;
 
 });
 
 
-const image =
-fileInput.files[0];
-
-
-if(
-image &&
-image.size > 5 * 1024 * 1024
-){
-
-alert(
-"Answer image must be below 5 MB."
-);
-
-fileInput.remove();
-
-return;
-
-}
-
-
-let imageData="";
-
-if(image){
-
-imageData =
-await imageToBase64(image);
-
-}
-
-
-const data = {
-
-action:"postAnswer",
-
-questionId:questionId,
-
-name:name.trim(),
-
-answer:answer.trim(),
-
-imageData:imageData,
-
-imageName:image
-? image.name
-: "",
-
-imageType:image
-? image.type
-: ""
-
-};
-
-
-fileInput.remove();
-
-
-try{
-
-const result =
-await sendAPI(data);
-
-
-if(result.success){
-
-alert(
-"Answer posted successfully!"
-);
-
-showAnswers(questionId);
-
-loadQuestions();
-
-}else{
-
-alert(
-result.error ||
-"Could not post answer."
-);
-
-}
-
-}catch(error){
-
-alert(
-"Could not connect to server."
-);
-
-}
-
-}
-
-
-/* =================================
-   CLEAR SEARCH
-================================= */
-
-function clearSearch(){
+/* CATEGORY SEARCH */
 
 document.getElementById(
-"searchInput"
-).value="";
-
-
-document.getElementById(
-"filterCategory"
-).value="";
-
-
-loadQuestions();
-
-}
-
-
-/* =================================
-   SEARCH ENTER KEY
-================================= */
-
-document.getElementById(
-"searchInput"
-).addEventListener(
-"keydown",
-function(event){
-
-if(event.key === "Enter"){
-
-loadQuestions();
-
-}
-
-}
-);
-
-
-/* =================================
-   CATEGORY CHANGE
-================================= */
-
-document.getElementById(
-"filterCategory"
+"searchCategory"
 ).addEventListener(
 "change",
-function(){
-
-loadQuestions();
-
-}
+loadQuestions
 );
 
 
-/* =================================
-   START
-================================= */
+/* START */
 
 loadQuestions();
 
