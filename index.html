@@ -298,6 +298,85 @@ animation:fadeInUp .5s ease .1s both;
 margin-top:0;
 }
 
+
+/* ================= COMPOSER BAR (Quora style) ================= */
+
+.composer-bar{
+display:flex;
+align-items:center;
+gap:12px;
+background:#f5f5f5;
+border:1px solid #ddd;
+border-radius:30px;
+padding:10px 16px;
+cursor:pointer;
+transition:background .2s ease,border-color .2s ease;
+}
+
+.composer-bar:hover{
+background:#efefef;
+border-color:#ccc;
+}
+
+.composer-avatar{
+width:36px;
+height:36px;
+flex-shrink:0;
+border-radius:50%;
+background:#b92b27;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+}
+
+.composer-placeholder{
+color:#777;
+font-size:14px;
+}
+
+.composer-actions{
+display:flex;
+justify-content:center;
+margin-top:10px;
+padding-top:10px;
+border-top:1px solid #eee;
+}
+
+.composer-action{
+background:none;
+border:0;
+font-weight:bold;
+color:#444;
+cursor:pointer;
+padding:8px 16px;
+border-radius:6px;
+transition:background .2s ease,color .2s ease;
+}
+
+.composer-action:hover{
+background:#f5f5f5;
+color:#b92b27;
+}
+
+
+/* ================= COLLAPSIBLE ASK FORM ================= */
+
+.ask-form{
+max-height:0;
+opacity:0;
+overflow:hidden;
+margin-top:0;
+transition:max-height .35s ease,opacity .3s ease,margin-top .35s ease;
+}
+
+.ask-form.open{
+max-height:900px;
+opacity:1;
+margin-top:15px;
+}
+
 input,
 textarea,
 select{
@@ -669,18 +748,18 @@ padding:12px 10px;
 /*
 IMPORTANT MOBILE ORDER
 
+Ask Question
+↓
 Search
 ↓
 Questions
-↓
-Ask Question
 ↓
 Answers
 */
 
 .search-section{
 margin-bottom:12px;
-order:1;
+order:2;
 }
 
 .layout{
@@ -690,11 +769,11 @@ gap:12px;
 }
 
 .sidebar{
-order:2;
+order:1;
 }
 
 #questions{
-order:1;
+order:3;
 }
 
 .search-box{
@@ -948,6 +1027,41 @@ class="sidebar"
 id="ask"
 >
 
+<div
+class="composer-bar"
+onclick="toggleAskForm()"
+>
+
+<div class="composer-avatar">
+🧑‍🔧
+</div>
+
+<div class="composer-placeholder">
+What civil engineering question do you have?
+</div>
+
+</div>
+
+
+<div class="composer-actions">
+
+<button
+class="composer-action"
+onclick="toggleAskForm()"
+>
+
+❓ Ask
+
+</button>
+
+</div>
+
+
+<div
+class="ask-form"
+id="askForm"
+>
+
 <h2>
 Ask a Question
 </h2>
@@ -1038,6 +1152,8 @@ onclick="submitQuestion()"
 Post Question
 
 </button>
+
+</div>
 
 </aside>
 
@@ -1131,10 +1247,6 @@ Home
 
 <a href="#about">
 About
-</a>
-
-<a href="#privacy">
-Privacy
 </a>
 
 <a href="#terms">
@@ -1252,6 +1364,42 @@ return response.json();
 
 
 /* =====================================================
+   TOGGLE ASK FORM
+===================================================== */
+
+function toggleAskForm(){
+
+const form =
+document.getElementById(
+"askForm"
+);
+
+
+form.classList.toggle(
+"open"
+);
+
+
+if(
+form.classList.contains(
+"open"
+)
+){
+
+form.scrollIntoView({
+
+behavior:"smooth",
+
+block:"start"
+
+});
+
+}
+
+}
+
+
+/* =====================================================
    POST QUESTION
 ===================================================== */
 
@@ -1334,6 +1482,13 @@ document.getElementById(
 document.getElementById(
 "questionImage"
 ).value="";
+
+
+document.getElementById(
+"askForm"
+).classList.remove(
+"open"
+);
 
 
 await loadQuestions();
