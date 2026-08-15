@@ -3,27 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Contractor Enquiry Portal</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:#f4f6f8;
     color:#222;
 }
 
-/* HEADER */
-
 header{
     background:#123047;
     color:white;
-    padding:16px 5%;
+    padding:15px 5%;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -41,40 +36,38 @@ header{
     color:#ffb000;
 }
 
-header button{
+header button,
+.submit{
     background:#ffb000;
     color:#111;
     border:0;
-    padding:10px 16px;
+    padding:11px 17px;
     border-radius:7px;
     font-weight:bold;
     cursor:pointer;
 }
 
-/* HERO */
-
 .hero{
-    background:linear-gradient(
-        135deg,
-        #123047,
-        #17639a
-    );
+    background:linear-gradient(135deg,#123047,#17639a);
     color:white;
     padding:55px 5%;
 }
 
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:auto;
+}
+
 .hero h1{
-    margin:0 0 12px;
     font-size:40px;
+    margin:0 0 12px;
 }
 
 .hero p{
     max-width:700px;
     line-height:1.6;
-    color:#e4edf4;
 }
-
-/* SEARCH */
 
 .search{
     background:white;
@@ -91,7 +84,6 @@ header button{
     padding:13px;
     border:1px solid #ddd;
     border-radius:7px;
-    outline:none;
 }
 
 .search button{
@@ -100,15 +92,6 @@ header button{
     padding:0 20px;
     border-radius:7px;
     font-weight:bold;
-    cursor:pointer;
-}
-
-/* CONTENT */
-
-.container{
-    width:90%;
-    max-width:1100px;
-    margin:auto;
 }
 
 .section{
@@ -121,12 +104,6 @@ header button{
     align-items:center;
     margin-bottom:20px;
 }
-
-.section-title h2{
-    margin:0;
-}
-
-/* CARDS */
 
 .jobs{
     display:grid;
@@ -143,7 +120,6 @@ header button{
 }
 
 .job h3{
-    margin:5px 0 12px;
     color:#123047;
 }
 
@@ -174,7 +150,6 @@ header button{
     justify-content:space-between;
     align-items:center;
     margin-top:20px;
-    gap:10px;
 }
 
 .interest{
@@ -186,8 +161,6 @@ header button{
     cursor:pointer;
 }
 
-/* LOADING */
-
 .loading,
 .empty{
     background:white;
@@ -196,8 +169,6 @@ header button{
     border-radius:10px;
     grid-column:1/-1;
 }
-
-/* MODAL */
 
 .modal{
     display:none;
@@ -234,10 +205,6 @@ header button{
     gap:15px;
 }
 
-.form-group{
-    margin-bottom:5px;
-}
-
 .full{
     grid-column:1/-1;
 }
@@ -262,27 +229,12 @@ textarea{
     min-height:120px;
 }
 
-.submit{
-    background:#17639a;
-    color:white;
-    border:0;
-    padding:12px 20px;
-    border-radius:7px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-/* FOOTER */
-
 footer{
     background:#123047;
     color:white;
     text-align:center;
     padding:30px;
-    margin-top:30px;
 }
-
-/* MOBILE */
 
 @media(max-width:700px){
 
@@ -319,11 +271,7 @@ footer{
 </style>
 </head>
 
-
 <body>
-
-
-<!-- HEADER -->
 
 <header>
 
@@ -338,8 +286,6 @@ Civil<span>Connect</span>
 </header>
 
 
-<!-- HERO -->
-
 <section class="hero">
 
 <div class="container">
@@ -353,15 +299,13 @@ Find construction enquiries, connect with customers,
 and get new civil engineering and contracting work.
 </p>
 
-
 <div class="search">
 
 <input
 id="search"
 type="text"
-placeholder="Search work, RCC, road, wall, shuttering..."
-oninput="searchJobs()"
->
+placeholder="Search RCC, road, wall, shuttering..."
+oninput="searchJobs()">
 
 <button onclick="searchJobs()">
 Search
@@ -374,40 +318,27 @@ Search
 </section>
 
 
-<!-- JOBS -->
-
 <section class="section">
 
 <div class="container">
 
 <div class="section-title">
 
-<div>
-
 <h2>
-Latest Enquiries
+Latest Construction Enquiries
 </h2>
-
-<p>
-Construction requirements posted by customers
-</p>
-
-</div>
 
 <button
 class="submit"
 onclick="openPost()">
 
-Post Your Requirement
+Post Requirement
 
 </button>
 
 </div>
 
-
-<div
-id="jobs"
-class="jobs">
+<div id="jobs" class="jobs">
 
 <div class="loading">
 Loading enquiries...
@@ -420,11 +351,9 @@ Loading enquiries...
 </section>
 
 
-<!-- POST ENQUIRY MODAL -->
+<!-- POST ENQUIRY -->
 
-<div
-id="postModal"
-class="modal">
+<div id="postModal" class="modal">
 
 <div class="modal-box">
 
@@ -434,9 +363,7 @@ class="modal">
 Post Construction Enquiry
 </h2>
 
-<span
-class="close"
-onclick="closePost()">
+<span class="close" onclick="closePost()">
 ×
 </span>
 
@@ -444,55 +371,26 @@ onclick="closePost()">
 
 <br>
 
-
 <form id="postForm">
 
 <div class="form-grid">
 
-
-<div class="form-group">
-
-<label>
-Name *
-</label>
-
-<input
-name="name"
-required
->
-
+<div>
+<label>Name *</label>
+<input name="name" required>
 </div>
 
-
-<div class="form-group">
-
-<label>
-Phone *
-</label>
-
-<input
-name="phone"
-type="tel"
-required
->
-
+<div>
+<label>Phone *</label>
+<input name="phone" type="tel" required>
 </div>
 
+<div>
+<label>Work Type *</label>
 
-<div class="form-group">
+<select name="workType" required>
 
-<label>
-Work Type *
-</label>
-
-<select
-name="workType"
-required>
-
-<option value="">
-Select Work
-</option>
-
+<option value="">Select Work</option>
 <option>Building Construction</option>
 <option>RCC Work</option>
 <option>Plum Concrete</option>
@@ -509,92 +407,47 @@ Select Work
 <option>Other</option>
 
 </select>
-
 </div>
 
-
-<div class="form-group">
-
-<label>
-Location *
-</label>
-
-<input
-name="location"
-placeholder="Baramati, Pune..."
-required
->
-
+<div>
+<label>Location *</label>
+<input name="location" required>
 </div>
 
-
-<div class="form-group">
-
-<label>
-Budget
-</label>
-
-<input
-name="budget"
-placeholder="₹2,00,000"
->
-
+<div>
+<label>Budget</label>
+<input name="budget" placeholder="₹2,00,000">
 </div>
 
-
-<div class="form-group">
-
-<label>
-Required Date
-</label>
-
-<input
-name="requiredDate"
-type="date"
->
-
+<div>
+<label>Required Date</label>
+<input name="requiredDate" type="date">
 </div>
 
-
-<div class="form-group full">
-
-<label>
-Description *
-</label>
+<div class="full">
+<label>Description *</label>
 
 <textarea
 name="description"
 placeholder="Describe your construction requirement..."
 required></textarea>
-
 </div>
 
-
-<div class="form-group full">
-
-<label>
-Project Image URL
-</label>
+<div class="full">
+<label>Project Image URL</label>
 
 <input
 name="imageUrl"
 type="url"
-placeholder="Paste image URL"
->
-
+placeholder="https://example.com/image.jpg">
 </div>
-
 
 </div>
 
 <br>
 
-<button
-class="submit"
-type="submit">
-
+<button class="submit" type="submit">
 Submit Enquiry
-
 </button>
 
 </form>
@@ -604,11 +457,9 @@ Submit Enquiry
 </div>
 
 
-<!-- INTEREST MODAL -->
+<!-- INTEREST -->
 
-<div
-id="interestModal"
-class="modal">
+<div id="interestModal" class="modal">
 
 <div class="modal-box">
 
@@ -618,9 +469,7 @@ class="modal">
 I'm Interested
 </h2>
 
-<span
-class="close"
-onclick="closeInterest()">
+<span class="close" onclick="closeInterest()">
 ×
 </span>
 
@@ -628,40 +477,28 @@ onclick="closeInterest()">
 
 <br>
 
-
 <form id="interestForm">
 
 <input
 type="hidden"
 id="enquiryId"
-name="enquiryId"
->
-
+name="enquiryId">
 
 <label>
 Contractor Name *
 </label>
 
-<input
-name="contractor"
-required
->
+<input name="contractor" required>
 
 <br><br>
-
 
 <label>
 Phone / WhatsApp *
 </label>
 
-<input
-name="phone"
-type="tel"
-required
->
+<input name="phone" type="tel" required>
 
 <br><br>
-
 
 <label>
 Message *
@@ -674,13 +511,8 @@ required></textarea>
 
 <br><br>
 
-
-<button
-class="submit"
-type="submit">
-
+<button class="submit" type="submit">
 Send Response
-
 </button>
 
 </form>
@@ -690,8 +522,6 @@ Send Response
 </div>
 
 
-<!-- FOOTER -->
-
 <footer>
 
 <strong>
@@ -699,7 +529,7 @@ CivilConnect
 </strong>
 
 <p>
-Construction enquiry platform
+Construction Enquiry Platform
 </p>
 
 </footer>
@@ -707,24 +537,19 @@ Construction enquiry platform
 
 <script>
 
-
 /* =====================================================
-   YOUR APPS SCRIPT URL
+   NEW APPS SCRIPT URL
    ===================================================== */
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbxEbipqlqddwy9r8xCIl_favL9GyBpqhL0ep8kEKwUM09clUcmGofiuHxUYl75GhPjY/exec";
+"https://script.google.com/macros/s/AKfycbwvGbYKGWxHY7LflutBB_oZer5uNeOnWe7ninp6eJFI-VxCi5pkYb1qnpwuWd1qEL4Qeg/exec";
 
-
-/* =====================================================
-   DATA
-   ===================================================== */
 
 let allJobs = [];
 
 
 /* =====================================================
-   LOAD JOBS
+   LOAD ENQUIRIES
    ===================================================== */
 
 async function loadJobs(){
@@ -732,12 +557,10 @@ async function loadJobs(){
     const box =
     document.getElementById("jobs");
 
-
     box.innerHTML =
     `<div class="loading">
     Loading enquiries...
     </div>`;
-
 
     try{
 
@@ -746,56 +569,67 @@ async function loadJobs(){
             API_URL + "?action=getEnquiries"
         );
 
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP error " +
+                response.status
+            );
+
+        }
 
         const data =
         await response.json();
 
-
         console.log(
-            "Google Apps Script:",
+            "Apps Script response:",
             data
         );
 
-
-        if(
-            data.success === true
-        ){
+        if(data.success === true){
 
             allJobs =
             data.enquiries || [];
 
-            displayJobs(
-                allJobs
-            );
+            displayJobs(allJobs);
 
-        }
-        else{
+        }else{
 
             throw new Error(
                 data.error ||
-                "Unable to get data"
+                "API returned an error"
             );
 
         }
 
-    }
+    }catch(error){
 
-    catch(error){
-
-        console.error(error);
-
+        console.error(
+            "API ERROR:",
+            error
+        );
 
         box.innerHTML = `
 
         <div class="empty">
 
-            <h3>
-            Could not load enquiries
-            </h3>
+        <h3>
+        Could not load enquiries
+        </h3>
 
-            <p>
-            Please check your Apps Script deployment.
-            </p>
+        <p>
+        ${escapeHTML(error.message)}
+        </p>
+
+        <br>
+
+        <button
+        class="submit"
+        onclick="loadJobs()">
+
+        Try Again
+
+        </button>
 
         </div>
 
@@ -807,137 +641,117 @@ async function loadJobs(){
 
 
 /* =====================================================
-   DISPLAY JOBS
+   DISPLAY
    ===================================================== */
 
-function displayJobs(
-    jobs
-){
+function displayJobs(jobs){
 
     const box =
     document.getElementById("jobs");
 
-
-    if(
-        !jobs ||
-        jobs.length === 0
-    ){
+    if(!jobs.length){
 
         box.innerHTML = `
 
         <div class="empty">
 
-            <h3>
-            No enquiries available
-            </h3>
+        <h3>
+        No enquiries available
+        </h3>
 
-            <p>
-            Post the first construction requirement.
-            </p>
+        <p>
+        Post the first construction requirement.
+        </p>
 
         </div>
 
         `;
 
         return;
-
     }
 
-
     box.innerHTML =
-    jobs.map(
-    function(job){
+    jobs.map(function(job){
 
-        const image =
-        job.imageUrl
-        ?
-        `
-        <img
-        src="${safe(job.imageUrl)}"
-        style="
-        width:100%;
-        height:180px;
-        object-fit:cover;
-        border-radius:8px;
-        margin:10px 0;
-        "
-        onerror="this.style.display='none'"
-        >
-        `
-        :
-        "";
+        let image = "";
 
+        if(job.imageUrl){
+
+            image = `
+
+            <img
+            src="${escapeHTML(job.imageUrl)}"
+            style="
+            width:100%;
+            height:180px;
+            object-fit:cover;
+            border-radius:8px;
+            margin:12px 0;
+            "
+            onerror="this.style.display='none'">
+
+            `;
+
+        }
 
         return `
 
         <div class="job">
 
-            <small>
-            ${safe(job.name)}
-            </small>
+        <small>
+        ${escapeHTML(job.name)}
+        </small>
 
-            <h3>
-            ${safe(job.workType)}
-            </h3>
+        <h3>
+        ${escapeHTML(job.workType)}
+        </h3>
 
+        <span class="tag">
+        📍 ${escapeHTML(job.location)}
+        </span>
 
-            <span class="tag">
-            📍 ${safe(job.location)}
-            </span>
+        ${
+            job.requiredDate
+            ?
+            `<span class="tag">
+            📅 ${escapeHTML(job.requiredDate)}
+            </span>`
+            :
+            ""
+        }
 
+        <div class="budget">
 
-            ${
-                job.requiredDate
-                ?
-                `
-                <span class="tag">
-                📅 ${safe(job.requiredDate)}
-                </span>
-                `
-                :
-                ""
-            }
+        ${
+            escapeHTML(job.budget) ||
+            "Budget negotiable"
+        }
 
+        </div>
 
-            <div class="budget">
+        <div class="description">
 
-            ${
-                safe(job.budget) ||
-                "Budget negotiable"
-            }
+        ${escapeHTML(job.description)}
 
-            </div>
+        </div>
 
+        ${image}
 
-            <div class="description">
+        <div class="job-footer">
 
-            ${safe(job.description)}
+        <small>
+        ${escapeHTML(job.date)}
+        </small>
 
-            </div>
+        <button
+        class="interest"
+        onclick="openInterest('${escapeHTML(job.id)}')">
 
+        I'm Interested
 
-            ${image}
+        </button>
 
-
-            <div class="job-footer">
-
-                <small>
-                Posted:
-                ${safe(job.date)}
-                </small>
-
-
-                <button
-                class="interest"
-                onclick="openInterest(
-                '${safe(job.id)}'
-                )">
-
-                I'm Interested
-
-                </button>
-
-            </div>
+        </div>
 
         </div>
 
@@ -961,21 +775,15 @@ function searchJobs(){
     .toLowerCase()
     .trim();
 
-
     if(!keyword){
 
-        displayJobs(
-            allJobs
-        );
-
+        displayJobs(allJobs);
         return;
 
     }
 
-
     const results =
-    allJobs.filter(
-    function(job){
+    allJobs.filter(function(job){
 
         const text = `
 
@@ -987,23 +795,17 @@ function searchJobs(){
 
         `.toLowerCase();
 
-
-        return text.includes(
-            keyword
-        );
+        return text.includes(keyword);
 
     });
 
-
-    displayJobs(
-        results
-    );
+    displayJobs(results);
 
 }
 
 
 /* =====================================================
-   POST DATA TO APPS SCRIPT
+   SEND TO APPS SCRIPT
    ===================================================== */
 
 async function sendData(
@@ -1012,11 +814,8 @@ async function sendData(
 ){
 
     const data = {
-
         action:action
-
     };
-
 
     for(
         const [key,value]
@@ -1027,10 +826,11 @@ async function sendData(
 
     }
 
-
     const response =
     await fetch(
+
         API_URL,
+
         {
             method:"POST",
 
@@ -1042,8 +842,17 @@ async function sendData(
             body:
             JSON.stringify(data)
         }
+
     );
 
+    if(!response.ok){
+
+        throw new Error(
+            "HTTP error " +
+            response.status
+        );
+
+    }
 
     return await response.json();
 
@@ -1062,23 +871,16 @@ async function(e){
 
     e.preventDefault();
 
-
     const form =
     e.target;
 
-
     const button =
-    form.querySelector(
-        "button"
-    );
+    form.querySelector("button");
 
-
-    button.disabled =
-    true;
+    button.disabled = true;
 
     button.innerText =
     "Submitting...";
-
 
     try{
 
@@ -1088,20 +890,16 @@ async function(e){
             new FormData(form)
         );
 
-
         console.log(
+            "Post result:",
             result
         );
 
-
-        if(
-            result.success
-        ){
+        if(result.success){
 
             alert(
                 "Enquiry submitted successfully!"
             );
-
 
             form.reset();
 
@@ -1109,8 +907,7 @@ async function(e){
 
             loadJobs();
 
-        }
-        else{
+        }else{
 
             alert(
                 result.error ||
@@ -1119,21 +916,17 @@ async function(e){
 
         }
 
-    }
-
-    catch(error){
+    }catch(error){
 
         console.error(error);
 
         alert(
-            "Unable to connect to Apps Script."
+            "Could not connect to Apps Script."
         );
 
     }
 
-
-    button.disabled =
-    false;
+    button.disabled = false;
 
     button.innerText =
     "Submit Enquiry";
@@ -1142,7 +935,7 @@ async function(e){
 
 
 /* =====================================================
-   INTEREST RESPONSE
+   CONTRACTOR RESPONSE
    ===================================================== */
 
 document
@@ -1153,23 +946,16 @@ async function(e){
 
     e.preventDefault();
 
-
     const form =
     e.target;
 
-
     const button =
-    form.querySelector(
-        "button"
-    );
+    form.querySelector("button");
 
-
-    button.disabled =
-    true;
+    button.disabled = true;
 
     button.innerText =
     "Sending...";
-
 
     try{
 
@@ -1179,22 +965,17 @@ async function(e){
             new FormData(form)
         );
 
-
-        if(
-            result.success
-        ){
+        if(result.success){
 
             alert(
                 "Your response has been sent!"
             );
 
-
             form.reset();
 
             closeInterest();
 
-        }
-        else{
+        }else{
 
             alert(
                 result.error ||
@@ -1203,21 +984,17 @@ async function(e){
 
         }
 
-    }
-
-    catch(error){
+    }catch(error){
 
         console.error(error);
 
         alert(
-            "Unable to connect to Apps Script."
+            "Could not connect to Apps Script."
         );
 
     }
 
-
-    button.disabled =
-    false;
+    button.disabled = false;
 
     button.innerText =
     "Send Response";
@@ -1238,7 +1015,6 @@ function openPost(){
 
 }
 
-
 function closePost(){
 
     document
@@ -1248,16 +1024,12 @@ function closePost(){
 
 }
 
-
-function openInterest(
-    id
-){
+function openInterest(id){
 
     document
     .getElementById("enquiryId")
     .value =
     id;
-
 
     document
     .getElementById("interestModal")
@@ -1265,7 +1037,6 @@ function openInterest(
     "block";
 
 }
-
 
 function closeInterest(){
 
@@ -1278,42 +1049,23 @@ function closeInterest(){
 
 
 /* =====================================================
-   SAFE TEXT
+   ESCAPE HTML
    ===================================================== */
 
-function safe(
-    value
-){
+function escapeHTML(value){
 
-    return String(
-        value || ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
 /* =====================================================
-   CLOSE MODAL ON BACKGROUND CLICK
+   CLOSE MODALS
    ===================================================== */
 
 window.onclick =
