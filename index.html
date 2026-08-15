@@ -2,363 +2,366 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#b92b27">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>CivilLine - Civil Engineering Q&A</title>
 
 <style>
+
 *{
-  box-sizing:border-box;
+box-sizing:border-box;
 }
 
 body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f7f7f7;
-  color:#202124;
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f6f6f6;
+color:#202124;
 }
 
 /* HEADER */
 
 header{
-  background:#fff;
-  border-bottom:1px solid #ddd;
-  position:sticky;
-  top:0;
-  z-index:1000;
+background:#fff;
+border-bottom:1px solid #ddd;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
 .nav{
-  max-width:1050px;
-  margin:auto;
-  height:62px;
-  padding:0 15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+max-width:1100px;
+margin:auto;
+height:62px;
+padding:0 15px;
+display:flex;
+align-items:center;
+justify-content:space-between;
 }
 
 .logo{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:23px;
-  font-weight:bold;
-  color:#222;
-}
-
-.logo-icon{
-  width:38px;
-  height:38px;
-  border-radius:8px;
-  background:#b92b27;
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-size:13px;
+font-size:24px;
+font-weight:bold;
 }
 
 .logo span{
-  color:#b92b27;
+color:#b92b27;
 }
 
 .nav a{
-  margin-left:18px;
-  color:#555;
-  text-decoration:none;
-  font-size:14px;
+margin-left:18px;
+text-decoration:none;
+color:#555;
+font-size:14px;
 }
 
 /* HERO */
 
 .hero{
-  background:#fff;
-  border-bottom:1px solid #ddd;
+background:#fff;
+border-bottom:1px solid #ddd;
 }
 
 .hero-inner{
-  max-width:1050px;
-  margin:auto;
-  padding:35px 15px;
+max-width:1100px;
+margin:auto;
+padding:35px 15px;
 }
 
 .hero h1{
-  margin:0 0 8px;
-  font-size:36px;
+margin:0 0 8px;
+font-size:36px;
 }
 
 .hero p{
-  margin:0;
-  color:#666;
-  line-height:1.6;
+color:#666;
+line-height:1.6;
 }
 
-/* STATS */
-
 .stats{
-  display:flex;
-  gap:12px;
-  margin-top:20px;
+display:flex;
+gap:12px;
+margin-top:20px;
 }
 
 .stat{
-  background:#f5f5f5;
-  border:1px solid #ddd;
-  padding:12px 18px;
-  border-radius:8px;
+background:#f5f5f5;
+border:1px solid #ddd;
+border-radius:8px;
+padding:12px 20px;
 }
 
 .stat strong{
-  font-size:22px;
-  display:block;
+display:block;
+font-size:22px;
 }
 
 /* MAIN */
 
 .container{
-  max-width:1050px;
-  margin:auto;
-  padding:22px 15px;
+max-width:1100px;
+margin:auto;
+padding:20px 15px;
 }
 
 .layout{
-  display:grid;
-  grid-template-columns:300px 1fr;
-  gap:18px;
+display:grid;
+grid-template-columns:300px 1fr;
+gap:20px;
 }
 
-/* ASK QUESTION */
+/* ASK */
 
 .sidebar{
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:8px;
-  padding:18px;
-  height:max-content;
+background:#fff;
+border:1px solid #ddd;
+border-radius:8px;
+padding:18px;
+height:max-content;
 }
 
 .sidebar h2{
-  margin-top:0;
+margin-top:0;
 }
 
 input,
 textarea,
 select{
-  width:100%;
-  border:1px solid #ccc;
-  border-radius:6px;
-  padding:11px;
-  margin:6px 0 12px;
-  font:inherit;
+width:100%;
+padding:11px;
+border:1px solid #ccc;
+border-radius:6px;
+margin:6px 0 12px;
+font:inherit;
 }
 
 textarea{
-  resize:vertical;
-}
-
-button{
-  font:inherit;
-  cursor:pointer;
+resize:vertical;
 }
 
 .primary{
-  width:100%;
-  background:#b92b27;
-  border:0;
-  color:#fff;
-  padding:11px;
-  border-radius:6px;
-  font-weight:bold;
-}
-
-.primary:hover{
-  background:#a32622;
+width:100%;
+background:#b92b27;
+color:#fff;
+border:0;
+padding:12px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
 }
 
 /* SEARCH */
 
 .search{
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:8px;
-  padding:12px;
-  display:grid;
-  grid-template-columns:1fr 180px 80px;
-  gap:8px;
-  margin-bottom:15px;
+background:#fff;
+border:1px solid #ddd;
+border-radius:8px;
+padding:12px;
+display:grid;
+grid-template-columns:1fr 180px 80px;
+gap:8px;
+margin-bottom:15px;
 }
 
 .search input,
 .search select{
-  margin:0;
+margin:0;
 }
 
 .search button{
-  border:0;
-  background:#b92b27;
-  color:#fff;
-  border-radius:6px;
+background:#b92b27;
+color:white;
+border:0;
+border-radius:6px;
+cursor:pointer;
 }
 
 /* QUESTION */
 
 .question-card{
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:8px;
-  padding:18px;
-  margin-bottom:15px;
+background:#fff;
+border:1px solid #ddd;
+border-radius:8px;
+padding:18px;
+margin-bottom:18px;
 }
 
 .meta{
-  color:#777;
-  font-size:13px;
+font-size:13px;
+color:#777;
 }
 
 .question-text{
-  font-size:21px;
-  line-height:1.45;
-  font-weight:bold;
-  margin:10px 0;
+font-size:21px;
+font-weight:bold;
+line-height:1.5;
+margin:10px 0;
 }
 
 .category{
-  display:inline-block;
-  background:#f1f1f1;
-  padding:5px 9px;
-  border-radius:15px;
-  font-size:12px;
-  color:#555;
+display:inline-block;
+padding:5px 10px;
+border-radius:20px;
+background:#f1f1f1;
+font-size:12px;
+color:#555;
 }
 
 .question-img{
-  width:100%;
-  max-height:430px;
-  object-fit:contain;
-  margin-top:14px;
-  border-radius:7px;
+width:100%;
+max-height:450px;
+object-fit:contain;
+margin-top:15px;
+border-radius:7px;
 }
 
-/* ACTIONS */
+/* QUESTION ACTIONS */
 
-.actions{
-  border-top:1px solid #eee;
-  margin-top:15px;
-  padding-top:10px;
-  display:flex;
-  gap:10px;
+.question-actions{
+display:flex;
+gap:15px;
+border-top:1px solid #eee;
+margin-top:15px;
+padding-top:10px;
 }
 
-.action{
-  background:none;
-  border:0;
-  color:#555;
-  padding:8px 5px;
+.action-btn{
+background:none;
+border:0;
+color:#555;
+padding:8px 0;
+font-weight:bold;
+cursor:pointer;
 }
 
-.action:hover{
-  color:#b92b27;
+.action-btn:hover{
+color:#b92b27;
 }
 
-/* ANSWER BOX */
+/* ANSWER EDITOR */
 
-.answer-box{
-  background:#fafafa;
-  border:1px solid #ddd;
-  border-radius:8px;
-  padding:15px;
-  margin-top:14px;
-  display:none;
+.answer-editor{
+display:none;
+background:#fafafa;
+border:1px solid #ddd;
+border-radius:8px;
+padding:15px;
+margin-top:15px;
 }
 
-.answer-box.active{
-  display:block;
+.answer-editor.open{
+display:block;
 }
 
-.answer-title{
-  font-weight:bold;
-  margin-bottom:10px;
+.answer-editor h3{
+margin-top:0;
 }
 
-.answer-submit{
-  background:#b92b27;
-  color:white;
-  border:0;
-  padding:10px 18px;
-  border-radius:6px;
-  font-weight:bold;
+.answer-editor textarea{
+min-height:130px;
 }
 
-.cancel{
-  background:#eee;
-  border:0;
-  padding:10px 18px;
-  border-radius:6px;
-  margin-left:6px;
+.editor-buttons{
+display:flex;
+gap:8px;
+}
+
+.post-answer{
+background:#b92b27;
+color:#fff;
+border:0;
+padding:10px 18px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.cancel-answer{
+background:#eee;
+border:0;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
 }
 
 /* ANSWERS */
 
-.answers{
-  margin-top:15px;
+.answer-section{
+margin-top:18px;
+border-top:1px solid #ddd;
+padding-top:15px;
 }
 
-.answer{
-  border-top:1px solid #eee;
-  padding:15px 0;
+.answer-heading{
+font-size:18px;
+font-weight:bold;
+margin-bottom:10px;
 }
 
-.answer-name{
-  font-weight:bold;
-  font-size:14px;
+.answer-card{
+background:#fff;
+border:1px solid #e1e1e1;
+border-radius:8px;
+padding:15px;
+margin-top:10px;
+}
+
+.answer-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.answer-user{
+font-weight:bold;
 }
 
 .answer-date{
-  color:#888;
-  font-size:12px;
+font-size:12px;
+color:#888;
 }
 
 .answer-text{
-  margin-top:8px;
-  line-height:1.6;
-  white-space:pre-wrap;
+line-height:1.65;
+margin-top:10px;
+white-space:pre-wrap;
 }
 
 .answer-img{
-  width:100%;
-  max-height:400px;
-  object-fit:contain;
-  margin-top:12px;
-  border-radius:7px;
+width:100%;
+max-height:400px;
+object-fit:contain;
+margin-top:12px;
+border-radius:7px;
 }
 
-/* EMPTY */
+.loading{
+color:#777;
+font-size:14px;
+}
 
-.empty{
-  background:#fff;
-  border:1px solid #ddd;
-  padding:35px;
-  border-radius:8px;
-  text-align:center;
-  color:#777;
+.no-answer{
+background:#fafafa;
+padding:15px;
+border-radius:6px;
+color:#777;
 }
 
 /* FOOTER */
 
 footer{
-  background:#222;
-  color:#ddd;
-  margin-top:30px;
+background:#222;
+color:#ddd;
+margin-top:30px;
 }
 
 .footer-inner{
-  max-width:1050px;
-  margin:auto;
-  padding:30px 15px;
-  text-align:center;
-  font-size:13px;
-  line-height:1.6;
+max-width:1100px;
+margin:auto;
+padding:30px 15px;
+text-align:center;
+font-size:13px;
+line-height:1.6;
 }
 
 /* MOBILE */
@@ -366,81 +369,78 @@ footer{
 @media(max-width:800px){
 
 .layout{
-  grid-template-columns:1fr;
-}
-
-.sidebar{
-  order:1;
-}
-
-#questions{
-  order:2;
+grid-template-columns:1fr;
 }
 
 }
 
 @media(max-width:600px){
 
-.nav{
-  height:58px;
-}
-
 .nav a{
-  display:none;
-}
-
-.hero-inner{
-  padding:25px 13px;
+display:none;
 }
 
 .hero h1{
-  font-size:29px;
+font-size:28px;
 }
 
 .container{
-  padding:13px 10px;
-}
-
-.search{
-  grid-template-columns:1fr;
+padding:12px 10px;
 }
 
 .question-card{
-  padding:14px;
+padding:14px;
 }
 
 .question-text{
-  font-size:18px;
+font-size:18px;
+}
+
+.search{
+grid-template-columns:1fr;
 }
 
 .stats{
-  gap:7px;
+gap:7px;
 }
 
 .stat{
-  flex:1;
-  padding:10px;
+flex:1;
+padding:10px;
+}
+
+.editor-buttons{
+flex-direction:column;
+}
+
+.post-answer,
+.cancel-answer{
+width:100%;
 }
 
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <header>
 
 <div class="nav">
 
 <div class="logo">
-<div class="logo-icon">CL</div>
 Civil<span>Line</span>
 </div>
 
 <div>
+
 <a href="#questions">Questions</a>
 <a href="#about">About</a>
 <a href="#privacy">Privacy</a>
+
 </div>
 
 </div>
@@ -452,10 +452,10 @@ Civil<span>Line</span>
 
 <div class="hero-inner">
 
-<h1>Civil Engineering Q&A</h1>
+<h1>Civil Engineering Community</h1>
 
 <p>
-Ask questions, share construction knowledge and help other
+Ask questions, share practical knowledge and help
 Civil Engineers, Contractors and Site Engineers.
 </p>
 
@@ -483,7 +483,7 @@ Answers
 <div class="layout">
 
 
-<!-- QUESTION FORM -->
+<!-- ASK QUESTION -->
 
 <aside class="sidebar">
 
@@ -497,7 +497,7 @@ placeholder="Your name"
 <textarea
 id="questionText"
 rows="5"
-placeholder="What is your question?"
+placeholder="Write your Civil Engineering question..."
 ></textarea>
 
 <select id="questionCategory">
@@ -528,18 +528,20 @@ accept="image/*"
 class="primary"
 onclick="submitQuestion()"
 >
+
 Post Question
+
 </button>
 
 </aside>
 
 
+<!-- QUESTIONS -->
+
 <section id="questions">
 
-<h2>Questions</h2>
+<h2>Latest Questions</h2>
 
-
-<!-- SEARCH -->
 
 <div class="search">
 
@@ -576,7 +578,7 @@ Search
 
 <div id="questionList">
 
-<div class="empty">
+<div class="no-answer">
 Loading questions...
 </div>
 
@@ -594,24 +596,28 @@ Loading questions...
 <div class="footer-inner">
 
 <div id="about">
+
 <b>About CivilLine</b>
+
 <p>
 CivilLine is a community platform for Civil Engineers,
 Contractors, Site Engineers, Consultants and Students.
 </p>
+
 </div>
 
 <div id="privacy">
+
 <b>Privacy Policy</b>
-<p>
-Questions and answers are stored in Google Sheets.
-Uploaded images are stored in Google Drive.
-</p>
-</div>
 
 <p>
-© 2026 CivilLine · Privacy Policy · Terms & Conditions
+Questions and answers are stored in Google Sheets.
+Do not upload confidential information.
 </p>
+
+</div>
+
+© 2026 CivilLine
 
 </div>
 
@@ -620,13 +626,14 @@ Uploaded images are stored in Google Drive.
 
 <script>
 
-/* YOUR NEW APPS SCRIPT URL */
+
+/* APPS SCRIPT */
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxBImQgae3knrXUKWyu76XfPkZViHPABqPKVJy9rCqZEb3E698JVI1wMcdnXenIYfRiVg/exec";
 
 
-/* SECURITY */
+/* ESCAPE */
 
 function esc(value){
 
@@ -639,7 +646,6 @@ return {
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#039;"
-
 }[c];
 
 });
@@ -649,7 +655,7 @@ return {
 
 /* IMAGE */
 
-function convertImage(file){
+function imageBase64(file){
 
 return new Promise(function(resolve,reject){
 
@@ -681,9 +687,9 @@ reader.readAsDataURL(file);
 }
 
 
-/* API POST */
+/* POST API */
 
-async function postAPI(data){
+async function apiPost(data){
 
 const response =
 await fetch(API_URL,{
@@ -704,7 +710,7 @@ return response.json();
 }
 
 
-/* POST QUESTION */
+/* QUESTION */
 
 async function submitQuestion(){
 
@@ -713,7 +719,7 @@ document.getElementById(
 "questionName"
 ).value.trim();
 
-const text =
+const question =
 document.getElementById(
 "questionText"
 ).value.trim();
@@ -731,42 +737,36 @@ document.getElementById(
 
 if(!name){
 
-alert("Please enter your name.");
+alert("Enter your name.");
 
 return;
 
 }
 
-if(!text){
+if(!question){
 
-alert("Please enter your question.");
-
-return;
-
-}
-
-if(image &&
-image.size > 5*1024*1024){
-
-alert("Image must be below 5 MB.");
+alert("Write your question.");
 
 return;
 
 }
 
 
-const data={
+try{
+
+const result =
+await apiPost({
 
 action:"postQuestion",
 
 name:name,
 
-question:text,
+question:question,
 
 category:category,
 
 imageData:
-await convertImage(image),
+await imageBase64(image),
 
 imageName:
 image ? image.name : "",
@@ -774,18 +774,10 @@ image ? image.name : "",
 imageType:
 image ? image.type : ""
 
-};
-
-
-try{
-
-const result =
-await postAPI(data);
+});
 
 
 if(result.success){
-
-alert("Question posted successfully!");
 
 document.getElementById(
 "questionText"
@@ -795,24 +787,19 @@ document.getElementById(
 "questionImage"
 ).value="";
 
+alert("Question posted.");
+
 loadQuestions();
 
 }else{
 
-alert(
-result.error ||
-"Question could not be posted."
-);
+alert(result.error);
 
 }
 
 }catch(error){
 
-console.error(error);
-
-alert(
-"Server connection failed."
-);
+alert("Could not connect to server.");
 
 }
 
@@ -854,9 +841,7 @@ await response.json();
 
 if(!data.success){
 
-throw new Error(
-data.error
-);
+throw new Error(data.error);
 
 }
 
@@ -864,9 +849,7 @@ data.error
 const stats =
 await fetch(
 API_URL+"?action=getStats"
-).then(
-r=>r.json()
-);
+).then(r=>r.json());
 
 
 document.getElementById(
@@ -887,12 +870,11 @@ document.getElementById(
 );
 
 
-if(!data.questions ||
-data.questions.length===0){
+if(!data.questions.length){
 
 list.innerHTML=`
 
-<div class="empty">
+<div class="no-answer">
 
 No questions found.
 
@@ -938,53 +920,51 @@ ${esc(q.category)}
 ${
 q.imageURL
 ?
-`<img
-class="question-img"
+`
+<img
 src="${esc(q.imageURL)}"
+class="question-img"
 loading="lazy"
->`
+>
+`
 :""
 }
 
 
-<div class="actions">
+<div class="question-actions">
 
 <button
-class="action"
-onclick="showAnswers('${esc(q.id)}')"
->
-
-💬
-${q.answerCount || 0}
-Answers
-
-</button>
-
-
-<button
-class="action"
-onclick="openAnswerBox('${esc(q.id)}')"
+class="action-btn"
+onclick="toggleAnswerEditor('${esc(q.id)}')"
 >
 
 ✍️ Answer
 
 </button>
 
-</div>
 
-
-<!-- QUORA STYLE ANSWER FORM -->
-
-<div
-id="answerBox-${esc(q.id)}"
-class="answer-box"
+<button
+class="action-btn"
+onclick="fetchAnswers('${esc(q.id)}')"
 >
 
-<div class="answer-title">
+💬 ${q.answerCount || 0} Answers
 
-Write your answer
+</button>
 
 </div>
+
+
+<!-- INLINE ANSWER EDITOR -->
+
+<div
+id="editor-${esc(q.id)}"
+class="answer-editor"
+>
+
+<h3>
+Write your answer
+</h3>
 
 
 <input
@@ -995,15 +975,12 @@ placeholder="Your name"
 
 <textarea
 id="answerText-${esc(q.id)}"
-rows="6"
 placeholder="Write a helpful answer..."
 ></textarea>
 
 
 <label>
-
-<b>Attach image</b>
-
+<b>Attach image (optional)</b>
 </label>
 
 
@@ -1014,22 +991,21 @@ accept="image/*"
 >
 
 
-<br>
-
+<div class="editor-buttons">
 
 <button
-class="answer-submit"
+class="post-answer"
 onclick="submitAnswer('${esc(q.id)}')"
 >
 
-Submit Answer
+Post Answer
 
 </button>
 
 
 <button
-class="cancel"
-onclick="closeAnswerBox('${esc(q.id)}')"
+class="cancel-answer"
+onclick="toggleAnswerEditor('${esc(q.id)}')"
 >
 
 Cancel
@@ -1038,13 +1014,18 @@ Cancel
 
 </div>
 
+</div>
+
+
+<!-- ANSWERS -->
 
 <div
-id="answers-${esc(q.id)}"
-class="answers"
+id="answerSection-${esc(q.id)}"
+class="answer-section"
 >
 
 </div>
+
 
 </article>
 
@@ -1061,7 +1042,7 @@ document.getElementById(
 "questionList"
 ).innerHTML=`
 
-<div class="empty">
+<div class="no-answer">
 
 Could not load questions.
 
@@ -1078,32 +1059,31 @@ ${esc(error.message)}
 }
 
 
-/* OPEN ANSWER */
+/* ANSWER EDITOR */
 
-function openAnswerBox(id){
+function toggleAnswerEditor(id){
 
-const box =
+const editor =
 document.getElementById(
-"answerBox-"+id
+"editor-"+id
 );
 
-box.classList.add("active");
+if(
+editor.classList.contains("open")
+){
 
-box.scrollIntoView({
+editor.classList.remove("open");
+
+}else{
+
+editor.classList.add("open");
+
+editor.scrollIntoView({
 behavior:"smooth",
 block:"center"
 });
 
 }
-
-
-/* CLOSE ANSWER */
-
-function closeAnswerBox(id){
-
-document.getElementById(
-"answerBox-"+id
-).classList.remove("active");
 
 }
 
@@ -1117,7 +1097,7 @@ document.getElementById(
 "answerName-"+questionId
 ).value.trim();
 
-const text =
+const answer =
 document.getElementById(
 "answerText-"+questionId
 ).value.trim();
@@ -1130,62 +1110,52 @@ document.getElementById(
 
 if(!name){
 
-alert("Please enter your name.");
+alert("Enter your name.");
+
+return;
+
+}
+
+if(!answer){
+
+alert("Write your answer.");
 
 return;
 
 }
 
 
-if(!text){
-
-alert("Please write your answer.");
-
-return;
-
-}
-
-
-if(image &&
-image.size > 5*1024*1024){
-
-alert(
-"Answer image must be below 5 MB."
+const editor =
+document.getElementById(
+"editor-"+questionId
 );
 
-return;
-
-}
-
-
-/* Disable submit while uploading */
-
-const buttons =
-document.querySelectorAll(
-"#answerBox-"+questionId+
-" .answer-submit"
+const submitButton =
+editor.querySelector(
+".post-answer"
 );
 
-buttons.forEach(
-b=>b.disabled=true
-);
+submitButton.disabled=true;
+
+submitButton.textContent=
+"Posting...";
 
 
 try{
 
 const result =
-await postAPI({
+await apiPost({
 
 action:"postAnswer",
 
-questionId:questionId,
+questionId:String(questionId),
 
 name:name,
 
-answer:text,
+answer:answer,
 
 imageData:
-await convertImage(image),
+await imageBase64(image),
 
 imageName:
 image ? image.name : "",
@@ -1197,13 +1167,6 @@ image ? image.type : ""
 
 
 if(result.success){
-
-alert(
-"Answer submitted successfully!"
-);
-
-
-/* Clear form */
 
 document.getElementById(
 "answerName-"+questionId
@@ -1218,21 +1181,29 @@ document.getElementById(
 ).value="";
 
 
-closeAnswerBox(questionId);
+editor.classList.remove("open");
 
 
-/* Reload answers */
+/*
+IMPORTANT:
+Fetch answers immediately
+after successful submission.
+*/
 
-await showAnswers(questionId);
+await fetchAnswers(questionId);
+
+
+/*
+Update question answer count.
+*/
 
 loadQuestions();
-
 
 }else{
 
 alert(
 result.error ||
-"Answer could not be submitted."
+"Answer was not submitted."
 );
 
 }
@@ -1243,81 +1214,125 @@ result.error ||
 console.error(error);
 
 alert(
-"Answer submission failed: "+
-error.message
+"Answer submission failed."
 );
 
 }
 
 
-buttons.forEach(
-b=>b.disabled=false
-);
+submitButton.disabled=false;
+
+submitButton.textContent=
+"Post Answer";
 
 }
 
 
-/* SHOW ANSWERS */
+/* FETCH ANSWERS */
 
-async function showAnswers(questionId){
+async function fetchAnswers(questionId){
 
-const box =
+const section =
 document.getElementById(
-"answers-"+questionId
+"answerSection-"+questionId
 );
 
-box.innerHTML=
-"Loading answers...";
+
+section.innerHTML=
+`
+<div class="loading">
+Fetching answers...
+</div>
+`;
 
 
 try{
 
-const response =
-await fetch(
-
+const url =
 API_URL+
 "?action=getAnswers"+
 "&questionId="+
-encodeURIComponent(questionId)
+encodeURIComponent(questionId);
 
-);
+
+const response =
+await fetch(url);
 
 
 const data =
 await response.json();
 
 
+console.log(
+"Answers:",
+data
+);
+
+
+if(!data.success){
+
+throw new Error(
+data.error ||
+"Could not fetch answers"
+);
+
+}
+
+
 if(
-!data.success ||
 !data.answers ||
 data.answers.length===0
 ){
 
-box.innerHTML=
-"<div class='meta'>No answers yet.</div>";
+section.innerHTML=`
+
+<div class="no-answer">
+
+No answers yet.
+Be the first to answer this question.
+
+</div>
+
+`;
 
 return;
 
 }
 
 
-box.innerHTML =
-data.answers.map(function(a){
+/* ANSWER LIST */
 
-return `
+section.innerHTML=`
 
-<div class="answer">
+<div class="answer-heading">
 
-<div class="answer-name">
+${data.answers.length}
+Answer${data.answers.length > 1 ? "s":""}
+
+</div>
+
+`;
+
+
+data.answers.forEach(function(a){
+
+section.innerHTML += `
+
+<div class="answer-card">
+
+<div class="answer-header">
+
+<div class="answer-user">
 
 ${esc(a.name)}
 
 </div>
 
-
 <div class="answer-date">
 
 ${esc(a.date)}
+
+</div>
 
 </div>
 
@@ -1332,11 +1347,13 @@ ${esc(a.answer)}
 ${
 a.imageURL
 ?
-`<img
+`
+<img
 class="answer-img"
 src="${esc(a.imageURL)}"
 loading="lazy"
->`
+>
+`
 :""
 }
 
@@ -1344,22 +1361,43 @@ loading="lazy"
 
 `;
 
-}).join("");
+});
 
 
 }catch(error){
 
 console.error(error);
 
-box.innerHTML=
-"Could not load answers.";
+section.innerHTML=`
+
+<div class="no-answer">
+
+Could not fetch answers.
+
+<br>
+
+${esc(error.message)}
+
+</div>
+
+`;
 
 }
 
+
+/*
+Scroll to answer section
+*/
+
+section.scrollIntoView({
+behavior:"smooth",
+block:"nearest"
+});
+
 }
 
 
-/* ENTER SEARCH */
+/* SEARCH ENTER */
 
 document.getElementById(
 "searchText"
@@ -1376,7 +1414,7 @@ loadQuestions();
 });
 
 
-/* CATEGORY SEARCH */
+/* CATEGORY */
 
 document.getElementById(
 "searchCategory"
