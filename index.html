@@ -1,600 +1,1482 @@
-// =====================================================
-// CONTRACTOR ENQUIRIES PORTAL
-// GOOGLE SHEETS DATABASE + APPS SCRIPT API
-// =====================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const SPREADSHEET_ID = "1bbw3SfSyP5iZoPylhhJTgMF_rzH50GfPoyvpxrKMHA4";
+<title>Contractor Enquiries Portal</title>
 
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
 
-// =====================================================
-// SHEET STRUCTURE
-// =====================================================
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f7fb;
+    color:#17212b;
+}
 
-const HEADERS = {
+.container{
+    width:92%;
+    max-width:1100px;
+    margin:auto;
+}
 
-  Enquiries: [
-    "id",
-    "name",
-    "phone",
-    "workType",
-    "location",
-    "budget",
-    "requiredDate",
-    "description",
-    "imageUrl",
-    "date",
-    "status"
-  ],
+/* HEADER */
+header{
+    background:#fff;
+    border-bottom:1px solid #e5e7eb;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
 
-  Responses: [
-    "id",
-    "enquiryId",
-    "contractor",
-    "phone",
-    "message",
-    "date",
-    "status"
-  ],
+.nav{
+    min-height:65px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
 
-  Contractors: [
-    "id",
-    "contractorName",
-    "company",
-    "location",
-    "workType",
-    "experience",
-    "phone",
-    "whatsapp",
-    "photoUrl",
-    "status",
-    "date"
-  ]
+.logo{
+    font-size:22px;
+    font-weight:800;
+    color:#102235;
+    text-decoration:none;
+}
 
-};
+.logo span{
+    color:#0b5ed7;
+}
 
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
 
-// =====================================================
-// SETUP SHEETS
-// RUN THIS FUNCTION ONCE
-// =====================================================
+.nav-right a{
+    text-decoration:none;
+    color:#333;
+}
 
-function setupSheets() {
+/* BUTTON */
+.btn{
+    border:0;
+    padding:11px 17px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+.primary{
+    background:#0b5ed7;
+    color:white;
+}
 
-  Object.keys(HEADERS).forEach(function(sheetName) {
+.primary:hover{
+    background:#084db2;
+}
 
-    let sheet = ss.getSheetByName(sheetName);
+.btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
 
-    // Create sheet if it doesn't exist
-    if (!sheet) {
-      sheet = ss.insertSheet(sheetName);
+/* HERO */
+.hero{
+    background:linear-gradient(135deg,#102235,#0b5ed7);
+    color:white;
+    padding:60px 0;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    max-width:700px;
+    line-height:1.6;
+    color:#dce9fa;
+    font-size:17px;
+}
+
+/* SEARCH */
+.search-box{
+    background:white;
+    margin-top:25px;
+    padding:10px;
+    border-radius:12px;
+    display:grid;
+    grid-template-columns:2fr 1fr auto;
+    gap:10px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #dfe3e8;
+    border-radius:8px;
+    font-size:14px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#0b5ed7;
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+/* SECTION */
+.section{
+    padding:35px 0;
+}
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.section-head h2{
+    font-size:26px;
+}
+
+.muted{
+    color:#687789;
+    font-size:14px;
+}
+
+/* CARDS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.card{
+    background:#fff;
+    border:1px solid #e2e7ed;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 2px 7px rgba(0,0,0,.04);
+}
+
+.card h3{
+    margin:7px 0 10px;
+    font-size:20px;
+}
+
+.meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin:12px 0;
+}
+
+.tag{
+    background:#eef5ff;
+    color:#1555a0;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.budget{
+    color:#198754;
+    font-size:17px;
+    font-weight:bold;
+    margin:10px 0;
+}
+
+.description{
+    color:#4c5967;
+    line-height:1.5;
+    margin:10px 0;
+}
+
+.card-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:18px;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    background:#e8f7ee;
+    color:#198754;
+}
+
+.no-results{
+    background:white;
+    padding:40px;
+    text-align:center;
+    border-radius:12px;
+    color:#687789;
+    grid-column:1/-1;
+}
+
+.loading{
+    text-align:center;
+    padding:35px;
+    color:#687789;
+    grid-column:1/-1;
+}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    z-index:1000;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:700px;
+    max-height:92vh;
+    overflow:auto;
+    border-radius:15px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    font-size:28px;
+    cursor:pointer;
+    color:#555;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+.form-note{
+    background:#fff3cd;
+    color:#664d03;
+    padding:12px;
+    border-radius:8px;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+/* FOOTER */
+footer{
+    background:#102235;
+    color:#cbd5e1;
+    padding:30px 0;
+    margin-top:40px;
+}
+
+footer strong{
+    color:white;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+    .hero h1{
+        font-size:32px;
     }
 
-    // Add headers
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(HEADERS[sheetName]);
+    .search-box{
+        grid-template-columns:1fr;
     }
 
-  });
+    .grid{
+        grid-template-columns:1fr;
+    }
 
-  return jsonResponse({
-    success: true,
-    message: "Contractor portal sheets are ready."
-  });
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .section-head{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .nav-right a{
+        display:none;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- HEADER -->
+<header>
+
+<div class="container nav">
+
+<a href="#" class="logo">
+Contractor<span>Enquiries</span>
+</a>
+
+<div class="nav-right">
+
+<a href="#enquiries">
+Enquiries
+</a>
+
+<button
+class="btn primary"
+onclick="openModal('postModal')">
+Post Enquiry
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- HERO -->
+<section class="hero">
+
+<div class="container">
+
+<h1>
+Find Construction Work & Contractors
+</h1>
+
+<p>
+Post your construction requirement and connect with civil contractors,
+builders and construction professionals.
+</p>
+
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchKeyword"
+placeholder="Search RCC, road work, shuttering..."
+oninput="filterEnquiries()"
+>
+
+<input
+type="text"
+id="searchLocation"
+placeholder="Location"
+oninput="filterEnquiries()"
+>
+
+<button
+class="btn primary"
+onclick="filterEnquiries()">
+Search
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ENQUIRIES -->
+<main class="container">
+
+<section
+class="section"
+id="enquiries">
+
+<div class="section-head">
+
+<div>
+
+<h2>
+Latest Construction Enquiries
+</h2>
+
+<p class="muted">
+Find construction requirements posted by customers.
+</p>
+
+</div>
+
+<button
+class="btn primary"
+onclick="openModal('postModal')">
+
++ Post Enquiry
+
+</button>
+
+</div>
+
+
+<div
+id="enquiryList"
+class="grid">
+
+<div class="loading">
+Loading enquiries...
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- POST ENQUIRY MODAL -->
+<div
+class="modal"
+id="postModal"
+onclick="closeOutside(event,'postModal')">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+Post Construction Enquiry
+</h2>
+
+<span
+class="close"
+onclick="closeModal('postModal')">
+&times;
+</span>
+
+</div>
+
+
+<div class="form-note">
+
+Your enquiry will be saved to the Google Sheet.
+New enquiries are marked Pending.
+
+</div>
+
+
+<form id="enquiryForm">
+
+<div class="form-grid">
+
+
+<div>
+
+<label>Your Name *</label>
+
+<input
+type="text"
+name="name"
+required
+>
+
+</div>
+
+
+<div>
+
+<label>Phone / WhatsApp *</label>
+
+<input
+type="tel"
+name="phone"
+required
+>
+
+</div>
+
+
+<div>
+
+<label>Work Type *</label>
+
+<select
+name="workType"
+required>
+
+<option value="">
+Select Work
+</option>
+
+<option>RCC Work</option>
+<option>Building Construction</option>
+<option>Plum Concrete</option>
+<option>Retaining Wall</option>
+<option>Road Work</option>
+<option>Paving Work</option>
+<option>Tremix Flooring</option>
+<option>Shuttering</option>
+<option>Bar Bending</option>
+<option>Excavation</option>
+<option>Waterproofing</option>
+<option>Painting</option>
+<option>Electrical</option>
+<option>Plumbing</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Location *</label>
+
+<input
+type="text"
+name="location"
+placeholder="Baramati, Pune..."
+required
+>
+
+</div>
+
+
+<div>
+
+<label>Budget</label>
+
+<input
+type="text"
+name="budget"
+placeholder="₹2,00,000 / Negotiable"
+>
+
+</div>
+
+
+<div>
+
+<label>Required Date</label>
+
+<input
+type="date"
+name="requiredDate"
+>
+
+</div>
+
+
+<div class="full">
+
+<label>Work Description *</label>
+
+<textarea
+name="description"
+placeholder="Mention quantity, dimensions, scope of work, materials etc."
+required></textarea>
+
+</div>
+
+
+<div class="full">
+
+<label>Project Image URL</label>
+
+<input
+type="url"
+name="imageUrl"
+placeholder="https://example.com/image.jpg"
+>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+<button
+type="submit"
+class="btn primary">
+
+Post Enquiry
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- RESPONSE MODAL -->
+<div
+class="modal"
+id="responseModal"
+onclick="closeOutside(event,'responseModal')">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+I'm Interested
+</h2>
+
+<span
+class="close"
+onclick="closeModal('responseModal')">
+&times;
+</span>
+
+</div>
+
+
+<form id="responseForm">
+
+<input
+type="hidden"
+name="enquiryId"
+id="responseEnquiryId"
+>
+
+
+<div class="form-grid">
+
+
+<div>
+
+<label>Contractor Name *</label>
+
+<input
+type="text"
+name="contractor"
+required
+>
+
+</div>
+
+
+<div>
+
+<label>Phone / WhatsApp *</label>
+
+<input
+type="tel"
+name="phone"
+required
+>
+
+</div>
+
+
+<div class="full">
+
+<label>Your Message *</label>
+
+<textarea
+name="message"
+placeholder="Tell the customer about your experience, rate and availability."
+required></textarea>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+<button
+type="submit"
+class="btn primary">
+
+Send Response
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+
+<div class="container">
+
+<strong>
+ContractorEnquiries
+</strong>
+
+<br><br>
+
+<small>
+Construction work enquiry portal.
+</small>
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =====================================================
+   GOOGLE APPS SCRIPT API
+   ===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxEbipqlqddwy9r8xCIl_favL9GyBpqhL0ep8kEKwUM09clUcmGofiuHxUYl75GhPjY/exec";
+
+
+let enquiries = [];
+
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
+
+function escapeHTML(value){
+
+    return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-// =====================================================
-// GET API
-// =====================================================
+/* =====================================================
+   LOAD ENQUIRIES FROM GOOGLE SHEETS
+   ===================================================== */
 
-function doGet(e) {
+async function loadEnquiries(){
 
-  try {
+    const list =
+    document.getElementById("enquiryList");
 
-    const action =
-      e && e.parameter
-        ? (e.parameter.action || "getEnquiries").toLowerCase()
-        : "getenquiries";
-
-
-    // ---------------------------------------------
-    // GET ENQUIRIES
-    // ---------------------------------------------
-
-    if (action === "getenquiries") {
-
-      const enquiries =
-        getSheetData("Enquiries");
-
-      return jsonResponse({
-        success: true,
-        enquiries: enquiries
-      });
-
-    }
+    list.innerHTML =
+    '<div class="loading">Loading enquiries...</div>';
 
 
-    // ---------------------------------------------
-    // GET CONTRACTORS
-    // ---------------------------------------------
+    try{
 
-    if (action === "getcontractors") {
-
-      const contractors =
-        getSheetData("Contractors");
-
-      return jsonResponse({
-        success: true,
-        contractors: contractors
-      });
-
-    }
+        const response =
+        await fetch(
+            API_URL + "?action=getEnquiries"
+        );
 
 
-    // ---------------------------------------------
-    // GET RESPONSES
-    // ---------------------------------------------
+        if(!response.ok){
 
-    if (action === "getresponses") {
+            throw new Error(
+                "API request failed"
+            );
 
-      const responses =
-        getSheetData("Responses");
+        }
 
-      return jsonResponse({
-        success: true,
-        responses: responses
-      });
+
+        const data =
+        await response.json();
+
+
+        console.log("API Response:",data);
+
+
+        if(data.success){
+
+            enquiries =
+            data.enquiries || [];
+
+            renderEnquiries();
+
+        }
+
+        else{
+
+            throw new Error(
+                data.error ||
+                "API returned an error"
+            );
+
+        }
 
     }
 
+    catch(error){
 
-    // ---------------------------------------------
-    // GET EVERYTHING
-    // ---------------------------------------------
+        console.error(
+            "Loading error:",
+            error
+        );
 
-    if (action === "getall") {
 
-      return jsonResponse({
+        list.innerHTML = `
 
-        success: true,
+        <div class="no-results">
 
-        enquiries:
-          getSheetData("Enquiries"),
+            <h3>
+            Unable to load enquiries
+            </h3>
 
-        contractors:
-          getSheetData("Contractors"),
+            <p>
+            Please check your Apps Script deployment.
+            </p>
 
-        responses:
-          getSheetData("Responses")
+        </div>
 
-      });
+        `;
 
     }
-
-
-    return jsonResponse({
-
-      success: false,
-
-      error: "Invalid action."
-
-    });
-
-  }
-
-  catch (error) {
-
-    return jsonResponse({
-
-      success: false,
-
-      error: error.toString()
-
-    });
-
-  }
 
 }
 
 
-// =====================================================
-// POST API
-// =====================================================
+/* =====================================================
+   DISPLAY ENQUIRIES
+   ===================================================== */
 
-function doPost(e) {
+function renderEnquiries(data){
 
-  try {
+    if(!data){
+        data = enquiries;
+    }
 
-    if (!e || !e.postData) {
 
-      return jsonResponse({
+    const list =
+    document.getElementById(
+        "enquiryList"
+    );
 
-        success: false,
 
-        error: "No POST data received."
+    if(!data.length){
 
-      });
+        list.innerHTML = `
+
+        <div class="no-results">
+
+            <h3>
+            No enquiries found
+            </h3>
+
+            <p>
+            Be the first person to post a construction enquiry.
+            </p>
+
+        </div>
+
+        `;
+
+        return;
 
     }
+
+
+    list.innerHTML =
+    data.map(function(item){
+
+        let imageHTML = "";
+
+
+        if(item.imageUrl){
+
+            imageHTML = `
+
+            <img
+            src="${escapeHTML(item.imageUrl)}"
+            alt="Project image"
+            style="
+            width:100%;
+            height:200px;
+            object-fit:cover;
+            border-radius:9px;
+            margin-top:12px;
+            "
+            onerror="this.style.display='none'"
+            >
+
+            `;
+
+        }
+
+
+        return `
+
+        <article class="card">
+
+            <div class="muted">
+
+                ${escapeHTML(item.name)}
+
+            </div>
+
+
+            <h3>
+
+                ${escapeHTML(item.workType)}
+
+            </h3>
+
+
+            <div class="meta">
+
+                <span class="tag">
+
+                    📍
+                    ${escapeHTML(item.location)}
+
+                </span>
+
+
+                <span class="tag">
+
+                    📅
+                    ${escapeHTML(item.date)}
+
+                </span>
+
+            </div>
+
+
+            <div class="budget">
+
+                ${escapeHTML(
+                    item.budget ||
+                    "Budget not specified"
+                )}
+
+            </div>
+
+
+            <div class="description">
+
+                ${escapeHTML(
+                    item.description
+                )}
+
+            </div>
+
+
+            ${imageHTML}
+
+
+            <div class="card-bottom">
+
+                <small class="muted">
+
+                    ${
+                        item.requiredDate
+                        ?
+                        "Required: " +
+                        escapeHTML(
+                            item.requiredDate
+                        )
+                        :
+                        "Date flexible"
+                    }
+
+                </small>
+
+
+                <button
+                class="btn primary"
+                onclick="showResponse('${escapeHTML(item.id)}')">
+
+                    I'm Interested
+
+                </button>
+
+            </div>
+
+        </article>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =====================================================
+   SEARCH
+   ===================================================== */
+
+function filterEnquiries(){
+
+    const keyword =
+    document
+    .getElementById(
+        "searchKeyword"
+    )
+    .value
+    .toLowerCase()
+    .trim();
+
+
+    const location =
+    document
+    .getElementById(
+        "searchLocation"
+    )
+    .value
+    .toLowerCase()
+    .trim();
+
+
+    const filtered =
+    enquiries.filter(function(item){
+
+        const text = `
+
+            ${item.workType || ""}
+
+            ${item.description || ""}
+
+            ${item.name || ""}
+
+            ${item.location || ""}
+
+        `.toLowerCase();
+
+
+        const itemLocation =
+        String(
+            item.location || ""
+        ).toLowerCase();
+
+
+        return (
+
+            (!keyword ||
+             text.includes(keyword))
+
+            &&
+
+            (!location ||
+             itemLocation.includes(location))
+
+        );
+
+    });
+
+
+    renderEnquiries(filtered);
+
+}
+
+
+/* =====================================================
+   SEND DATA TO APPS SCRIPT
+   ===================================================== */
+
+async function sendToAPI(
+    action,
+    data
+){
+
+    const payload = {
+
+        action:action,
+
+        ...data
+
+    };
+
+
+    console.log(
+        "Sending:",
+        payload
+    );
+
+
+    const response =
+    await fetch(
+
+        API_URL,
+
+        {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body:
+            JSON.stringify(payload)
+
+        }
+
+    );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "API request failed"
+        );
+
+    }
+
+
+    return await response.json();
+
+}
+
+
+/* =====================================================
+   POST ENQUIRY
+   ===================================================== */
+
+document
+.getElementById("enquiryForm")
+.addEventListener(
+"submit",
+async function(event){
+
+    event.preventDefault();
+
+
+    const form =
+    event.target;
 
 
     const data =
-      JSON.parse(e.postData.contents);
+    Object.fromEntries(
+        new FormData(form)
+    );
 
 
-    // =================================================
-    // NEW ENQUIRY
-    // =================================================
-
-    if (data.action === "postEnquiry") {
-
-      const enquiry = {
-
-        id:
-          data.id ||
-          ("ENQ" + new Date().getTime()),
-
-        name:
-          data.name || "",
-
-        phone:
-          data.phone || "",
-
-        workType:
-          data.workType || "",
-
-        location:
-          data.location || "",
-
-        budget:
-          data.budget || "",
-
-        requiredDate:
-          data.requiredDate || "",
-
-        description:
-          data.description || "",
-
-        imageUrl:
-          data.imageUrl || "",
-
-        date:
-          data.date ||
-          getToday(),
-
-        // New enquiries need admin approval
-        status:
-          "Pending"
-
-      };
+    const button =
+    form.querySelector(
+        "button"
+    );
 
 
-      appendToSheet(
-        "Enquiries",
-        enquiry
-      );
+    button.disabled = true;
+
+    button.innerText =
+    "Submitting...";
 
 
-      return jsonResponse({
+    try{
 
-        success: true,
+        const result =
+        await sendToAPI(
+            "postEnquiry",
+            data
+        );
 
-        message:
-          "Enquiry submitted successfully.",
 
-        id:
-          enquiry.id
+        console.log(
+            "Post result:",
+            result
+        );
 
-      });
+
+        if(!result.success){
+
+            throw new Error(
+                result.error ||
+                "Unable to submit enquiry"
+            );
+
+        }
+
+
+        alert(
+            "Enquiry submitted successfully!"
+        );
+
+
+        form.reset();
+
+
+        closeModal(
+            "postModal"
+        );
+
+
+        await loadEnquiries();
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "Unable to submit enquiry.\n\n" +
+            "Please check that your Apps Script " +
+            "Web App is deployed as 'Anyone'."
+        );
 
     }
 
 
-    // =================================================
-    // CONTRACTOR RESPONSE
-    // =================================================
+    finally{
 
-    if (data.action === "sendResponse") {
+        button.disabled = false;
 
-      const response = {
-
-        id:
-          data.id ||
-          ("RES" + new Date().getTime()),
-
-        enquiryId:
-          data.enquiryId || "",
-
-        contractor:
-          data.contractor || "",
-
-        phone:
-          data.phone || "",
-
-        message:
-          data.message || "",
-
-        date:
-          data.date ||
-          getToday(),
-
-        status:
-          "New"
-
-      };
-
-
-      appendToSheet(
-        "Responses",
-        response
-      );
-
-
-      return jsonResponse({
-
-        success: true,
-
-        message:
-          "Response submitted successfully.",
-
-        id:
-          response.id
-
-      });
+        button.innerText =
+        "Post Enquiry";
 
     }
 
+});
 
-    // =================================================
-    // NEW CONTRACTOR
-    // =================================================
 
-    if (data.action === "addContractor") {
+/* =====================================================
+   OPEN RESPONSE FORM
+   ===================================================== */
 
-      const contractor = {
+function showResponse(
+    enquiryId
+){
 
-        id:
-          data.id ||
-          ("CON" + new Date().getTime()),
-
-        contractorName:
-          data.contractorName || "",
-
-        company:
-          data.company || "",
-
-        location:
-          data.location || "",
-
-        workType:
-          data.workType || "",
-
-        experience:
-          data.experience || "",
-
-        phone:
-          data.phone || "",
-
-        whatsapp:
-          data.whatsapp || "",
-
-        photoUrl:
-          data.photoUrl || "",
-
-        status:
-          "Pending",
-
-        date:
-          data.date ||
-          getToday()
-
-      };
-
-
-      appendToSheet(
-        "Contractors",
-        contractor
-      );
-
-
-      return jsonResponse({
-
-        success: true,
-
-        message:
-          "Contractor profile submitted.",
-
-        id:
-          contractor.id
-
-      });
-
-    }
-
-
-    return jsonResponse({
-
-      success: false,
-
-      error:
-        "Unknown action."
-
-    });
-
-  }
-
-  catch (error) {
-
-    return jsonResponse({
-
-      success: false,
-
-      error:
-        error.toString()
-
-    });
-
-  }
-
-}
-
-
-// =====================================================
-// READ GOOGLE SHEET
-// =====================================================
-
-function getSheetData(sheetName) {
-
-  const ss =
-    SpreadsheetApp.openById(
-      SPREADSHEET_ID
-    );
-
-  const sheet =
-    ss.getSheetByName(
-      sheetName
-    );
-
-
-  if (!sheet) {
-
-    return [];
-
-  }
-
-
-  const lastRow =
-    sheet.getLastRow();
-
-
-  if (lastRow < 2) {
-
-    return [];
-
-  }
-
-
-  const values =
-    sheet
-      .getRange(
-        1,
-        1,
-        lastRow,
-        sheet.getLastColumn()
-      )
-      .getValues();
-
-
-  const headers =
-    values.shift();
-
-
-  return values.map(function(row) {
-
-    const object = {};
-
-
-    headers.forEach(function(header, index) {
-
-      object[header] =
-        row[index];
-
-    });
-
-
-    return object;
-
-  });
-
-}
-
-
-// =====================================================
-// APPEND DATA
-// =====================================================
-
-function appendToSheet(
-  sheetName,
-  object
-) {
-
-  const ss =
-    SpreadsheetApp.openById(
-      SPREADSHEET_ID
-    );
-
-
-  const sheet =
-    ss.getSheetByName(
-      sheetName
-    );
-
-
-  if (!sheet) {
-
-    throw new Error(
-      "Sheet not found: " +
-      sheetName
-    );
-
-  }
-
-
-  const headers =
-    HEADERS[sheetName];
-
-
-  const row =
-    headers.map(function(header) {
-
-      return object[header] !== undefined
-        ? object[header]
-        : "";
-
-    });
-
-
-  sheet.appendRow(row);
-
-}
-
-
-// =====================================================
-// TODAY'S DATE
-// =====================================================
-
-function getToday() {
-
-  return Utilities.formatDate(
-
-    new Date(),
-
-    Session.getScriptTimeZone(),
-
-    "yyyy-MM-dd"
-
-  );
-
-}
-
-
-// =====================================================
-// JSON RESPONSE
-// =====================================================
-
-function jsonResponse(data) {
-
-  return ContentService
-
-    .createTextOutput(
-      JSON.stringify(data)
+    document
+    .getElementById(
+        "responseEnquiryId"
     )
+    .value =
+    enquiryId;
 
-    .setMimeType(
-      ContentService.MimeType.JSON
+
+    openModal(
+        "responseModal"
     );
 
 }
+
+
+/* =====================================================
+   SEND CONTRACTOR RESPONSE
+   ===================================================== */
+
+document
+.getElementById("responseForm")
+.addEventListener(
+"submit",
+async function(event){
+
+    event.preventDefault();
+
+
+    const form =
+    event.target;
+
+
+    const data =
+    Object.fromEntries(
+        new FormData(form)
+    );
+
+
+    const button =
+    form.querySelector(
+        "button"
+    );
+
+
+    button.disabled = true;
+
+    button.innerText =
+    "Sending...";
+
+
+    try{
+
+        const result =
+        await sendToAPI(
+            "sendResponse",
+            data
+        );
+
+
+        console.log(
+            "Response result:",
+            result
+        );
+
+
+        if(!result.success){
+
+            throw new Error(
+                result.error ||
+                "Unable to send response"
+            );
+
+        }
+
+
+        alert(
+            "Your response was sent successfully!"
+        );
+
+
+        form.reset();
+
+
+        closeModal(
+            "responseModal"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "Unable to send response."
+        );
+
+    }
+
+
+    finally{
+
+        button.disabled = false;
+
+        button.innerText =
+        "Send Response";
+
+    }
+
+});
+
+
+/* =====================================================
+   MODALS
+   ===================================================== */
+
+function openModal(id){
+
+    document
+    .getElementById(id)
+    .classList.add(
+        "active"
+    );
+
+}
+
+
+function closeModal(id){
+
+    document
+    .getElementById(id)
+    .classList.remove(
+        "active"
+    );
+
+}
+
+
+function closeOutside(
+    event,
+    id
+){
+
+    if(
+        event.target.id === id
+    ){
+
+        closeModal(id);
+
+    }
+
+}
+
+
+/* =====================================================
+   ESC KEY
+   ===================================================== */
+
+document.addEventListener(
+"keydown",
+function(event){
+
+    if(
+        event.key === "Escape"
+    ){
+
+        document
+        .querySelectorAll(
+            ".modal"
+        )
+        .forEach(function(modal){
+
+            modal.classList.remove(
+                "active"
+            );
+
+        });
+
+    }
+
+});
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+loadEnquiries();
+
+</script>
+
+</body>
+</html>
