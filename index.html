@@ -216,31 +216,6 @@ color:#666;
 line-height:1.6;
 }
 
-.stats{
-display:flex;
-gap:10px;
-margin-top:18px;
-}
-
-.stat{
-background:#f5f5f5;
-border:1px solid #ddd;
-border-radius:8px;
-padding:10px 18px;
-transition:transform .2s ease,box-shadow .2s ease;
-}
-
-.stat:hover{
-transform:translateY(-3px);
-box-shadow:0 6px 14px rgba(0,0,0,.08);
-}
-
-.stat strong{
-display:block;
-font-size:21px;
-transition:color .3s ease;
-}
-
 
 /* ================= MAIN ================= */
 
@@ -761,16 +736,6 @@ font-size:24px;
 font-size:14px;
 }
 
-.stats{
-width:100%;
-}
-
-.stat{
-flex:1;
-padding:9px;
-text-align:center;
-}
-
 .question-card{
 border-radius:7px;
 }
@@ -868,32 +833,6 @@ Civil Engineering Q&A
 Ask questions, share knowledge and help
 Civil Engineers, Contractors and Site Engineers.
 </p>
-
-
-<div class="stats">
-
-<div class="stat">
-
-<strong id="totalQuestions">
-0
-</strong>
-
-Questions
-
-</div>
-
-
-<div class="stat">
-
-<strong id="totalAnswers">
-0
-</strong>
-
-Answers
-
-</div>
-
-</div>
 
 </div>
 
@@ -1464,14 +1403,16 @@ encodeURIComponent(search)+
 encodeURIComponent(category);
 
 
+const questionsPromise =
+fetch(url).then(function(r){
+return r.json();
+});
+
+
 try{
 
-const response =
-await fetch(url);
-
-
 const data =
-await response.json();
+await questionsPromise;
 
 
 if(!data.success){
@@ -1479,48 +1420,6 @@ if(!data.success){
 throw new Error(
 data.error ||
 "API error"
-);
-
-}
-
-
-/* STATS */
-
-try{
-
-const statsResponse =
-await fetch(
-API_URL+
-"?action=getStats"
-);
-
-
-const stats =
-await statsResponse.json();
-
-
-if(stats.success){
-
-document.getElementById(
-"totalQuestions"
-).textContent =
-stats.totalQuestions || 0;
-
-
-document.getElementById(
-"totalAnswers"
-).textContent =
-stats.totalAnswers || 0;
-
-}
-
-}
-
-catch(e){
-
-console.log(
-"Stats error",
-e
 );
 
 }
@@ -1719,7 +1618,7 @@ document
 .forEach(function(card,i){
 
 card.style.animationDelay =
-(i * 0.06) + "s";
+Math.min(i * 0.04, 0.4) + "s";
 
 });
 
@@ -1908,11 +1807,6 @@ await fetchAnswers(
 questionId
 );
 
-
-/* UPDATE COUNTS */
-
-updateStats();
-
 }
 
 else{
@@ -2097,7 +1991,7 @@ section
 .forEach(function(card,i){
 
 card.style.animationDelay =
-(i * 0.06) + "s";
+Math.min(i * 0.04, 0.4) + "s";
 
 });
 
@@ -2133,51 +2027,6 @@ ${esc(error.message)}
 </div>
 
 `;
-
-}
-
-}
-
-
-/* =====================================================
-   UPDATE STATS
-===================================================== */
-
-async function updateStats(){
-
-try{
-
-const response =
-await fetch(
-API_URL+
-"?action=getStats"
-);
-
-
-const data =
-await response.json();
-
-
-if(data.success){
-
-document.getElementById(
-"totalQuestions"
-).textContent =
-data.totalQuestions || 0;
-
-
-document.getElementById(
-"totalAnswers"
-).textContent =
-data.totalAnswers || 0;
-
-}
-
-}
-
-catch(e){
-
-console.log(e);
 
 }
 
