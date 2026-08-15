@@ -1,419 +1,600 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopDeals - Best Amazon Products & Reviews 2026</title>
-    <meta name="description" content="Discover the best Amazon products with honest reviews. 300+ curated items across Electronics, Home, Beauty, Sports, Toys, Books, Health & Pets.">
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@400;500;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Affiliate Disclosure -->
-    <div class="affiliate-notice">
-        <strong>Affiliate Disclosure:</strong> This site contains affiliate links. We earn a commission when you purchase through our links at no extra cost to you. 
-        <a href="#disclaimer">Learn more</a>
-    </div>
+// =====================================================
+// CONTRACTOR ENQUIRIES PORTAL
+// GOOGLE SHEETS DATABASE + APPS SCRIPT API
+// =====================================================
 
-    <!-- Header -->
-    <header class="header">
-        <a href="#" class="logo" onclick="showHome()">
-            <span>Shop</span>Deals
-        </a>
+const SPREADSHEET_ID = "1bbw3SfSyP5iZoPylhhJTgMF_rzH50GfPoyvpxrKMHA4";
 
-        <div class="search-bar">
-            <select id="searchCategory">
-                <option value="all">All</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Home & Kitchen">Home</option>
-                <option value="Beauty & Personal Care">Beauty</option>
-                <option value="Sports & Outdoors">Sports</option>
-                <option value="Toys & Games">Toys</option>
-                <option value="Books">Books</option>
-                <option value="Health & Wellness">Health</option>
-                <option value="Pet Supplies">Pets</option>
-            </select>
-            <input type="text" id="searchInput" placeholder="Search 300+ products..." onkeypress="if(event.key==='Enter')doSearch()">
-            <button onclick="doSearch()">🔍</button>
-        </div>
 
-        <div class="nav-links">
-            <a href="#" onclick="showCategory('all')">
-                <small>Returns</small>
-                <strong>& Orders</strong>
-            </a>
-            <a href="#" onclick="showCategory('all')">
-                <small>Your</small>
-                <strong>Cart 🛒</strong>
-            </a>
-        </div>
-    </header>
+// =====================================================
+// SHEET STRUCTURE
+// =====================================================
 
-    <!-- Sub Navigation -->
-    <nav class="sub-nav">
-        <a href="#" class="menu-all" onclick="showHome()">☰ All</a>
-        <a href="#" onclick="showCategory('Electronics')">Electronics</a>
-        <a href="#" onclick="showCategory('Home & Kitchen')">Home & Kitchen</a>
-        <a href="#" onclick="showCategory('Beauty & Personal Care')">Beauty</a>
-        <a href="#" onclick="showCategory('Sports & Outdoors')">Sports</a>
-        <a href="#" onclick="showCategory('Toys & Games')">Toys & Games</a>
-        <a href="#" onclick="showCategory('Books')">Books</a>
-        <a href="#" onclick="showCategory('Health & Wellness')">Health</a>
-        <a href="#" onclick="showCategory('Pet Supplies')">Pet Supplies</a>
-        <a href="#" onclick="showDeals()">Today's Deals</a>
-        <a href="#" onclick="showBestSellers()">Best Sellers</a>
-        <a href="#" onclick="showNewReleases()">New Releases</a>
-    </nav>
+const HEADERS = {
 
-    <!-- Hero Section -->
-    <section class="hero" id="heroSection">
-        <h1>🛍️ Discover 300+ Best-Selling Amazon Products</h1>
-        <p>Curated reviews, honest ratings & exclusive deals across 8 categories</p>
-        <span class="hero-badge">✓ Updated August 2026 | ✓ Real Reviews | ✓ Affiliate Links</span>
-    </section>
+  Enquiries: [
+    "id",
+    "name",
+    "phone",
+    "workType",
+    "location",
+    "budget",
+    "requiredDate",
+    "description",
+    "imageUrl",
+    "date",
+    "status"
+  ],
 
-    <!-- Main Content -->
-    <main class="main-content" id="mainContent">
-        <!-- Dynamic content loaded here -->
-    </main>
+  Responses: [
+    "id",
+    "enquiryId",
+    "contractor",
+    "phone",
+    "message",
+    "date",
+    "status"
+  ],
 
-    <!-- Product Detail Modal -->
-    <div class="modal-overlay" id="productModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="modal-body" id="modalBody">
-                <!-- Dynamic modal content -->
-            </div>
-        </div>
-    </div>
+  Contractors: [
+    "id",
+    "contractorName",
+    "company",
+    "location",
+    "workType",
+    "experience",
+    "phone",
+    "whatsapp",
+    "photoUrl",
+    "status",
+    "date"
+  ]
 
-    <!-- Back to Top -->
-    <div class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        Back to Top
-    </div>
+};
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Get to Know Us</h4>
-                <a href="#">About ShopDeals</a>
-                <a href="#">Careers</a>
-                <a href="#">Press Releases</a>
-                <a href="#">ShopDeals Science</a>
-            </div>
-            <div class="footer-section">
-                <h4>Make Money with Us</h4>
-                <a href="#">Sell on ShopDeals</a>
-                <a href="#">Become an Affiliate</a>
-                <a href="#">Advertise Your Products</a>
-                <a href="#">Self-Publish</a>
-            </div>
-            <div class="footer-section">
-                <h4>Categories</h4>
-                <a href="#" onclick="showCategory('Electronics')">Electronics</a>
-                <a href="#" onclick="showCategory('Home & Kitchen')">Home & Kitchen</a>
-                <a href="#" onclick="showCategory('Beauty & Personal Care')">Beauty</a>
-                <a href="#" onclick="showCategory('Sports & Outdoors')">Sports</a>
-            </div>
-            <div class="footer-section">
-                <h4>Let Us Help You</h4>
-                <a href="#">Your Account</a>
-                <a href="#">Your Orders</a>
-                <a href="#">Shipping Rates</a>
-                <a href="#">Returns & Replacements</a>
-                <a href="#" id="disclaimer">Help</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 ShopDeals. All rights reserved. | <a href="#" style="color:#ddd">Privacy Policy</a> | <a href="#" style="color:#ddd">Terms of Service</a></p>
-            <p style="margin-top:10px; font-size:11px; color:#999">
-                ShopDeals is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.
-            </p>
-        </div>
-    </footer>
 
-    <script src="js/products.js"></script>
-    <script>
-        // State
-        let currentCategory = 'all';
-        let currentSearch = '';
+// =====================================================
+// SETUP SHEETS
+// RUN THIS FUNCTION ONCE
+// =====================================================
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            showHome();
-        });
+function setupSheets() {
 
-        // Show Home Page with all categories
-        function showHome() {
-            currentCategory = 'all';
-            currentSearch = '';
-            document.getElementById('searchInput').value = '';
-            document.getElementById('heroSection').style.display = 'block';
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-            const categories = getCategories();
-            let html = '';
+  Object.keys(HEADERS).forEach(function(sheetName) {
 
-            categories.forEach(cat => {
-                const catProducts = getProductsByCategory(cat).slice(0, 8);
-                html += createCategorySection(cat, catProducts);
-            });
+    let sheet = ss.getSheetByName(sheetName);
 
-            document.getElementById('mainContent').innerHTML = html;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
+    // Create sheet if it doesn't exist
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+    }
 
-        // Show specific category
-        function showCategory(category) {
-            currentCategory = category;
-            currentSearch = '';
-            document.getElementById('searchInput').value = '';
+    // Add headers
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(HEADERS[sheetName]);
+    }
 
-            const products = category === 'all' ? productsData : getProductsByCategory(category);
-            const title = category === 'all' ? 'All Products' : category;
+  });
 
-            document.getElementById('heroSection').style.display = 'none';
+  return jsonResponse({
+    success: true,
+    message: "Contractor portal sheets are ready."
+  });
 
-            let html = `
-                <div class="category-section">
-                    <div class="category-header">
-                        <h2>${title} (${products.length} products)</h2>
-                        <a href="#" onclick="showHome()">← Back to Home</a>
-                    </div>
-                    <div class="product-grid">
-                        ${products.map(p => createProductCard(p)).join('')}
-                    </div>
-                </div>
-            `;
+}
 
-            document.getElementById('mainContent').innerHTML = html;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
 
-        // Show deals (products under $30)
-        function showDeals() {
-            document.getElementById('heroSection').style.display = 'none';
-            const deals = productsData.filter(p => p.price <= 30).sort((a,b) => a.price - b.price);
+// =====================================================
+// GET API
+// =====================================================
 
-            let html = `
-                <div class="category-section">
-                    <div class="category-header">
-                        <h2>🔥 Today's Deals Under $30 (${deals.length} items)</h2>
-                        <a href="#" onclick="showHome()">← Back to Home</a>
-                    </div>
-                    <div class="product-grid">
-                        ${deals.map(p => createProductCard(p)).join('')}
-                    </div>
-                </div>
-            `;
+function doGet(e) {
 
-            document.getElementById('mainContent').innerHTML = html;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
+  try {
 
-        // Show best sellers (top rated)
-        function showBestSellers() {
-            document.getElementById('heroSection').style.display = 'none';
-            const bestsellers = [...productsData].sort((a,b) => b.reviews - a.reviews).slice(0, 50);
+    const action =
+      e && e.parameter
+        ? (e.parameter.action || "getEnquiries").toLowerCase()
+        : "getenquiries";
 
-            let html = `
-                <div class="category-section">
-                    <div class="category-header">
-                        <h2>⭐ Best Sellers (Top 50 by Reviews)</h2>
-                        <a href="#" onclick="showHome()">← Back to Home</a>
-                    </div>
-                    <div class="product-grid">
-                        ${bestsellers.map(p => createProductCard(p)).join('')}
-                    </div>
-                </div>
-            `;
 
-            document.getElementById('mainContent').innerHTML = html;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
+    // ---------------------------------------------
+    // GET ENQUIRIES
+    // ---------------------------------------------
 
-        // Show new releases (random selection)
-        function showNewReleases() {
-            document.getElementById('heroSection').style.display = 'none';
-            const shuffled = [...productsData].sort(() => 0.5 - Math.random()).slice(0, 50);
+    if (action === "getenquiries") {
 
-            let html = `
-                <div class="category-section">
-                    <div class="category-header">
-                        <h2>🆕 New & Trending (50 Products)</h2>
-                        <a href="#" onclick="showHome()">← Back to Home</a>
-                    </div>
-                    <div class="product-grid">
-                        ${shuffled.map(p => createProductCard(p)).join('')}
-                    </div>
-                </div>
-            `;
+      const enquiries =
+        getSheetData("Enquiries");
 
-            document.getElementById('mainContent').innerHTML = html;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
+      return jsonResponse({
+        success: true,
+        enquiries: enquiries
+      });
 
-        // Search functionality
-        function doSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            const catFilter = document.getElementById('searchCategory').value;
+    }
 
-            if (!query) return;
 
-            currentSearch = query;
-            document.getElementById('heroSection').style.display = 'none';
+    // ---------------------------------------------
+    // GET CONTRACTORS
+    // ---------------------------------------------
 
-            let results = searchProducts(query);
-            if (catFilter !== 'all') {
-                results = results.filter(p => p.category === catFilter);
-            }
+    if (action === "getcontractors") {
 
-            let html = `
-                <div class="category-section">
-                    <div class="category-header">
-                        <h2>Search Results for "${query}" (${results.length} found)</h2>
-                        <a href="#" onclick="showHome()">← Back to Home</a>
-                    </div>
-            `;
+      const contractors =
+        getSheetData("Contractors");
 
-            if (results.length === 0) {
-                html += `<div style="text-align:center;padding:60px 20px;"><h3>No products found</h3><p>Try different keywords or browse categories above.</p></div>`;
-            } else {
-                html += `<div class="product-grid">${results.map(p => createProductCard(p)).join('')}</div>`;
-            }
+      return jsonResponse({
+        success: true,
+        contractors: contractors
+      });
 
-            html += `</div>`;
-            document.getElementById('mainContent').innerHTML = html;
-            window.scrollTo({top:0, behavior:'smooth'});
-        }
+    }
 
-        // Create category section for home page
-        function createCategorySection(category, products) {
-            return `
-                <div class="category-section">
-                    <div class="category-header">
-                        <h2>${category}</h2>
-                        <a href="#" onclick="showCategory('${category}')">See all →</a>
-                    </div>
-                    <div class="product-grid">
-                        ${products.map(p => createProductCard(p)).join('')}
-                    </div>
-                </div>
-            `;
-        }
 
-        // Create product card HTML
-        function createProductCard(product) {
-            const affiliateLink = getAffiliateLink(product.asin);
-            return `
-                <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image" 
-                         onerror="this.src='https://via.placeholder.com/300x250?text=${encodeURIComponent(product.name)}'"
-                         onclick="openProductModal('${product.asin}')">
-                    <div class="product-info">
-                        <a class="product-title" onclick="openProductModal('${product.asin}')">${product.name}</a>
-                        <div class="product-desc">${product.desc}</div>
-                        <div class="rating">
-                            <span class="stars">${renderStars(product.rating)}</span>
-                            <span class="rating-count" onclick="openProductModal('${product.asin}')">${formatReviews(product.reviews)} ratings</span>
-                        </div>
-                        <div class="price">${formatPrice(product.price)}</div>
-                        <div class="price-note">$${(product.price * 0.9).toFixed(2)} with coupon</div>
-                        <div class="prime-badge">✓ prime <span style="color:#00a8e1">FREE Delivery</span> <span style="color:var(--amazon-gray);font-weight:normal">Mon, Aug 17</span></div>
-                        <button class="btn btn-primary" onclick="window.open('${affiliateLink}', '_blank')">View on Amazon ↗</button>
-                        <button class="btn btn-secondary" onclick="openProductModal('${product.asin}')">Read Reviews</button>
-                    </div>
-                </div>
-            `;
-        }
+    // ---------------------------------------------
+    // GET RESPONSES
+    // ---------------------------------------------
 
-        // Open product detail modal
-        function openProductModal(asin) {
-            const product = getProductByAsin(asin);
-            if (!product) return;
+    if (action === "getresponses") {
 
-            const affiliateLink = getAffiliateLink(product.asin);
-            const reviewsHtml = product.reviews_list.map(r => `
-                <div class="review-item">
-                    <div class="review-header">
-                        <span class="review-author">${r.author}</span>
-                        <span class="review-date">${r.date}</span>
-                    </div>
-                    <div class="stars" style="margin-bottom:5px">${renderStars(r.rating)}</div>
-                    <div class="review-title">${r.title}</div>
-                    <div class="review-text">${r.text}</div>
-                    ${r.verified ? '<div class="review-verified">✓ Verified Purchase</div>' : ''}
-                </div>
-            `).join('');
+      const responses =
+        getSheetData("Responses");
 
-            document.getElementById('modalBody').innerHTML = `
-                <img src="${product.image}" alt="${product.name}" class="modal-image"
-                     onerror="this.src='https://via.placeholder.com/400x400?text=${encodeURIComponent(product.name)}'">
-                <div class="modal-details">
-                    <h2>${product.name}</h2>
-                    <div class="brand">Brand: ${product.name.split(' ')[0]} | Category: ${product.category}</div>
-                    <div class="rating rating-large">
-                        <span class="stars">${renderStars(product.rating)}</span>
-                        <span style="margin-left:10px">${product.rating} out of 5</span>
-                    </div>
-                    <div style="color:var(--amazon-link);font-size:14px;margin-bottom:10px">${formatReviews(product.reviews)} global ratings</div>
-                    <div class="price-large">${formatPrice(product.price)}</div>
-                    <div style="color:var(--amazon-gray);font-size:14px;margin-bottom:15px">
-                        <span style="text-decoration:line-through">$${(product.price * 1.2).toFixed(2)}</span> 
-                        <span style="color:#B12704">List Price</span>
-                    </div>
-                    <div class="desc-box">
-                        <h4>About this item</h4>
-                        <p>${product.desc}</p>
-                        <p style="margin-top:8px"><strong>Category:</strong> ${product.category}</p>
-                        <p><strong>ASIN:</strong> ${product.asin}</p>
-                    </div>
-                    <div style="margin:20px 0">
-                        <button class="btn btn-primary" style="margin-bottom:10px;font-size:16px;padding:12px" 
-                                onclick="window.open('${affiliateLink}', '_blank')">
-                            🛒 Buy Now on Amazon
-                        </button>
-                        <button class="btn btn-secondary" style="font-size:14px"
-                                onclick="window.open('${affiliateLink}', '_blank')">
-                            Add to Cart
-                        </button>
-                    </div>
-                    <div style="font-size:12px;color:var(--amazon-gray);padding:10px;background:#f7fafa;border-radius:4px">
-                        <strong>🚚 FREE delivery:</strong> Monday, August 17<br>
-                        <strong>📦 Fastest delivery:</strong> Friday, August 14<br>
-                        <strong>↩️ Return policy:</strong> Eligible for Return, Refund or Replacement within 30 days of receipt
-                    </div>
-                </div>
-                <div class="reviews-section">
-                    <h3>Customer Reviews (${product.reviews_list.length} reviews)</h3>
-                    ${reviewsHtml}
-                    <div style="text-align:center;margin-top:20px">
-                        <button class="btn btn-primary" onclick="window.open('${affiliateLink}', '_blank')">
-                            See All Reviews on Amazon ↗
-                        </button>
-                    </div>
-                </div>
-            `;
+      return jsonResponse({
+        success: true,
+        responses: responses
+      });
 
-            document.getElementById('productModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+    }
 
-        // Close modal
-        function closeModal() {
-            document.getElementById('productModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
 
-        // Close modal on overlay click
-        document.getElementById('productModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+    // ---------------------------------------------
+    // GET EVERYTHING
+    // ---------------------------------------------
 
-        // Escape key to close modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
-    </script>
-</body>
-</html>
+    if (action === "getall") {
+
+      return jsonResponse({
+
+        success: true,
+
+        enquiries:
+          getSheetData("Enquiries"),
+
+        contractors:
+          getSheetData("Contractors"),
+
+        responses:
+          getSheetData("Responses")
+
+      });
+
+    }
+
+
+    return jsonResponse({
+
+      success: false,
+
+      error: "Invalid action."
+
+    });
+
+  }
+
+  catch (error) {
+
+    return jsonResponse({
+
+      success: false,
+
+      error: error.toString()
+
+    });
+
+  }
+
+}
+
+
+// =====================================================
+// POST API
+// =====================================================
+
+function doPost(e) {
+
+  try {
+
+    if (!e || !e.postData) {
+
+      return jsonResponse({
+
+        success: false,
+
+        error: "No POST data received."
+
+      });
+
+    }
+
+
+    const data =
+      JSON.parse(e.postData.contents);
+
+
+    // =================================================
+    // NEW ENQUIRY
+    // =================================================
+
+    if (data.action === "postEnquiry") {
+
+      const enquiry = {
+
+        id:
+          data.id ||
+          ("ENQ" + new Date().getTime()),
+
+        name:
+          data.name || "",
+
+        phone:
+          data.phone || "",
+
+        workType:
+          data.workType || "",
+
+        location:
+          data.location || "",
+
+        budget:
+          data.budget || "",
+
+        requiredDate:
+          data.requiredDate || "",
+
+        description:
+          data.description || "",
+
+        imageUrl:
+          data.imageUrl || "",
+
+        date:
+          data.date ||
+          getToday(),
+
+        // New enquiries need admin approval
+        status:
+          "Pending"
+
+      };
+
+
+      appendToSheet(
+        "Enquiries",
+        enquiry
+      );
+
+
+      return jsonResponse({
+
+        success: true,
+
+        message:
+          "Enquiry submitted successfully.",
+
+        id:
+          enquiry.id
+
+      });
+
+    }
+
+
+    // =================================================
+    // CONTRACTOR RESPONSE
+    // =================================================
+
+    if (data.action === "sendResponse") {
+
+      const response = {
+
+        id:
+          data.id ||
+          ("RES" + new Date().getTime()),
+
+        enquiryId:
+          data.enquiryId || "",
+
+        contractor:
+          data.contractor || "",
+
+        phone:
+          data.phone || "",
+
+        message:
+          data.message || "",
+
+        date:
+          data.date ||
+          getToday(),
+
+        status:
+          "New"
+
+      };
+
+
+      appendToSheet(
+        "Responses",
+        response
+      );
+
+
+      return jsonResponse({
+
+        success: true,
+
+        message:
+          "Response submitted successfully.",
+
+        id:
+          response.id
+
+      });
+
+    }
+
+
+    // =================================================
+    // NEW CONTRACTOR
+    // =================================================
+
+    if (data.action === "addContractor") {
+
+      const contractor = {
+
+        id:
+          data.id ||
+          ("CON" + new Date().getTime()),
+
+        contractorName:
+          data.contractorName || "",
+
+        company:
+          data.company || "",
+
+        location:
+          data.location || "",
+
+        workType:
+          data.workType || "",
+
+        experience:
+          data.experience || "",
+
+        phone:
+          data.phone || "",
+
+        whatsapp:
+          data.whatsapp || "",
+
+        photoUrl:
+          data.photoUrl || "",
+
+        status:
+          "Pending",
+
+        date:
+          data.date ||
+          getToday()
+
+      };
+
+
+      appendToSheet(
+        "Contractors",
+        contractor
+      );
+
+
+      return jsonResponse({
+
+        success: true,
+
+        message:
+          "Contractor profile submitted.",
+
+        id:
+          contractor.id
+
+      });
+
+    }
+
+
+    return jsonResponse({
+
+      success: false,
+
+      error:
+        "Unknown action."
+
+    });
+
+  }
+
+  catch (error) {
+
+    return jsonResponse({
+
+      success: false,
+
+      error:
+        error.toString()
+
+    });
+
+  }
+
+}
+
+
+// =====================================================
+// READ GOOGLE SHEET
+// =====================================================
+
+function getSheetData(sheetName) {
+
+  const ss =
+    SpreadsheetApp.openById(
+      SPREADSHEET_ID
+    );
+
+  const sheet =
+    ss.getSheetByName(
+      sheetName
+    );
+
+
+  if (!sheet) {
+
+    return [];
+
+  }
+
+
+  const lastRow =
+    sheet.getLastRow();
+
+
+  if (lastRow < 2) {
+
+    return [];
+
+  }
+
+
+  const values =
+    sheet
+      .getRange(
+        1,
+        1,
+        lastRow,
+        sheet.getLastColumn()
+      )
+      .getValues();
+
+
+  const headers =
+    values.shift();
+
+
+  return values.map(function(row) {
+
+    const object = {};
+
+
+    headers.forEach(function(header, index) {
+
+      object[header] =
+        row[index];
+
+    });
+
+
+    return object;
+
+  });
+
+}
+
+
+// =====================================================
+// APPEND DATA
+// =====================================================
+
+function appendToSheet(
+  sheetName,
+  object
+) {
+
+  const ss =
+    SpreadsheetApp.openById(
+      SPREADSHEET_ID
+    );
+
+
+  const sheet =
+    ss.getSheetByName(
+      sheetName
+    );
+
+
+  if (!sheet) {
+
+    throw new Error(
+      "Sheet not found: " +
+      sheetName
+    );
+
+  }
+
+
+  const headers =
+    HEADERS[sheetName];
+
+
+  const row =
+    headers.map(function(header) {
+
+      return object[header] !== undefined
+        ? object[header]
+        : "";
+
+    });
+
+
+  sheet.appendRow(row);
+
+}
+
+
+// =====================================================
+// TODAY'S DATE
+// =====================================================
+
+function getToday() {
+
+  return Utilities.formatDate(
+
+    new Date(),
+
+    Session.getScriptTimeZone(),
+
+    "yyyy-MM-dd"
+
+  );
+
+}
+
+
+// =====================================================
+// JSON RESPONSE
+// =====================================================
+
+function jsonResponse(data) {
+
+  return ContentService
+
+    .createTextOutput(
+      JSON.stringify(data)
+    )
+
+    .setMimeType(
+      ContentService.MimeType.JSON
+    );
+
+}
