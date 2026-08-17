@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184504243491630"
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184504243491630"
      crossorigin="anonymous"></script>
 
 <meta charset="UTF-8">
@@ -116,6 +117,15 @@ scroll-behavior:auto !important;
 }
 
 }
+
+
+/* ================= SKELETON LOADING ================= */
+
+.skeleton{animation:fadeIn .4s ease both;}
+.skeleton .sk-meta{height:14px;width:140px;background:#eee;border-radius:4px;display:inline-block;}
+.skeleton .sk-title{height:22px;width:92%;background:#eee;border-radius:4px;margin-top:10px;}
+.skeleton .sk-badge{height:28px;width:90px;background:#eee;border-radius:20px;margin-top:10px;}
+.skeleton .sk-img{height:220px;width:100%;background:#eee;border-radius:7px;margin-top:15px;}
 
 
 /* ================= HEADER ================= */
@@ -1272,962 +1282,420 @@ Terms
 
 
 /* =====================================================
-   APPS SCRIPT URL
+   CONFIG
 ===================================================== */
+const API_URL = "https://script.google.com/macros/s/AKfycbxKC7IOS2GlhpjChobQQQVfcmXsOHRXOMyz0OVQPv6qcvIEz88Ky1ort8wotqa-nz2aCA/exec";
+const CACHE_KEY = "civilline_q_cache";
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const PAGE_SIZE = 20;
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbxKC7IOS2GlhpjChobQQQVfcmXsOHRXOMyz0OVQPv6qcvIEz88Ky1ort8wotqa-nz2aCA/exec";
+let memoryQuestions = null;   // in-memory cache
+let abortCtrl = null;         // for cancelling stale fetches
+let prefetched = new Set();   // track prefetched answer sets
 
 
 /* =====================================================
-   ESCAPE
+   UTILITIES
 ===================================================== */
-
 function esc(value){
-
-return String(value || "")
-.replace(/[&<>"']/g,function(c){
-
-return {
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-
-}[c];
-
-});
-
+  return String(value || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 }
 
+function now(){ return Date.now(); }
 
-/* =====================================================
-   IMAGE
-===================================================== */
+function getCache(){
+  try{
+    const raw = localStorage.getItem(CACHE_KEY);
+    if(!raw) return null;
+    const parsed = JSON.parse(raw);
+    if(now() - parsed.ts > CACHE_TTL){ localStorage.removeItem(CACHE_KEY); return null; }
+    return parsed.data;
+  }catch(e){ return null; }
+}
+
+function setCache(data){
+  try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:now(), data})); }catch(e){}
+}
+
+function debounce(fn, ms){
+  let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); };
+}
+
+/* Compress images before upload to cut payload size by 60-80% */
+function compressImage(file, maxW, q){
+  maxW = maxW || 1280; q = q || 0.75;
+  return new Promise(function(res){
+    if(!file || !file.type.startsWith("image/")) return res(file);
+    var img=new Image(), url=URL.createObjectURL(file);
+    img.onload=function(){
+      URL.revokeObjectURL(url);
+      var w=img.width, h=img.height;
+      if(w>maxW){ h=Math.round(h*(maxW/w)); w=maxW; }
+      var c=document.createElement("canvas");
+      c.width=w; c.height=h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      c.toBlob(function(b){
+        if(!b||b.size>file.size) res(file);
+        else res(new File([b],file.name,{type:file.type}));
+      }, file.type, q);
+    };
+    img.onerror=function(){ res(file); };
+    img.src=url;
+  });
+}
 
 function imageBase64(file){
-
-return new Promise(function(resolve,reject){
-
-if(!file){
-
-resolve("");
-
-return;
-
+  return new Promise(function(res,rej){
+    if(!file){ res(""); return; }
+    var r=new FileReader();
+    r.onload=function(){ res(r.result.split(",")[1]); };
+    r.onerror=rej;
+    r.readAsDataURL(file);
+  });
 }
 
-const reader =
-new FileReader();
-
-reader.onload=function(){
-
-resolve(
-reader.result.split(",")[1]
-);
-
-};
-
-reader.onerror=reject;
-
-reader.readAsDataURL(file);
-
-});
-
+async function apiPost(data){
+  var r=await fetch(API_URL,{
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(data)
+  });
+  return r.json();
 }
 
 
 /* =====================================================
-   POST API
+   SKELETON UI
 ===================================================== */
-
-async function apiPost(data){
-
-const response =
-await fetch(API_URL,{
-
-method:"POST",
-
-headers:{
-"Content-Type":
-"text/plain;charset=utf-8"
-},
-
-body:JSON.stringify(data)
-
-});
-
-return response.json();
-
+function skeletonHTML(count){
+  count = count || 6;
+  var out = "";
+  for(var i=0;i<count;i++){
+    out += '<article class="question-card skeleton" style="animation-delay:'+Math.min(i*0.04,0.35)+'s">'+
+      '<div class="sk-meta"></div>'+
+      '<div class="sk-title"></div>'+
+      '<div class="sk-badge"></div>'+
+      '<div class="sk-img"></div>'+
+    '</article>';
+  }
+  return out;
 }
 
 
 /* =====================================================
    TOGGLE ASK FORM
 ===================================================== */
-
 function toggleAskForm(){
-
-const form =
-document.getElementById(
-"askForm"
-);
-
-
-form.classList.toggle(
-"open"
-);
-
-
-if(
-form.classList.contains(
-"open"
-)
-){
-
-form.scrollIntoView({
-
-behavior:"smooth",
-
-block:"start"
-
-});
-
-}
-
+  var form=document.getElementById("askForm");
+  form.classList.toggle("open");
+  if(form.classList.contains("open")) form.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 
 /* =====================================================
-   POST QUESTION
+   POST QUESTION (with image compression)
 ===================================================== */
-
 async function submitQuestion(){
+  var name=document.getElementById("questionName").value.trim();
+  var question=document.getElementById("questionText").value.trim();
+  var category=document.getElementById("questionCategory").value;
+  var rawFile=document.getElementById("questionImage").files[0];
 
-const name =
-document.getElementById(
-"questionName"
-).value.trim();
+  if(!name){ alert("Please enter your name."); return; }
+  if(!question){ alert("Please write your question."); return; }
 
+  var btn=document.querySelector("#askForm .primary");
+  var oldText=btn.textContent;
+  btn.disabled=true; btn.textContent="Posting…";
 
-const question =
-document.getElementById(
-"questionText"
-).value.trim();
+  try{
+    var image=await compressImage(rawFile);
+    var result=await apiPost({
+      action:"postQuestion",
+      name:name,
+      question:question,
+      category:category,
+      imageData: await imageBase64(image),
+      imageName: image?image.name:"",
+      imageType: image?image.type:""
+    });
 
-
-const category =
-document.getElementById(
-"questionCategory"
-).value;
-
-
-const image =
-document.getElementById(
-"questionImage"
-).files[0];
-
-
-if(!name){
-
-alert("Please enter your name.");
-
-return;
-
-}
-
-
-if(!question){
-
-alert("Please write your question.");
-
-return;
-
-}
-
-
-try{
-
-const result =
-await apiPost({
-
-action:"postQuestion",
-
-name:name,
-
-question:question,
-
-category:category,
-
-imageData:
-await imageBase64(image),
-
-imageName:
-image ? image.name : "",
-
-imageType:
-image ? image.type : ""
-
-});
-
-
-if(result.success){
-
-document.getElementById(
-"questionText"
-).value="";
-
-
-document.getElementById(
-"questionImage"
-).value="";
-
-
-document.getElementById(
-"askForm"
-).classList.remove(
-"open"
-);
-
-
-await loadQuestions();
-
-}else{
-
-alert(
-result.error ||
-"Question could not be posted."
-);
-
-}
-
-}
-
-catch(error){
-
-console.error(error);
-
-alert(
-"Could not connect to server."
-);
-
-}
-
+    if(result.success){
+      document.getElementById("questionText").value="";
+      document.getElementById("questionImage").value="";
+      document.getElementById("askForm").classList.remove("open");
+      memoryQuestions=null; localStorage.removeItem(CACHE_KEY); // bust cache
+      await loadQuestions();
+    }else{
+      alert(result.error||"Question could not be posted.");
+    }
+  }catch(err){
+    console.error(err);
+    alert("Could not connect to server.");
+  }
+  btn.disabled=false; btn.textContent=oldText;
 }
 
 
 /* =====================================================
-   LOAD QUESTIONS
+   LOAD QUESTIONS (cached + abort + skeleton)
 ===================================================== */
-
 async function loadQuestions(){
+  var search=document.getElementById("searchText").value.trim();
+  var category=document.getElementById("searchCategory").value;
+  var list=document.getElementById("questionList");
 
-const search =
-document.getElementById(
-"searchText"
-).value.trim();
+  // 1. Show skeleton immediately
+  list.innerHTML=skeletonHTML(5);
 
+  // 2. Cancel any in-flight request
+  if(abortCtrl) abortCtrl.abort();
+  abortCtrl=new AbortController();
 
-const category =
-document.getElementById(
-"searchCategory"
-).value;
+  // 3. Show cached data instantly (if no active filters)
+  var cached=memoryQuestions||getCache();
+  if(cached && !search && !category){
+    renderQuestionList(cached, list);
+  }
 
+  // 4. Fetch fresh data
+  var url=API_URL+"?action=getQuestions"+
+    "&search="+encodeURIComponent(search)+
+    "&category="+encodeURIComponent(category);
 
-const list =
-document.getElementById(
-"questionList"
-);
+  try{
+    var res=await fetch(url,{signal:abortCtrl.signal});
+    var data=await res.json();
+    if(!data.success) throw new Error(data.error||"API error");
 
+    var questions=data.questions||[];
 
-list.innerHTML=
-`
-<div class="no-answer loading">
-Loading questions...
-</div>
-`;
+    if(questions.length===0){
+      list.innerHTML='<div class="no-answer">No questions found.</div>';
+      return;
+    }
 
+    // Update caches
+    if(!search && !category){
+      memoryQuestions=questions;
+      setCache(questions);
+    }
 
-const url =
-API_URL+
-"?action=getQuestions"+
-"&search="+
-encodeURIComponent(search)+
-"&category="+
-encodeURIComponent(category);
+    renderQuestionList(questions, list);
 
-
-const questionsPromise =
-fetch(url).then(function(r){
-return r.json();
-});
-
-
-try{
-
-const data =
-await questionsPromise;
-
-
-if(!data.success){
-
-throw new Error(
-data.error ||
-"API error"
-);
-
+  }catch(err){
+    if(err.name==="AbortError") return; // ignore cancelled requests
+    console.error(err);
+    // If we already showed cached data, keep it and silently fail,
+    // otherwise show error.
+    if(!list.querySelector(".question-card:not(.skeleton)")){
+      list.innerHTML='<div class="no-answer">Could not load questions.<br><br>'+esc(err.message)+'</div>';
+    }
+  }
 }
 
-
-if(
-!data.questions ||
-data.questions.length===0
-){
-
-list.innerHTML=
-`
-<div class="no-answer">
-No questions found.
-</div>
-`;
-
-return;
-
-}
-
-
-/* RENDER QUESTIONS */
-
-list.innerHTML =
-data.questions.map(function(q){
-
-return `
-
-<article
-class="question-card"
-id="question-${esc(q.id)}"
->
-
-
-<div class="meta">
-
-<b>
-${esc(q.name)}
-</b>
-
-·
-
-${esc(q.date)}
-
-</div>
-
-
-<div class="question-text">
-
-${esc(q.question)}
-
-</div>
-
-
-<span class="category">
-
-${esc(q.category)}
-
-</span>
-
-
-${
-q.imageURL
-?
-`
-<img
-class="question-img"
-src="${esc(q.imageURL)}"
-loading="lazy"
->
-`
-:
-""
-}
-
-
-<div class="actions">
-
-
-<button
-class="action"
-onclick="openAnswerEditor('${esc(q.id)}')"
->
-
-✍️ Answer
-
-</button>
-
-
-<button
-class="action"
-onclick="fetchAnswers('${esc(q.id)}')"
->
-
-💬 ${q.answerCount || 0}
-Answers
-
-</button>
-
-
-</div>
-
-
-<!-- ANSWER EDITOR -->
-
-<div
-class="answer-editor"
-id="editor-${esc(q.id)}"
->
-
-<h3>
-Write an answer
-</h3>
-
-
-<input
-id="answerName-${esc(q.id)}"
-placeholder="Your name"
->
-
-
-<textarea
-id="answerText-${esc(q.id)}"
-placeholder="Write a helpful answer..."
-></textarea>
-
-
-<label>
-
-<b>
-Add image (optional)
-</b>
-
-</label>
-
-
-<input
-id="answerImage-${esc(q.id)}"
-type="file"
-accept="image/*"
->
-
-
-<div class="editor-buttons">
-
-
-<button
-class="post-answer"
-onclick="submitAnswer('${esc(q.id)}')"
->
-
-Post Answer
-
-</button>
-
-
-<button
-class="cancel-answer"
-onclick="closeAnswerEditor('${esc(q.id)}')"
->
-
-Cancel
-
-</button>
-
-
-</div>
-
-</div>
-
-
-<!-- ANSWERS -->
-
-<div
-class="answer-section"
-id="answers-${esc(q.id)}"
->
-
-</div>
-
-
-</article>
-
-`;
-
-}).join("");
-
-
-/* STAGGERED CARD ANIMATION */
-
-document
-.querySelectorAll(
-".question-card"
-)
-.forEach(function(card,i){
-
-card.style.animationDelay =
-Math.min(i * 0.04, 0.4) + "s";
-
-});
-
-
-}
-
-catch(error){
-
-console.error(error);
-
-list.innerHTML=
-`
-
-<div class="no-answer">
-
-Could not load questions.
-
-<br><br>
-
-${esc(error.message)}
-
-</div>
-
-`;
-
-}
-
+function renderQuestionList(questions, list){
+  var frag=document.createDocumentFragment();
+
+  questions.forEach(function(q,i){
+    var art=document.createElement("article");
+    art.className="question-card";
+    art.id="question-"+esc(q.id);
+    art.style.animationDelay=Math.min(i*0.04,0.4)+"s";
+
+    art.innerHTML=
+      '<div class="meta"><b>'+esc(q.name)+'</b> · '+esc(q.date)+'</div>'+
+      '<div class="question-text">'+esc(q.question)+'</div>'+
+      '<span class="category">'+esc(q.category)+'</span>'+
+      (q.imageURL?'<img class="question-img" src="'+esc(q.imageURL)+'" loading="lazy" alt="">':"")+
+      '<div class="actions">'+
+        '<button class="action" onclick="openAnswerEditor(\''+esc(q.id)+'\')">✍️ Answer</button>'+
+        '<button class="action" onmouseenter="prefetchAnswers(\''+esc(q.id)+'\')" onclick="fetchAnswers(\''+esc(q.id)+'\')">💬 '+(q.answerCount||0)+' Answers</button>'+
+      '</div>'+
+      '<div class="answer-editor" id="editor-'+esc(q.id)+'">'+
+        '<h3>Write an answer</h3>'+
+        '<input id="answerName-'+esc(q.id)+'" placeholder="Your name">'+
+        '<textarea id="answerText-'+esc(q.id)+'" placeholder="Write a helpful answer…"></textarea>'+
+        '<label><b>Add image (optional)</b></label>'+
+        '<input id="answerImage-'+esc(q.id)+'" type="file" accept="image/*">'+
+        '<div class="editor-buttons">'+
+          '<button class="post-answer" onclick="submitAnswer(\''+esc(q.id)+'\')">Post Answer</button>'+
+          '<button class="cancel-answer" onclick="closeAnswerEditor(\''+esc(q.id)+'\')">Cancel</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="answer-section" id="answers-'+esc(q.id)+'"></div>';
+
+    frag.appendChild(art);
+  });
+
+  list.innerHTML="";
+  list.appendChild(frag);
 }
 
 
 /* =====================================================
-   OPEN ANSWER
+   ANSWER EDITOR
 ===================================================== */
-
 function openAnswerEditor(id){
-
-const editor =
-document.getElementById(
-"editor-"+id
-);
-
-
-editor.classList.add(
-"open"
-);
-
-
-editor.scrollIntoView({
-
-behavior:"smooth",
-
-block:"center"
-
-});
-
+  var ed=document.getElementById("editor-"+id);
+  ed.classList.add("open");
+  ed.scrollIntoView({behavior:"smooth",block:"center"});
 }
-
-
-/* =====================================================
-   CLOSE ANSWER
-===================================================== */
-
 function closeAnswerEditor(id){
-
-document
-.getElementById(
-"editor-"+id
-)
-.classList.remove(
-"open"
-);
-
+  document.getElementById("editor-"+id).classList.remove("open");
 }
 
 
 /* =====================================================
-   POST ANSWER
+   POST ANSWER (with compression + optimistic update)
 ===================================================== */
-
 async function submitAnswer(questionId){
+  var name=document.getElementById("answerName-"+questionId).value.trim();
+  var answer=document.getElementById("answerText-"+questionId).value.trim();
+  var rawFile=document.getElementById("answerImage-"+questionId).files[0];
 
-const name =
-document.getElementById(
-"answerName-"+questionId
-).value.trim();
+  if(!name){ alert("Please enter your name."); return; }
+  if(!answer){ alert("Please write your answer."); return; }
 
+  var btn=document.querySelector("#editor-"+questionId+" .post-answer");
+  btn.disabled=true; btn.textContent="Posting…";
 
-const answer =
-document.getElementById(
-"answerText-"+questionId
-).value.trim();
+  try{
+    var image=await compressImage(rawFile);
+    var result=await apiPost({
+      action:"postAnswer",
+      questionId:String(questionId),
+      name:name,
+      answer:answer,
+      imageData: await imageBase64(image),
+      imageName: image?image.name:"",
+      imageType: image?image.type:""
+    });
 
+    if(result.success){
+      // Clear form
+      document.getElementById("answerName-"+questionId).value="";
+      document.getElementById("answerText-"+questionId).value="";
+      document.getElementById("answerImage-"+questionId).value="";
+      closeAnswerEditor(questionId);
 
-const image =
-document.getElementById(
-"answerImage-"+questionId
-).files[0];
+      // Optimistically append answer so user sees it instantly
+      appendAnswerLocally(questionId, name, answer, result.imageURL||"");
 
-
-if(!name){
-
-alert(
-"Please enter your name."
-);
-
-return;
-
+      // Silently refresh answer count & full list in background
+      fetchAnswers(questionId);
+    }else{
+      alert(result.error||"Answer could not be posted.");
+    }
+  }catch(err){
+    console.error(err);
+    alert("Answer could not be submitted.");
+  }
+  btn.disabled=false; btn.textContent="Post Answer";
 }
 
-
-if(!answer){
-
-alert(
-"Please write your answer."
-);
-
-return;
-
-}
-
-
-const button =
-document.querySelector(
-"#editor-"+questionId+
-" .post-answer"
-);
-
-
-button.disabled=true;
-
-button.textContent=
-"Posting...";
-
-
-try{
-
-const result =
-await apiPost({
-
-action:"postAnswer",
-
-questionId:
-String(questionId),
-
-name:name,
-
-answer:answer,
-
-imageData:
-await imageBase64(image),
-
-imageName:
-image ? image.name : "",
-
-imageType:
-image ? image.type : ""
-
-});
-
-
-if(result.success){
-
-document.getElementById(
-"answerName-"+questionId
-).value="";
-
-
-document.getElementById(
-"answerText-"+questionId
-).value="";
-
-
-document.getElementById(
-"answerImage-"+questionId
-).value="";
-
-
-closeAnswerEditor(
-questionId
-);
-
-
-/* FETCH ANSWERS */
-
-await fetchAnswers(
-questionId
-);
-
-}
-
-else{
-
-alert(
-result.error ||
-"Answer could not be posted."
-);
-
-}
-
-}
-
-catch(error){
-
-console.error(error);
-
-alert(
-"Answer could not be submitted."
-);
-
-}
-
-
-button.disabled=false;
-
-button.textContent=
-"Post Answer";
-
+/* Show the new answer instantly without waiting for re-fetch */
+function appendAnswerLocally(qid, name, answer, imgURL){
+  var sec=document.getElementById("answers-"+qid);
+  var card=document.createElement("div");
+  card.className="answer-card";
+  card.style.animation="fadeInUp .4s ease both";
+  card.innerHTML=
+    '<div class="answer-header">'+
+      '<div class="answer-name">'+esc(name)+' <span style="color:#b92b27;font-size:11px">(just now)</span></div>'+
+    '</div>'+
+    '<div class="answer-text">'+esc(answer)+'</div>'+
+    (imgURL?'<img class="answer-img" src="'+esc(imgURL)+'" loading="lazy" alt="">':"");
+  sec.appendChild(card);
+  sec.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 
 /* =====================================================
-   FETCH ANSWERS
+   FETCH ANSWERS (with prefetch + abort)
 ===================================================== */
+var answerAbort = null;
+
+async function prefetchAnswers(questionId){
+  if(prefetched.has(questionId)) return;
+  prefetched.add(questionId);
+  // Lightweight background prefetch
+  try{
+    var url=API_URL+"?action=getAnswers&questionId="+encodeURIComponent(questionId);
+    var res=await fetch(url);
+    var data=await res.json();
+    if(data.success && data.answers){
+      // Store temporarily on the DOM element to avoid re-fetch
+      var sec=document.getElementById("answers-"+questionId);
+      if(sec) sec._prefetched=data.answers;
+    }
+  }catch(e){}
+}
 
 async function fetchAnswers(questionId){
+  var sec=document.getElementById("answers-"+questionId);
+  sec.innerHTML='<div class="no-answer loading">Fetching answers…</div>';
 
-const section =
-document.getElementById(
-"answers-"+questionId
-);
+  // Use prefetched data if available
+  if(sec._prefetched){
+    renderAnswers(sec, sec._prefetched);
+    delete sec._prefetched;
+    return;
+  }
 
+  if(answerAbort) answerAbort.abort();
+  answerAbort=new AbortController();
 
-section.innerHTML=
-`
-<div class="no-answer loading">
-Fetching answers...
-</div>
-`;
+  try{
+    var url=API_URL+"?action=getAnswers&questionId="+encodeURIComponent(questionId);
+    var res=await fetch(url,{signal:answerAbort.signal});
+    var data=await res.json();
+    if(!data.success) throw new Error(data.error||"Could not fetch answers");
 
+    var answers=data.answers||[];
+    renderAnswers(sec, answers);
 
-try{
-
-const url =
-API_URL+
-"?action=getAnswers"+
-"&questionId="+
-encodeURIComponent(questionId);
-
-
-const response =
-await fetch(url);
-
-
-const data =
-await response.json();
-
-
-if(!data.success){
-
-throw new Error(
-data.error ||
-"Could not fetch answers"
-);
-
+  }catch(err){
+    if(err.name==="AbortError") return;
+    console.error(err);
+    sec.innerHTML='<div class="no-answer">Could not fetch answers.<br><br>'+esc(err.message)+'</div>';
+  }
 }
 
-
-if(
-!data.answers ||
-data.answers.length===0
-){
-
-section.innerHTML=
-`
-<div class="no-answer">
-
-No answers yet.
-
-<br>
-
-Be the first to answer.
-
-</div>
-`;
-
-return;
-
-}
-
-
-let html = `
-
-<div class="answer-title">
-
-${data.answers.length}
-
-Answer${data.answers.length > 1 ? "s" : ""}
-
-</div>
-
-`;
-
-
-data.answers.forEach(
-function(a){
-
-html += `
-
-<div class="answer-card">
-
-
-<div class="answer-header">
-
-
-<div class="answer-name">
-
-${esc(a.name)}
-
-</div>
-
-
-<div class="answer-date">
-
-${esc(a.date)}
-
-</div>
-
-
-</div>
-
-
-<div class="answer-text">
-
-${esc(a.answer)}
-
-</div>
-
-
-${
-a.imageURL
-?
-`
-<img
-class="answer-img"
-src="${esc(a.imageURL)}"
-loading="lazy"
->
-`
-:
-""
-}
-
-
-</div>
-
-`;
-
-});
-
-
-section.innerHTML=html;
-
-
-/* STAGGERED ANSWER ANIMATION */
-
-section
-.querySelectorAll(
-".answer-card"
-)
-.forEach(function(card,i){
-
-card.style.animationDelay =
-Math.min(i * 0.04, 0.4) + "s";
-
-});
-
-
-/* Keep answer visible */
-
-section.scrollIntoView({
-
-behavior:"smooth",
-
-block:"nearest"
-
-});
-
-
-}
-
-catch(error){
-
-console.error(error);
-
-section.innerHTML=
-`
-
-<div class="no-answer">
-
-Could not fetch answers.
-
-<br><br>
-
-${esc(error.message)}
-
-</div>
-
-`;
-
-}
-
+function renderAnswers(sec, answers){
+  if(!answers.length){
+    sec.innerHTML='<div class="no-answer">No answers yet.<br>Be the first to answer.</div>';
+    return;
+  }
+  var html='<div class="answer-title">'+answers.length+' Answer'+(answers.length>1?"s":"")+'</div>';
+  answers.forEach(function(a,i){
+    html+=
+      '<div class="answer-card" style="animation-delay:'+Math.min(i*0.04,0.35)+'s">'+
+        '<div class="answer-header">'+
+          '<div class="answer-name">'+esc(a.name)+'</div>'+
+          '<div class="answer-date">'+esc(a.date)+'</div>'+
+        '</div>'+
+        '<div class="answer-text">'+esc(a.answer)+'</div>'+
+        (a.imageURL?'<img class="answer-img" src="'+esc(a.imageURL)+'" loading="lazy" alt="">':"")+
+      '</div>';
+  });
+  sec.innerHTML=html;
+  sec.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 
 /* =====================================================
-   SEARCH ENTER
+   SEARCH EVENTS
 ===================================================== */
-
-document
-.getElementById(
-"searchText"
-)
-.addEventListener(
-"keydown",
-function(e){
-
-if(e.key==="Enter"){
-
-loadQuestions();
-
-}
-
+document.getElementById("searchText").addEventListener("keydown",function(e){
+  if(e.key==="Enter") loadQuestions();
 });
-
-
-/* =====================================================
-   CATEGORY SEARCH
-===================================================== */
-
-document
-.getElementById(
-"searchCategory"
-)
-.addEventListener(
-"change",
-loadQuestions
-);
+document.getElementById("searchCategory").addEventListener("change", loadQuestions);
 
 
 /* =====================================================
    START
 ===================================================== */
-
 loadQuestions();
 
 </script>
