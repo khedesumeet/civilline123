@@ -685,6 +685,26 @@ border-radius:50%;
 animation:spin .7s linear infinite;
 }
 
+/* subtle refresh indicator */
+.refresh-hint{
+font-size:12px;
+color:#999;
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:8px;
+padding:8px 0;
+}
+.refresh-hint::before{
+content:"";
+width:14px;
+height:14px;
+border:2px solid #ddd;
+border-top-color:#b92b27;
+border-radius:50%;
+animation:spin .7s linear infinite;
+}
+
 
 /* ================= FOOTER ================= */
 
@@ -1286,12 +1306,13 @@ Terms
 ===================================================== */
 const API_URL = "https://script.google.com/macros/s/AKfycbxKC7IOS2GlhpjChobQQQVfcmXsOHRXOMyz0OVQPv6qcvIEz88Ky1ort8wotqa-nz2aCA/exec";
 const CACHE_KEY = "civilline_q_cache";
+const ANSWER_CACHE_PREFIX = "civilline_a_";
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-const PAGE_SIZE = 20;
+const ANSWER_CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
-let memoryQuestions = null;   // in-memory cache
-let abortCtrl = null;         // for cancelling stale fetches
-let prefetched = new Set();   // track prefetched answer sets
+let memoryQuestions = null;
+let abortCtrl = null;
+let prefetched = new Set();
 
 
 /* =====================================================
@@ -1317,11 +1338,30 @@ function setCache(data){
   try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:now(), data})); }catch(e){}
 }
 
-function debounce(fn, ms){
-  let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); };
+/* --- answer cache --- */
+function getAnswerCache(qid){
+  try{
+    const raw = localStorage.getItem(ANSWER_CACHE_PREFIX + qid);
+    if(!raw) return null;
+    const parsed = JSON.parse(raw);
+    if(now() - parsed.ts > ANSWER_CACHE_TTL){ localStorage.removeItem(ANSWER_CACHE_PREFIX + qid); return null; }
+    return parsed.data;
+  }catch(e){ return null; }
 }
 
-/* Compress images before upload to cut payload size by 60-80% */
+function setAnswerCache(qid, answers){
+  try{ localStorage.setItem(ANSWER_CACHE_PREFIX + qid, JSON.stringify({ts:now(), data:answers})); }catch(e){}
+}
+
+function bustAnswerCache(qid){
+  try{ localStorage.removeItem(ANSWER_CACHE_PREFIX + qid); }catch(e){}
+}
+
+function debounce(fn, ms){
+  let t; return function(){ clearTimeout(t); t=setTimeout(fn, ms); };
+}
+
+/* Compress images before upload */
 function compressImage(file, maxW, q){
   maxW = maxW || 1280; q = q || 0.75;
   return new Promise(function(res){
@@ -1393,7 +1433,7 @@ function toggleAskForm(){
 
 
 /* =====================================================
-   POST QUESTION (with image compression)
+   POST QUESTION
 ===================================================== */
 async function submitQuestion(){
   var name=document.getElementById("questionName").value.trim();
@@ -1424,7 +1464,7 @@ async function submitQuestion(){
       document.getElementById("questionText").value="";
       document.getElementById("questionImage").value="";
       document.getElementById("askForm").classList.remove("open");
-      memoryQuestions=null; localStorage.removeItem(CACHE_KEY); // bust cache
+      memoryQuestions=null; localStorage.removeItem(CACHE_KEY);
       await loadQuestions();
     }else{
       alert(result.error||"Question could not be posted.");
@@ -1438,27 +1478,23 @@ async function submitQuestion(){
 
 
 /* =====================================================
-   LOAD QUESTIONS (cached + abort + skeleton)
+   LOAD QUESTIONS
 ===================================================== */
 async function loadQuestions(){
   var search=document.getElementById("searchText").value.trim();
   var category=document.getElementById("searchCategory").value;
   var list=document.getElementById("questionList");
 
-  // 1. Show skeleton immediately
   list.innerHTML=skeletonHTML(5);
 
-  // 2. Cancel any in-flight request
   if(abortCtrl) abortCtrl.abort();
   abortCtrl=new AbortController();
 
-  // 3. Show cached data instantly (if no active filters)
   var cached=memoryQuestions||getCache();
   if(cached && !search && !category){
     renderQuestionList(cached, list);
   }
 
-  // 4. Fetch fresh data
   var url=API_URL+"?action=getQuestions"+
     "&search="+encodeURIComponent(search)+
     "&category="+encodeURIComponent(category);
@@ -1475,7 +1511,6 @@ async function loadQuestions(){
       return;
     }
 
-    // Update caches
     if(!search && !category){
       memoryQuestions=questions;
       setCache(questions);
@@ -1484,10 +1519,8 @@ async function loadQuestions(){
     renderQuestionList(questions, list);
 
   }catch(err){
-    if(err.name==="AbortError") return; // ignore cancelled requests
+    if(err.name==="AbortError") return;
     console.error(err);
-    // If we already showed cached data, keep it and silently fail,
-    // otherwise show error.
     if(!list.querySelector(".question-card:not(.skeleton)")){
       list.innerHTML='<div class="no-answer">Could not load questions.<br><br>'+esc(err.message)+'</div>';
     }
@@ -1510,7 +1543,7 @@ function renderQuestionList(questions, list){
       (q.imageURL?'<img class="question-img" src="'+esc(q.imageURL)+'" loading="lazy" alt="">':"")+
       '<div class="actions">'+
         '<button class="action" onclick="openAnswerEditor(\''+esc(q.id)+'\')">✍️ Answer</button>'+
-        '<button class="action" onmouseenter="prefetchAnswers(\''+esc(q.id)+'\')" onclick="fetchAnswers(\''+esc(q.id)+'\')">💬 '+(q.answerCount||0)+' Answers</button>'+
+        '<button class="action" onmouseenter="prefetchAnswers(\''+esc(q.id)+'\')" ontouchstart="prefetchAnswers(\''+esc(q.id)+'\')" onclick="fetchAnswers(\''+esc(q.id)+'\')">💬 '+(q.answerCount||0)+' Answers</button>'+
       '</div>'+
       '<div class="answer-editor" id="editor-'+esc(q.id)+'">'+
         '<h3>Write an answer</h3>'+
@@ -1547,7 +1580,7 @@ function closeAnswerEditor(id){
 
 
 /* =====================================================
-   POST ANSWER (with compression + optimistic update)
+   POST ANSWER
 ===================================================== */
 async function submitAnswer(questionId){
   var name=document.getElementById("answerName-"+questionId).value.trim();
@@ -1573,16 +1606,13 @@ async function submitAnswer(questionId){
     });
 
     if(result.success){
-      // Clear form
       document.getElementById("answerName-"+questionId).value="";
       document.getElementById("answerText-"+questionId).value="";
       document.getElementById("answerImage-"+questionId).value="";
       closeAnswerEditor(questionId);
 
-      // Optimistically append answer so user sees it instantly
       appendAnswerLocally(questionId, name, answer, result.imageURL||"");
-
-      // Silently refresh answer count & full list in background
+      bustAnswerCache(questionId);
       fetchAnswers(questionId);
     }else{
       alert(result.error||"Answer could not be posted.");
@@ -1594,7 +1624,6 @@ async function submitAnswer(questionId){
   btn.disabled=false; btn.textContent="Post Answer";
 }
 
-/* Show the new answer instantly without waiting for re-fetch */
 function appendAnswerLocally(qid, name, answer, imgURL){
   var sec=document.getElementById("answers-"+qid);
   var card=document.createElement("div");
@@ -1612,40 +1641,51 @@ function appendAnswerLocally(qid, name, answer, imgURL){
 
 
 /* =====================================================
-   FETCH ANSWERS (with prefetch + abort)
+   FETCH ANSWERS  (cached instantly + refresh in background)
 ===================================================== */
 var answerAbort = null;
 
 async function prefetchAnswers(questionId){
   if(prefetched.has(questionId)) return;
   prefetched.add(questionId);
-  // Lightweight background prefetch
   try{
     var url=API_URL+"?action=getAnswers&questionId="+encodeURIComponent(questionId);
     var res=await fetch(url);
     var data=await res.json();
     if(data.success && data.answers){
-      // Store temporarily on the DOM element to avoid re-fetch
+      setAnswerCache(questionId, data.answers);
       var sec=document.getElementById("answers-"+questionId);
-      if(sec) sec._prefetched=data.answers;
+      if(sec && sec._awaitingPrefetch){
+        delete sec._awaitingPrefetch;
+        renderAnswers(sec, data.answers);
+      }
     }
   }catch(e){}
 }
 
 async function fetchAnswers(questionId){
   var sec=document.getElementById("answers-"+questionId);
-  sec.innerHTML='<div class="no-answer loading">Fetching answers…</div>';
+  var cached=getAnswerCache(questionId);
 
-  // Use prefetched data if available
-  if(sec._prefetched){
-    renderAnswers(sec, sec._prefetched);
-    delete sec._prefetched;
-    return;
+  // 1. If cached answers exist, show them INSTANTLY (no spinner)
+  if(cached && cached.length > 0){
+    renderAnswers(sec, cached);
+    // Add subtle "refreshing" hint below existing answers
+    var hint=document.createElement("div");
+    hint.className="refresh-hint";
+    hint.id="refresh-hint-"+questionId;
+    hint.innerHTML="Checking for new answers...";
+    sec.appendChild(hint);
+  }else{
+    // No cache: show spinner
+    sec.innerHTML='<div class="no-answer loading">Fetching answers...</div>';
   }
 
+  // 2. Cancel stale request
   if(answerAbort) answerAbort.abort();
   answerAbort=new AbortController();
 
+  // 3. Fetch fresh
   try{
     var url=API_URL+"?action=getAnswers&questionId="+encodeURIComponent(questionId);
     var res=await fetch(url,{signal:answerAbort.signal});
@@ -1653,12 +1693,25 @@ async function fetchAnswers(questionId){
     if(!data.success) throw new Error(data.error||"Could not fetch answers");
 
     var answers=data.answers||[];
+
+    // Remove refresh hint if present
+    var oldHint=document.getElementById("refresh-hint-"+questionId);
+    if(oldHint) oldHint.remove();
+
+    // Cache & render
+    setAnswerCache(questionId, answers);
     renderAnswers(sec, answers);
 
   }catch(err){
     if(err.name==="AbortError") return;
     console.error(err);
-    sec.innerHTML='<div class="no-answer">Could not fetch answers.<br><br>'+esc(err.message)+'</div>';
+    // If we had cache, just remove the refresh hint and keep old data
+    var hint2=document.getElementById("refresh-hint-"+questionId);
+    if(hint2) hint2.remove();
+    // Only show error if no cache was displayed
+    if(!cached || !cached.length){
+      sec.innerHTML='<div class="no-answer">Could not fetch answers.<br><br>'+esc(err.message)+'</div>';
+    }
   }
 }
 
