@@ -1479,20 +1479,27 @@ async function submitQuestion(){
 
 /* =====================================================
    LOAD QUESTIONS
+   (Cache-first: if we already have data, render it
+   instantly with NO skeleton flash, then silently
+   refresh in the background — Quora-style.)
 ===================================================== */
 async function loadQuestions(){
   var search=document.getElementById("searchText").value.trim();
   var category=document.getElementById("searchCategory").value;
   var list=document.getElementById("questionList");
 
-  list.innerHTML=skeletonHTML(5);
-
   if(abortCtrl) abortCtrl.abort();
   abortCtrl=new AbortController();
 
   var cached=memoryQuestions||getCache();
-  if(cached && !search && !category){
-    renderQuestionList(cached, list);
+  var hasCache = !!(cached && cached.length && !search && !category);
+
+  if(hasCache){
+    // Instant render, no skeleton, no spinner.
+    renderQuestionList(cached, list, true);
+  }else{
+    // Only show skeletons when we truly have nothing to show yet.
+    list.innerHTML=skeletonHTML(5);
   }
 
   var url=API_URL+"?action=getQuestions"+
@@ -1507,7 +1514,7 @@ async function loadQuestions(){
     var questions=data.questions||[];
 
     if(questions.length===0){
-      list.innerHTML='<div class="no-answer">No questions found.</div>';
+      if(!hasCache) list.innerHTML='<div class="no-answer">No questions found.</div>';
       return;
     }
 
@@ -1516,25 +1523,34 @@ async function loadQuestions(){
       setCache(questions);
     }
 
-    renderQuestionList(questions, list);
+    // Re-render with fresh data. If we already showed cache,
+    // skip the entrance animation so it doesn't re-flash.
+    renderQuestionList(questions, list, hasCache);
 
   }catch(err){
     if(err.name==="AbortError") return;
     console.error(err);
-    if(!list.querySelector(".question-card:not(.skeleton)")){
+    // If cache was already on screen, just leave it — don't
+    // blow away good content because a background refresh failed.
+    if(!hasCache){
       list.innerHTML='<div class="no-answer">Could not load questions.<br><br>'+esc(err.message)+'</div>';
     }
   }
 }
 
-function renderQuestionList(questions, list){
+function renderQuestionList(questions, list, skipAnimation){
   var frag=document.createDocumentFragment();
 
   questions.forEach(function(q,i){
     var art=document.createElement("article");
     art.className="question-card";
     art.id="question-"+esc(q.id);
-    art.style.animationDelay=Math.min(i*0.04,0.4)+"s";
+    if(skipAnimation){
+      art.style.animation="none";
+      art.style.opacity="1";
+    }else{
+      art.style.animationDelay=Math.min(i*0.04,0.4)+"s";
+    }
 
     art.innerHTML=
       '<div class="meta"><b>'+esc(q.name)+'</b> · '+esc(q.date)+'</div>'+
