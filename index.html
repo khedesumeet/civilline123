@@ -186,6 +186,7 @@ font-weight:bold;
 white-space:nowrap;
 color:#e8e8e8;
 transition:transform .25s ease;
+animation:logoIntro .6s ease both;
 }
 
 .logo:hover{
@@ -194,6 +195,28 @@ transform:scale(1.04);
 
 .logo span{
 color:#b92b27;
+display:inline-block;
+animation:logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoIntro{
+from{
+opacity:0;
+transform:translateY(-8px) scale(.92);
+}
+to{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+}
+
+@keyframes logoGlow{
+0%,100%{
+text-shadow:0 0 0 rgba(185,43,39,0);
+}
+50%{
+text-shadow:0 0 10px rgba(185,43,39,.65);
+}
 }
 
 .nav-links{
@@ -535,13 +558,27 @@ transform:scale(1.015);
 }
 
 
-/* ================= FILE ATTACHMENT (image / video / pdf, all in an iframe) ================= */
+/* ================= FILE ATTACHMENT: Drive preview / PDF (iframe) ================= */
 
 .question-img-frame{
 width:100%;
-height:450px;
+aspect-ratio:16/9;
+max-height:450px;
 margin-top:15px;
 border:1px solid #3a3a3a;
+border-radius:7px;
+background:#000;
+opacity:0;
+animation:fadeIn .5s ease .1s forwards;
+}
+
+
+/* ================= FILE ATTACHMENT: direct video (native player) ================= */
+
+.question-img-video{
+width:100%;
+max-height:450px;
+margin-top:15px;
 border-radius:7px;
 background:#000;
 opacity:0;
@@ -720,9 +757,20 @@ animation:fadeIn .5s ease .1s forwards;
 
 .answer-img-frame{
 width:100%;
-height:400px;
+aspect-ratio:16/9;
+max-height:400px;
 margin-top:12px;
 border:1px solid #3a3a3a;
+border-radius:7px;
+background:#000;
+opacity:0;
+animation:fadeIn .5s ease .1s forwards;
+}
+
+.answer-img-video{
+width:100%;
+max-height:400px;
+margin-top:12px;
 border-radius:7px;
 background:#000;
 opacity:0;
@@ -1446,12 +1494,44 @@ function toEmbeddableUrl(url){
   return url;
 }
 
-/* Renders any uploaded file (image, video, or PDF) inside an
-   iframe so the browser's native viewer/player handles it. */
+/* Renders an uploaded file appropriately:
+   - Google Drive links -> iframe pointed at Drive's own preview
+     page (the only way Drive allows framing; also handles
+     image/video/pdf uniformly through Drive's built-in viewer).
+   - Direct video file URLs -> a real <video controls> element on
+     our own page, so we control its size/position. (Putting a raw
+     video URL straight into an iframe makes the browser render its
+     own full native media-player document, which we can't style —
+     that's what causes the misplaced play button.)
+   - Direct PDF URLs -> iframe (browsers render PDFs cleanly inline
+     without extra chrome, unlike video).
+   - Everything else -> <img>. */
 function renderAttachmentHTML(url, imgClass, mimeType, fileName){
   if(!url) return "";
-  var src = toEmbeddableUrl(url);
-  return '<iframe class="'+imgClass+'-frame" src="'+esc(src)+'" loading="lazy" allow="fullscreen" allowfullscreen></iframe>';
+
+  var isDrive = /drive\.google\.com/i.test(url);
+  if(isDrive){
+    var src = toEmbeddableUrl(url);
+    return '<iframe class="'+imgClass+'-frame" src="'+esc(src)+'" loading="lazy" allow="fullscreen" allowfullscreen></iframe>';
+  }
+
+  var type = (mimeType || "").toLowerCase();
+  var name = fileName || url;
+
+  var isPDF = type.indexOf("pdf") > -1 || /\.pdf(\?|#|$)/i.test(name);
+  var isVideo = type.indexOf("video") > -1 || /\.(mp4|mov|webm|ogg|ogv|mkv|avi|m4v)(\?|#|$)/i.test(name);
+
+  if(isVideo){
+    return '<video class="'+imgClass+'-video" controls preload="metadata" playsinline>'+
+      '<source src="'+esc(url)+'"'+(type?' type="'+esc(type)+'"':'')+'>'+
+      'Your browser does not support inline video.</video>';
+  }
+
+  if(isPDF){
+    return '<iframe class="'+imgClass+'-frame" src="'+esc(url)+'" loading="lazy"></iframe>';
+  }
+
+  return '<img class="'+imgClass+'" src="'+esc(url)+'" loading="lazy" alt="">';
 }
 
 function getCache(){
@@ -1720,6 +1800,13 @@ function renderQuestionList(questions, list, skipAnimation){
 
   list.innerHTML="";
   list.appendChild(frag);
+
+  // Start loading every question's answers in the background the
+  // moment the question list is shown — in parallel with the
+  // questions themselves, not only when someone taps "Answers".
+  // prefetchAnswers just warms the cache silently; fetchAnswers()
+  // will then render instantly from that cache when opened.
+  questions.forEach(function(q){ prefetchAnswers(q.id); });
 }
 
 
