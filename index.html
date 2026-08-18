@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -838,6 +837,40 @@ header{
     margin-top:10px;
 }
 
+.answer-loading{
+    background:#f8fafc;
+    padding:14px 16px;
+    border-radius:8px;
+    color:#94a3b8;
+    font-size:13px;
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.answer-loading .spin-dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    border:2px solid #e2e8f0;
+    border-top-color:#b92b27;
+    animation:spin 0.7s linear infinite;
+    flex-shrink:0;
+}
+
+.answer-retry{
+    background:none;
+    border:1px solid #d1d5db;
+    color:#b92b27;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-left:auto;
+}
+
 
 /* =========================================================
    SKELETON
@@ -1675,6 +1708,36 @@ function setCache(data){
 
 
 /* =========================================================
+   PER-QUESTION ANSWER CACHE (localStorage)
+   Avoids re-hitting the slow Apps Script backend for answers
+   that were already fetched in a previous visit.
+========================================================= */
+
+const ANSWER_CACHE_PREFIX = "civilline_a_v1_";
+const ANSWER_CACHE_TTL = 3 * 60 * 1000;
+
+function getAnswerCache(questionId){
+    try{
+        var raw = localStorage.getItem(ANSWER_CACHE_PREFIX + questionId);
+        if(!raw) return null;
+        var data = JSON.parse(raw);
+        if(Date.now() - data.ts > ANSWER_CACHE_TTL) return null;
+        return data.answers;
+    } catch(e){ return null; }
+}
+
+function setAnswerCache(questionId, answers){
+    try{
+        localStorage.setItem(ANSWER_CACHE_PREFIX + questionId, JSON.stringify({ ts: Date.now(), answers: answers }));
+    } catch(e){}
+}
+
+function clearAnswerCache(questionId){
+    try{ localStorage.removeItem(ANSWER_CACHE_PREFIX + questionId); } catch(e){}
+}
+
+
+/* =========================================================
    HELPERS
 ========================================================= */
 
@@ -1780,20 +1843,36 @@ async function apiPost(data){
    FETCH ANSWERS - LAZY
 ========================================================= */
 
-async function fetchAnswersOnly(questionId){
-    if(answersLoaded[questionId]){
+async function fetchAnswersOnly(questionId, forceRefresh){
+    if(!forceRefresh && answersLoaded[questionId]){
         return answersLoaded[questionId];
     }
+
+    if(!forceRefresh){
+        var cached = getAnswerCache(questionId);
+        if(cached){
+            answersLoaded[questionId] = cached;
+            return cached;
+        }
+    }
+
     var url = API_URL + '?action=getAnswers&questionId=' + encodeURIComponent(questionId);
+    var timeoutCtrl = new AbortController();
+    var timeoutId = setTimeout(function(){ timeoutCtrl.abort(); }, 10000);
+
     try{
-        var response = await fetch(url);
+        var response = await fetch(url, { signal: timeoutCtrl.signal });
         var data = await response.json();
-        if(!data.success){ return []; }
-        answersLoaded[questionId] = data.answers || [];
-        return answersLoaded[questionId];
+        if(!data.success){ throw new Error(data.error || 'API error'); }
+        var answers = data.answers || [];
+        answersLoaded[questionId] = answers;
+        setAnswerCache(questionId, answers);
+        return answers;
     } catch(error){
         console.error('Error fetching answers:', error);
-        return [];
+        throw error;
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
@@ -1815,9 +1894,6 @@ async function loadQuestions(){
 
     if(hasCache){
         renderQuestionList(cached, list, true, false);
-        setTimeout(function(){
-            loadAnswersForVisibleQuestions(cached);
-        }, 100);
     } else {
         list.innerHTML = skeletonHTML(5);
     }
@@ -1847,9 +1923,6 @@ async function loadQuestions(){
         }
 
         renderQuestionList(combined, list, hasCache, false);
-        setTimeout(function(){
-            loadAnswersForVisibleQuestions(combined);
-        }, 50);
 
     } catch(error){
         if(error.name === 'AbortError') return;
@@ -1865,43 +1938,62 @@ async function loadQuestions(){
    LOAD ANSWERS FOR VISIBLE QUESTIONS
 ========================================================= */
 
-function loadAnswersForVisibleQuestions(questions){
-    var cards = document.querySelectorAll('.question-card');
-    var visibleIds = [];
-    var count = 0;
+var cardObserver = null;
+var pendingAnswerRequests = {};
 
-    for(var i = 0; i < cards.length && count < 5; i++){
-        var card = cards[i];
-        var rect = card.getBoundingClientRect();
-        if(rect.top < window.innerHeight + 200){
-            var id = card.id.replace('question-', '');
-            if(id && !answersLoaded[id]){
-                visibleIds.push(id);
-                count++;
-            }
-        }
+function observeQuestionCards(){
+    if(!('IntersectionObserver' in window)){
+        // Fallback for very old browsers: just request answers for every card.
+        document.querySelectorAll('.question-card').forEach(function(card){
+            requestAnswersFor(card.id.replace('question-', ''));
+        });
+        return;
     }
 
-    if(visibleIds.length === 0 && questions.length > 0){
-        for(var j = 0; j < Math.min(3, questions.length); j++){
-            var qid = questions[j].id;
-            if(!answersLoaded[qid]) visibleIds.push(qid);
-        }
+    if(!cardObserver){
+        cardObserver = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if(entry.isIntersecting){
+                    var id = entry.target.id.replace('question-', '');
+                    requestAnswersFor(id);
+                    cardObserver.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '300px 0px' }); // start fetching just before it scrolls into view
     }
 
-    visibleIds.forEach(function(qid){
-        fetchAnswersOnly(qid).then(function(answers){
+    document.querySelectorAll('.question-card').forEach(function(card){
+        cardObserver.observe(card);
+    });
+}
+
+function requestAnswersFor(questionId){
+    if(answersLoaded[questionId] || pendingAnswerRequests[questionId]) return;
+
+    pendingAnswerRequests[questionId] = true;
+
+    fetchAnswersOnly(questionId)
+        .then(function(answers){
             if(memoryQuestions){
                 for(var k = 0; k < memoryQuestions.length; k++){
-                    if(String(memoryQuestions[k].id) === String(qid)){
+                    if(String(memoryQuestions[k].id) === String(questionId)){
                         memoryQuestions[k].answers = answers;
                         break;
                     }
                 }
             }
-            updateAnswersForQuestion(qid, answers);
+            updateAnswersForQuestion(questionId, answers);
+        })
+        .catch(function(){
+            updateAnswersForQuestion(questionId, null, true);
+        })
+        .finally(function(){
+            delete pendingAnswerRequests[questionId];
         });
-    });
+}
+
+function retryAnswers(questionId){
+    requestAnswersFor(questionId);
 }
 
 
@@ -1909,9 +2001,16 @@ function loadAnswersForVisibleQuestions(questions){
    UPDATE ANSWERS FOR A SINGLE QUESTION
 ========================================================= */
 
-function updateAnswersForQuestion(questionId, answers){
+function updateAnswersForQuestion(questionId, answers, failed){
     var answerSection = document.getElementById('answers-' + questionId);
     if(!answerSection) return;
+
+    if(failed){
+        answerSection.innerHTML =
+            '<div class="answer-loading">⚠️ Could not load answers.' +
+            '<button class="answer-retry" onclick="retryAnswers(\'' + esc(questionId) + '\')">Retry</button></div>';
+        return;
+    }
 
     var hasContent = answerSection.querySelector('.answer-card');
     if(hasContent && answers.length > 0) return;
@@ -2093,6 +2192,15 @@ function renderQuestionList(questions, list, skipAnimation, fetchAnswers){
             </div>
         `;
 
+        var initialAnswerSectionHTML;
+        if(firstAnswer){
+            initialAnswerSectionHTML = firstAnswerHTML + remainingHTML;
+        } else if(answersLoaded[q.id]){
+            initialAnswerSectionHTML = '<div class="no-answer">No answers yet. Be the first to answer.</div>';
+        } else {
+            initialAnswerSectionHTML = '<div class="answer-loading" id="answerLoading-' + esc(q.id) + '"><span class="spin-dot"></span> Loading answers…</div>';
+        }
+
         card.innerHTML = `
             <div class="meta"><span class="name">${esc(q.name)}</span> <span class="dot">·</span> ${esc(q.date)}</div>
             <div class="question-text">${esc(q.question)}</div>
@@ -2104,8 +2212,7 @@ function renderQuestionList(questions, list, skipAnimation, fetchAnswers){
             </div>
             ${editorHTML}
             <div class="answer-section" id="answers-${esc(q.id)}">
-                ${firstAnswer ? firstAnswerHTML : '<div class="no-answer">No answers yet. Be the first to answer.</div>'}
-                ${remainingHTML}
+                ${initialAnswerSectionHTML}
             </div>
         `;
 
@@ -2121,6 +2228,8 @@ function renderQuestionList(questions, list, skipAnimation, fetchAnswers){
 
     list.innerHTML = '';
     list.appendChild(fragment);
+
+    observeQuestionCards();
 }
 
 
@@ -2137,6 +2246,7 @@ function toggleRemainingAnswers(id){
 function scrollToAnswers(id){
     var el = document.getElementById('answers-' + id);
     if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    requestAnswersFor(id);
 }
 
 function openAnswerEditor(id){
@@ -2187,6 +2297,7 @@ async function submitAnswer(questionId){
             document.getElementById('aPreview-' + questionId).innerHTML = '';
             closeAnswerEditor(questionId);
             answersLoaded[questionId] = null;
+            clearAnswerCache(questionId);
             await refreshQuestionAnswers(questionId);
         } else {
             alert(result.error || 'Answer could not be posted.');
