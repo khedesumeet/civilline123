@@ -1,13 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
 
 <meta
 name="viewport"
-content="width=device-width,initial-scale=1"
+content="width=device-width, initial-scale=1.0"
 >
 
 <title>Admin Dashboard - CivilLine</title>
@@ -17,465 +17,420 @@ content="width=device-width,initial-scale=1"
 <style>
 
 :root{
---bg:#f4f6f8;
---card:#ffffff;
---text:#172033;
---muted:#64748b;
---dark:#111827;
---accent:#f59e0b;
---danger:#dc2626;
---line:#e5e7eb;
---ok:#16a34a;
---blue:#2563eb;
---purple:#7c3aed;
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#64748b;
+    --dark:#111827;
+    --accent:#f59e0b;
+    --danger:#dc2626;
+    --success:#16a34a;
+    --blue:#2563eb;
+    --border:#e5e7eb;
 }
 
 *{
-box-sizing:border-box;
+    box-sizing:border-box;
 }
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:var(--bg);
-color:var(--text);
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
 header{
-background:var(--dark);
-color:white;
-position:sticky;
-top:0;
-z-index:100;
+    background:var(--dark);
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
-.bar{
-max-width:1250px;
-margin:auto;
-padding:14px 18px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:15px;
+.header-inner{
+    max-width:1250px;
+    margin:auto;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
 }
 
 .logo{
-font-size:25px;
-font-weight:900;
+    font-size:25px;
+    font-weight:900;
 }
 
 .logo span{
-color:var(--accent);
+    color:var(--accent);
 }
 
 nav{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
 }
 
 nav a,
 nav button{
-color:white;
-text-decoration:none;
-background:transparent;
-border:0;
-padding:9px 12px;
-border-radius:7px;
-cursor:pointer;
-font-weight:700;
+    color:#fff;
+    background:transparent;
+    border:0;
+    text-decoration:none;
+    padding:9px 12px;
+    border-radius:7px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 nav a:hover,
 nav button:hover{
-background:#374151;
+    background:#374151;
 }
 
-.wrap{
-max-width:1250px;
-margin:24px auto;
-padding:0 16px;
+.container{
+    max-width:1250px;
+    margin:25px auto;
+    padding:0 16px;
 }
 
 .card{
-background:var(--card);
-border:1px solid var(--line);
-border-radius:14px;
-padding:20px;
-box-shadow:0 5px 20px #0000000a;
-margin-bottom:18px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.04);
+}
+
+h1,
+h2{
+    margin-top:0;
+}
+
+.muted{
+    color:var(--muted);
 }
 
 .grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
-.grid3{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:14px;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:18px;
 }
 
 .stat{
-border:1px solid var(--line);
-border-radius:12px;
-padding:17px;
-background:white;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
 }
 
-.stat-label{
-font-size:13px;
-font-weight:700;
-color:var(--muted);
+.stat-title{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:700;
 }
 
 .stat-value{
-font-size:25px;
-font-weight:900;
-margin-top:7px;
+    font-size:26px;
+    font-weight:900;
+    margin-top:7px;
 }
 
 label{
-display:block;
-font-weight:700;
-font-size:13px;
-margin-bottom:6px;
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:6px;
 }
 
 input,
 select,
 textarea{
-width:100%;
-padding:11px 12px;
-border:1px solid #d1d5db;
-border-radius:8px;
-background:white;
-font-size:14px;
-outline:none;
+    width:100%;
+    padding:11px 12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:14px;
+    background:#fff;
+    outline:none;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
-border-color:var(--blue);
-box-shadow:0 0 0 2px #2563eb20;
+    border-color:var(--blue);
+    box-shadow:0 0 0 2px rgba(37,99,235,.1);
 }
 
 textarea{
-min-height:90px;
-resize:vertical;
+    min-height:90px;
+    resize:vertical;
 }
 
 .btn{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-border:0;
-border-radius:8px;
-background:var(--accent);
-color:#111827;
-padding:10px 14px;
-font-weight:800;
-cursor:pointer;
-text-decoration:none;
-}
-
-.btn:hover{
-opacity:.9;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    border-radius:8px;
+    padding:10px 14px;
+    font-weight:800;
+    cursor:pointer;
+    text-decoration:none;
 }
 
 .btn:disabled{
-opacity:.6;
-cursor:not-allowed;
+    opacity:.6;
+    cursor:not-allowed;
 }
 
-.btn.secondary{
-background:#e5e7eb;
-color:#111827;
+.btn-main{
+    background:var(--accent);
+    color:#111827;
 }
 
-.btn.dark{
-background:var(--dark);
-color:white;
+.btn-success{
+    background:var(--success);
+    color:#fff;
 }
 
-.btn.danger{
-background:var(--danger);
-color:white;
+.btn-danger{
+    background:var(--danger);
+    color:#fff;
 }
 
-.btn.success{
-background:var(--ok);
-color:white;
+.btn-blue{
+    background:var(--blue);
+    color:#fff;
 }
 
-.btn.blue{
-background:var(--blue);
-color:white;
+.btn-secondary{
+    background:#e5e7eb;
+    color:#111827;
 }
 
-.btn.purple{
-background:var(--purple);
-color:white;
+.btn-dark{
+    background:var(--dark);
+    color:#fff;
 }
 
-.btn.small{
-padding:7px 9px;
-font-size:12px;
+.btn-small{
+    padding:7px 9px;
+    font-size:12px;
 }
 
 .actions{
-display:flex;
-gap:7px;
-flex-wrap:wrap;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
 }
 
-.msg{
-padding:11px;
-border-radius:8px;
-margin-top:14px;
-display:none;
-font-size:14px;
+.message{
+    display:none;
+    padding:12px;
+    border-radius:8px;
+    margin-top:15px;
+    font-size:14px;
 }
 
-.successmsg{
-background:#dcfce7;
-color:#166534;
+.message.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
 }
 
-.errormsg{
-background:#fee2e2;
-color:#991b1b;
+.message.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
 }
 
-.infomsg{
-background:#dbeafe;
-color:#1e40af;
+.message.info{
+    display:block;
+    background:#dbeafe;
+    color:#1e40af;
 }
 
-.table-scroll{
-overflow:auto;
+.table-wrap{
+    overflow:auto;
 }
 
 table{
-width:100%;
-border-collapse:collapse;
-min-width:1100px;
+    width:100%;
+    min-width:1100px;
+    border-collapse:collapse;
 }
 
 th,
 td{
-padding:10px 8px;
-border-bottom:1px solid var(--line);
-text-align:left;
-font-size:13px;
-vertical-align:top;
+    padding:11px 9px;
+    border-bottom:1px solid var(--border);
+    text-align:left;
+    font-size:13px;
+    vertical-align:top;
 }
 
 th{
-font-size:12px;
-color:var(--muted);
-text-transform:uppercase;
-background:#f8fafc;
+    background:#f8fafc;
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
 }
 
 .status{
-display:inline-block;
-padding:5px 8px;
-border-radius:20px;
-font-size:11px;
-font-weight:800;
-text-transform:capitalize;
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+    text-transform:capitalize;
 }
 
 .status-approved{
-background:#dcfce7;
-color:#166534;
+    background:#dcfce7;
+    color:#166534;
 }
 
 .status-pending{
-background:#fef3c7;
-color:#92400e;
+    background:#fef3c7;
+    color:#92400e;
 }
 
 .status-suspended{
-background:#fee2e2;
-color:#991b1b;
+    background:#fee2e2;
+    color:#991b1b;
 }
 
 .status-rejected{
-background:#e5e7eb;
-color:#374151;
-}
-
-.muted{
-color:var(--muted);
-}
-
-.section-title{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-margin-bottom:15px;
-}
-
-.section-title h2{
-margin:0;
+    background:#e5e7eb;
+    color:#374151;
 }
 
 .loading{
-text-align:center;
-padding:25px;
-color:var(--muted);
+    text-align:center;
+    color:var(--muted);
+    padding:25px;
 }
 
-/* =========================================
-   MODAL
-========================================= */
+/* MODAL */
 
 .modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.6);
-z-index:1000;
-align-items:center;
-justify-content:center;
-padding:20px;
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:rgba(0,0,0,.6);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
 
 .modal.show{
-display:flex;
+    display:flex;
 }
 
 .modal-box{
-background:white;
-width:100%;
-max-width:470px;
-border-radius:15px;
-padding:24px;
-box-shadow:0 20px 70px #0008;
+    background:#fff;
+    width:100%;
+    max-width:470px;
+    border-radius:15px;
+    padding:24px;
+    box-shadow:0 20px 70px rgba(0,0,0,.45);
 }
 
-.modal-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-margin-bottom:18px;
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
 }
 
-.modal-header h2{
-margin:0;
+.modal-head h2{
+    margin:0;
 }
 
 .close{
-border:0;
-background:#e5e7eb;
-border-radius:50%;
-width:34px;
-height:34px;
-cursor:pointer;
-font-size:20px;
-}
-
-.close:hover{
-background:#d1d5db;
-}
-
-.password-row{
-position:relative;
-}
-
-.password-row input{
-padding-right:75px;
-}
-
-.show-password{
-position:absolute;
-right:7px;
-top:7px;
-border:0;
-background:#e5e7eb;
-padding:7px 9px;
-border-radius:6px;
-cursor:pointer;
-font-weight:700;
-font-size:11px;
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:50%;
+    background:#e5e7eb;
+    font-size:20px;
+    cursor:pointer;
 }
 
 .warning{
-background:#fff7ed;
-border:1px solid #fed7aa;
-color:#9a3412;
-padding:12px;
-border-radius:8px;
-font-size:12px;
-line-height:1.5;
-margin-bottom:16px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    color:#9a3412;
+    padding:12px;
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.5;
+    margin-bottom:16px;
 }
 
-.contractor-info{
-background:#f8fafc;
-border:1px solid var(--line);
-padding:12px;
-border-radius:8px;
-margin-bottom:16px;
+.contractor-box{
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:12px;
+    margin-bottom:16px;
 }
 
-.contractor-info strong{
-font-size:15px;
+.password-wrap{
+    position:relative;
 }
 
-.help{
-font-size:12px;
-color:var(--muted);
-margin-top:6px;
+.password-wrap input{
+    padding-right:75px;
 }
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+.show-btn{
+    position:absolute;
+    right:7px;
+    top:7px;
+    border:0;
+    background:#e5e7eb;
+    border-radius:6px;
+    padding:7px 9px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
 
 @media(max-width:900px){
 
-.grid3{
-grid-template-columns:1fr 1fr;
-}
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
 
 }
 
 @media(max-width:700px){
 
-.grid,
-.grid3{
-grid-template-columns:1fr;
-}
+    .grid{
+        grid-template-columns:1fr;
+    }
 
-.bar{
-align-items:flex-start;
-flex-direction:column;
-}
+    .stats{
+        grid-template-columns:1fr;
+    }
 
-nav{
-width:100%;
-}
-
-nav a,
-nav button{
-padding:8px 10px;
-}
-
-.wrap{
-margin-top:15px;
-}
-
-.card{
-padding:15px;
-}
+    .header-inner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
 
 }
 
@@ -487,13 +442,11 @@ padding:15px;
 <body>
 
 
-<!-- =========================================
-     HEADER
-========================================= -->
+<!-- HEADER -->
 
 <header>
 
-<div class="bar">
+<div class="header-inner">
 
 <div class="logo">
 Civil<span>Line</span>
@@ -509,7 +462,7 @@ Home
 Refresh
 </button>
 
-<button id="logout">
+<button id="logoutBtn">
 Logout
 </button>
 
@@ -520,16 +473,10 @@ Logout
 </header>
 
 
-<!-- =========================================
-     MAIN
-========================================= -->
-
-<div class="wrap">
+<div class="container">
 
 
-<!-- =========================================
-     HEADER CARD
-========================================= -->
+<!-- PAGE HEADER -->
 
 <div class="card">
 
@@ -538,32 +485,30 @@ Admin Dashboard
 </h1>
 
 <p class="muted">
-Only administrators can create and manage contractor accounts.
+Create and manage CivilLine contractor accounts.
 </p>
 
 <div
-id="msg"
-class="msg"
+id="mainMessage"
+class="message"
 ></div>
 
 </div>
 
 
-<!-- =========================================
-     STATISTICS
-========================================= -->
+<!-- STATISTICS -->
 
-<div class="grid3">
+<div class="stats">
 
 <div class="stat">
 
-<div class="stat-label">
-Total Contractors
+<div class="stat-title">
+TOTAL CONTRACTORS
 </div>
 
 <div
 class="stat-value"
-id="totalContractors"
+id="totalCount"
 >
 0
 </div>
@@ -573,13 +518,13 @@ id="totalContractors"
 
 <div class="stat">
 
-<div class="stat-label">
-Approved
+<div class="stat-title">
+APPROVED
 </div>
 
 <div
 class="stat-value"
-id="approvedContractors"
+id="approvedCount"
 >
 0
 </div>
@@ -589,13 +534,13 @@ id="approvedContractors"
 
 <div class="stat">
 
-<div class="stat-label">
-Featured
+<div class="stat-title">
+FEATURED
 </div>
 
 <div
 class="stat-value"
-id="featuredContractors"
+id="featuredCount"
 >
 0
 </div>
@@ -605,34 +550,20 @@ id="featuredContractors"
 </div>
 
 
-<br>
-
-
-<!-- =========================================
-     CREATE CONTRACTOR
-========================================= -->
+<!-- CREATE CONTRACTOR -->
 
 <div class="card">
-
-<div class="section-title">
-
-<div>
 
 <h2>
 Create Contractor
 </h2>
 
 <p class="muted">
-Create a login account for a contractor.
+Only an administrator can create contractor accounts.
 </p>
 
-</div>
 
-</div>
-
-
-<form id="cf">
-
+<form id="contractorForm">
 
 <div class="grid">
 
@@ -646,8 +577,8 @@ Contractor Email *
 <input
 id="email"
 type="email"
-autocomplete="off"
 required
+autocomplete="off"
 >
 
 </div>
@@ -662,14 +593,10 @@ Initial Password *
 <input
 id="password"
 type="text"
-autocomplete="new-password"
-minlength="6"
 required
+minlength="6"
+autocomplete="new-password"
 >
-
-<div class="help">
-Minimum 6 characters.
-</div>
 
 </div>
 
@@ -710,14 +637,10 @@ Mobile *
 
 <input
 id="mobile"
-inputmode="numeric"
-maxlength="10"
 required
+maxlength="10"
+inputmode="numeric"
 >
-
-<div class="help">
-Enter exactly 10 digits.
-</div>
 
 </div>
 
@@ -730,8 +653,8 @@ WhatsApp
 
 <input
 id="whatsapp"
-inputmode="numeric"
 maxlength="10"
+inputmode="numeric"
 >
 
 </div>
@@ -799,8 +722,8 @@ placeholder="RCC, Shuttering, Masonry, Civil Work"
 
 
 <button
-class="btn"
-id="create"
+id="createBtn"
+class="btn btn-main"
 type="submit"
 style="margin-top:16px"
 >
@@ -809,46 +732,30 @@ CREATE CONTRACTOR
 
 </button>
 
-
 </form>
 
 </div>
 
 
-<!-- =========================================
-     CONTRACTOR LIST
-========================================= -->
+<!-- CONTRACTOR MANAGEMENT -->
 
 <div class="card">
 
-<div class="section-title">
-
-<div>
-
 <h2>
-Contractor Accounts
+Contractor Management
 </h2>
-
-<p class="muted">
-Manage contractor accounts and passwords.
-</p>
-
-</div>
-
-</div>
-
 
 <div class="grid">
 
 <div>
 
 <label>
-Search
+Search Contractor
 </label>
 
 <input
 id="search"
-placeholder="Company, owner, email, mobile, city..."
+placeholder="Search company, owner, email, mobile or city"
 >
 
 </div>
@@ -857,10 +764,10 @@ placeholder="Company, owner, email, mobile, city..."
 <div>
 
 <label>
-Status
+Filter Status
 </label>
 
-<select id="filter">
+<select id="statusFilter">
 
 <option value="">
 All statuses
@@ -892,7 +799,7 @@ Rejected
 <br>
 
 
-<div class="table-scroll">
+<div class="table-wrap">
 
 <table>
 
@@ -936,8 +843,7 @@ Actions
 
 </thead>
 
-
-<tbody id="rows">
+<tbody id="contractorRows">
 
 <tr>
 
@@ -960,13 +866,10 @@ Loading contractors...
 
 </div>
 
-
 </div>
 
 
-<!-- =========================================
-     RESET PASSWORD MODAL
-========================================= -->
+<!-- RESET PASSWORD MODAL -->
 
 <div
 id="passwordModal"
@@ -976,7 +879,7 @@ class="modal"
 <div class="modal-box">
 
 
-<div class="modal-header">
+<div class="modal-head">
 
 <h2>
 Reset Password
@@ -985,7 +888,7 @@ Reset Password
 <button
 class="close"
 type="button"
-onclick="closePasswordModal()"
+id="closeModalBtn"
 >
 ×
 </button>
@@ -995,16 +898,16 @@ onclick="closePasswordModal()"
 
 <div class="warning">
 
-<b>Important:</b>
+<b>Security:</b>
 
-The contractor's old password cannot be retrieved.
+The existing password cannot be retrieved.
 
-This will replace the current password with a new password.
+This action sets a completely new password for the contractor.
 
 </div>
 
 
-<div class="contractor-info">
+<div class="contractor-box">
 
 <strong
 id="resetCompany"
@@ -1028,7 +931,7 @@ New Password *
 </label>
 
 
-<div class="password-row">
+<div class="password-wrap">
 
 <input
 id="newPassword"
@@ -1039,9 +942,9 @@ placeholder="Minimum 6 characters"
 >
 
 <button
+class="show-btn"
 type="button"
-class="show-password"
-onclick="togglePassword()"
+id="showPasswordBtn"
 >
 SHOW
 </button>
@@ -1050,8 +953,8 @@ SHOW
 
 
 <div
-id="resetMsg"
-class="msg"
+id="resetMessage"
+class="message"
 ></div>
 
 
@@ -1061,25 +964,20 @@ style="margin-top:18px"
 >
 
 <button
-class="btn secondary"
+class="btn btn-secondary"
 type="button"
-onclick="closePasswordModal()"
+id="cancelResetBtn"
 >
-
 Cancel
-
 </button>
 
 
 <button
-class="btn blue"
-id="resetButton"
+class="btn btn-blue"
 type="button"
-onclick="resetPassword()"
+id="resetPasswordBtn"
 >
-
 SET NEW PASSWORD
-
 </button>
 
 </div>
@@ -1092,9 +990,9 @@ SET NEW PASSWORD
 
 <script>
 
-/* =====================================================
-   SUPABASE CONFIG
-===================================================== */
+/* =========================================================
+   SUPABASE
+========================================================= */
 
 const SUPABASE_URL =
 "https://aoicywtjwvqzzhmxkxvs.supabase.co";
@@ -1103,1674 +1001,1696 @@ const SUPABASE_KEY =
 "sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
 
 
-const CREATE_FUNCTION_URL =
+const sb =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* =========================================================
+   EDGE FUNCTIONS
+========================================================= */
+
+const CREATE_CONTRACTOR_URL =
 SUPABASE_URL +
 "/functions/v1/create-contractor";
 
 
-const RESET_FUNCTION_URL =
+const RESET_PASSWORD_URL =
 SUPABASE_URL +
 "/functions/v1/reset-contractor-password";
 
 
-const sb =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =====================================================
+/* =========================================================
    VARIABLES
-===================================================== */
+========================================================= */
 
-let me = null;
-
-let data = [];
+let contractors = [];
 
 let selectedContractor = null;
 
 
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-function esc(value){
-
-return String(value ?? "")
-.replace(
-/[&<>"']/g,
-function(c){
-
-return {
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-
-}[c];
-
-}
+const contractorForm =
+document.getElementById(
+    "contractorForm"
 );
 
+const createBtn =
+document.getElementById(
+    "createBtn"
+);
+
+const contractorRows =
+document.getElementById(
+    "contractorRows"
+);
+
+const search =
+document.getElementById(
+    "search"
+);
+
+const statusFilter =
+document.getElementById(
+    "statusFilter"
+);
+
+const passwordModal =
+document.getElementById(
+    "passwordModal"
+);
+
+const newPassword =
+document.getElementById(
+    "newPassword"
+);
+
+const resetPasswordBtn =
+document.getElementById(
+    "resetPasswordBtn"
+);
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(
+            /[&<>"']/g,
+            function(char){
+
+                const map = {
+                    "&":"&amp;",
+                    "<":"&lt;",
+                    ">":"&gt;",
+                    '"':"&quot;",
+                    "'":"&#039;"
+                };
+
+                return map[char];
+
+            }
+        );
+
 }
 
 
-/* =====================================================
-   SHOW MAIN MESSAGE
-===================================================== */
+/* =========================================================
+   MAIN MESSAGE
+========================================================= */
 
-function show(text,type){
-
-const box =
-document.getElementById("msg");
-
-box.textContent =
-text;
-
-box.className =
-"msg " +
-(
-type === "error"
-?
-"errormsg"
-:
-type === "info"
-?
-"infomsg"
-:
-"successmsg"
-);
-
-box.style.display =
-"block";
-
-setTimeout(
-function(){
-
-box.style.display =
-"none";
-
-},
-5000
-);
-
-}
-
-
-/* =====================================================
-   RESET MESSAGE
-===================================================== */
-
-function showResetMessage(
-text,
-type
+function showMessage(
+    text,
+    type="success"
 ){
 
-const box =
-document.getElementById(
-"resetMsg"
-);
+    const box =
+    document.getElementById(
+        "mainMessage"
+    );
 
-box.textContent =
-text;
+    box.textContent =
+    text;
 
-box.className =
-"msg " +
-(
-type === "error"
-?
-"errormsg"
-:
-"successmsg"
-);
+    box.className =
+    "message " +
+    type;
 
-box.style.display =
-"block";
+    setTimeout(
+        function(){
+
+            box.className =
+            "message";
+
+        },
+        5000
+    );
 
 }
 
 
-/* =====================================================
-   GET VALID ADMIN SESSION
-===================================================== */
+/* =========================================================
+   RESET MESSAGE
+========================================================= */
+
+function showResetMessage(
+    text,
+    type="success"
+){
+
+    const box =
+    document.getElementById(
+        "resetMessage"
+    );
+
+    box.textContent =
+    text;
+
+    box.className =
+    "message " +
+    type;
+
+}
+
+
+/* =========================================================
+   GET FRESH ADMIN SESSION
+========================================================= */
 
 async function getAdminSession(){
 
-/*
- First get current session.
-*/
+    /*
+       First get current session.
+    */
 
-let sessionResult =
-await sb.auth.getSession();
+    let result =
+    await sb.auth.getSession();
 
-let session =
-sessionResult?.data?.session;
-
-
-/*
- If no session, try refresh.
-*/
-
-if(!session){
-
-const refreshResult =
-await sb.auth.refreshSession();
-
-if(
-refreshResult.error
-){
-
-throw new Error(
-"Admin login expired. Please login again."
-);
-
-}
-
-session =
-refreshResult?.data?.session;
-
-}
+    let session =
+    result.data.session;
 
 
-/*
- Still no session.
-*/
+    /*
+       If no session, try refresh.
+    */
 
-if(!session){
+    if(!session){
 
-throw new Error(
-"Admin login expired. Please login again."
-);
+        const refreshResult =
+        await sb.auth.refreshSession();
 
-}
+        if(
+            refreshResult.error
+        ){
+
+            throw new Error(
+                "Admin login expired. Please login again."
+            );
+
+        }
+
+        session =
+        refreshResult.data.session;
+
+    }
 
 
-return session;
+    if(!session){
+
+        throw new Error(
+            "Admin login expired. Please login again."
+        );
+
+    }
+
+
+    return session;
 
 }
 
 
-/* =====================================================
-   ADMIN CHECK
-===================================================== */
+/* =========================================================
+   CHECK ADMIN
+========================================================= */
 
 async function checkAdmin(){
 
-try{
+    try{
 
-const session =
-await getAdminSession();
-
-me =
-session.user;
+        const session =
+        await getAdminSession();
 
 
-/*
- Get profile.
-*/
-
-const profileResult =
-await sb
-
-.from("profiles")
-
-.select(
-"id,role,status,company_name,email"
-)
-
-.eq(
-"id",
-me.id
-)
-
-.maybeSingle();
+        const user =
+        session.user;
 
 
-if(
-profileResult.error
-){
+        if(!user){
 
-throw new Error(
-"Could not check admin profile: " +
-profileResult.error.message
-);
+            location.href =
+            "admin-login.html";
+
+            return false;
+
+        }
+
+
+        /*
+           Check profile role.
+        */
+
+        const result =
+        await sb
+
+        .from("profiles")
+
+        .select(
+            "id,role,status,company_name,email"
+        )
+
+        .eq(
+            "id",
+            user.id
+        )
+
+        .maybeSingle();
+
+
+        if(result.error){
+
+            throw new Error(
+                result.error.message
+            );
+
+        }
+
+
+        if(
+            !result.data
+        ){
+
+            await sb.auth.signOut();
+
+            alert(
+                "Admin profile not found."
+            );
+
+            location.href =
+            "admin-login.html";
+
+            return false;
+
+        }
+
+
+        if(
+            result.data.role !== "admin"
+        ){
+
+            await sb.auth.signOut();
+
+            alert(
+                "This account is not an admin."
+            );
+
+            location.href =
+            "admin-login.html";
+
+            return false;
+
+        }
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            "ADMIN CHECK:",
+            error
+        );
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+        return false;
+
+    }
 
 }
 
 
-if(
-!profileResult.data
-){
-
-await sb.auth.signOut();
-
-location.href =
-"admin-login.html";
-
-return false;
-
-}
-
-
-if(
-profileResult.data.role !== "admin"
-){
-
-await sb.auth.signOut();
-
-alert(
-"This account is not an admin."
-);
-
-location.href =
-"admin-login.html";
-
-return false;
-
-}
-
-
-return true;
-
-}
-
-catch(error){
-
-console.error(
-"ADMIN CHECK ERROR:",
-error
-);
-
-show(
-error.message,
-"error"
-);
-
-return false;
-
-}
-
-}
-
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 (async function(){
 
-const ok =
-await checkAdmin();
+    const admin =
+    await checkAdmin();
 
-if(!ok)
-return;
+    if(!admin)
+    return;
 
-await load();
+    await loadContractors();
 
 })();
 
 
-/* =====================================================
+/* =========================================================
    CREATE CONTRACTOR
-===================================================== */
+========================================================= */
 
-document
-.getElementById("cf")
-.addEventListener(
-"submit",
-async function(e){
+contractorForm.addEventListener(
+    "submit",
+    async function(event){
 
-e.preventDefault();
+        event.preventDefault();
 
 
-const createButton =
-document.getElementById(
-"create"
+        createBtn.disabled =
+        true;
+
+        createBtn.textContent =
+        "CREATING...";
+
+
+        try{
+
+            const email =
+            document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+            const password =
+            document
+            .getElementById("password")
+            .value;
+
+
+            const company =
+            document
+            .getElementById("company")
+            .value
+            .trim();
+
+
+            const owner =
+            document
+            .getElementById("owner")
+            .value
+            .trim();
+
+
+            const mobile =
+            document
+            .getElementById("mobile")
+            .value
+            .trim();
+
+
+            const whatsapp =
+            document
+            .getElementById("whatsapp")
+            .value
+            .trim();
+
+
+            const city =
+            document
+            .getElementById("city")
+            .value
+            .trim();
+
+
+            const area =
+            document
+            .getElementById("area")
+            .value
+            .trim();
+
+
+            const address =
+            document
+            .getElementById("address")
+            .value
+            .trim();
+
+
+            const servicesText =
+            document
+            .getElementById("services")
+            .value
+            .trim();
+
+
+            /*
+               Validate mobile.
+            */
+
+            if(
+                !/^\d{10}$/.test(
+                    mobile
+                )
+            ){
+
+                throw new Error(
+                    "Mobile must contain exactly 10 digits."
+                );
+
+            }
+
+
+            /*
+               Validate WhatsApp if entered.
+            */
+
+            if(
+                whatsapp &&
+                !/^\d{10}$/.test(
+                    whatsapp
+                )
+            ){
+
+                throw new Error(
+                    "WhatsApp must contain exactly 10 digits."
+                );
+
+            }
+
+
+            /*
+               Validate password.
+            */
+
+            if(
+                password.length < 6
+            ){
+
+                throw new Error(
+                    "Password must contain at least 6 characters."
+                );
+
+            }
+
+
+            /*
+               Get fresh session.
+            */
+
+            const session =
+            await getAdminSession();
+
+
+            /*
+               Call create-contractor.
+            */
+
+            const response =
+            await fetch(
+                CREATE_CONTRACTOR_URL,
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "application/json",
+
+                        "Authorization":
+                        "Bearer " +
+                        session.access_token,
+
+                        "apikey":
+                        SUPABASE_KEY
+                    },
+
+                    body:JSON.stringify({
+
+                        email:
+                        email,
+
+                        password:
+                        password,
+
+                        company_name:
+                        company,
+
+                        owner_name:
+                        owner,
+
+                        mobile:
+                        mobile,
+
+                        whatsapp:
+                        whatsapp,
+
+                        city:
+                        city,
+
+                        area:
+                        area,
+
+                        address:
+                        address,
+
+                        services:
+                        servicesText
+                        .split(",")
+                        .map(
+                            x=>x.trim()
+                        )
+                        .filter(Boolean)
+
+                    })
+
+                }
+            );
+
+
+            let result;
+
+            try{
+
+                result =
+                await response.json();
+
+            }
+            catch{
+
+                throw new Error(
+                    "Invalid response from create-contractor function."
+                );
+
+            }
+
+
+            if(
+                !response.ok ||
+                result.success === false
+            ){
+
+                throw new Error(
+                    result.error ||
+                    "Could not create contractor."
+                );
+
+            }
+
+
+            showMessage(
+                "Contractor account created successfully.",
+                "success"
+            );
+
+
+            contractorForm.reset();
+
+
+            await loadContractors();
+
+        }
+        catch(error){
+
+            console.error(
+                "CREATE CONTRACTOR ERROR:",
+                error
+            );
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+        finally{
+
+            createBtn.disabled =
+            false;
+
+            createBtn.textContent =
+            "CREATE CONTRACTOR";
+
+        }
+
+    }
 );
 
 
-createButton.disabled =
-true;
-
-createButton.textContent =
-"CREATING...";
-
-
-try{
-
-
-/*
- Validate mobile.
-*/
-
-const mobileValue =
-document
-.getElementById("mobile")
-.value
-.trim();
-
-
-if(
-!^\d{10}$/.test(
-mobileValue
-)
-){
-
-throw new Error(
-"Mobile must contain exactly 10 digits."
-);
-
-}
-
-
-/*
- Validate password.
-*/
-
-const passwordValue =
-document
-.getElementById("password")
-.value;
-
-
-if(
-passwordValue.length < 6
-){
-
-throw new Error(
-"Password must contain at least 6 characters."
-);
-
-}
-
-
-/*
- Get fresh admin session.
-*/
-
-const session =
-await getAdminSession();
-
-
-/*
- Call create-contractor Edge Function.
-*/
-
-const response =
-await fetch(
-CREATE_FUNCTION_URL,
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":
-"application/json",
-
-"Authorization":
-"Bearer " +
-session.access_token,
-
-"apikey":
-SUPABASE_KEY
-
-},
-
-body:JSON.stringify({
-
-email:
-document
-.getElementById("email")
-.value
-.trim(),
-
-password:
-passwordValue,
-
-company_name:
-document
-.getElementById("company")
-.value
-.trim(),
-
-owner_name:
-document
-.getElementById("owner")
-.value
-.trim(),
-
-mobile:
-mobileValue,
-
-whatsapp:
-document
-.getElementById("whatsapp")
-.value
-.trim(),
-
-city:
-document
-.getElementById("city")
-.value
-.trim(),
-
-area:
-document
-.getElementById("area")
-.value
-.trim(),
-
-address:
-document
-.getElementById("address")
-.value
-.trim(),
-
-services:
-document
-.getElementById("services")
-.value
-.split(",")
-.map(
-x=>x.trim()
-)
-.filter(Boolean)
-
-})
-
-});
-
-
-/*
- Read response safely.
-*/
-
-let result;
-
-try{
-
-result =
-await response.json();
-
-}
-catch{
-
-throw new Error(
-"Invalid response from create-contractor function."
-);
-
-}
-
-
-if(
-!response.ok ||
-result.success === false
-){
-
-throw new Error(
-result.error ||
-"Could not create contractor."
-);
-
-}
-
-
-show(
-"Contractor account created successfully.",
-"success"
-);
-
-
-/*
- Reset form.
-*/
-
-document
-.getElementById("cf")
-.reset();
-
-
-/*
- Reload list.
-*/
-
-await load();
-
-}
-
-catch(error){
-
-console.error(
-"CREATE CONTRACTOR ERROR:",
-error
-);
-
-show(
-error.message,
-"error"
-);
-
-}
-
-finally{
-
-createButton.disabled =
-false;
-
-createButton.textContent =
-"CREATE CONTRACTOR";
-
-}
-
-});
-
-
-/* =====================================================
+/* =========================================================
    LOAD CONTRACTORS
-===================================================== */
+========================================================= */
 
-async function load(){
+async function loadContractors(){
 
-const rows =
-document.getElementById("rows");
-
-
-rows.innerHTML = `
-<tr>
-<td colspan="8" class="loading">
-Loading contractors...
-</td>
-</tr>
-`;
+    contractorRows.innerHTML = `
+        <tr>
+            <td colspan="8" class="loading">
+                Loading contractors...
+            </td>
+        </tr>
+    `;
 
 
-try{
+    try{
+
+        const result =
+        await sb
+
+        .from("profiles")
+
+        .select("*")
+
+        .eq(
+            "role",
+            "contractor"
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending:false
+            }
+        );
 
 
-const result =
-await sb
+        if(result.error){
 
-.from("profiles")
+            throw new Error(
+                result.error.message
+            );
 
-.select("*")
-
-.eq(
-"role",
-"contractor"
-)
-
-.order(
-"created_at",
-{
-ascending:false
-}
-);
+        }
 
 
-if(result.error){
-
-throw new Error(
-result.error.message
-);
-
-}
+        contractors =
+        result.data || [];
 
 
-data =
-result.data || [];
+        updateStatistics();
 
+        renderContractors();
 
-updateStats();
+    }
+    catch(error){
 
-render();
+        console.error(
+            "LOAD CONTRACTORS:",
+            error
+        );
 
+        contractorRows.innerHTML = `
+            <tr>
+                <td colspan="8" class="loading">
+                    ${escapeHTML(error.message)}
+                </td>
+            </tr>
+        `;
 
-}
+        showMessage(
+            error.message,
+            "error"
+        );
 
-catch(error){
-
-console.error(
-"LOAD ERROR:",
-error
-);
-
-rows.innerHTML = `
-<tr>
-<td colspan="8" class="loading">
-${esc(error.message)}
-</td>
-</tr>
-`;
-
-show(
-error.message,
-"error"
-);
-
-}
+    }
 
 }
 
 
-/* =====================================================
-   UPDATE STATISTICS
-===================================================== */
+/* =========================================================
+   STATISTICS
+========================================================= */
 
-function updateStats(){
+function updateStatistics(){
 
-document
-.getElementById(
-"totalContractors"
-)
-.textContent =
-data.length;
-
-
-document
-.getElementById(
-"approvedContractors"
-)
-.textContent =
-data.filter(
-x=>x.status === "approved"
-).length;
+    document
+    .getElementById(
+        "totalCount"
+    )
+    .textContent =
+    contractors.length;
 
 
-document
-.getElementById(
-"featuredContractors"
-)
-.textContent =
-data.filter(
-x=>x.is_featured === true
-).length;
-
-}
-
-
-/* =====================================================
-   RENDER TABLE
-===================================================== */
-
-function render(){
-
-const q =
-document
-.getElementById("search")
-.value
-.toLowerCase()
-.trim();
+    document
+    .getElementById(
+        "approvedCount"
+    )
+    .textContent =
+    contractors.filter(
+        x =>
+        x.status === "approved"
+    ).length;
 
 
-const selectedStatus =
-document
-.getElementById("filter")
-.value;
-
-
-const filtered =
-data.filter(
-function(x){
-
-const text = [
-
-x.company_name,
-x.owner_name,
-x.email,
-x.mobile,
-x.city,
-x.area
-
-]
-.join(" ")
-.toLowerCase();
-
-
-const searchMatch =
-!q ||
-text.includes(q);
-
-
-const statusMatch =
-!selectedStatus ||
-x.status === selectedStatus;
-
-
-return searchMatch &&
-statusMatch;
-
-}
-);
-
-
-const rows =
-document
-.getElementById("rows");
-
-
-if(
-filtered.length === 0
-){
-
-rows.innerHTML = `
-<tr>
-<td colspan="8" class="loading">
-No contractors found.
-</td>
-</tr>
-`;
-
-return;
+    document
+    .getElementById(
+        "featuredCount"
+    )
+    .textContent =
+    contractors.filter(
+        x =>
+        x.is_featured === true
+    ).length;
 
 }
 
 
-rows.innerHTML =
-filtered
-.map(
-function(x){
+/* =========================================================
+   RENDER CONTRACTORS
+========================================================= */
 
-const statusClass =
-x.status === "approved"
-?
-"status-approved"
-:
-x.status === "pending"
-?
-"status-pending"
-:
-x.status === "suspended"
-?
-"status-suspended"
-:
-"status-rejected";
+function renderContractors(){
+
+    const query =
+    search.value
+    .toLowerCase()
+    .trim();
 
 
-return `
-
-<tr>
-
-<td>
-
-<b>
-${esc(x.company_name)}
-</b>
-
-<br>
-
-<span class="muted">
-${esc(x.area || "")}
-</span>
-
-</td>
+    const selectedStatus =
+    statusFilter.value;
 
 
-<td>
-${esc(x.owner_name)}
-</td>
+    const filtered =
+    contractors.filter(
+        function(x){
+
+            const text =
+            [
+                x.company_name,
+                x.owner_name,
+                x.email,
+                x.mobile,
+                x.city,
+                x.area
+            ]
+            .join(" ")
+            .toLowerCase();
 
 
-<td>
-${esc(x.email)}
-</td>
+            const matchesSearch =
+            !query ||
+            text.includes(
+                query
+            );
 
 
-<td>
-${esc(x.mobile)}
-</td>
+            const matchesStatus =
+            !selectedStatus ||
+            x.status ===
+            selectedStatus;
 
 
-<td>
-${esc(x.city)}
-</td>
+            return (
+                matchesSearch &&
+                matchesStatus
+            );
+
+        }
+    );
 
 
-<td>
+    if(
+        filtered.length === 0
+    ){
 
-<span class="status ${statusClass}">
-${esc(x.status || "unknown")}
-</span>
+        contractorRows.innerHTML = `
+            <tr>
+                <td colspan="8" class="loading">
+                    No contractors found.
+                </td>
+            </tr>
+        `;
 
-</td>
+        return;
+
+    }
 
 
-<td>
+    contractorRows.innerHTML =
+    filtered
+    .map(
+        function(x){
 
-${
-x.is_featured
-?
-"<b>Yes</b>"
-:
-"No"
+            let statusClass =
+            "status-rejected";
+
+
+            if(
+                x.status === "approved"
+            ){
+                statusClass =
+                "status-approved";
+            }
+            else if(
+                x.status === "pending"
+            ){
+                statusClass =
+                "status-pending";
+            }
+            else if(
+                x.status === "suspended"
+            ){
+                statusClass =
+                "status-suspended";
+            }
+
+
+            return `
+
+            <tr>
+
+                <td>
+
+                    <b>
+                    ${escapeHTML(
+                        x.company_name
+                    )}
+                    </b>
+
+                    <br>
+
+                    <span class="muted">
+                    ${escapeHTML(
+                        x.area || ""
+                    )}
+                    </span>
+
+                </td>
+
+
+                <td>
+                ${escapeHTML(
+                    x.owner_name
+                )}
+                </td>
+
+
+                <td>
+                ${escapeHTML(
+                    x.email
+                )}
+                </td>
+
+
+                <td>
+                ${escapeHTML(
+                    x.mobile
+                )}
+                </td>
+
+
+                <td>
+                ${escapeHTML(
+                    x.city
+                )}
+                </td>
+
+
+                <td>
+
+                    <span
+                    class="status ${statusClass}"
+                    >
+
+                    ${escapeHTML(
+                        x.status || "unknown"
+                    )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        x.is_featured
+                        ? "<b>Yes</b>"
+                        : "No"
+                    }
+
+                </td>
+
+
+                <td>
+
+                    <div class="actions">
+
+
+                        <button
+                        class="btn btn-small btn-success"
+                        onclick="changeStatus(
+                            '${x.id}',
+                            'approved'
+                        )"
+                        >
+
+                        Approve
+
+                        </button>
+
+
+                        <button
+                        class="btn btn-small btn-secondary"
+                        onclick="changeStatus(
+                            '${x.id}',
+                            'suspended'
+                        )"
+                        >
+
+                        Suspend
+
+                        </button>
+
+
+                        <button
+                        class="btn btn-small btn-main"
+                        onclick="toggleFeatured(
+                            '${x.id}'
+                        )"
+                        >
+
+                        ${
+                            x.is_featured
+                            ?
+                            "Unfeature"
+                            :
+                            "Feature"
+                        }
+
+                        </button>
+
+
+                        <button
+                        class="btn btn-small btn-blue"
+                        onclick="openPasswordModal(
+                            '${x.id}'
+                        )"
+                        >
+
+                        Reset Password
+
+                        </button>
+
+
+                        <button
+                        class="btn btn-small btn-danger"
+                        onclick="deleteProfile(
+                            '${x.id}'
+                        )"
+                        >
+
+                        Delete
+
+                        </button>
+
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+    )
+    .join("");
+
 }
 
-</td>
 
-
-<td>
-
-<div class="actions">
-
-
-<button
-class="btn small success"
-onclick="changeStatus('${x.id}','approved')"
->
-
-Approve
-
-</button>
-
-
-<button
-class="btn small secondary"
-onclick="changeStatus('${x.id}','suspended')"
->
-
-Suspend
-
-</button>
-
-
-<button
-class="btn small"
-onclick="toggleFeatured('${x.id}')"
->
-
-${
-x.is_featured
-?
-"Unfeature"
-:
-"Feature"
-}
-
-</button>
-
-
-<button
-class="btn small blue"
-onclick="openPasswordModal('${x.id}')"
->
-
-Reset Password
-
-</button>
-
-
-<button
-class="btn small danger"
-onclick="deleteProfile('${x.id}')"
->
-
-Delete
-
-</button>
-
-
-</div>
-
-</td>
-
-</tr>
-
-`;
-
-}
-)
-.join("");
-
-}
-
-
-/* =====================================================
+/* =========================================================
    SEARCH
-===================================================== */
+========================================================= */
 
-document
-.getElementById("search")
-.addEventListener(
-"input",
-render
+search.addEventListener(
+    "input",
+    renderContractors
 );
 
 
-/* =====================================================
+/* =========================================================
    FILTER
-===================================================== */
+========================================================= */
 
-document
-.getElementById("filter")
-.addEventListener(
-"change",
-render
+statusFilter.addEventListener(
+    "change",
+    renderContractors
 );
 
 
-/* =====================================================
+/* =========================================================
    CHANGE STATUS
-===================================================== */
+========================================================= */
 
 async function changeStatus(
-id,
-newStatus
+    id,
+    newStatus
 ){
 
-try{
+    try{
 
-const result =
-await sb
+        const result =
+        await sb
 
-.from("profiles")
+        .from("profiles")
 
-.update({
-status:newStatus
-})
+        .update({
+            status:
+            newStatus
+        })
 
-.eq(
-"id",
-id
-);
-
-
-if(result.error){
-
-throw new Error(
-result.error.message
-);
-
-}
+        .eq(
+            "id",
+            id
+        );
 
 
-show(
-"Contractor status changed to " +
-newStatus +
-".",
-"success"
-);
+        if(result.error){
+
+            throw new Error(
+                result.error.message
+            );
+
+        }
 
 
-await load();
+        showMessage(
+            "Contractor status updated.",
+            "success"
+        );
 
-}
 
-catch(error){
+        await loadContractors();
 
-show(
-error.message,
-"error"
-);
+    }
+    catch(error){
 
-}
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
 
 }
 
 
-/* =====================================================
-   FEATURE / UNFEATURE
-===================================================== */
+/* =========================================================
+   FEATURE
+========================================================= */
 
 async function toggleFeatured(
-id
+    id
 ){
 
-try{
+    try{
 
-const contractor =
-data.find(
-x=>x.id === id
-);
+        const contractor =
+        contractors.find(
+            x =>
+            x.id === id
+        );
 
 
-if(!contractor){
+        if(!contractor){
 
-throw new Error(
-"Contractor not found."
-);
+            throw new Error(
+                "Contractor not found."
+            );
+
+        }
+
+
+        const result =
+        await sb
+
+        .from("profiles")
+
+        .update({
+
+            is_featured:
+            !Boolean(
+                contractor.is_featured
+            )
+
+        })
+
+        .eq(
+            "id",
+            id
+        );
+
+
+        if(result.error){
+
+            throw new Error(
+                result.error.message
+            );
+
+        }
+
+
+        showMessage(
+            contractor.is_featured
+            ?
+            "Contractor removed from featured."
+            :
+            "Contractor marked as featured.",
+            "success"
+        );
+
+
+        await loadContractors();
+
+    }
+    catch(error){
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
 
 }
 
 
-const result =
-await sb
-
-.from("profiles")
-
-.update({
-
-is_featured:
-!Boolean(
-contractor.is_featured
-)
-
-})
-
-.eq(
-"id",
-id
-);
-
-
-if(result.error){
-
-throw new Error(
-result.error.message
-);
-
-}
-
-
-show(
-contractor.is_featured
-?
-"Contractor removed from featured."
-:
-"Contractor marked as featured.",
-"success"
-);
-
-
-await load();
-
-}
-
-catch(error){
-
-show(
-error.message,
-"error"
-);
-
-}
-
-}
-
-
-/* =====================================================
+/* =========================================================
    DELETE PROFILE
-===================================================== */
+========================================================= */
 
 async function deleteProfile(
-id
+    id
 ){
 
-const contractor =
-data.find(
-x=>x.id === id
-);
+    const contractor =
+    contractors.find(
+        x =>
+        x.id === id
+    );
 
 
-if(!contractor)
-return;
+    if(!contractor)
+    return;
 
 
-const name =
-contractor.company_name ||
-contractor.owner_name ||
-contractor.email ||
-"contractor";
+    const name =
+    contractor.company_name ||
+    contractor.owner_name ||
+    contractor.email ||
+    "contractor";
 
 
-const confirmed =
-confirm(
-"Delete contractor profile for " +
-name +
-"?\n\n" +
-"IMPORTANT: This deletes the profile only. " +
-"The Supabase Auth login may still exist."
-);
+    const confirmed =
+    confirm(
+        "Delete contractor profile for " +
+        name +
+        "?\n\n" +
+        "This deletes the profile record only. " +
+        "The Auth account may remain."
+    );
 
 
-if(!confirmed)
-return;
+    if(!confirmed)
+    return;
 
 
-try{
+    try{
 
-const result =
-await sb
+        const result =
+        await sb
 
-.from("profiles")
+        .from("profiles")
 
-.delete()
+        .delete()
 
-.eq(
-"id",
-id
-);
+        .eq(
+            "id",
+            id
+        );
 
 
-if(result.error){
+        if(result.error){
 
-throw new Error(
-result.error.message
-);
+            throw new Error(
+                result.error.message
+            );
+
+        }
+
+
+        showMessage(
+            "Contractor profile deleted.",
+            "success"
+        );
+
+
+        await loadContractors();
+
+    }
+    catch(error){
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
 
 }
 
 
-show(
-"Contractor profile deleted.",
-"success"
-);
-
-
-await load();
-
-}
-
-catch(error){
-
-show(
-error.message,
-"error"
-);
-
-}
-
-}
-
-
-/* =====================================================
+/* =========================================================
    OPEN PASSWORD MODAL
-===================================================== */
+========================================================= */
 
 function openPasswordModal(
-id
+    id
 ){
 
-const contractor =
-data.find(
-x=>x.id === id
-);
+    const contractor =
+    contractors.find(
+        x =>
+        x.id === id
+    );
 
 
-if(!contractor){
+    if(!contractor){
 
-show(
-"Contractor not found.",
-"error"
-);
+        showMessage(
+            "Contractor not found.",
+            "error"
+        );
 
-return;
+        return;
 
-}
-
-
-selectedContractor =
-contractor;
+    }
 
 
-document
-.getElementById(
-"resetCompany"
-)
-.textContent =
-contractor.company_name ||
-contractor.owner_name ||
-"Contractor";
+    selectedContractor =
+    contractor;
 
 
-document
-.getElementById(
-"resetEmail"
-)
-.textContent =
-contractor.email ||
-"";
+    document
+    .getElementById(
+        "resetCompany"
+    )
+    .textContent =
+    contractor.company_name ||
+    contractor.owner_name ||
+    "Contractor";
 
 
-document
-.getElementById(
-"newPassword"
-)
-.value =
-"";
+    document
+    .getElementById(
+        "resetEmail"
+    )
+    .textContent =
+    contractor.email ||
+    "";
 
 
-document
-.getElementById(
-"resetMsg"
-)
-.style.display =
-"none";
+    newPassword.value =
+    "";
 
 
-document
-.getElementById(
-"passwordModal"
-)
-.classList.add(
-"show"
-);
+    document
+    .getElementById(
+        "resetMessage"
+    )
+    .className =
+    "message";
 
 
-setTimeout(
-function(){
+    passwordModal.classList.add(
+        "show"
+    );
 
-document
-.getElementById(
-"newPassword"
-)
-.focus();
 
-},
-100
-);
+    setTimeout(
+        function(){
+
+            newPassword.focus();
+
+        },
+        100
+    );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CLOSE PASSWORD MODAL
-===================================================== */
+========================================================= */
 
 function closePasswordModal(){
 
+    passwordModal.classList.remove(
+        "show"
+    );
+
+    newPassword.value =
+    "";
+
+    selectedContractor =
+    null;
+
+}
+
+
+/* =========================================================
+   SHOW/HIDE PASSWORD
+========================================================= */
+
 document
 .getElementById(
-"passwordModal"
+    "showPasswordBtn"
 )
-.classList.remove(
-"show"
+.addEventListener(
+    "click",
+    function(){
+
+        if(
+            newPassword.type ===
+            "password"
+        ){
+
+            newPassword.type =
+            "text";
+
+            this.textContent =
+            "HIDE";
+
+        }
+        else{
+
+            newPassword.type =
+            "password";
+
+            this.textContent =
+            "SHOW";
+
+        }
+
+    }
 );
 
 
+/* =========================================================
+   CANCEL RESET
+========================================================= */
+
 document
 .getElementById(
-"newPassword"
+    "closeModalBtn"
 )
-.value =
-"";
+.addEventListener(
+    "click",
+    closePasswordModal
+);
 
 
-selectedContractor =
-null;
-
-}
-
-
-/* =====================================================
-   TOGGLE PASSWORD
-===================================================== */
-
-function togglePassword(){
-
-const input =
 document
 .getElementById(
-"newPassword"
+    "cancelResetBtn"
+)
+.addEventListener(
+    "click",
+    closePasswordModal
 );
 
 
-const button =
-document
-.querySelector(
-".show-password"
+/* =========================================================
+   RESET PASSWORD
+========================================================= */
+
+resetPasswordBtn.addEventListener(
+    "click",
+    async function(){
+
+        if(!selectedContractor){
+
+            showResetMessage(
+                "No contractor selected.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const password =
+        newPassword.value;
+
+
+        if(
+            password.length < 6
+        ){
+
+            showResetMessage(
+                "Password must contain at least 6 characters.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        resetPasswordBtn.disabled =
+        true;
+
+        resetPasswordBtn.textContent =
+        "RESETTING...";
+
+
+        try{
+
+            /*
+              Get a FRESH admin session.
+            */
+
+            const session =
+            await getAdminSession();
+
+
+            /*
+              Call reset-contractor-password.
+            */
+
+            const response =
+            await fetch(
+                RESET_PASSWORD_URL,
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "Content-Type":
+                        "application/json",
+
+                        "Authorization":
+                        "Bearer " +
+                        session.access_token,
+
+                        "apikey":
+                        SUPABASE_KEY
+
+                    },
+
+                    body:JSON.stringify({
+
+                        user_id:
+                        selectedContractor.id,
+
+                        password:
+                        password
+
+                    })
+
+                }
+            );
+
+
+            let result;
+
+
+            try{
+
+                result =
+                await response.json();
+
+            }
+            catch{
+
+                throw new Error(
+                    "Invalid response from reset password function."
+                );
+
+            }
+
+
+            if(
+                !response.ok ||
+                result.success === false
+            ){
+
+                throw new Error(
+                    result.error ||
+                    "Password reset failed."
+                );
+
+            }
+
+
+            showResetMessage(
+                "Password changed successfully.",
+                "success"
+            );
+
+
+            newPassword.value =
+            "";
+
+
+            setTimeout(
+                function(){
+
+                    closePasswordModal();
+
+                },
+                1500
+            );
+
+
+        }
+        catch(error){
+
+            console.error(
+                "RESET PASSWORD ERROR:",
+                error
+            );
+
+
+            showResetMessage(
+                error.message,
+                "error"
+            );
+
+        }
+        finally{
+
+            resetPasswordBtn.disabled =
+            false;
+
+            resetPasswordBtn.textContent =
+            "SET NEW PASSWORD";
+
+        }
+
+    }
 );
 
 
-if(
-input.type === "password"
-){
-
-input.type =
-"text";
-
-button.textContent =
-"HIDE";
-
-}
-else{
-
-input.type =
-"password";
-
-button.textContent =
-"SHOW";
-
-}
-
-}
-
-
-/* =====================================================
-   RESET CONTRACTOR PASSWORD
-===================================================== */
-
-async function resetPassword(){
-
-if(!selectedContractor){
-
-showResetMessage(
-"No contractor selected.",
-"error"
-);
-
-return;
-
-}
-
-
-const passwordInput =
-document
-.getElementById(
-"newPassword"
-);
-
-
-const newPassword =
-passwordInput.value;
-
-
-if(
-newPassword.length < 6
-){
-
-showResetMessage(
-"Password must contain at least 6 characters.",
-"error"
-);
-
-return;
-
-}
-
-
-const button =
-document
-.getElementById(
-"resetButton"
-);
-
-
-button.disabled =
-true;
-
-button.textContent =
-"RESETTING...";
-
-
-try{
-
-
-/*
- Get a fresh session.
-
- This is important because an old
- access token can cause:
-
- "Unauthorized"
-*/
-
-const session =
-await getAdminSession();
-
-
-/*
- Make sure the admin user is still
- the logged-in user.
-*/
-
-if(
-!session.user ||
-!session.user.id
-){
-
-throw new Error(
-"Admin session is invalid. Please login again."
-);
-
-}
-
-
-/*
- Call Edge Function.
-*/
-
-const response =
-await fetch(
-RESET_FUNCTION_URL,
-{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":
-"application/json",
-
-"Authorization":
-"Bearer " +
-session.access_token,
-
-"apikey":
-SUPABASE_KEY
-
-},
-
-body:JSON.stringify({
-
-user_id:
-selectedContractor.id,
-
-password:
-newPassword
-
-})
-
-});
-
-
-/*
- Read JSON response.
-*/
-
-let result;
-
-try{
-
-result =
-await response.json();
-
-}
-catch{
-
-throw new Error(
-"Invalid response from reset password function."
-);
-
-}
-
-
-/*
- Handle error.
-*/
-
-if(
-!response.ok ||
-result.success === false
-){
-
-throw new Error(
-result.error ||
-"Password reset failed."
-);
-
-}
-
-
-/*
- SUCCESS
-*/
-
-showResetMessage(
-"Password changed successfully.",
-"success"
-);
-
-
-/*
- Clear password.
-*/
-
-passwordInput.value =
-"";
-
-
-/*
- Close after 1.5 seconds.
-*/
-
-setTimeout(
-function(){
-
-closePasswordModal();
-
-},
-1500
-);
-
-
-}
-
-catch(error){
-
-console.error(
-"RESET PASSWORD ERROR:",
-error
-);
-
-
-showResetMessage(
-error.message,
-"error"
-);
-
-}
-
-finally{
-
-button.disabled =
-false;
-
-button.textContent =
-"SET NEW PASSWORD";
-
-}
-
-}
-
-
-/* =====================================================
+/* =========================================================
    REFRESH
-===================================================== */
+========================================================= */
 
 document
 .getElementById(
-"refreshBtn"
+    "refreshBtn"
 )
 .addEventListener(
-"click",
-async function(){
+    "click",
+    async function(){
 
-const button =
-document.getElementById(
-"refreshBtn"
+        this.disabled =
+        true;
+
+        this.textContent =
+        "Refreshing...";
+
+
+        try{
+
+            await loadContractors();
+
+        }
+        finally{
+
+            this.disabled =
+            false;
+
+            this.textContent =
+            "Refresh";
+
+        }
+
+    }
 );
 
-button.disabled =
-true;
 
-button.textContent =
-"Refreshing...";
-
-
-try{
-
-await load();
-
-}
-finally{
-
-button.disabled =
-false;
-
-button.textContent =
-"Refresh";
-
-}
-
-});
-
-
-/* =====================================================
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 document
 .getElementById(
-"logout"
+    "logoutBtn"
 )
 .addEventListener(
-"click",
-async function(){
+    "click",
+    async function(){
 
-await sb.auth.signOut();
+        await sb.auth.signOut();
 
-location.href =
-"admin-login.html";
+        location.href =
+        "admin-login.html";
 
-});
-
-
-/* =====================================================
-   CLICK OUTSIDE MODAL
-===================================================== */
-
-document
-.getElementById(
-"passwordModal"
-)
-.addEventListener(
-"click",
-function(e){
-
-if(
-e.target === this
-){
-
-closePasswordModal();
-
-}
-
-});
+    }
+);
 
 
-/* =====================================================
-   ESC KEY CLOSE MODAL
-===================================================== */
+/* =========================================================
+   CLOSE MODAL OUTSIDE
+========================================================= */
 
-document
-.addEventListener(
-"keydown",
-function(e){
+passwordModal.addEventListener(
+    "click",
+    function(event){
 
-if(
-e.key === "Escape"
-){
+        if(
+            event.target ===
+            passwordModal
+        ){
 
-closePasswordModal();
+            closePasswordModal();
 
-}
+        }
 
-});
+    }
+);
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            closePasswordModal();
+
+        }
+
+    }
+);
 
 </script>
 
 </body>
+
 </html>
