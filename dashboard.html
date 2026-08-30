@@ -1,4 +1,1127 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard - CivilLine</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#64748b;--dark:#111827;--accent:#f59e0b;--danger:#dc2626;--line:#e5e7eb;--ok:#16a34a}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}header{background:var(--dark);color:#fff;position:sticky;top:0;z-index:10}.bar{max-width:1200px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:15px}.logo{font-size:24px;font-weight:900}.logo span{color:var(--accent)}nav{display:flex;gap:5px;flex-wrap:wrap}nav a,nav button{color:#fff;text-decoration:none;background:transparent;border:0;padding:9px 11px;border-radius:7px;cursor:pointer;font-weight:700}nav a:hover,nav button:hover{background:#374151}.wrap{max-width:1200px;margin:24px auto;padding:0 16px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 5px 20px #0000000a;margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;font-size:14px}textarea{min-height:90px}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:var(--accent);color:#111827;padding:10px 14px;font-weight:800;cursor:pointer;text-decoration:none}.btn.secondary{background:#e5e7eb}.btn.dark{background:var(--dark);color:#fff}.btn.danger{background:var(--danger);color:#fff}.btn.success{background:var(--ok);color:#fff}.btn.small{padding:7px 9px;font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap}.msg{padding:11px;border-radius:8px;margin-top:14px;display:none}.successmsg{background:#dcfce7;color:#166534}.errormsg{background:#fee2e2;color:#991b1b}.table-scroll{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}th{font-size:12px;color:var(--muted);text-transform:uppercase}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px}.stat .label{color:var(--muted);font-size:13px}.stat .value{font-size:24px;font-weight:900;margin-top:7px}.muted{color:var(--muted)}.auth{max-width:430px;margin:70px auto}.hero{max-width:950px;margin:60px auto;text-align:center;padding:25px}.hero h1{font-size:45px}@media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}}@media(max-width:650px){.grid,.grid4{grid-template-columns:1fr}.bar{align-items:flex-start;flex-direction:column}}
-</style></head><body><header><div class="bar"><div class="logo">Civil<span>Line</span></div><nav><a href="projects.html">Projects</a><a href="expenses.html">Expenses</a><a href="client-bills.html">Client Bills</a><button id="logout">Logout</button></nav></div></header><div class="wrap"><div class="card"><h1 id="welcome">Dashboard</h1><p class="muted">Your contractor financial overview.</p></div><div class="grid4"><div class="stat"><div class="label">Projects</div><div class="value" id="pc">0</div></div><div class="stat"><div class="label">Client Bills</div><div class="value" id="income">₹0</div></div><div class="stat"><div class="label">Expenses</div><div class="value" id="expense">₹0</div></div><div class="stat"><div class="label">Profit / Loss</div><div class="value" id="profit">₹0</div></div></div><div class="grid" style="margin-top:18px"><div class="card"><h2>Profit & Loss</h2><canvas id="chart"></canvas></div><div class="card"><h2>Quick Actions</h2><div class="actions"><a class="btn" href="projects.html">+ Project</a><a class="btn dark" href="expenses.html">+ Expense</a><a class="btn secondary" href="client-bills.html">+ Client Bill</a></div></div></div></div><script>const sb=supabase.createClient("https://aoicywtjwvqzzhmxkxvs.supabase.co","sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W");(async()=>{const u=await sb.auth.getUser();if(!u.data.user)return location.href="contractor-login.html";const uid=u.data.user.id,p=await sb.from("profiles").select("company_name,status,role").eq("id",uid).single();if(p.data?.role!=="contractor"||p.data.status!=="approved"){await sb.auth.signOut();return location.href="contractor-login.html"}const pr=await sb.from("projects").select("id").eq("user_id",uid),ex=await sb.from("expenses").select("total").eq("user_id",uid),cb=await sb.from("client_bills").select("amount").eq("user_id",uid),E=(ex.data||[]).reduce((a,x)=>a+Number(x.total||0),0),I=(cb.data||[]).reduce((a,x)=>a+Number(x.amount||0),0);welcome.textContent="Welcome, "+(p.data.company_name||u.data.user.email);pc.textContent=pr.data?.length||0;income.textContent=money(I);expense.textContent=money(E);profit.textContent=money(I-E);new Chart(chart,{type:"bar",data:{labels:["Client Bills","Expenses","Profit/Loss"],datasets:[{label:"Amount (₹)",data:[I,E,I-E]}]},options:{responsive:true}})})();logout.onclick=async()=>{await sb.auth.signOut();location.href="contractor-login.html"};function money(n){return "₹"+Number(n).toLocaleString("en-IN")}</script></body></html>
+```html
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard - CivilLine</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+--bg:#f4f6f8;
+--card:#fff;
+--text:#172033;
+--muted:#64748b;
+--dark:#111827;
+--accent:#f59e0b;
+--danger:#dc2626;
+--line:#e5e7eb;
+--ok:#16a34a;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:var(--bg);
+color:var(--text)
+}
+
+header{
+background:var(--dark);
+color:#fff;
+position:sticky;
+top:0;
+z-index:10
+}
+
+.bar{
+max-width:1200px;
+margin:auto;
+padding:14px 18px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px
+}
+
+.logo{
+font-size:24px;
+font-weight:900
+}
+
+.logo span{
+color:var(--accent)
+}
+
+nav{
+display:flex;
+gap:5px;
+flex-wrap:wrap
+}
+
+nav a,nav button{
+color:#fff;
+text-decoration:none;
+background:transparent;
+border:0;
+padding:9px 11px;
+border-radius:7px;
+cursor:pointer;
+font-weight:700
+}
+
+nav a:hover,nav button:hover{
+background:#374151
+}
+
+.wrap{
+max-width:1200px;
+margin:24px auto;
+padding:0 16px
+}
+
+.card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:14px;
+padding:20px;
+box-shadow:0 5px 20px #0000000a;
+margin-bottom:18px
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px
+}
+
+.grid4{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px
+}
+
+.stat{
+background:#fff;
+border:1px solid var(--line);
+border-radius:12px;
+padding:17px
+}
+
+.stat .label{
+color:var(--muted);
+font-size:13px
+}
+
+.stat .value{
+font-size:24px;
+font-weight:900;
+margin-top:7px
+}
+
+.stat.profit{
+border-left:5px solid var(--ok)
+}
+
+.stat.loss{
+border-left:5px solid var(--danger)
+}
+
+.green{
+color:var(--ok)!important
+}
+
+.red{
+color:var(--danger)!important
+}
+
+.muted{
+color:var(--muted)
+}
+
+.table-scroll{
+overflow:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse
+}
+
+th,td{
+padding:12px 8px;
+border-bottom:1px solid var(--line);
+text-align:left;
+font-size:13px;
+vertical-align:middle
+}
+
+th{
+font-size:12px;
+color:var(--muted);
+text-transform:uppercase
+}
+
+.profit-badge,
+.loss-badge{
+display:inline-block;
+padding:6px 10px;
+border-radius:20px;
+font-weight:900;
+white-space:nowrap
+}
+
+.profit-badge{
+background:#dcfce7;
+color:#166534
+}
+
+.loss-badge{
+background:#fee2e2;
+color:#991b1b
+}
+
+.btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+border:0;
+border-radius:8px;
+background:var(--accent);
+color:#111827;
+padding:10px 14px;
+font-weight:800;
+cursor:pointer;
+text-decoration:none
+}
+
+.btn.dark{
+background:var(--dark);
+color:#fff
+}
+
+.btn.secondary{
+background:#e5e7eb
+}
+
+.actions{
+display:flex;
+gap:7px;
+flex-wrap:wrap
+}
+
+.message{
+padding:12px;
+border-radius:8px;
+margin-bottom:18px;
+display:none
+}
+
+.message.error{
+display:block;
+background:#fee2e2;
+color:#991b1b
+}
+
+.message.success{
+display:block;
+background:#dcfce7;
+color:#166534
+}
+
+.empty{
+padding:25px;
+text-align:center;
+color:var(--muted)
+}
+
+.chart-container{
+position:relative;
+height:380px
+}
+
+@media(max-width:900px){
+.grid4{
+grid-template-columns:1fr 1fr
+}
+}
+
+@media(max-width:650px){
+.grid,.grid4{
+grid-template-columns:1fr
+}
+
+.bar{
+align-items:flex-start;
+flex-direction:column
+}
+
+.chart-container{
+height:300px
+}
+
+th,td{
+font-size:12px
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="bar">
+
+<div class="logo">
+Civil<span>Line</span>
+</div>
+
+<nav>
+<a href="projects.html">Projects</a>
+<a href="expenses.html">Expenses</a>
+<a href="client-bills.html">Client Bills</a>
+<button id="logout">Logout</button>
+</nav>
+
+</div>
+</header>
+
+
+<div class="wrap">
+
+<div id="message" class="message"></div>
+
+
+<div class="card">
+
+<h1 id="welcome">Dashboard</h1>
+
+<p class="muted">
+Project-wise contractor financial overview
+</p>
+
+</div>
+
+
+<!-- OVERALL SUMMARY -->
+
+<div class="grid4">
+
+<div class="stat">
+<div class="label">Total Projects</div>
+<div class="value" id="pc">0</div>
+</div>
+
+<div class="stat">
+<div class="label">Overall Income</div>
+<div class="value" id="income">₹0</div>
+</div>
+
+<div class="stat">
+<div class="label">Overall Expenses</div>
+<div class="value" id="expense">₹0</div>
+</div>
+
+<div class="stat" id="netCard">
+<div class="label">Net Profit / Loss</div>
+<div class="value" id="profit">₹0</div>
+</div>
+
+</div>
+
+
+<!-- PROFIT LOSS SUMMARY -->
+
+<div class="grid" style="margin-top:18px">
+
+<div class="stat profit">
+<div class="label">Overall Profit</div>
+<div class="value green" id="overallProfit">
+₹0
+</div>
+
+<p class="muted">
+Total profit from profitable projects
+</p>
+</div>
+
+
+<div class="stat loss">
+<div class="label">Overall Loss</div>
+<div class="value red" id="overallLoss">
+₹0
+</div>
+
+<p class="muted">
+Total loss from loss-making projects
+</p>
+</div>
+
+</div>
+
+
+<!-- PROJECT WISE TABLE -->
+
+<div class="card">
+
+<h2>Project-wise Profit & Loss</h2>
+
+<p class="muted">
+Income, expenses and profitability for each project
+</p>
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Project</th>
+<th>Income</th>
+<th>Expenses</th>
+<th>Profit / Loss</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="projectRows">
+
+<tr>
+<td colspan="5" class="empty">
+Loading projects...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- GRAPH -->
+
+<div class="card">
+
+<h2>Project-wise Profit / Loss Graph</h2>
+
+<div class="chart-container">
+
+<canvas id="chart"></canvas>
+
+</div>
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+
+<div class="card">
+
+<h2>Quick Actions</h2>
+
+<div class="actions">
+
+<a class="btn" href="projects.html">
++ Project
+</a>
+
+<a class="btn dark" href="expenses.html">
++ Expense
+</a>
+
+<a class="btn secondary" href="client-bills.html">
++ Client Bill
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const sb = supabase.createClient(
+"https://aoicywtjwvqzzhmxkxvs.supabase.co",
+"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W"
+);
+
+
+let chartInstance = null;
+
+
+/* =========================
+   START DASHBOARD
+========================= */
+
+(async function(){
+
+try{
+
+const {
+data:userData,
+error:userError
+} = await sb.auth.getUser();
+
+
+if(userError){
+
+throw userError;
+
+}
+
+
+if(!userData.user){
+
+location.href="contractor-login.html";
+return;
+
+}
+
+
+const uid = userData.user.id;
+
+
+/* =========================
+   PROFILE
+========================= */
+
+const {
+data:profile,
+error:profileError
+} = await sb
+.from("profiles")
+.select("company_name,status,role")
+.eq("id",uid)
+.single();
+
+
+if(profileError){
+
+throw profileError;
+
+}
+
+
+if(
+profile?.role !== "contractor" ||
+profile?.status !== "approved"
+){
+
+await sb.auth.signOut();
+
+location.href="contractor-login.html";
+
+return;
+
+}
+
+
+document.getElementById("welcome").textContent =
+"Welcome, " +
+(profile.company_name || userData.user.email);
+
+
+/* =========================
+   LOAD DATA
+========================= */
+
+const [
+
+projectsResult,
+expensesResult,
+billsResult
+
+] = await Promise.all([
+
+sb
+.from("projects")
+.select("*")
+.eq("user_id",uid)
+.order("created_at",{ascending:false}),
+
+sb
+.from("expenses")
+.select("*")
+.eq("user_id",uid),
+
+sb
+.from("client_bills")
+.select("*")
+.eq("user_id",uid)
+
+]);
+
+
+if(projectsResult.error)
+throw projectsResult.error;
+
+if(expensesResult.error)
+throw expensesResult.error;
+
+if(billsResult.error)
+throw billsResult.error;
+
+
+const projects =
+projectsResult.data || [];
+
+const expenses =
+expensesResult.data || [];
+
+const bills =
+billsResult.data || [];
+
+
+/* =========================
+   PROJECT COUNT
+========================= */
+
+document.getElementById("pc").textContent =
+projects.length;
+
+
+/* =========================
+   PROJECT FINANCIAL DATA
+========================= */
+
+const projectData =
+projects.map(project => {
+
+const pid = project.id;
+
+
+/*
+Client bills belonging to project
+*/
+
+const projectBills =
+bills.filter(b =>
+
+String(b.project_id || "") ===
+String(pid)
+
+);
+
+
+/*
+Expenses belonging to project
+*/
+
+const projectExpenses =
+expenses.filter(e =>
+
+String(e.project_id || "") ===
+String(pid)
+
+);
+
+
+/*
+Income
+*/
+
+const income =
+projectBills.reduce(
+(sum,bill) =>
+sum + Number(
+bill.amount ||
+bill.total ||
+bill.bill_amount ||
+0
+),
+0
+);
+
+
+/*
+Expenses
+
+Supports existing "total"
+field and some
+possible expense fields.
+*/
+
+const expense =
+projectExpenses.reduce(
+(sum,expense) =>
+sum + Number(
+expense.total ||
+expense.amount ||
+expense.total_amount ||
+0
+),
+0
+);
+
+
+const pnl =
+income - expense;
+
+
+return {
+
+id:pid,
+
+name:
+project.name ||
+"Unnamed Project",
+
+income:income,
+
+expense:expense,
+
+pnl:pnl
+
+};
+
+});
+
+
+/* =========================
+   OVERALL CALCULATION
+========================= */
+
+const totalIncome =
+projectData.reduce(
+(sum,p) => sum + p.income,
+0
+);
+
+
+const totalExpense =
+projectData.reduce(
+(sum,p) => sum + p.expense,
+0
+);
+
+
+const net =
+totalIncome - totalExpense;
+
+
+/*
+Overall Profit means
+sum of positive project profits
+*/
+
+const overallProfit =
+projectData
+.filter(p => p.pnl > 0)
+.reduce(
+(sum,p) => sum + p.pnl,
+0
+);
+
+
+/*
+Overall Loss means
+sum of negative project losses
+shown as positive number
+*/
+
+const overallLoss =
+projectData
+.filter(p => p.pnl < 0)
+.reduce(
+(sum,p) => sum + Math.abs(p.pnl),
+0
+);
+
+
+/* =========================
+   TOP CARDS
+========================= */
+
+document.getElementById("income")
+.textContent = money(totalIncome);
+
+document.getElementById("expense")
+.textContent = money(totalExpense);
+
+document.getElementById("overallProfit")
+.textContent = money(overallProfit);
+
+document.getElementById("overallLoss")
+.textContent = money(overallLoss);
+
+
+const profitElement =
+document.getElementById("profit");
+
+const netCard =
+document.getElementById("netCard");
+
+
+if(net > 0){
+
+profitElement.textContent =
+"+" + money(net);
+
+profitElement.className =
+"value green";
+
+netCard.classList.add("profit");
+
+}
+else if(net < 0){
+
+profitElement.textContent =
+"-" + money(Math.abs(net));
+
+profitElement.className =
+"value red";
+
+netCard.classList.add("loss");
+
+}
+else{
+
+profitElement.textContent =
+money(0);
+
+profitElement.className =
+"value";
+
+}
+
+
+/* =========================
+   PROJECT TABLE
+========================= */
+
+const rows =
+document.getElementById("projectRows");
+
+
+if(projectData.length === 0){
+
+rows.innerHTML = `
+<tr>
+<td colspan="5" class="empty">
+No projects found.
+<br><br>
+<a class="btn" href="projects.html">
+Add Your First Project
+</a>
+</td>
+</tr>
+`;
+
+}
+else{
+
+rows.innerHTML = "";
+
+projectData.forEach(project => {
+
+const tr =
+document.createElement("tr");
+
+
+let pnlText;
+let status;
+let pnlClass;
+
+
+if(project.pnl > 0){
+
+pnlText =
+"+" + money(project.pnl);
+
+status =
+`<span class="profit-badge">
+🟢 PROFIT
+</span>`;
+
+pnlClass =
+"green";
+
+}
+else if(project.pnl < 0){
+
+pnlText =
+"-" + money(Math.abs(project.pnl));
+
+status =
+`<span class="loss-badge">
+🔴 LOSS
+</span>`;
+
+pnlClass =
+"red";
+
+}
+else{
+
+pnlText =
+money(0);
+
+status =
+`<span class="profit-badge">
+NO PROFIT / LOSS
+</span>`;
+
+pnlClass = "";
+
+}
+
+
+tr.innerHTML = `
+
+<td>
+<strong>
+${escapeHtml(project.name)}
+</strong>
+</td>
+
+<td>
+${money(project.income)}
+</td>
+
+<td>
+${money(project.expense)}
+</td>
+
+<td>
+<strong class="${pnlClass}">
+${pnlText}
+</strong>
+</td>
+
+<td>
+${status}
+</td>
+
+`;
+
+
+rows.appendChild(tr);
+
+});
+
+}
+
+
+/* =========================
+   GRAPH
+========================= */
+
+const labels =
+projectData.map(p => p.name);
+
+const values =
+projectData.map(p => p.pnl);
+
+
+/*
+Chart.js can use different colors
+for positive and negative values.
+*/
+
+const barColors =
+values.map(
+value =>
+value >= 0
+? "#16a34a"
+: "#dc2626"
+);
+
+
+if(chartInstance){
+
+chartInstance.destroy();
+
+}
+
+
+chartInstance =
+new Chart(
+document.getElementById("chart"),
+{
+
+type:"bar",
+
+data:{
+
+labels:labels,
+
+datasets:[{
+
+label:"Profit / Loss (₹)",
+
+data:values,
+
+backgroundColor:barColors,
+
+borderWidth:1
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+display:true
+},
+
+tooltip:{
+
+callbacks:{
+
+label:function(context){
+
+const value =
+Number(context.raw || 0);
+
+return (
+value >= 0
+? "Profit: "
+: "Loss: "
+) + money(Math.abs(value));
+
+}
+
+}
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true,
+
+ticks:{
+
+callback:function(value){
+
+return "₹" +
+Number(value)
+.toLocaleString("en-IN");
+
+}
+
+}
+
+}
+
+}
+
+}
+
+}
+
+);
+
+
+}
+catch(error){
+
+console.error(error);
+
+showMessage(
+"Unable to load dashboard: " +
+(error.message || error),
+"error"
+);
+
+}
+
+})();
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+document
+.getElementById("logout")
+.addEventListener(
+"click",
+async function(){
+
+await sb.auth.signOut();
+
+location.href =
+"contractor-login.html";
+
+}
+);
+
+
+/* =========================
+   MONEY FORMAT
+========================= */
+
+function money(number){
+
+return "₹" +
+Number(number || 0)
+.toLocaleString(
+"en-IN",
+{
+maximumFractionDigits:2
+}
+);
+
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(text,type){
+
+const box =
+document.getElementById("message");
+
+box.textContent = text;
+
+box.className =
+"message " + type;
+
+}
+
+</script>
+
+</body>
+</html>
+```
