@@ -58,3 +58,15 @@ Contractor:
 - Forgot password opens WhatsApp: 9975304937.
 
 If you use GitHub Pages, upload the HTML files only. Do NOT upload the service-role key.
+
+STATEMENTS MODULE
+- statements.html adds Client Statement, Labour Contractor Ledger, and Expense Summary.
+- Run the updated supabase.sql in Supabase SQL Editor.
+- Contractor data remains isolated by user_id with RLS.
+
+
+LOGIN / PASSWORD RESET
+- Contractor and Admin use Login ID (email) + password.
+- Forgot / Reset Password opens reset-password.html.
+- Supabase Auth sends the reset email.
+- In Supabase Dashboard -> Authentication -> URL Configuration, add your GitHub Pages site URL and reset-password.html URL to Redirect URLs.
