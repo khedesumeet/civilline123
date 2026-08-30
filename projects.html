@@ -1,4 +1,904 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Projects</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#64748b;--dark:#111827;--accent:#f59e0b;--danger:#dc2626;--line:#e5e7eb;--ok:#16a34a}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}header{background:var(--dark);color:#fff;position:sticky;top:0;z-index:10}.bar{max-width:1200px;margin:auto;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:15px}.logo{font-size:24px;font-weight:900}.logo span{color:var(--accent)}nav{display:flex;gap:5px;flex-wrap:wrap}nav a,nav button{color:#fff;text-decoration:none;background:transparent;border:0;padding:9px 11px;border-radius:7px;cursor:pointer;font-weight:700}nav a:hover,nav button:hover{background:#374151}.wrap{max-width:1200px;margin:24px auto;padding:0 16px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 5px 20px #0000000a;margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;font-size:14px}textarea{min-height:90px}.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:var(--accent);color:#111827;padding:10px 14px;font-weight:800;cursor:pointer;text-decoration:none}.btn.secondary{background:#e5e7eb}.btn.dark{background:var(--dark);color:#fff}.btn.danger{background:var(--danger);color:#fff}.btn.success{background:var(--ok);color:#fff}.btn.small{padding:7px 9px;font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap}.msg{padding:11px;border-radius:8px;margin-top:14px;display:none}.successmsg{background:#dcfce7;color:#166534}.errormsg{background:#fee2e2;color:#991b1b}.table-scroll{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}th{font-size:12px;color:var(--muted);text-transform:uppercase}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px}.stat .label{color:var(--muted);font-size:13px}.stat .value{font-size:24px;font-weight:900;margin-top:7px}.muted{color:var(--muted)}.auth{max-width:430px;margin:70px auto}.hero{max-width:950px;margin:60px auto;text-align:center;padding:25px}.hero h1{font-size:45px}@media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}}@media(max-width:650px){.grid,.grid4{grid-template-columns:1fr}.bar{align-items:flex-start;flex-direction:column}}
-</style></head><body><header><div class="bar"><div class="logo">Civil<span>Line</span></div><nav><a href="dashboard.html">Dashboard</a><a href="expenses.html">Expenses</a><button id="logout">Logout</button></nav></div></header><div class="wrap"><div class="card"><h1>Projects</h1><form id="form"><div class="grid"><div><label>Project Name *</label><input id="name" required></div><div><label>Client Name</label><input id="client"></div><div><label>Location</label><input id="location"></div><div><label>Contract Amount</label><input id="contract" type="number" min="0" step=".01"></div><div><label>Start Date</label><input id="start" type="date"></div><div><label>End Date</label><input id="end" type="date"></div></div><button class="btn" id="save">Add Project</button><button type="button" class="btn secondary" id="cancel" style="display:none">Cancel</button></form><div id="msg" class="msg"></div></div><div class="card table-scroll"><table><thead><tr><th>Project</th><th>Client</th><th>Location</th><th>Contract</th><th>Dates</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div></div><script>const sb=supabase.createClient("https://aoicywtjwvqzzhmxkxvs.supabase.co","sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W");let uid,edit=null;const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));(async()=>{const u=await sb.auth.getUser();if(!u.data.user)return location.href="contractor-login.html";uid=u.data.user.id;const p=await sb.from("profiles").select("role,status").eq("id",uid).single();if(p.data?.role!=="contractor"||p.data.status!=="approved")return location.href="contractor-login.html";load()})();form.onsubmit=async e=>{e.preventDefault();const d={user_id:uid,name:name.value.trim(),client_name:client.value.trim()||null,location:location.value.trim()||null,contract_amount:Number(contract.value||0),start_date:start.value||null,end_date:end.value||null};if(!d.name)return show("Project name is required","error");const r=edit?await sb.from("projects").update(d).eq("id",edit).eq("user_id",uid):await sb.from("projects").insert(d);if(r.error)return show(r.error.message,"error");show(edit?"Updated":"Added","success");reset();load()};async function load(){const r=await sb.from("projects").select("*").eq("user_id",uid).order("created_at",{ascending:false});if(r.error)return show(r.error.message,"error");rows.innerHTML=(r.data||[]).map(x=>`<tr><td><b>${esc(x.name)}</b></td><td>${esc(x.client_name||"-")}</td><td>${esc(x.location||"-")}</td><td>₹${Number(x.contract_amount||0).toLocaleString("en-IN")}</td><td>${x.start_date||"-"} → ${x.end_date||"-"}</td><td><button class="btn small secondary" onclick="ed('${x.id}')">Edit</button> <button class="btn small danger" onclick="del('${x.id}')">Delete</button></td></tr>`).join("")}async function ed(id){const r=await sb.from("projects").select("*").eq("id",id).eq("user_id",uid).single();if(r.error)return show(r.error.message,"error");const x=r.data;edit=id;name.value=x.name||"";client.value=x.client_name||"";location.value=x.location||"";contract.value=x.contract_amount||0;start.value=x.start_date||"";end.value=x.end_date||"";save.textContent="Save Changes";cancel.style.display="inline-flex"}async function del(id){if(!confirm("Delete project?"))return;const r=await sb.from("projects").delete().eq("id",id).eq("user_id",uid);if(r.error)show(r.error.message,"error");else load()}function reset(){edit=null;form.reset();save.textContent="Add Project";cancel.style.display="none"}cancel.onclick=reset;function show(t,c){msg.textContent=t;msg.className="msg "+(c==="error"?"errormsg":"successmsg");msg.style.display="block"}logout.onclick=async()=>{await sb.auth.signOut();location.href="contractor-login.html"}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CivilLine - Projects</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+    color:#172033;
+}
+
+header{
+    background:#111827;
+    color:white;
+}
+
+.nav{
+    max-width:1100px;
+    margin:auto;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#f59e0b;
+}
+
+nav a,nav button{
+    color:white;
+    text-decoration:none;
+    border:0;
+    background:none;
+    padding:9px 12px;
+    cursor:pointer;
+}
+
+.container{
+    max-width:1100px;
+    margin:25px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+input{
+    width:100%;
+    padding:11px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+}
+
+button{
+    border:0;
+    border-radius:7px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary{
+    background:#f59e0b;
+}
+
+.secondary{
+    background:#e5e7eb;
+}
+
+.danger{
+    background:#dc2626;
+    color:white;
+}
+
+.message{
+    display:none;
+    padding:12px;
+    border-radius:7px;
+    margin-top:15px;
+}
+
+.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px 8px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+}
+
+@media(max-width:650px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="nav">
+
+<div class="logo">
+Civil<span>Line</span>
+</div>
+
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="expenses.html">Expenses</a>
+<a href="client-bills.html">Client Bills</a>
+<button onclick="logout()">Logout</button>
+</nav>
+
+</div>
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+<h1 id="pageTitle">Add Project</h1>
+
+<form id="projectForm">
+
+<div class="grid">
+
+<div>
+<label>Project Name *</label>
+<input
+    type="text"
+    id="projectName"
+    placeholder="Example: ABC Building"
+    required>
+</div>
+
+<div>
+<label>Client Name</label>
+<input
+    type="text"
+    id="clientName"
+    placeholder="Client name">
+</div>
+
+<div>
+<label>Location</label>
+<input
+    type="text"
+    id="projectLocation"
+    placeholder="Project location">
+</div>
+
+<div>
+<label>Contract Amount</label>
+<input
+    type="number"
+    id="contractAmount"
+    min="0"
+    step="0.01"
+    value="0">
+</div>
+
+<div>
+<label>Start Date</label>
+<input
+    type="date"
+    id="startDate">
+</div>
+
+<div>
+<label>End Date</label>
+<input
+    type="date"
+    id="endDate">
+</div>
+
+</div>
+
+<br>
+
+<button
+    type="submit"
+    class="primary"
+    id="saveButton">
+    Add Project
+</button>
+
+<button
+    type="button"
+    class="secondary"
+    id="cancelButton"
+    style="display:none">
+    Cancel
+</button>
+
+</form>
+
+<div id="message" class="message"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Your Projects</h2>
+
+<div style="overflow:auto">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Project</th>
+<th>Client</th>
+<th>Location</th>
+<th>Contract</th>
+<th>Start</th>
+<th>End</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="projectRows">
+
+<tr>
+<td colspan="7">Loading...</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://aoicywtjwvqzzhmxkxvs.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+let currentUser = null;
+let editingProjectId = null;
+
+
+/* =========================
+   START
+========================= */
+
+window.addEventListener("DOMContentLoaded", async function(){
+
+    try{
+
+        showMessage(
+            "Checking login...",
+            "success"
+        );
+
+        const {
+            data,
+            error
+        } = await supabaseClient.auth.getUser();
+
+        if(error){
+
+            throw error;
+
+        }
+
+        if(!data.user){
+
+            window.location.href =
+                "contractor-login.html";
+
+            return;
+
+        }
+
+        currentUser = data.user;
+
+
+        /* Check profile */
+
+        const {
+            data:profile,
+            error:profileError
+        } = await supabaseClient
+            .from("profiles")
+            .select("role,status")
+            .eq("id",currentUser.id)
+            .single();
+
+
+        if(profileError){
+
+            throw profileError;
+
+        }
+
+
+        if(profile.role !== "contractor"){
+
+            showMessage(
+                "This account is not a contractor account.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if(profile.status !== "approved"){
+
+            showMessage(
+                "Your contractor account is not approved.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        hideMessage();
+
+        await loadProjects();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Login/database error: " +
+            (error.message || error),
+            "error"
+        );
+
+    }
+
+});
+
+
+/* =========================
+   ADD / EDIT
+========================= */
+
+document
+.getElementById("projectForm")
+.addEventListener("submit", async function(event){
+
+    event.preventDefault();
+
+    console.log("Project form submitted");
+
+
+    if(!currentUser){
+
+        showMessage(
+            "You are not logged in.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const name =
+        document.getElementById("projectName")
+        .value.trim();
+
+
+    if(!name){
+
+        showMessage(
+            "Project name is required.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const data = {
+
+        user_id: currentUser.id,
+
+        name: name,
+
+        client_name:
+            document.getElementById("clientName")
+            .value.trim() || null,
+
+        location:
+            document.getElementById("projectLocation")
+            .value.trim() || null,
+
+        contract_amount:
+            Number(
+                document.getElementById("contractAmount")
+                .value || 0
+            ),
+
+        start_date:
+            document.getElementById("startDate")
+            .value || null,
+
+        end_date:
+            document.getElementById("endDate")
+            .value || null
+
+    };
+
+
+    console.log("Project data:",data);
+
+
+    const button =
+        document.getElementById("saveButton");
+
+    button.disabled = true;
+
+
+    try{
+
+        let result;
+
+
+        if(editingProjectId){
+
+            result =
+                await supabaseClient
+                .from("projects")
+                .update(data)
+                .eq("id",editingProjectId)
+                .eq("user_id",currentUser.id);
+
+        }
+        else{
+
+            result =
+                await supabaseClient
+                .from("projects")
+                .insert(data);
+
+        }
+
+
+        console.log("Supabase result:",result);
+
+
+        if(result.error){
+
+            throw result.error;
+
+        }
+
+
+        showMessage(
+            editingProjectId
+                ? "Project updated successfully."
+                : "Project added successfully.",
+            "success"
+        );
+
+
+        resetForm();
+
+        await loadProjects();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Unable to save project: " +
+            (error.message || error),
+            "error"
+        );
+
+    }
+    finally{
+
+        button.disabled = false;
+
+    }
+
+});
+
+
+/* =========================
+   LOAD PROJECTS
+========================= */
+
+async function loadProjects(){
+
+    const rows =
+        document.getElementById("projectRows");
+
+
+    rows.innerHTML =
+        "<tr><td colspan='7'>Loading...</td></tr>";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("projects")
+            .select("*")
+            .eq("user_id",currentUser.id)
+            .order("created_at",{
+                ascending:false
+            });
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        if(!data || data.length === 0){
+
+            rows.innerHTML =
+                "<tr><td colspan='7'>No projects found.</td></tr>";
+
+            return;
+
+        }
+
+
+        rows.innerHTML = "";
+
+
+        data.forEach(project => {
+
+            const tr =
+                document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>
+                    <b>${escapeHtml(project.name)}</b>
+                </td>
+
+                <td>
+                    ${escapeHtml(project.client_name || "-")}
+                </td>
+
+                <td>
+                    ${escapeHtml(project.location || "-")}
+                </td>
+
+                <td>
+                    ₹${Number(
+                        project.contract_amount || 0
+                    ).toLocaleString("en-IN")}
+                </td>
+
+                <td>
+                    ${project.start_date || "-"}
+                </td>
+
+                <td>
+                    ${project.end_date || "-"}
+                </td>
+
+                <td>
+
+                    <button
+                        class="secondary"
+                        onclick="editProject('${project.id}')">
+                        Edit
+                    </button>
+
+                    <button
+                        class="danger"
+                        onclick="deleteProject('${project.id}')">
+                        Delete
+                    </button>
+
+                </td>
+
+            `;
+
+
+            rows.appendChild(tr);
+
+        });
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        rows.innerHTML =
+            "<tr><td colspan='7'>Unable to load projects.</td></tr>";
+
+        showMessage(
+            "Unable to load projects: " +
+            (error.message || error),
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   EDIT
+========================= */
+
+async function editProject(id){
+
+    try{
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("projects")
+            .select("*")
+            .eq("id",id)
+            .eq("user_id",currentUser.id)
+            .single();
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        editingProjectId = id;
+
+
+        document.getElementById("projectName")
+            .value = data.name || "";
+
+        document.getElementById("clientName")
+            .value = data.client_name || "";
+
+        document.getElementById("projectLocation")
+            .value = data.location || "";
+
+        document.getElementById("contractAmount")
+            .value = data.contract_amount || 0;
+
+        document.getElementById("startDate")
+            .value = data.start_date || "";
+
+        document.getElementById("endDate")
+            .value = data.end_date || "";
+
+
+        document.getElementById("pageTitle")
+            .textContent = "Edit Project";
+
+        document.getElementById("saveButton")
+            .textContent = "Save Changes";
+
+        document.getElementById("cancelButton")
+            .style.display = "inline-block";
+
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }
+    catch(error){
+
+        showMessage(
+            "Unable to edit project: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+async function deleteProject(id){
+
+    if(!confirm(
+        "Are you sure you want to delete this project?"
+    )){
+
+        return;
+
+    }
+
+
+    try{
+
+        const {
+            error
+        } = await supabaseClient
+            .from("projects")
+            .delete()
+            .eq("id",id)
+            .eq("user_id",currentUser.id);
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        showMessage(
+            "Project deleted successfully.",
+            "success"
+        );
+
+
+        await loadProjects();
+
+    }
+    catch(error){
+
+        showMessage(
+            "Unable to delete project: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+document
+.getElementById("cancelButton")
+.addEventListener("click",resetForm);
+
+
+function resetForm(){
+
+    editingProjectId = null;
+
+    document.getElementById("projectForm")
+        .reset();
+
+    document.getElementById("pageTitle")
+        .textContent = "Add Project";
+
+    document.getElementById("saveButton")
+        .textContent = "Add Project";
+
+    document.getElementById("cancelButton")
+        .style.display = "none";
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href =
+        "contractor-login.html";
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(text,type){
+
+    const box =
+        document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className =
+        "message " + type;
+
+}
+
+
+function hideMessage(){
+
+    const box =
+        document.getElementById("message");
+
+    box.style.display = "none";
+
+}
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
