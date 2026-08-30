@@ -1,17 +1,24 @@
-```html
 <!doctype html>
-<html>
+<html lang="en">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin - CivilLine</title>
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1"
+>
+
+<title>Admin Dashboard - CivilLine</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 :root{
 --bg:#f4f6f8;
---card:#fff;
+--card:#ffffff;
 --text:#172033;
 --muted:#64748b;
 --dark:#111827;
@@ -19,24 +26,27 @@
 --danger:#dc2626;
 --line:#e5e7eb;
 --ok:#16a34a;
---blue:#2563eb
+--blue:#2563eb;
+--purple:#7c3aed;
 }
 
-*{box-sizing:border-box}
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
 font-family:Arial,sans-serif;
 background:var(--bg);
-color:var(--text)
+color:var(--text);
 }
 
 header{
 background:var(--dark);
-color:#fff;
+color:white;
 position:sticky;
 top:0;
-z-index:10
+z-index:100;
 }
 
 .bar{
@@ -46,67 +56,92 @@ padding:14px 18px;
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:15px
+gap:15px;
 }
 
 .logo{
-font-size:24px;
-font-weight:900
+font-size:25px;
+font-weight:900;
 }
 
 .logo span{
-color:var(--accent)
+color:var(--accent);
 }
 
 nav{
 display:flex;
-gap:5px;
-flex-wrap:wrap
+gap:6px;
+flex-wrap:wrap;
 }
 
 nav a,
 nav button{
-color:#fff;
+color:white;
 text-decoration:none;
 background:transparent;
 border:0;
-padding:9px 11px;
+padding:9px 12px;
 border-radius:7px;
 cursor:pointer;
-font-weight:700
+font-weight:700;
 }
 
 nav a:hover,
 nav button:hover{
-background:#374151
+background:#374151;
 }
 
 .wrap{
 max-width:1250px;
 margin:24px auto;
-padding:0 16px
+padding:0 16px;
 }
 
 .card{
-background:#fff;
+background:var(--card);
 border:1px solid var(--line);
 border-radius:14px;
 padding:20px;
 box-shadow:0 5px 20px #0000000a;
-margin-bottom:18px
+margin-bottom:18px;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:14px
+gap:14px;
+}
+
+.grid3{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+}
+
+.stat{
+border:1px solid var(--line);
+border-radius:12px;
+padding:17px;
+background:white;
+}
+
+.stat-label{
+font-size:13px;
+font-weight:700;
+color:var(--muted);
+}
+
+.stat-value{
+font-size:25px;
+font-weight:900;
+margin-top:7px;
 }
 
 label{
 display:block;
 font-weight:700;
 font-size:13px;
-margin-bottom:6px
+margin-bottom:6px;
 }
 
 input,
@@ -116,12 +151,21 @@ width:100%;
 padding:11px 12px;
 border:1px solid #d1d5db;
 border-radius:8px;
-background:#fff;
-font-size:14px
+background:white;
+font-size:14px;
+outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:var(--blue);
+box-shadow:0 0 0 2px #2563eb20;
 }
 
 textarea{
-min-height:90px
+min-height:90px;
+resize:vertical;
 }
 
 .btn{
@@ -135,69 +179,90 @@ color:#111827;
 padding:10px 14px;
 font-weight:800;
 cursor:pointer;
-text-decoration:none
+text-decoration:none;
+}
+
+.btn:hover{
+opacity:.9;
+}
+
+.btn:disabled{
+opacity:.6;
+cursor:not-allowed;
 }
 
 .btn.secondary{
-background:#e5e7eb
+background:#e5e7eb;
+color:#111827;
 }
 
 .btn.dark{
 background:var(--dark);
-color:#fff
+color:white;
 }
 
 .btn.danger{
 background:var(--danger);
-color:#fff
+color:white;
 }
 
 .btn.success{
 background:var(--ok);
-color:#fff
+color:white;
 }
 
 .btn.blue{
 background:var(--blue);
-color:#fff
+color:white;
+}
+
+.btn.purple{
+background:var(--purple);
+color:white;
 }
 
 .btn.small{
 padding:7px 9px;
-font-size:12px
+font-size:12px;
 }
 
 .actions{
 display:flex;
 gap:7px;
-flex-wrap:wrap
+flex-wrap:wrap;
 }
 
 .msg{
 padding:11px;
 border-radius:8px;
 margin-top:14px;
-display:none
+display:none;
+font-size:14px;
 }
 
 .successmsg{
 background:#dcfce7;
-color:#166534
+color:#166534;
 }
 
 .errormsg{
 background:#fee2e2;
-color:#991b1b
+color:#991b1b;
+}
+
+.infomsg{
+background:#dbeafe;
+color:#1e40af;
 }
 
 .table-scroll{
-overflow:auto
+overflow:auto;
 }
 
 table{
 width:100%;
 border-collapse:collapse;
-min-width:1050px
+min-width:1100px;
 }
 
 th,
@@ -206,44 +271,93 @@ padding:10px 8px;
 border-bottom:1px solid var(--line);
 text-align:left;
 font-size:13px;
-vertical-align:top
+vertical-align:top;
 }
 
 th{
 font-size:12px;
 color:var(--muted);
-text-transform:uppercase
+text-transform:uppercase;
+background:#f8fafc;
+}
+
+.status{
+display:inline-block;
+padding:5px 8px;
+border-radius:20px;
+font-size:11px;
+font-weight:800;
+text-transform:capitalize;
+}
+
+.status-approved{
+background:#dcfce7;
+color:#166534;
+}
+
+.status-pending{
+background:#fef3c7;
+color:#92400e;
+}
+
+.status-suspended{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.status-rejected{
+background:#e5e7eb;
+color:#374151;
 }
 
 .muted{
-color:var(--muted)
+color:var(--muted);
 }
 
+.section-title{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:15px;
+}
 
-/* RESET PASSWORD MODAL */
+.section-title h2{
+margin:0;
+}
+
+.loading{
+text-align:center;
+padding:25px;
+color:var(--muted);
+}
+
+/* =========================================
+   MODAL
+========================================= */
 
 .modal{
 display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.55);
-z-index:100;
+background:rgba(0,0,0,.6);
+z-index:1000;
 align-items:center;
 justify-content:center;
-padding:20px
+padding:20px;
 }
 
 .modal.show{
-display:flex
+display:flex;
 }
 
 .modal-box{
-background:#fff;
+background:white;
 width:100%;
-max-width:450px;
-border-radius:14px;
+max-width:470px;
+border-radius:15px;
 padding:24px;
-box-shadow:0 20px 60px #0005
+box-shadow:0 20px 70px #0008;
 }
 
 .modal-header{
@@ -251,25 +365,33 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 gap:10px;
-margin-bottom:18px
+margin-bottom:18px;
+}
+
+.modal-header h2{
+margin:0;
 }
 
 .close{
 border:0;
 background:#e5e7eb;
 border-radius:50%;
-width:32px;
-height:32px;
+width:34px;
+height:34px;
 cursor:pointer;
-font-size:18px
+font-size:20px;
+}
+
+.close:hover{
+background:#d1d5db;
 }
 
 .password-row{
-position:relative
+position:relative;
 }
 
 .password-row input{
-padding-right:80px
+padding-right:75px;
 }
 
 .show-password{
@@ -282,37 +404,92 @@ padding:7px 9px;
 border-radius:6px;
 cursor:pointer;
 font-weight:700;
-font-size:11px
+font-size:11px;
 }
 
 .warning{
 background:#fff7ed;
 border:1px solid #fed7aa;
 color:#9a3412;
-padding:11px;
+padding:12px;
 border-radius:8px;
 font-size:12px;
 line-height:1.5;
-margin-bottom:15px
+margin-bottom:16px;
+}
+
+.contractor-info{
+background:#f8fafc;
+border:1px solid var(--line);
+padding:12px;
+border-radius:8px;
+margin-bottom:16px;
+}
+
+.contractor-info strong{
+font-size:15px;
+}
+
+.help{
+font-size:12px;
+color:var(--muted);
+margin-top:6px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:900px){
+
+.grid3{
+grid-template-columns:1fr 1fr;
+}
+
 }
 
 @media(max-width:700px){
 
-.grid{
-grid-template-columns:1fr
+.grid,
+.grid3{
+grid-template-columns:1fr;
 }
 
 .bar{
 align-items:flex-start;
-flex-direction:column
+flex-direction:column;
+}
+
+nav{
+width:100%;
+}
+
+nav a,
+nav button{
+padding:8px 10px;
+}
+
+.wrap{
+margin-top:15px;
+}
+
+.card{
+padding:15px;
 }
 
 }
+
 </style>
+
 </head>
 
 
 <body>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
 
 <header>
 
@@ -328,6 +505,10 @@ Civil<span>Line</span>
 Home
 </a>
 
+<button id="refreshBtn">
+Refresh
+</button>
+
 <button id="logout">
 Logout
 </button>
@@ -339,26 +520,125 @@ Logout
 </header>
 
 
+<!-- =========================================
+     MAIN
+========================================= -->
+
 <div class="wrap">
 
 
-<!-- CREATE CONTRACTOR -->
+<!-- =========================================
+     HEADER CARD
+========================================= -->
 
 <div class="card">
 
-<h1>Admin Dashboard</h1>
+<h1>
+Admin Dashboard
+</h1>
 
 <p class="muted">
-Only Admin can create and manage contractor accounts.
+Only administrators can create and manage contractor accounts.
 </p>
+
+<div
+id="msg"
+class="msg"
+></div>
+
+</div>
+
+
+<!-- =========================================
+     STATISTICS
+========================================= -->
+
+<div class="grid3">
+
+<div class="stat">
+
+<div class="stat-label">
+Total Contractors
+</div>
+
+<div
+class="stat-value"
+id="totalContractors"
+>
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Approved
+</div>
+
+<div
+class="stat-value"
+id="approvedContractors"
+>
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Featured
+</div>
+
+<div
+class="stat-value"
+id="featuredContractors"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<!-- =========================================
+     CREATE CONTRACTOR
+========================================= -->
+
+<div class="card">
+
+<div class="section-title">
+
+<div>
+
+<h2>
+Create Contractor
+</h2>
+
+<p class="muted">
+Create a login account for a contractor.
+</p>
+
+</div>
+
+</div>
 
 
 <form id="cf">
+
 
 <div class="grid">
 
 
 <div>
+
 <label>
 Contractor Email *
 </label>
@@ -366,26 +646,36 @@ Contractor Email *
 <input
 id="email"
 type="email"
+autocomplete="off"
 required
 >
+
 </div>
 
 
 <div>
+
 <label>
-Temporary Password *
+Initial Password *
 </label>
 
 <input
 id="password"
 type="text"
+autocomplete="new-password"
 minlength="6"
 required
 >
+
+<div class="help">
+Minimum 6 characters.
+</div>
+
 </div>
 
 
 <div>
+
 <label>
 Company Name *
 </label>
@@ -394,10 +684,12 @@ Company Name *
 id="company"
 required
 >
+
 </div>
 
 
 <div>
+
 <label>
 Owner Name *
 </label>
@@ -406,33 +698,47 @@ Owner Name *
 id="owner"
 required
 >
+
 </div>
 
 
 <div>
+
 <label>
 Mobile *
 </label>
 
 <input
 id="mobile"
+inputmode="numeric"
+maxlength="10"
 required
 >
+
+<div class="help">
+Enter exactly 10 digits.
+</div>
+
 </div>
 
 
 <div>
+
 <label>
 WhatsApp
 </label>
 
 <input
 id="whatsapp"
+inputmode="numeric"
+maxlength="10"
 >
+
 </div>
 
 
 <div>
+
 <label>
 City *
 </label>
@@ -441,10 +747,12 @@ City *
 id="city"
 required
 >
+
 </div>
 
 
 <div>
+
 <label>
 Area
 </label>
@@ -452,10 +760,13 @@ Area
 <input
 id="area"
 >
+
 </div>
 
 
-<div style="grid-column:1/-1">
+<div
+style="grid-column:1/-1"
+>
 
 <label>
 Address
@@ -468,7 +779,9 @@ id="address"
 </div>
 
 
-<div style="grid-column:1/-1">
+<div
+style="grid-column:1/-1"
+>
 
 <label>
 Services
@@ -476,7 +789,7 @@ Services
 
 <input
 id="services"
-placeholder="RCC, Shuttering, Masonry"
+placeholder="RCC, Shuttering, Masonry, Civil Work"
 >
 
 </div>
@@ -488,6 +801,7 @@ placeholder="RCC, Shuttering, Masonry"
 <button
 class="btn"
 id="create"
+type="submit"
 style="margin-top:16px"
 >
 
@@ -495,27 +809,56 @@ CREATE CONTRACTOR
 
 </button>
 
+
 </form>
-
-
-<div
-id="msg"
-class="msg"
-></div>
 
 </div>
 
 
-<!-- CONTRACTOR LIST -->
+<!-- =========================================
+     CONTRACTOR LIST
+========================================= -->
 
 <div class="card">
 
+<div class="section-title">
+
+<div>
+
+<h2>
+Contractor Accounts
+</h2>
+
+<p class="muted">
+Manage contractor accounts and passwords.
+</p>
+
+</div>
+
+</div>
+
+
 <div class="grid">
+
+<div>
+
+<label>
+Search
+</label>
 
 <input
 id="search"
-placeholder="Search contractor"
+placeholder="Company, owner, email, mobile, city..."
 >
+
+</div>
+
+
+<div>
+
+<label>
+Status
+</label>
 
 <select id="filter">
 
@@ -543,6 +886,8 @@ Rejected
 
 </div>
 
+</div>
+
 
 <br>
 
@@ -555,21 +900,37 @@ Rejected
 
 <tr>
 
-<th>Company</th>
+<th>
+Company
+</th>
 
-<th>Owner</th>
+<th>
+Owner
+</th>
 
-<th>Email</th>
+<th>
+Email
+</th>
 
-<th>Mobile</th>
+<th>
+Mobile
+</th>
 
-<th>City</th>
+<th>
+City
+</th>
 
-<th>Status</th>
+<th>
+Status
+</th>
 
-<th>Featured</th>
+<th>
+Featured
+</th>
 
-<th>Actions</th>
+<th>
+Actions
+</th>
 
 </tr>
 
@@ -577,6 +938,20 @@ Rejected
 
 
 <tbody id="rows">
+
+<tr>
+
+<td
+colspan="8"
+class="loading"
+>
+
+Loading contractors...
+
+</td>
+
+</tr>
+
 </tbody>
 
 </table>
@@ -589,7 +964,9 @@ Rejected
 </div>
 
 
-<!-- RESET PASSWORD MODAL -->
+<!-- =========================================
+     RESET PASSWORD MODAL
+========================================= -->
 
 <div
 id="passwordModal"
@@ -602,11 +979,12 @@ class="modal"
 <div class="modal-header">
 
 <h2>
-Reset Contractor Password
+Reset Password
 </h2>
 
 <button
 class="close"
+type="button"
 onclick="closePasswordModal()"
 >
 ×
@@ -617,27 +995,32 @@ onclick="closePasswordModal()"
 
 <div class="warning">
 
-The contractor's existing password cannot be retrieved.
+<b>Important:</b>
 
-You are setting a <b>new password</b> for this contractor.
+The contractor's old password cannot be retrieved.
+
+This will replace the current password with a new password.
 
 </div>
 
 
-<p>
+<div class="contractor-info">
 
-<strong id="resetCompany">
+<strong
+id="resetCompany"
+>
 Contractor
 </strong>
 
 <br>
 
 <span
-class="muted"
 id="resetEmail"
-></span>
+class="muted"
+>
+</span>
 
-</p>
+</div>
 
 
 <label>
@@ -651,6 +1034,7 @@ New Password *
 id="newPassword"
 type="password"
 minlength="6"
+autocomplete="new-password"
 placeholder="Minimum 6 characters"
 >
 
@@ -678,18 +1062,24 @@ style="margin-top:18px"
 
 <button
 class="btn secondary"
+type="button"
 onclick="closePasswordModal()"
 >
+
 Cancel
+
 </button>
 
 
 <button
 class="btn blue"
 id="resetButton"
+type="button"
 onclick="resetPassword()"
 >
+
 SET NEW PASSWORD
+
 </button>
 
 </div>
@@ -702,20 +1092,37 @@ SET NEW PASSWORD
 
 <script>
 
-
 /* =====================================================
-   SUPABASE
+   SUPABASE CONFIG
 ===================================================== */
+
+const SUPABASE_URL =
+"https://aoicywtjwvqzzhmxkxvs.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+
+
+const CREATE_FUNCTION_URL =
+SUPABASE_URL +
+"/functions/v1/create-contractor";
+
+
+const RESET_FUNCTION_URL =
+SUPABASE_URL +
+"/functions/v1/reset-contractor-password";
+
 
 const sb =
 supabase.createClient(
-
-"https://aoicywtjwvqzzhmxkxvs.supabase.co",
-
-"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W"
-
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
+
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let me = null;
 
@@ -725,17 +1132,17 @@ let selectedContractor = null;
 
 
 /* =====================================================
-   ESCAPE
+   HTML ESCAPE
 ===================================================== */
 
-const esc = s =>
+function esc(value){
 
-String(s ?? "")
-
+return String(value ?? "")
 .replace(
 /[&<>"']/g,
+function(c){
 
-c => ({
+return {
 
 "&":"&amp;",
 "<":"&lt;",
@@ -743,51 +1150,199 @@ c => ({
 '"':"&quot;",
 "'":"&#039;"
 
-}[c])
+}[c];
 
+}
 );
+
+}
+
+
+/* =====================================================
+   SHOW MAIN MESSAGE
+===================================================== */
+
+function show(text,type){
+
+const box =
+document.getElementById("msg");
+
+box.textContent =
+text;
+
+box.className =
+"msg " +
+(
+type === "error"
+?
+"errormsg"
+:
+type === "info"
+?
+"infomsg"
+:
+"successmsg"
+);
+
+box.style.display =
+"block";
+
+setTimeout(
+function(){
+
+box.style.display =
+"none";
+
+},
+5000
+);
+
+}
+
+
+/* =====================================================
+   RESET MESSAGE
+===================================================== */
+
+function showResetMessage(
+text,
+type
+){
+
+const box =
+document.getElementById(
+"resetMsg"
+);
+
+box.textContent =
+text;
+
+box.className =
+"msg " +
+(
+type === "error"
+?
+"errormsg"
+:
+"successmsg"
+);
+
+box.style.display =
+"block";
+
+}
+
+
+/* =====================================================
+   GET VALID ADMIN SESSION
+===================================================== */
+
+async function getAdminSession(){
+
+/*
+ First get current session.
+*/
+
+let sessionResult =
+await sb.auth.getSession();
+
+let session =
+sessionResult?.data?.session;
+
+
+/*
+ If no session, try refresh.
+*/
+
+if(!session){
+
+const refreshResult =
+await sb.auth.refreshSession();
+
+if(
+refreshResult.error
+){
+
+throw new Error(
+"Admin login expired. Please login again."
+);
+
+}
+
+session =
+refreshResult?.data?.session;
+
+}
+
+
+/*
+ Still no session.
+*/
+
+if(!session){
+
+throw new Error(
+"Admin login expired. Please login again."
+);
+
+}
+
+
+return session;
+
+}
 
 
 /* =====================================================
    ADMIN CHECK
 ===================================================== */
 
-(async()=>{
+async function checkAdmin(){
 
 try{
 
-const u =
-await sb.auth.getUser();
-
-
-if(!u.data.user){
-
-location.href =
-"admin-login.html";
-
-return;
-
-}
-
+const session =
+await getAdminSession();
 
 me =
-u.data.user;
+session.user;
 
 
-const p =
+/*
+ Get profile.
+*/
+
+const profileResult =
 await sb
 
 .from("profiles")
 
-.select("role")
+.select(
+"id,role,status,company_name,email"
+)
 
-.eq("id",me.id)
+.eq(
+"id",
+me.id
+)
 
-.single();
+.maybeSingle();
 
 
 if(
-p.data?.role !== "admin"
+profileResult.error
+){
+
+throw new Error(
+"Could not check admin profile: " +
+profileResult.error.message
+);
+
+}
+
+
+if(
+!profileResult.data
 ){
 
 await sb.auth.signOut();
@@ -795,23 +1350,65 @@ await sb.auth.signOut();
 location.href =
 "admin-login.html";
 
-return;
+return false;
 
 }
 
 
-load();
+if(
+profileResult.data.role !== "admin"
+){
+
+await sb.auth.signOut();
+
+alert(
+"This account is not an admin."
+);
+
+location.href =
+"admin-login.html";
+
+return false;
+
+}
+
+
+return true;
 
 }
 
 catch(error){
+
+console.error(
+"ADMIN CHECK ERROR:",
+error
+);
 
 show(
 error.message,
 "error"
 );
 
+return false;
+
 }
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+(async function(){
+
+const ok =
+await checkAdmin();
+
+if(!ok)
+return;
+
+await load();
 
 })();
 
@@ -820,54 +1417,91 @@ error.message,
    CREATE CONTRACTOR
 ===================================================== */
 
-cf.onsubmit =
-async e => {
+document
+.getElementById("cf")
+.addEventListener(
+"submit",
+async function(e){
 
 e.preventDefault();
 
 
-create.disabled =
+const createButton =
+document.getElementById(
+"create"
+);
+
+
+createButton.disabled =
 true;
+
+createButton.textContent =
+"CREATING...";
 
 
 try{
 
 
+/*
+ Validate mobile.
+*/
+
+const mobileValue =
+document
+.getElementById("mobile")
+.value
+.trim();
+
+
 if(
-!/^\\d{10}$/
-.test(
-mobile.value.trim()
+!^\d{10}$/.test(
+mobileValue
 )
 ){
 
-throw Error(
-"Mobile must be 10 digits."
+throw new Error(
+"Mobile must contain exactly 10 digits."
 );
 
 }
 
 
-const session =
-(
-await sb.auth.getSession()
-).data.session;
+/*
+ Validate password.
+*/
+
+const passwordValue =
+document
+.getElementById("password")
+.value;
 
 
-if(!session){
+if(
+passwordValue.length < 6
+){
 
-location.href =
-"admin-login.html";
-
-return;
+throw new Error(
+"Password must contain at least 6 characters."
+);
 
 }
 
 
-const r =
+/*
+ Get fresh admin session.
+*/
+
+const session =
+await getAdminSession();
+
+
+/*
+ Call create-contractor Edge Function.
+*/
+
+const response =
 await fetch(
-
-"https://aoicywtjwvqzzhmxkxvs.supabase.co/functions/v1/create-contractor",
-
+CREATE_FUNCTION_URL,
 {
 
 method:"POST",
@@ -882,43 +1516,68 @@ headers:{
 session.access_token,
 
 "apikey":
-"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W"
+SUPABASE_KEY
 
 },
 
 body:JSON.stringify({
 
 email:
-email.value.trim(),
+document
+.getElementById("email")
+.value
+.trim(),
 
 password:
-password.value,
+passwordValue,
 
 company_name:
-company.value.trim(),
+document
+.getElementById("company")
+.value
+.trim(),
 
 owner_name:
-owner.value.trim(),
+document
+.getElementById("owner")
+.value
+.trim(),
 
 mobile:
-mobile.value.trim(),
+mobileValue,
 
 whatsapp:
-whatsapp.value.trim(),
+document
+.getElementById("whatsapp")
+.value
+.trim(),
 
 city:
-city.value.trim(),
+document
+.getElementById("city")
+.value
+.trim(),
 
 area:
-area.value.trim(),
+document
+.getElementById("area")
+.value
+.trim(),
 
 address:
-address.value.trim(),
+document
+.getElementById("address")
+.value
+.trim(),
 
 services:
-services.value
+document
+.getElementById("services")
+.value
 .split(",")
-.map(x=>x.trim())
+.map(
+x=>x.trim()
+)
 .filter(Boolean)
 
 })
@@ -926,14 +1585,34 @@ services.value
 });
 
 
-const j =
-await r.json();
+/*
+ Read response safely.
+*/
+
+let result;
+
+try{
+
+result =
+await response.json();
+
+}
+catch{
+
+throw new Error(
+"Invalid response from create-contractor function."
+);
+
+}
 
 
-if(!r.ok){
+if(
+!response.ok ||
+result.success === false
+){
 
-throw Error(
-j.error ||
+throw new Error(
+result.error ||
 "Could not create contractor."
 );
 
@@ -941,21 +1620,37 @@ j.error ||
 
 
 show(
-"Contractor account created.",
+"Contractor account created successfully.",
 "success"
 );
 
 
-cf.reset();
+/*
+ Reset form.
+*/
 
-load();
+document
+.getElementById("cf")
+.reset();
+
+
+/*
+ Reload list.
+*/
+
+await load();
 
 }
 
-catch(x){
+catch(error){
+
+console.error(
+"CREATE CONTRACTOR ERROR:",
+error
+);
 
 show(
-x.message,
+error.message,
 "error"
 );
 
@@ -963,12 +1658,15 @@ x.message,
 
 finally{
 
-create.disabled =
+createButton.disabled =
 false;
+
+createButton.textContent =
+"CREATE CONTRACTOR";
 
 }
 
-};
+});
 
 
 /* =====================================================
@@ -977,7 +1675,23 @@ false;
 
 async function load(){
 
-const r =
+const rows =
+document.getElementById("rows");
+
+
+rows.innerHTML = `
+<tr>
+<td colspan="8" class="loading">
+Loading contractors...
+</td>
+</tr>
+`;
+
+
+try{
+
+
+const result =
 await sb
 
 .from("profiles")
@@ -997,71 +1711,186 @@ ascending:false
 );
 
 
-if(r.error){
+if(result.error){
+
+throw new Error(
+result.error.message
+);
+
+}
+
+
+data =
+result.data || [];
+
+
+updateStats();
+
+render();
+
+
+}
+
+catch(error){
+
+console.error(
+"LOAD ERROR:",
+error
+);
+
+rows.innerHTML = `
+<tr>
+<td colspan="8" class="loading">
+${esc(error.message)}
+</td>
+</tr>
+`;
 
 show(
-r.error.message,
+error.message,
 "error"
 );
+
+}
+
+}
+
+
+/* =====================================================
+   UPDATE STATISTICS
+===================================================== */
+
+function updateStats(){
+
+document
+.getElementById(
+"totalContractors"
+)
+.textContent =
+data.length;
+
+
+document
+.getElementById(
+"approvedContractors"
+)
+.textContent =
+data.filter(
+x=>x.status === "approved"
+).length;
+
+
+document
+.getElementById(
+"featuredContractors"
+)
+.textContent =
+data.filter(
+x=>x.is_featured === true
+).length;
+
+}
+
+
+/* =====================================================
+   RENDER TABLE
+===================================================== */
+
+function render(){
+
+const q =
+document
+.getElementById("search")
+.value
+.toLowerCase()
+.trim();
+
+
+const selectedStatus =
+document
+.getElementById("filter")
+.value;
+
+
+const filtered =
+data.filter(
+function(x){
+
+const text = [
+
+x.company_name,
+x.owner_name,
+x.email,
+x.mobile,
+x.city,
+x.area
+
+]
+.join(" ")
+.toLowerCase();
+
+
+const searchMatch =
+!q ||
+text.includes(q);
+
+
+const statusMatch =
+!selectedStatus ||
+x.status === selectedStatus;
+
+
+return searchMatch &&
+statusMatch;
+
+}
+);
+
+
+const rows =
+document
+.getElementById("rows");
+
+
+if(
+filtered.length === 0
+){
+
+rows.innerHTML = `
+<tr>
+<td colspan="8" class="loading">
+No contractors found.
+</td>
+</tr>
+`;
 
 return;
 
 }
 
 
-data =
-r.data || [];
-
-
-render();
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function render(){
-
-const q =
-search.value
-.toLowerCase();
-
-const s =
-filter.value;
-
-
-const filtered =
-data.filter(x =>
-
-(!s ||
-x.status === s)
-
-&&
-
-(!q ||
-
-[
-x.company_name,
-x.owner_name,
-x.email,
-x.mobile,
-x.city
-
-]
-
-.join(" ")
-.toLowerCase()
-.includes(q)
-
-)
-
-);
-
-
 rows.innerHTML =
-filtered.map(x => `
+filtered
+.map(
+function(x){
+
+const statusClass =
+x.status === "approved"
+?
+"status-approved"
+:
+x.status === "pending"
+?
+"status-pending"
+:
+x.status === "suspended"
+?
+"status-suspended"
+:
+"status-rejected";
+
+
+return `
 
 <tr>
 
@@ -1070,6 +1899,12 @@ filtered.map(x => `
 <b>
 ${esc(x.company_name)}
 </b>
+
+<br>
+
+<span class="muted">
+${esc(x.area || "")}
+</span>
 
 </td>
 
@@ -1095,15 +1930,23 @@ ${esc(x.city)}
 
 
 <td>
-${esc(x.status)}
+
+<span class="status ${statusClass}">
+${esc(x.status || "unknown")}
+</span>
+
 </td>
 
 
 <td>
 
-${x.is_featured
-?"Yes"
-:"No"}
+${
+x.is_featured
+?
+"<b>Yes</b>"
+:
+"No"
+}
 
 </td>
 
@@ -1115,27 +1958,37 @@ ${x.is_featured
 
 <button
 class="btn small success"
-onclick="status('${x.id}','approved')"
+onclick="changeStatus('${x.id}','approved')"
 >
+
 Approve
+
 </button>
 
 
 <button
 class="btn small secondary"
-onclick="status('${x.id}','suspended')"
+onclick="changeStatus('${x.id}','suspended')"
 >
+
 Suspend
+
 </button>
 
 
 <button
 class="btn small"
-onclick="feature('${x.id}')"
+onclick="toggleFeatured('${x.id}')"
 >
-${x.is_featured
-?"Unfeature"
-:"Feature"}
+
+${
+x.is_featured
+?
+"Unfeature"
+:
+"Feature"
+}
+
 </button>
 
 
@@ -1143,15 +1996,19 @@ ${x.is_featured
 class="btn small blue"
 onclick="openPasswordModal('${x.id}')"
 >
+
 Reset Password
+
 </button>
 
 
 <button
 class="btn small danger"
-onclick="del('${x.id}')"
+onclick="deleteProfile('${x.id}')"
 >
+
 Delete
+
 </button>
 
 
@@ -1161,8 +2018,11 @@ Delete
 
 </tr>
 
-`).join("");
+`;
 
+}
+)
+.join("");
 
 }
 
@@ -1171,30 +2031,44 @@ Delete
    SEARCH
 ===================================================== */
 
-search.oninput =
-render;
-
-
-filter.onchange =
-render;
+document
+.getElementById("search")
+.addEventListener(
+"input",
+render
+);
 
 
 /* =====================================================
-   STATUS
+   FILTER
 ===================================================== */
 
-async function status(
+document
+.getElementById("filter")
+.addEventListener(
+"change",
+render
+);
+
+
+/* =====================================================
+   CHANGE STATUS
+===================================================== */
+
+async function changeStatus(
 id,
-s
+newStatus
 ){
 
-const r =
+try{
+
+const result =
 await sb
 
 .from("profiles")
 
 .update({
-status:s
+status:newStatus
 })
 
 .eq(
@@ -1203,17 +2077,33 @@ id
 );
 
 
-if(r.error){
+if(result.error){
 
-show(
-r.error.message,
-"error"
+throw new Error(
+result.error.message
 );
 
 }
-else{
 
-load();
+
+show(
+"Contractor status changed to " +
+newStatus +
+".",
+"success"
+);
+
+
+await load();
+
+}
+
+catch(error){
+
+show(
+error.message,
+"error"
+);
 
 }
 
@@ -1221,24 +2111,31 @@ load();
 
 
 /* =====================================================
-   FEATURE
+   FEATURE / UNFEATURE
 ===================================================== */
 
-async function feature(
+async function toggleFeatured(
 id
 ){
 
-const x =
+try{
+
+const contractor =
 data.find(
-v=>v.id===id
+x=>x.id === id
 );
 
 
-if(!x)
-return;
+if(!contractor){
+
+throw new Error(
+"Contractor not found."
+);
+
+}
 
 
-const r =
+const result =
 await sb
 
 .from("profiles")
@@ -1246,7 +2143,9 @@ await sb
 .update({
 
 is_featured:
-!x.is_featured
+!Boolean(
+contractor.is_featured
+)
 
 })
 
@@ -1256,17 +2155,35 @@ id
 );
 
 
-if(r.error){
+if(result.error){
 
-show(
-r.error.message,
-"error"
+throw new Error(
+result.error.message
 );
 
 }
-else{
 
-load();
+
+show(
+contractor.is_featured
+?
+"Contractor removed from featured."
+:
+"Contractor marked as featured.",
+"success"
+);
+
+
+await load();
+
+}
+
+catch(error){
+
+show(
+error.message,
+"error"
+);
 
 }
 
@@ -1277,22 +2194,44 @@ load();
    DELETE PROFILE
 ===================================================== */
 
-async function del(
+async function deleteProfile(
 id
 ){
 
-if(
-!confirm(
-"Delete contractor profile? Auth user is not deleted by this button."
-)
-){
+const contractor =
+data.find(
+x=>x.id === id
+);
 
+
+if(!contractor)
 return;
 
-}
+
+const name =
+contractor.company_name ||
+contractor.owner_name ||
+contractor.email ||
+"contractor";
 
 
-const r =
+const confirmed =
+confirm(
+"Delete contractor profile for " +
+name +
+"?\n\n" +
+"IMPORTANT: This deletes the profile only. " +
+"The Supabase Auth login may still exist."
+);
+
+
+if(!confirmed)
+return;
+
+
+try{
+
+const result =
 await sb
 
 .from("profiles")
@@ -1305,17 +2244,31 @@ id
 );
 
 
-if(r.error){
+if(result.error){
 
-show(
-r.error.message,
-"error"
+throw new Error(
+result.error.message
 );
 
 }
-else{
 
-load();
+
+show(
+"Contractor profile deleted.",
+"success"
+);
+
+
+await load();
+
+}
+
+catch(error){
+
+show(
+error.message,
+"error"
+);
 
 }
 
@@ -1323,7 +2276,7 @@ load();
 
 
 /* =====================================================
-   OPEN RESET PASSWORD
+   OPEN PASSWORD MODAL
 ===================================================== */
 
 function openPasswordModal(
@@ -1332,7 +2285,7 @@ id
 
 const contractor =
 data.find(
-x=>x.id===id
+x=>x.id === id
 );
 
 
@@ -1352,44 +2305,60 @@ selectedContractor =
 contractor;
 
 
-document.getElementById(
+document
+.getElementById(
 "resetCompany"
-).textContent =
+)
+.textContent =
 contractor.company_name ||
 contractor.owner_name ||
 "Contractor";
 
 
-document.getElementById(
+document
+.getElementById(
 "resetEmail"
-).textContent =
+)
+.textContent =
 contractor.email ||
 "";
 
 
-document.getElementById(
+document
+.getElementById(
 "newPassword"
-).value =
+)
+.value =
 "";
 
 
-document.getElementById(
+document
+.getElementById(
 "resetMsg"
-).style.display =
+)
+.style.display =
 "none";
 
 
-document.getElementById(
+document
+.getElementById(
 "passwordModal"
-).classList.add(
+)
+.classList.add(
 "show"
 );
 
 
 setTimeout(
-() => document.getElementById(
+function(){
+
+document
+.getElementById(
 "newPassword"
-).focus(),
+)
+.focus();
+
+},
 100
 );
 
@@ -1397,16 +2366,27 @@ setTimeout(
 
 
 /* =====================================================
-   CLOSE MODAL
+   CLOSE PASSWORD MODAL
 ===================================================== */
 
 function closePasswordModal(){
 
-document.getElementById(
+document
+.getElementById(
 "passwordModal"
-).classList.remove(
+)
+.classList.remove(
 "show"
 );
+
+
+document
+.getElementById(
+"newPassword"
+)
+.value =
+"";
+
 
 selectedContractor =
 null;
@@ -1415,18 +2395,21 @@ null;
 
 
 /* =====================================================
-   SHOW PASSWORD
+   TOGGLE PASSWORD
 ===================================================== */
 
 function togglePassword(){
 
 const input =
-document.getElementById(
+document
+.getElementById(
 "newPassword"
 );
 
+
 const button =
-document.querySelector(
+document
+.querySelector(
 ".show-password"
 );
 
@@ -1456,26 +2439,36 @@ button.textContent =
 
 
 /* =====================================================
-   RESET PASSWORD
+   RESET CONTRACTOR PASSWORD
 ===================================================== */
 
 async function resetPassword(){
 
 if(!selectedContractor){
 
+showResetMessage(
+"No contractor selected.",
+"error"
+);
+
 return;
 
 }
 
 
-const newPass =
-document.getElementById(
+const passwordInput =
+document
+.getElementById(
 "newPassword"
-).value;
+);
+
+
+const newPassword =
+passwordInput.value;
 
 
 if(
-newPass.length < 6
+newPassword.length < 6
 ){
 
 showResetMessage(
@@ -1489,7 +2482,8 @@ return;
 
 
 const button =
-document.getElementById(
+document
+.getElementById(
 "resetButton"
 );
 
@@ -1504,26 +2498,43 @@ button.textContent =
 try{
 
 
+/*
+ Get a fresh session.
+
+ This is important because an old
+ access token can cause:
+
+ "Unauthorized"
+*/
+
 const session =
-(
-await sb.auth.getSession()
-).data.session;
+await getAdminSession();
 
 
-if(!session){
+/*
+ Make sure the admin user is still
+ the logged-in user.
+*/
 
-throw Error(
-"Admin session expired. Please login again."
+if(
+!session.user ||
+!session.user.id
+){
+
+throw new Error(
+"Admin session is invalid. Please login again."
 );
 
 }
 
 
+/*
+ Call Edge Function.
+*/
+
 const response =
 await fetch(
-
-"https://aoicywtjwvqzzhmxkxvs.supabase.co/functions/v1/reset-contractor-password",
-
+RESET_FUNCTION_URL,
 {
 
 method:"POST",
@@ -1538,7 +2549,7 @@ headers:{
 session.access_token,
 
 "apikey":
-"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W"
+SUPABASE_KEY
 
 },
 
@@ -1548,20 +2559,44 @@ user_id:
 selectedContractor.id,
 
 password:
-newPass
+newPassword
 
 })
 
 });
 
 
-const result =
+/*
+ Read JSON response.
+*/
+
+let result;
+
+try{
+
+result =
 await response.json();
 
+}
+catch{
 
-if(!response.ok){
+throw new Error(
+"Invalid response from reset password function."
+);
 
-throw Error(
+}
+
+
+/*
+ Handle error.
+*/
+
+if(
+!response.ok ||
+result.success === false
+){
+
+throw new Error(
 result.error ||
 "Password reset failed."
 );
@@ -1569,20 +2604,34 @@ result.error ||
 }
 
 
+/*
+ SUCCESS
+*/
+
 showResetMessage(
 "Password changed successfully.",
 "success"
 );
 
 
-document.getElementById(
-"newPassword"
-).value =
+/*
+ Clear password.
+*/
+
+passwordInput.value =
 "";
 
 
+/*
+ Close after 1.5 seconds.
+*/
+
 setTimeout(
-closePasswordModal,
+function(){
+
+closePasswordModal();
+
+},
 1500
 );
 
@@ -1591,7 +2640,11 @@ closePasswordModal,
 
 catch(error){
 
-console.error(error);
+console.error(
+"RESET PASSWORD ERROR:",
+error
+);
+
 
 showResetMessage(
 error.message,
@@ -1614,101 +2667,75 @@ button.textContent =
 
 
 /* =====================================================
-   RESET MESSAGE
+   REFRESH
 ===================================================== */
 
-function showResetMessage(
-text,
-type
-){
+document
+.getElementById(
+"refreshBtn"
+)
+.addEventListener(
+"click",
+async function(){
 
-const box =
+const button =
 document.getElementById(
-"resetMsg"
+"refreshBtn"
 );
 
+button.disabled =
+true;
 
-box.textContent =
-text;
-
-
-box.className =
-"msg " +
-(
-type === "error"
-?
-"errormsg"
-:
-"successmsg"
-);
+button.textContent =
+"Refreshing...";
 
 
-box.style.display =
-"block";
+try{
+
+await load();
+
+}
+finally{
+
+button.disabled =
+false;
+
+button.textContent =
+"Refresh";
 
 }
 
-
-/* =====================================================
-   GENERAL MESSAGE
-===================================================== */
-
-function show(
-text,
-type
-){
-
-msg.textContent =
-text;
-
-
-msg.className =
-"msg " +
-(
-type === "error"
-?
-"errormsg"
-:
-"successmsg"
-);
-
-
-msg.style.display =
-"block";
-
-
-setTimeout(
-()=>{
-msg.style.display =
-"none";
-},
-4000
-);
-
-}
+});
 
 
 /* =====================================================
    LOGOUT
 ===================================================== */
 
-logout.onclick =
-async()=>{
+document
+.getElementById(
+"logout"
+)
+.addEventListener(
+"click",
+async function(){
 
 await sb.auth.signOut();
 
 location.href =
 "admin-login.html";
 
-};
+});
 
 
 /* =====================================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
+   CLICK OUTSIDE MODAL
 ===================================================== */
 
 document
-.getElementById("passwordModal")
+.getElementById(
+"passwordModal"
+)
 .addEventListener(
 "click",
 function(e){
@@ -1723,8 +2750,27 @@ closePasswordModal();
 
 });
 
+
+/* =====================================================
+   ESC KEY CLOSE MODAL
+===================================================== */
+
+document
+.addEventListener(
+"keydown",
+function(e){
+
+if(
+e.key === "Escape"
+){
+
+closePasswordModal();
+
+}
+
+});
+
 </script>
 
 </body>
 </html>
-```
