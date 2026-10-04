@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1"
+>
+
+<title>
+CIVILLINE Admin
+</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#f3f4f6;
+font-family:Arial,sans-serif;
+color:#172033;
+}
+
+header{
+background:#0b1220;
+color:white;
+padding:17px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.logo span{
+color:#ef4444;
+}
+
+main{
+max-width:1100px;
+margin:25px auto;
+padding:0 18px;
+}
+
+.panel{
+background:white;
+padding:22px;
+border-radius:12px;
+margin-bottom:20px;
+box-shadow:0 3px 12px #0001;
+}
+
+.login{
+max-width:450px;
+margin:70px auto;
+}
+
+.warning{
+padding:12px;
+background:#fff3cd;
+border-left:4px solid #f59e0b;
+margin-bottom:18px;
+}
+
+label{
+display:block;
+font-weight:bold;
+margin:13px 0 6px;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:11px;
+border:1px solid #d0d5dd;
+border-radius:7px;
+font:inherit;
+}
+
+textarea{
+min-height:130px;
+resize:vertical;
+}
+
+button{
+border:0;
+padding:10px 15px;
+border-radius:7px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.primary{
+background:#2563eb;
+color:white;
+}
+
+.danger{
+background:#dc2626;
+color:white;
+}
+
+.gray{
+background:#e5e7eb;
+}
+
+.hidden{
+display:none;
+}
+
+.message{
+margin-top:12px;
+padding:10px;
+background:#eef2ff;
+}
+
+.actions{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+}
+
+.check{
+display:flex;
+gap:8px;
+align-items:center;
+}
+
+.check input{
+width:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,
+td{
+padding:11px;
+border-bottom:1px solid #eee;
+text-align:left;
+vertical-align:top;
+}
+
+td img{
+width:90px;
+height:60px;
+object-fit:cover;
+border-radius:6px;
+}
+
+@media(max-width:700px){
+
+table{
+font-size:13px;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
+CIVIL<span>LINE</span> ADMIN
+</div>
+
+<button onclick="logout()">
+Logout
+</button>
+
+</header>
+
+
+<main>
+
+
+<!-- LOGIN -->
+
+<div
+id="loginPanel"
+class="panel login"
+>
+
+<h2>
+CIVILLINE Admin Login
+</h2>
+
+
+<div class="warning">
+
+<strong>
+Temporary Password:
+</strong>
+
+ADMIN1234
+
+</div>
+
+
+<label>
+Password
+</label>
+
+<input
+id="adminPassword"
+type="password"
+placeholder="Enter admin password"
+>
+
+
+<br><br>
+
+
+<button
+class="primary"
+onclick="login()"
+>
+
+Login
+
+</button>
+
+
+<div
+id="loginMessage"
+>
+</div>
+
+</div>
+
+
+<!-- ADMIN APP -->
+
+<div
+id="adminApp"
+class="hidden"
+>
+
+
+<!-- ADD / EDIT -->
+
+<div class="panel">
+
+
+<h2 id="formTitle">
+Add News
+</h2>
+
+
+<input
+id="newsId"
+type="hidden"
+>
+
+
+<label>
+Category
+</label>
+
+<select id="category">
+
+<option>
+Common News
+</option>
+
+<option>
+Protest
+</option>
+
+<option>
+Public Problem
+</option>
+
+</select>
+
+
+<label>
+News Title
+</label>
+
+<input
+id="title"
+placeholder="Enter news title"
+>
+
+
+<label>
+Location
+</label>
+
+<input
+id="location"
+placeholder="Baramati, Pune, Maharashtra"
+>
+
+
+<label>
+Short Description
+</label>
+
+<textarea
+id="excerpt"
+style="min-height:80px"
+placeholder="Short news description"
+></textarea>
+
+
+<label>
+Full News
+</label>
+
+<textarea
+id="content"
+placeholder="Write complete news..."
+></textarea>
+
+
+<label>
+Authority Response
+</label>
+
+<textarea
+id="authorityResponse"
+style="min-height:80px"
+placeholder="Optional"
+></textarea>
+
+
+<label>
+Status
+</label>
+
+<select id="status">
+
+<option>
+Pending
+</option>
+
+<option>
+In Progress
+</option>
+
+<option>
+Resolved
+</option>
+
+</select>
+
+
+<label>
+News Image
+</label>
+
+<input
+id="image"
+type="file"
+accept="image/*"
+>
+
+
+<label class="check">
+
+<input
+id="published"
+type="checkbox"
+>
+
+Publish this news
+
+</label>
+
+
+<br>
+
+
+<div class="actions">
+
+<button
+class="primary"
+onclick="saveNews()"
+>
+
+Save News
+
+</button>
+
+
+<button
+class="gray"
+onclick="clearForm()"
+>
+
+Clear
+
+</button>
+
+</div>
+
+
+<div
+id="message"
+class="message"
+>
+</div>
+
+
+</div>
+
+
+<!-- NEWS TABLE -->
+
+<div class="panel">
+
+<h2>
+News Management
+</h2>
+
+
+<div style="overflow:auto">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Image
+</th>
+
+<th>
+News
+</th>
+
+<th>
+Category
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Published
+</th>
+
+<th>
+Action
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody
+id="newsTable"
+>
+</tbody>
+
+
+</table>
+
+</div>
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<script>
+
+
+/* =====================================================
+SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://aoicywtjwvqzzhmxkxvs.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* =====================================================
+ADMIN PASSWORD
+===================================================== */
+
+const ADMIN_PASSWORD =
+"ADMIN1234";
+
+
+let newsList = [];
+
+
+/* =====================================================
+LOGIN
+===================================================== */
+
+function login(){
+
+const password =
+document.getElementById(
+"adminPassword"
+).value;
+
+
+if(password !== ADMIN_PASSWORD){
+
+document.getElementById(
+"loginMessage"
+).textContent =
+"Incorrect password.";
+
+return;
+
+}
+
+
+sessionStorage.setItem(
+"civilline_admin",
+"1"
+);
+
+
+showAdmin();
+
+}
+
+
+/* =====================================================
+SHOW ADMIN
+===================================================== */
+
+function showAdmin(){
+
+document
+.getElementById("loginPanel")
+.classList
+.add("hidden");
+
+
+document
+.getElementById("adminApp")
+.classList
+.remove("hidden");
+
+
+loadNews();
+
+}
+
+
+/* =====================================================
+LOGOUT
+===================================================== */
+
+function logout(){
+
+sessionStorage.removeItem(
+"civilline_admin"
+);
+
+
+document
+.getElementById("adminApp")
+.classList
+.add("hidden");
+
+
+document
+.getElementById("loginPanel")
+.classList
+.remove("hidden");
+
+
+document.getElementById(
+"adminPassword"
+).value = "";
+
+}
+
+
+/* =====================================================
+ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+const div =
+document.createElement("div");
+
+div.textContent =
+value || "";
+
+return div.innerHTML;
+
+}
+
+
+/* =====================================================
+LOAD NEWS
+===================================================== */
+
+async function loadNews(){
+
+const result =
+await db
+.from("news")
+.select("*")
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+if(result.error){
+
+document.getElementById(
+"message"
+).textContent =
+result.error.message;
+
+return;
+
+}
+
+
+newsList =
+result.data || [];
+
+
+const table =
+document.getElementById(
+"newsTable"
+);
+
+
+table.innerHTML =
+newsList.map(news => `
+
+<tr>
+
+<td>
+
+${
+news.image_url
+?
+`
+<img
+src="${escapeHTML(news.image_url)}"
+>
+`
+:
+""
+}
+
+</td>
+
+
+<td>
+
+<strong>
+${escapeHTML(news.title)}
+</strong>
+
+<br>
+
+<small>
+${escapeHTML(news.location || "")}
+</small>
+
+</td>
+
+
+<td>
+
+${escapeHTML(news.category)}
+
+</td>
+
+
+<td>
+
+${escapeHTML(news.status)}
+
+</td>
+
+
+<td>
+
+${
+news.published
+?
+"Yes"
+:
+"Draft"
+}
+
+</td>
+
+
+<td>
+
+<div class="actions">
+
+<button
+class="gray"
+onclick="editNews('${news.id}')"
+>
+
+Edit
+
+</button>
+
+
+<button
+class="danger"
+onclick="deleteNews('${news.id}')"
+>
+
+Delete
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+
+/* =====================================================
+SAVE NEWS
+===================================================== */
+
+async function saveNews(){
+
+const id =
+document.getElementById(
+"newsId"
+).value;
+
+
+const title =
+document.getElementById(
+"title"
+).value
+.trim();
+
+
+const content =
+document.getElementById(
+"content"
+).value
+.trim();
+
+
+if(!title || !content){
+
+document.getElementById(
+"message"
+).textContent =
+"Title and full news are required.";
+
+return;
+
+}
+
+
+const file =
+document.getElementById(
+"image"
+).files[0];
+
+
+let imageUrl =
+null;
+
+
+let imagePath =
+null;
+
+
+/* UPLOAD IMAGE */
+
+if(file){
+
+const extension =
+(
+file.name
+.split(".")
+.pop()
+||
+"jpg"
+)
+.toLowerCase();
+
+
+imagePath =
+crypto.randomUUID()
++
+"."
++
+extension;
+
+
+const upload =
+await db
+.storage
+.from("news-images")
+.upload(
+imagePath,
+file,
+{
+contentType:file.type
+}
+);
+
+
+if(upload.error){
+
+document.getElementById(
+"message"
+).textContent =
+"Image upload failed: "
++
+upload.error.message;
+
+return;
+
+}
+
+
+imageUrl =
+db
+.storage
+.from("news-images")
+.getPublicUrl(
+imagePath
+)
+.data
+.publicUrl;
+
+}
+
+
+/* DATA */
+
+const data = {
+
+title:title,
+
+category:
+document.getElementById(
+"category"
+).value,
+
+location:
+document.getElementById(
+"location"
+).value
+.trim(),
+
+excerpt:
+document.getElementById(
+"excerpt"
+).value
+.trim(),
+
+content:content,
+
+authority_response:
+document.getElementById(
+"authorityResponse"
+).value
+.trim(),
+
+status:
+document.getElementById(
+"status"
+).value,
+
+published:
+document.getElementById(
+"published"
+).checked
+
+};
+
+
+if(file){
+
+data.image_url =
+imageUrl;
+
+data.image_path =
+imagePath;
+
+}
+
+
+/* INSERT */
+
+let result;
+
+
+if(id){
+
+result =
+await db
+.from("news")
+.update(data)
+.eq("id",id);
+
+}
+else{
+
+result =
+await db
+.from("news")
+.insert(data);
+
+}
+
+
+if(result.error){
+
+document.getElementById(
+"message"
+).textContent =
+result.error.message;
+
+return;
+
+}
+
+
+document.getElementById(
+"message"
+).textContent =
+"News saved successfully.";
+
+
+clearForm();
+
+loadNews();
+
+}
+
+
+/* =====================================================
+EDIT
+===================================================== */
+
+function editNews(id){
+
+const news =
+newsList.find(
+item => item.id === id
+);
+
+
+if(!news){
+return;
+}
+
+
+document.getElementById(
+"newsId"
+).value =
+news.id;
+
+
+document.getElementById(
+"category"
+).value =
+news.category;
+
+
+document.getElementById(
+"title"
+).value =
+news.title;
+
+
+document.getElementById(
+"location"
+).value =
+news.location || "";
+
+
+document.getElementById(
+"excerpt"
+).value =
+news.excerpt || "";
+
+
+document.getElementById(
+"content"
+).value =
+news.content;
+
+
+document.getElementById(
+"authorityResponse"
+).value =
+news.authority_response || "";
+
+
+document.getElementById(
+"status"
+).value =
+news.status;
+
+
+document.getElementById(
+"published"
+).checked =
+news.published;
+
+
+document.getElementById(
+"formTitle"
+).textContent =
+"Edit News";
+
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =====================================================
+DELETE
+===================================================== */
+
+async function deleteNews(id){
+
+if(
+!confirm(
+"Delete this news?"
+)
+){
+
+return;
+
+}
+
+
+const news =
+newsList.find(
+item => item.id === id
+);
+
+
+const result =
+await db
+.from("news")
+.delete()
+.eq("id",id);
+
+
+if(result.error){
+
+document.getElementById(
+"message"
+).textContent =
+result.error.message;
+
+return;
+
+}
+
+
+/* DELETE IMAGE */
+
+if(news && news.image_path){
+
+await db
+.storage
+.from("news-images")
+.remove([
+news.image_path
+]);
+
+}
+
+
+loadNews();
+
+}
+
+
+/* =====================================================
+CLEAR FORM
+===================================================== */
+
+function clearForm(){
+
+document.getElementById(
+"newsId"
+).value =
+"";
+
+
+document.getElementById(
+"category"
+).value =
+"Common News";
+
+
+document.getElementById(
+"title"
+).value =
+"";
+
+
+document.getElementById(
+"location"
+).value =
+"";
+
+
+document.getElementById(
+"excerpt"
+).value =
+"";
+
+
+document.getElementById(
+"content"
+).value =
+"";
+
+
+document.getElementById(
+"authorityResponse"
+).value =
+"";
+
+
+document.getElementById(
+"status"
+).value =
+"Pending";
+
+
+document.getElementById(
+"published"
+).checked =
+false;
+
+
+document.getElementById(
+"image"
+).value =
+"";
+
+
+document.getElementById(
+"formTitle"
+).textContent =
+"Add News";
+
+}
+
+
+/* =====================================================
+AUTO LOGIN FOR SAME BROWSER
+===================================================== */
+
+if(
+sessionStorage.getItem(
+"civilline_admin"
+)
+===
+"1"
+){
+
+showAdmin();
+
+}
+
+</script>
+
+</body>
+</html>
