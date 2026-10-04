@@ -18,18 +18,18 @@
 body{
   font-family:Arial,Helvetica,sans-serif;
   background:#f4f6f8;
-  color:#222;
+  color:#111827;
 }
 
-/* ================= HEADER ================= */
-
+/* HEADER */
 header{
-  background:#111827;
-  color:#fff;
-  padding:18px 20px;
   position:sticky;
   top:0;
   z-index:1000;
+  background:#111827;
+  color:white;
+  padding:14px 20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
 }
 
 .header-inner{
@@ -38,35 +38,42 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:20px;
 }
 
 .logo{
-  font-size:28px;
+  font-size:26px;
   font-weight:800;
   letter-spacing:1px;
 }
 
-.logo span{
-  color:#f59e0b;
-}
-
 .tagline{
-  font-size:13px;
-  color:#d1d5db;
+  font-size:12px;
+  color:#cbd5e1;
   margin-top:3px;
 }
 
+.search-box{
+  width:280px;
+}
 
-/* ================= BREAKING NEWS ================= */
+.search-box input{
+  width:100%;
+  padding:10px 14px;
+  border:none;
+  outline:none;
+  border-radius:8px;
+  font-size:14px;
+}
 
+/* BREAKING NEWS */
 .breaking{
   background:#dc2626;
-  color:#fff;
+  color:white;
   height:42px;
   display:flex;
   align-items:center;
   overflow:hidden;
-  position:relative;
 }
 
 .breaking-title{
@@ -75,88 +82,70 @@ header{
   display:flex;
   align-items:center;
   padding:0 18px;
-  font-weight:800;
+  font-weight:bold;
+  font-size:13px;
   z-index:2;
-  flex-shrink:0;
+  white-space:nowrap;
 }
 
 .breaking-window{
   overflow:hidden;
   flex:1;
-  height:100%;
-  display:flex;
-  align-items:center;
+  position:relative;
 }
 
 .breaking-track{
-  display:inline-flex;
-  align-items:center;
-  white-space:nowrap;
+  display:flex;
+  width:max-content;
   animation:breakingMove 35s linear infinite;
-  will-change:transform;
 }
 
 .breaking-item{
-  display:inline-flex;
+  display:flex;
   align-items:center;
+  white-space:nowrap;
   margin-right:45px;
   font-size:14px;
-  font-weight:600;
+  cursor:pointer;
 }
 
 .breaking-dot{
   width:7px;
   height:7px;
-  background:#fff;
+  background:white;
   border-radius:50%;
-  margin-right:10px;
-  flex-shrink:0;
+  margin-right:8px;
 }
 
 @keyframes breakingMove{
-  from{
+  0%{
     transform:translateX(100%);
   }
-
-  to{
+  100%{
     transform:translateX(-100%);
   }
 }
 
-.breaking:hover .breaking-track{
-  animation-play-state:paused;
-}
-
-
-/* ================= SPONSORED ================= */
-
+/* SPONSORED */
 .sponsor{
-  max-width:1200px;
-  margin:15px auto 0;
-  padding:0 15px;
+  background:white;
+  border-bottom:1px solid #e5e7eb;
+  padding:15px 20px;
 }
 
-.sponsor-inner,
-.sponsor-modal{
+.sponsor-inner{
+  max-width:1200px;
+  margin:auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px;
-  background:#fffbeb;
-  border:1px solid #fcd34d;
-  border-radius:12px;
-  padding:16px;
-}
-
-.sponsor-modal{
-  margin-top:25px;
+  gap:15px;
 }
 
 .sponsor-left{
   display:flex;
   align-items:center;
-  gap:18px;
-  min-width:0;
+  gap:15px;
 }
 
 .sponsor-img{
@@ -164,342 +153,329 @@ header{
   height:150px;
   object-fit:cover;
   border-radius:10px;
-  background:#fff;
-  border:1px solid #fcd34d;
-  flex-shrink:0;
   display:block;
 }
 
 .sponsor-label{
   font-size:11px;
-  font-weight:bold;
-  color:#92400e;
+  color:#6b7280;
   text-transform:uppercase;
-  letter-spacing:.5px;
+  letter-spacing:.8px;
+  margin-bottom:4px;
 }
 
 .sponsor-text{
-  font-size:16px;
-  margin-top:5px;
-  line-height:1.4;
+  font-size:17px;
+  font-weight:bold;
+  color:#111827;
 }
 
 .ad-countdown{
-  margin-top:8px;
-  font-size:13px;
-  font-weight:bold;
-  color:#b91c1c;
-}
-
-.sponsor-btn{
-  background:#f59e0b;
-  color:#111827;
-  font-weight:bold;
-  text-decoration:none;
-  padding:12px 22px;
-  border-radius:8px;
-  white-space:nowrap;
-  display:inline-block;
-  transition:.2s;
-}
-
-.sponsor-btn:hover{
-  background:#d97706;
-  transform:translateY(-1px);
-}
-
-
-/* ================= NAV ================= */
-
-.nav{
-  background:#fff;
-  border-bottom:1px solid #ddd;
-  padding:12px 15px;
-  position:sticky;
-  top:73px;
-  z-index:900;
-}
-
-.nav-inner{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-}
-
-.category-btn{
-  border:1px solid #ddd;
-  background:#fff;
-  padding:9px 16px;
-  border-radius:20px;
-  cursor:pointer;
-  white-space:nowrap;
+  font-size:12px;
+  color:#dc2626;
+  margin-top:5px;
   font-weight:600;
 }
 
-.category-btn:hover,
-.category-btn.active{
+.sponsor-btn{
   background:#111827;
-  color:#fff;
+  color:white;
+  text-decoration:none;
+  padding:11px 18px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:bold;
+  white-space:nowrap;
 }
 
+.sponsor-btn:hover{
+  background:#374151;
+}
 
-/* ================= MAIN ================= */
-
+/* MAIN */
 .container{
   max-width:1200px;
   margin:25px auto;
-  padding:0 15px;
+  padding:0 20px;
 }
 
-.search-box{
-  margin-bottom:25px;
+/* CATEGORIES */
+.categories{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
 }
 
-.search-box input{
-  width:100%;
-  padding:15px 18px;
-  border:1px solid #ddd;
-  border-radius:10px;
-  font-size:16px;
-  outline:none;
+.category-btn{
+  border:1px solid #d1d5db;
+  background:white;
+  padding:9px 15px;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:13px;
 }
 
-.search-box input:focus{
+.category-btn.active{
+  background:#111827;
+  color:white;
   border-color:#111827;
 }
 
-
-/* ================= NEWS GRID ================= */
-
+/* NEWS GRID */
 .news-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:22px;
+  gap:20px;
 }
 
 .news-card{
-  background:#fff;
+  background:white;
   border-radius:12px;
   overflow:hidden;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
   cursor:pointer;
   transition:.2s;
 }
 
 .news-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 8px 20px rgba(0,0,0,.12);
+  transform:translateY(-3px);
+  box-shadow:0 5px 16px rgba(0,0,0,.12);
 }
 
 .news-image{
   width:100%;
   height:210px;
   object-fit:cover;
-  display:block;
   background:#e5e7eb;
 }
 
 .news-content{
-  padding:17px;
+  padding:16px;
 }
 
-.category{
+.news-category{
   display:inline-block;
-  padding:5px 9px;
-  background:#eef2ff;
-  color:#3730a3;
-  border-radius:5px;
-  font-size:12px;
+  font-size:11px;
   font-weight:bold;
-  margin-bottom:9px;
-}
-
-.news-title{
-  font-size:20px;
-  line-height:1.3;
+  color:#2563eb;
+  text-transform:uppercase;
   margin-bottom:8px;
 }
 
-.news-meta{
-  color:#6b7280;
-  font-size:13px;
-  margin-bottom:10px;
+.news-title{
+  font-size:18px;
+  line-height:1.35;
+  margin-bottom:8px;
+  color:#111827;
 }
 
 .news-excerpt{
-  color:#4b5563;
+  color:#6b7280;
+  font-size:13px;
   line-height:1.5;
-  font-size:14px;
 }
 
-
-/* ================= STATUS ================= */
-
-.status{
-  display:inline-block;
+.news-meta{
   margin-top:12px;
-  padding:5px 9px;
-  border-radius:5px;
-  font-size:12px;
-  font-weight:bold;
+  font-size:11px;
+  color:#9ca3af;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
 }
 
-.status.Pending{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.status.In-Progress{
-  background:#dbeafe;
-  color:#1e40af;
-}
-
-.status.Resolved{
-  background:#dcfce7;
-  color:#166534;
-}
-
-
-/* ================= LOADING ================= */
-
-.loading{
-  text-align:center;
-  padding:50px;
-  color:#666;
-  grid-column:1/-1;
-}
-
+/* EMPTY */
 .empty{
-  grid-column:1/-1;
+  background:white;
+  padding:40px;
   text-align:center;
-  background:#fff;
-  padding:50px;
-  border-radius:12px;
+  border-radius:10px;
+  color:#6b7280;
 }
 
-
-/* ================= MODAL ================= */
-
+/* MODAL */
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.75);
-  z-index:2000;
+  background:rgba(0,0,0,.7);
+  z-index:3000;
   overflow-y:auto;
   padding:30px 15px;
-}
-
-.modal.show{
-  display:block;
 }
 
 .modal-box{
   max-width:850px;
   margin:auto;
-  background:#fff;
+  background:white;
   border-radius:14px;
   overflow:hidden;
   position:relative;
+}
+
+.modal-close{
+  position:absolute;
+  top:12px;
+  right:15px;
+  width:36px;
+  height:36px;
+  border:none;
+  border-radius:50%;
+  background:rgba(0,0,0,.65);
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+  z-index:5;
 }
 
 .modal-image{
   width:100%;
   max-height:450px;
   object-fit:cover;
-  display:block;
+  background:#e5e7eb;
 }
 
 .modal-content{
   padding:25px;
 }
 
-.close{
-  position:absolute;
-  right:15px;
-  top:15px;
-  width:38px;
-  height:38px;
-  border:none;
-  border-radius:50%;
-  background:rgba(0,0,0,.65);
-  color:#fff;
-  font-size:24px;
-  cursor:pointer;
-  z-index:10;
+.modal-category{
+  font-size:12px;
+  color:#2563eb;
+  font-weight:bold;
+  text-transform:uppercase;
+  margin-bottom:8px;
 }
 
 .modal-title{
   font-size:30px;
-  line-height:1.25;
-  margin:12px 0;
+  line-height:1.2;
+  margin-bottom:12px;
 }
 
 .modal-meta{
+  font-size:12px;
   color:#6b7280;
   margin-bottom:20px;
 }
 
-.modal-text{
-  line-height:1.8;
+.modal-body{
+  font-size:15px;
+  line-height:1.7;
+  color:#374151;
   white-space:pre-line;
 }
 
 .authority{
-  margin-top:25px;
-  padding:18px;
+  margin-top:20px;
+  padding:15px;
   background:#f3f4f6;
-  border-left:4px solid #111827;
+  border-left:4px solid #2563eb;
+  border-radius:6px;
 }
 
-.authority h3{
-  margin-bottom:8px;
-}
-
-
-/* ================= FOOTER ================= */
-
-footer{
-  margin-top:50px;
-  background:#111827;
-  color:#d1d5db;
-  padding:30px 15px;
-  text-align:center;
-}
-
-.footer-logo{
-  font-size:24px;
+.authority-title{
   font-weight:bold;
-  color:#fff;
-  margin-bottom:8px;
+  margin-bottom:5px;
 }
 
+/* MODAL SPONSOR */
+.modal-sponsor{
+  margin-top:25px;
+  padding-top:20px;
+  border-top:1px solid #e5e7eb;
+}
 
-/* ================= RESPONSIVE ================= */
+.modal-sponsor-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
 
-@media(max-width:900px){
+.modal-sponsor-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.modal-sponsor-img{
+  width:90px;
+  height:90px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+/* FOOTER */
+footer{
+  background:#111827;
+  color:#cbd5e1;
+  margin-top:40px;
+  padding:25px 20px;
+  text-align:center;
+  font-size:12px;
+}
+
+.footer-title{
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+.footer-disclosure{
+  margin-top:8px;
+  color:#94a3b8;
+}
+
+/* LOADING */
+.loading{
+  grid-column:1/-1;
+  text-align:center;
+  padding:50px;
+  color:#6b7280;
+}
+
+/* MOBILE */
+@media(max-width:850px){
+
+  .header-inner{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search-box{
+    width:100%;
+  }
 
   .news-grid{
     grid-template-columns:repeat(2,1fr);
   }
 
-}
+  .sponsor-img{
+    width:120px;
+    height:120px;
+  }
 
+  .sponsor-inner{
+    align-items:center;
+  }
+}
 
 @media(max-width:600px){
 
-  .header-inner{
-    display:block;
+  header{
+    padding:12px 15px;
   }
 
-  .tagline{
-    margin-top:5px;
+  .logo{
+    font-size:23px;
   }
 
-  .nav{
-    top:84px;
+  .container{
+    padding:0 12px;
+    margin-top:18px;
   }
 
   .news-grid{
@@ -510,23 +486,26 @@ footer{
     height:220px;
   }
 
-  .modal-title{
-    font-size:24px;
+  .breaking-title{
+    padding:0 10px;
+    font-size:11px;
   }
 
-  .sponsor-inner,
-  .sponsor-modal{
-    flex-direction:column;
-    align-items:stretch;
+  .breaking-item{
+    font-size:12px;
   }
 
-  .sponsor-left{
-    align-items:flex-start;
+  .sponsor{
+    padding:12px;
+  }
+
+  .sponsor-inner{
+    gap:10px;
   }
 
   .sponsor-img{
-    width:120px;
-    height:120px;
+    width:100px;
+    height:100px;
   }
 
   .sponsor-text{
@@ -534,54 +513,61 @@ footer{
   }
 
   .sponsor-btn{
-    width:100%;
-    text-align:center;
-    padding:12px;
-  }
-
-  .breaking-title{
-    padding:0 12px;
+    padding:9px 12px;
     font-size:12px;
   }
 
-  .breaking-item{
-    font-size:13px;
-    margin-right:30px;
+  .modal{
+    padding:10px;
   }
 
+  .modal-content{
+    padding:18px;
+  }
+
+  .modal-title{
+    font-size:24px;
+  }
+
+  .modal-sponsor-inner{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .modal-sponsor .sponsor-btn{
+    text-align:center;
+  }
 }
 </style>
 </head>
 
-
 <body>
 
-
-<!-- ================= HEADER ================= -->
-
+<!-- HEADER -->
 <header>
-
   <div class="header-inner">
 
     <div>
-
-      <div class="logo">
-        CIVIL<span>LINE</span>
-      </div>
-
+      <div class="logo">CIVILLINE</div>
       <div class="tagline">
         Local News • Public Problems • Protest
       </div>
+    </div>
 
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search news..."
+        oninput="filterNews()"
+      >
     </div>
 
   </div>
-
 </header>
 
 
-<!-- ================= DYNAMIC BREAKING NEWS ================= -->
-
+<!-- BREAKING NEWS -->
 <div class="breaking">
 
   <div class="breaking-title">
@@ -590,10 +576,7 @@ footer{
 
   <div class="breaking-window">
 
-    <div
-      id="breakingTrack"
-      class="breaking-track"
-    >
+    <div id="breakingTrack" class="breaking-track">
 
       <div class="breaking-item">
         <span class="breaking-dot"></span>
@@ -607,8 +590,7 @@ footer{
 </div>
 
 
-<!-- ================= SPONSORED AD ================= -->
-
+<!-- SPONSORED -->
 <div class="sponsor">
 
   <div class="sponsor-inner">
@@ -629,7 +611,6 @@ footer{
 
       </a>
 
-
       <div>
 
         <div class="sponsor-label">
@@ -644,7 +625,7 @@ footer{
           id="adCountdown"
           class="ad-countdown"
         >
-          Redirecting in 2 seconds...
+          Redirecting in 5 seconds...
         </div>
 
       </div>
@@ -666,11 +647,11 @@ footer{
 </div>
 
 
-<!-- ================= NAVIGATION ================= -->
+<!-- MAIN -->
+<main class="container">
 
-<div class="nav">
-
-  <div class="nav-inner">
+  <!-- CATEGORY FILTER -->
+  <div class="categories">
 
     <button
       class="category-btn active"
@@ -702,32 +683,15 @@ footer{
 
   </div>
 
-</div>
 
-
-<!-- ================= MAIN ================= -->
-
-<main class="container">
-
-  <div class="search-box">
-
-    <input
-      type="search"
-      id="searchInput"
-      placeholder="Search news, location or title..."
-      oninput="filterNews()"
-    >
-
-  </div>
-
-
+  <!-- NEWS -->
   <div
     id="newsGrid"
     class="news-grid"
   >
 
     <div class="loading">
-      Loading news...
+      Loading latest news...
     </div>
 
   </div>
@@ -735,8 +699,7 @@ footer{
 </main>
 
 
-<!-- ================= NEWS MODAL ================= -->
-
+<!-- NEWS MODAL -->
 <div
   id="newsModal"
   class="modal"
@@ -746,7 +709,7 @@ footer{
   <div class="modal-box">
 
     <button
-      class="close"
+      class="modal-close"
       onclick="closeModal()"
     >
       ×
@@ -765,7 +728,7 @@ footer{
 
       <div
         id="modalCategory"
-        class="category"
+        class="modal-category"
       ></div>
 
 
@@ -782,79 +745,64 @@ footer{
 
 
       <div
-        id="modalStatus"
-        class="status"
+        id="modalBody"
+        class="modal-body"
       ></div>
 
-
-      <div
-        id="modalText"
-        class="modal-text"
-        style="margin-top:20px;"
-      ></div>
-
-
-      <!-- MODAL SPONSORED AD -->
-
-      <div class="sponsor-modal">
-
-        <div class="sponsor-left">
-
-          <a
-            href="https://link.amazon/B0ieu2BTI"
-            target="_blank"
-            rel="sponsored noopener"
-          >
-
-            <img
-              class="sponsor-img"
-              src="https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg"
-              alt="Sponsored offer"
-            >
-
-          </a>
-
-
-          <div>
-
-            <div class="sponsor-label">
-              Sponsored
-            </div>
-
-            <div class="sponsor-text">
-              Recommended offer
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <a
-          class="sponsor-btn"
-          href="https://link.amazon/B0ieu2BTI"
-          target="_blank"
-          rel="sponsored noopener"
-        >
-          Chat Now
-        </a>
-
-      </div>
-
-
-      <!-- AUTHORITY RESPONSE -->
 
       <div
         id="authorityBox"
         class="authority"
-        style="display:none;"
+        style="display:none"
       >
 
-        <h3>
+        <div class="authority-title">
           Authority Response
-        </h3>
+        </div>
 
-        <div id="authorityText"></div>
+        <div id="modalAuthority"></div>
+
+      </div>
+
+
+      <!-- MODAL SPONSORED -->
+      <div class="modal-sponsor">
+
+        <div class="modal-sponsor-inner">
+
+          <div class="modal-sponsor-left">
+
+            <img
+              class="modal-sponsor-img"
+              src="https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg"
+              alt="Sponsored offer"
+            >
+
+            <div>
+
+              <div class="sponsor-label">
+                Sponsored
+              </div>
+
+              <div class="sponsor-text">
+                🔥 Featured offer
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <a
+            class="sponsor-btn"
+            href="https://link.amazon/B0ieu2BTI"
+            target="_blank"
+            rel="sponsored noopener"
+          >
+            Chat Now
+          </a>
+
+        </div>
 
       </div>
 
@@ -865,11 +813,10 @@ footer{
 </div>
 
 
-<!-- ================= FOOTER ================= -->
-
+<!-- FOOTER -->
 <footer>
 
-  <div class="footer-logo">
+  <div class="footer-title">
     CIVILLINE
   </div>
 
@@ -877,16 +824,12 @@ footer{
     Local News • Public Problems • Protest
   </div>
 
-  <div
-    style="margin-top:10px;font-size:12px;"
-  >
-    As an Amazon Associate I earn from qualifying purchases.
+  <div class="footer-disclosure">
+    As an Amazon Associate, CIVILLINE may earn from qualifying purchases.
   </div>
 
-  <div
-    style="margin-top:10px;font-size:13px;"
-  >
-    © 2026 CIVILLINE. All Rights Reserved.
+  <div class="footer-disclosure">
+    © 2026 CIVILLINE. All rights reserved.
   </div>
 
 </footer>
@@ -894,85 +837,72 @@ footer{
 
 <script>
 
-/* ==========================================
+/* =========================================
    SUPABASE CONFIGURATION
-========================================== */
+========================================= */
 
 const SUPABASE_URL =
-"https://aoicywtjwvqzzhmxkxvs.supabase.co";
+  "https://aoicywtjwvqzzhmxkxvs.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+  "sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
 
 const db =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* ==========================================
-   AFFILIATE CONFIGURATION
-========================================== */
+/* =========================================
+   SPONSORED CONFIGURATION
+========================================= */
 
 const AFFILIATE_LINK =
-"https://link.amazon/B0ieu2BTI";
+  "https://link.amazon/B0ieu2BTI";
 
 const SPONSOR_IMAGE =
-"https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg";
+  "https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg";
 
 
-/* ==========================================
+/* =========================================
    GLOBAL VARIABLES
-========================================== */
+========================================= */
 
 let allNews = [];
 
 let currentCategory = "All";
 
 
-/* ==========================================
-   SPONSORED AD - 2 SECOND REDIRECT
-========================================== */
+/* =========================================
+   5 SECOND AUTO REDIRECT
+========================================= */
 
 (function(){
 
-  let seconds = 2;
+  let seconds = 5;
 
   const countdown =
-    document.getElementById(
-      "adCountdown"
-    );
-
+    document.getElementById("adCountdown");
 
   const timer =
     setInterval(function(){
 
       seconds--;
 
-
       if(seconds > 0){
 
         countdown.textContent =
           "Redirecting in " +
           seconds +
-          " second...";
+          " seconds...";
 
-      }
-
-      else{
+      }else{
 
         clearInterval(timer);
 
-
         countdown.textContent =
           "Opening sponsored offer...";
-
-
-        /*
-         * Redirect current page
-         * to affiliate destination.
-         */
 
         window.location.href =
           AFFILIATE_LINK;
@@ -984,105 +914,74 @@ let currentCategory = "All";
 })();
 
 
-/* ==========================================
+/* =========================================
    LOAD NEWS
-========================================== */
+========================================= */
 
 async function loadNews(){
 
   const grid =
-    document.getElementById(
-      "newsGrid"
-    );
-
+    document.getElementById("newsGrid");
 
   grid.innerHTML =
-    `
-    <div class="loading">
-      Loading news...
-    </div>
+    '<div class="loading">Loading latest news...</div>';
+
+
+  const {
+    data,
+    error
+  } = await db
+    .from("news")
+    .select(`
+      id,
+      title,
+      category,
+      location,
+      excerpt,
+      content,
+      authority_response,
+      status,
+      image_url,
+      created_at
+    `)
+    .eq("published",true)
+    .order("created_at",{
+      ascending:false
+    });
+
+
+  if(error){
+
+    console.error(
+      "Supabase error:",
+      error
+    );
+
+    grid.innerHTML = `
+      <div class="empty">
+        Unable to load news.
+        <br><br>
+        Please try again later.
+      </div>
     `;
 
-
-  try{
-
-    const { data, error } =
-      await db
-      .from("news")
-      .select(`
-        id,
-        title,
-        category,
-        location,
-        excerpt,
-        content,
-        authority_response,
-        status,
-        image_url,
-        created_at
-      `)
-      .eq(
-        "published",
-        true
-      )
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
-
-    if(error){
-
-      console.error(
-        "Supabase error:",
-        error
-      );
-
-
-      grid.innerHTML =
-        `
-        <div class="empty">
-          Unable to load news.
-        </div>
-        `;
-
-      return;
-
-    }
-
-
-    allNews =
-      data || [];
-
-
-    updateBreakingNews();
-
-    filterNews();
-
+    return;
   }
 
-  catch(error){
 
-    console.error(error);
+  allNews = data || [];
 
 
-    grid.innerHTML =
-      `
-      <div class="empty">
-        Unable to connect to CIVILLINE.
-      </div>
-      `;
+  updateBreakingNews();
 
-  }
+  renderNews();
 
 }
 
 
-/* ==========================================
-   DYNAMIC BREAKING NEWS
-========================================== */
+/* =========================================
+   BREAKING NEWS
+========================================= */
 
 function updateBreakingNews(){
 
@@ -1092,241 +991,186 @@ function updateBreakingNews(){
     );
 
 
-  if(!track){
+  if(!allNews.length){
+
+    track.innerHTML = `
+      <div class="breaking-item">
+        <span class="breaking-dot"></span>
+        No breaking news available
+      </div>
+    `;
+
     return;
   }
 
 
-  if(!allNews.length){
+  const latest =
+    allNews.slice(0,10);
 
-    track.innerHTML =
-      `
-      <div class="breaking-item">
+
+  let html = "";
+
+
+  latest.forEach(function(news){
+
+    html += `
+      <div
+        class="breaking-item"
+        onclick="openNews('${escapeAttribute(news.id)}')"
+      >
 
         <span class="breaking-dot"></span>
 
-        No breaking news available
+        ${escapeHtml(news.title)}
 
       </div>
-      `;
+    `;
 
-    return;
-
-  }
+  });
 
 
   /*
-   * Latest 10 published articles
-   */
-
-  const breakingNews =
-    allNews.slice(
-      0,
-      10
-    );
-
-
-  /*
-   * Generate ticker items
-   */
-
-  const items =
-    breakingNews
-    .map(item => {
-
-      const category =
-        item.category
-        ?
-        ` [${item.category}]`
-        :
-        "";
-
-
-      return `
-        <div
-          class="breaking-item"
-          onclick="openNews('${escapeAttribute(item.id)}')"
-          title="Open news"
-        >
-
-          <span class="breaking-dot"></span>
-
-          ${escapeHtml(
-            item.title
-          )}
-
-          ${escapeHtml(
-            category
-          )}
-
-        </div>
-      `;
-
-    })
-    .join("");
-
-
-  /*
-   * Duplicate for continuous scrolling
-   */
+    Duplicate items for smoother
+    continuous ticker movement.
+  */
 
   track.innerHTML =
-    items + items;
+    html + html;
 
 }
 
 
-/* ==========================================
+/* =========================================
    RENDER NEWS
-========================================== */
+========================================= */
 
-function renderNews(news){
+function renderNews(){
 
   const grid =
-    document.getElementById(
-      "newsGrid"
-    );
+    document.getElementById("newsGrid");
+
+  const search =
+    document
+      .getElementById("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
 
 
-  if(!news.length){
+  let filtered =
+    allNews.filter(function(news){
 
-    grid.innerHTML =
-      `
+      const categoryMatch =
+        currentCategory === "All" ||
+        news.category === currentCategory;
+
+
+      const searchText =
+        (
+          (news.title || "") +
+          " " +
+          (news.excerpt || "") +
+          " " +
+          (news.location || "") +
+          " " +
+          (news.category || "")
+        ).toLowerCase();
+
+
+      const searchMatch =
+        !search ||
+        searchText.includes(search);
+
+
+      return (
+        categoryMatch &&
+        searchMatch
+      );
+
+    });
+
+
+  if(!filtered.length){
+
+    grid.innerHTML = `
       <div class="empty">
         No news found.
       </div>
-      `;
+    `;
 
     return;
-
   }
 
 
   grid.innerHTML =
-    news
-    .map(item => {
+    filtered
+      .map(function(news){
 
-      const date =
-        formatDate(
-          item.created_at
-        );
-
-
-      const image =
-        item.image_url
-        ?
-        item.image_url
-        :
-        "";
+        const image =
+          news.image_url ||
+          "https://via.placeholder.com/800x500?text=CIVILLINE";
 
 
-      const statusClass =
-        (
-          item.status ||
-          "Pending"
-        )
-        .replace(
-          /\s+/g,
-          "-"
-        );
+        return `
 
+          <article
+            class="news-card"
+            onclick="openNews('${escapeAttribute(news.id)}')"
+          >
 
-      return `
-
-        <article
-          class="news-card"
-          onclick="openNews('${escapeAttribute(item.id)}')"
-        >
-
-          ${
-            image
-            ?
-            `
             <img
               class="news-image"
               src="${escapeAttribute(image)}"
-              alt="${escapeAttribute(item.title)}"
+              alt="${escapeAttribute(news.title || "News image")}"
               loading="lazy"
-              onerror="this.style.display='none';"
-            >
-            `
-            :
-            ""
-          }
-
-
-          <div class="news-content">
-
-            <div class="category">
-              ${escapeHtml(
-                item.category
-              )}
-            </div>
-
-
-            <h2 class="news-title">
-              ${escapeHtml(
-                item.title
-              )}
-            </h2>
-
-
-            <div class="news-meta">
-
-              ${
-                item.location
-                ?
-                escapeHtml(
-                  item.location
-                ) + " • "
-                :
-                ""
-              }
-
-              ${date}
-
-            </div>
-
-
-            <div class="news-excerpt">
-
-              ${escapeHtml(
-                item.excerpt ||
-                (
-                  item.content ||
-                  ""
-                ).substring(0,180)
-              )}
-
-            </div>
-
-
-            <span
-              class="status ${statusClass}"
+              onerror="this.src='https://via.placeholder.com/800x500?text=CIVILLINE'"
             >
 
-              ${escapeHtml(
-                item.status ||
-                "Pending"
-              )}
 
-            </span>
+            <div class="news-content">
 
-          </div>
+              <div class="news-category">
+                ${escapeHtml(news.category || "News")}
+              </div>
 
-        </article>
 
-      `;
+              <h2 class="news-title">
+                ${escapeHtml(news.title || "")}
+              </h2>
 
-    })
-    .join("");
+
+              <p class="news-excerpt">
+                ${escapeHtml(news.excerpt || "")}
+              </p>
+
+
+              <div class="news-meta">
+
+                <span>
+                  ${escapeHtml(news.location || "India")}
+                </span>
+
+                <span>
+                  ${formatDate(news.created_at)}
+                </span>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        `;
+
+      })
+      .join("");
 
 }
 
 
-/* ==========================================
-   CATEGORY FILTER
-========================================== */
+/* =========================================
+   CATEGORY
+========================================= */
 
 function setCategory(
   category,
@@ -1338,10 +1182,8 @@ function setCategory(
 
 
   document
-    .querySelectorAll(
-      ".category-btn"
-    )
-    .forEach(btn => {
+    .querySelectorAll(".category-btn")
+    .forEach(function(btn){
 
       btn.classList.remove(
         "active"
@@ -1350,128 +1192,81 @@ function setCategory(
     });
 
 
-  button.classList.add(
-    "active"
-  );
+  if(button){
+
+    button.classList.add(
+      "active"
+    );
+
+  }
 
 
-  filterNews();
+  renderNews();
 
 }
 
 
-/* ==========================================
+/* =========================================
    SEARCH
-========================================== */
+========================================= */
 
 function filterNews(){
 
-  const search =
-    document
-    .getElementById(
-      "searchInput"
-    )
-    .value
-    .toLowerCase()
-    .trim();
+  renderNews();
+
+}
 
 
-  const filtered =
-    allNews.filter(item => {
+/* =========================================
+   OPEN NEWS
+========================================= */
 
-      const categoryMatch =
-        currentCategory === "All" ||
-        item.category ===
-        currentCategory;
+function openNews(id){
 
+  const news =
+    allNews.find(function(item){
 
-      const searchText =
-        (
-          (item.title || "") +
-          " " +
-          (item.location || "") +
-          " " +
-          (item.excerpt || "") +
-          " " +
-          (item.content || "")
-        )
-        .toLowerCase();
-
-
-      return (
-        categoryMatch &&
-        (
-          !search ||
-          searchText.includes(
-            search
-          )
-        )
-      );
+      return String(item.id) ===
+        String(id);
 
     });
 
 
-  renderNews(
-    filtered
-  );
+  if(!news){
 
-}
-
-
-/* ==========================================
-   OPEN NEWS
-========================================== */
-
-function openNews(id){
-
-  const item =
-    allNews.find(
-      news =>
-        String(news.id) ===
-        String(id)
-    );
-
-
-  if(!item){
     return;
   }
 
 
-  const modalImage =
-    document.getElementById(
-      "modalImage"
-    );
+  document.getElementById(
+    "modalImage"
+  ).src =
+    news.image_url ||
+    "https://via.placeholder.com/800x500?text=CIVILLINE";
 
 
-  if(item.image_url){
+  document.getElementById(
+    "modalImage"
+  ).onerror =
+    function(){
 
-    modalImage.src =
-      item.image_url;
+      this.src =
+        "https://via.placeholder.com/800x500?text=CIVILLINE";
 
-    modalImage.style.display =
-      "block";
-
-  }
-
-  else{
-
-    modalImage.style.display =
-      "none";
-
-  }
+    };
 
 
   document.getElementById(
     "modalCategory"
   ).textContent =
-    item.category ||
-    "";
+    news.category ||
+    "NEWS";
 
 
   document.getElementById(
     "modalTitle"
   ).textContent =
-    item.title ||
+    news.title ||
     "";
 
 
@@ -1479,45 +1274,23 @@ function openNews(id){
     "modalMeta"
   ).textContent =
     (
-      item.location
-      ?
-      item.location +
-      " • "
-      :
-      ""
+      news.location ||
+      "India"
     ) +
-    formatDate(
-      item.created_at
-    );
-
-
-  const status =
-    document.getElementById(
-      "modalStatus"
-    );
-
-
-  status.textContent =
-    item.status ||
-    "Pending";
-
-
-  status.className =
-    "status " +
+    " • " +
+    formatDate(news.created_at) +
     (
-      item.status ||
-      "Pending"
-    )
-    .replace(
-      /\s+/g,
-      "-"
+      news.status
+        ? " • " + news.status
+        : ""
     );
 
 
   document.getElementById(
-    "modalText"
+    "modalBody"
   ).textContent =
-    item.content ||
+    news.content ||
+    news.excerpt ||
     "";
 
 
@@ -1527,22 +1300,18 @@ function openNews(id){
     );
 
 
-  if(
-    item.authority_response
-  ){
+  if(news.authority_response){
 
     authorityBox.style.display =
       "block";
 
 
     document.getElementById(
-      "authorityText"
+      "modalAuthority"
     ).textContent =
-      item.authority_response;
+      news.authority_response;
 
-  }
-
-  else{
+  }else{
 
     authorityBox.style.display =
       "none";
@@ -1550,13 +1319,10 @@ function openNews(id){
   }
 
 
-  document
-    .getElementById(
-      "newsModal"
-    )
-    .classList.add(
-      "show"
-    );
+  document.getElementById(
+    "newsModal"
+  ).style.display =
+    "block";
 
 
   document.body.style.overflow =
@@ -1565,19 +1331,16 @@ function openNews(id){
 }
 
 
-/* ==========================================
+/* =========================================
    CLOSE MODAL
-========================================== */
+========================================= */
 
 function closeModal(){
 
-  document
-    .getElementById(
-      "newsModal"
-    )
-    .classList.remove(
-      "show"
-    );
+  document.getElementById(
+    "newsModal"
+  ).style.display =
+    "none";
 
 
   document.body.style.overflow =
@@ -1585,6 +1348,10 @@ function closeModal(){
 
 }
 
+
+/* =========================================
+   CLOSE OUTSIDE MODAL
+========================================= */
 
 function closeOutside(event){
 
@@ -1600,14 +1367,15 @@ function closeOutside(event){
 }
 
 
+/* =========================================
+   ESC KEY
+========================================= */
+
 document.addEventListener(
   "keydown",
   function(event){
 
-    if(
-      event.key ===
-      "Escape"
-    ){
+    if(event.key === "Escape"){
 
       closeModal();
 
@@ -1617,40 +1385,43 @@ document.addEventListener(
 );
 
 
-/* ==========================================
-   DATE
-========================================== */
+/* =========================================
+   DATE FORMAT
+========================================= */
 
 function formatDate(date){
 
   if(!date){
+
     return "";
+
   }
 
 
-  return new Date(date)
-    .toLocaleDateString(
-      "en-IN",
-      {
-        day:"2-digit",
-        month:"short",
-        year:"numeric"
-      }
-    );
+  const d =
+    new Date(date);
+
+
+  return d.toLocaleDateString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
 
 }
 
 
-/* ==========================================
-   SECURITY
-========================================== */
+/* =========================================
+   HTML ESCAPE
+========================================= */
 
 function escapeHtml(value){
 
-  if(
-    value === null ||
-    value === undefined
-  ){
+  if(value === null ||
+     value === undefined){
 
     return "";
 
@@ -1658,52 +1429,32 @@ function escapeHtml(value){
 
 
   return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
+
+/* =========================================
+   ATTRIBUTE ESCAPE
+========================================= */
 
 function escapeAttribute(value){
 
-  return escapeHtml(
-    value
-  );
+  return escapeHtml(value);
 
 }
 
 
-/* ==========================================
-   REAL-TIME SUPABASE UPDATES
-========================================== */
+/* =========================================
+   SUPABASE REALTIME
+========================================= */
 
-db.channel(
-  "civilline-public-news"
-)
-
+db
+.channel("news-realtime")
 .on(
   "postgres_changes",
   {
@@ -1717,13 +1468,12 @@ db.channel(
 
   }
 )
-
 .subscribe();
 
 
-/* ==========================================
+/* =========================================
    INITIAL LOAD
-========================================== */
+========================================= */
 
 loadNews();
 
