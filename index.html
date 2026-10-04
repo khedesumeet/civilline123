@@ -1,1227 +1,1152 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1"
->
-
-<title>
-CIVILLINE Admin
-</title>
+<title>CIVILLINE | Latest News</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <style>
 
 *{
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-margin:0;
-background:#f3f4f6;
-font-family:Arial,sans-serif;
-color:#172033;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f8;
+    color:#222;
 }
 
+/* HEADER */
+
 header{
-background:#0b1220;
-color:white;
-padding:17px 5%;
-display:flex;
-justify-content:space-between;
-align-items:center;
+    background:#111827;
+    color:white;
+    padding:18px 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.header-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
 }
 
 .logo{
-font-size:22px;
-font-weight:bold;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:1px;
 }
 
 .logo span{
-color:#ef4444;
+    color:#f59e0b;
 }
 
-main{
-max-width:1100px;
-margin:25px auto;
-padding:0 18px;
+.tagline{
+    font-size:13px;
+    color:#d1d5db;
 }
 
-.panel{
-background:white;
-padding:22px;
-border-radius:12px;
-margin-bottom:20px;
-box-shadow:0 3px 12px #0001;
+/* BREAKING NEWS */
+
+.breaking{
+    background:#dc2626;
+    color:white;
+    padding:10px;
+    overflow:hidden;
+    white-space:nowrap;
 }
 
-.login{
-max-width:450px;
-margin:70px auto;
+.breaking-title{
+    font-weight:bold;
+    margin-right:15px;
 }
 
-.warning{
-padding:12px;
-background:#fff3cd;
-border-left:4px solid #f59e0b;
-margin-bottom:18px;
+/* NAV */
+
+.nav{
+    background:white;
+    border-bottom:1px solid #ddd;
+    padding:12px 15px;
+    position:sticky;
+    top:73px;
+    z-index:900;
 }
 
-label{
-display:block;
-font-weight:bold;
-margin:13px 0 6px;
+.nav-inner{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
 }
 
-input,
-textarea,
-select{
-width:100%;
-padding:11px;
-border:1px solid #d0d5dd;
-border-radius:7px;
-font:inherit;
+.category-btn{
+    border:1px solid #ddd;
+    background:white;
+    padding:9px 16px;
+    border-radius:20px;
+    cursor:pointer;
+    white-space:nowrap;
+    font-weight:600;
 }
 
-textarea{
-min-height:130px;
-resize:vertical;
+.category-btn:hover,
+.category-btn.active{
+    background:#111827;
+    color:white;
 }
 
-button{
-border:0;
-padding:10px 15px;
-border-radius:7px;
-font-weight:bold;
-cursor:pointer;
+/* MAIN */
+
+.container{
+    max-width:1200px;
+    margin:25px auto;
+    padding:0 15px;
 }
 
-.primary{
-background:#2563eb;
-color:white;
+/* SEARCH */
+
+.search-box{
+    margin-bottom:25px;
 }
 
-.danger{
-background:#dc2626;
-color:white;
+.search-box input{
+    width:100%;
+    padding:15px 18px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
 }
 
-.gray{
-background:#e5e7eb;
+.search-box input:focus{
+    border-color:#111827;
 }
 
-.hidden{
-display:none;
+/* GRID */
+
+.news-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
 }
 
-.message{
-margin-top:12px;
-padding:10px;
-background:#eef2ff;
+/* CARD */
+
+.news-card{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    cursor:pointer;
+    transition:.2s;
 }
 
-.actions{
-display:flex;
-gap:7px;
-flex-wrap:wrap;
+.news-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
 }
 
-.check{
-display:flex;
-gap:8px;
-align-items:center;
+.news-image{
+    width:100%;
+    height:210px;
+    object-fit:cover;
+    display:block;
+    background:#e5e7eb;
 }
 
-.check input{
-width:auto;
+.news-content{
+    padding:17px;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
+.category{
+    display:inline-block;
+    padding:5px 9px;
+    background:#eef2ff;
+    color:#3730a3;
+    border-radius:5px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:9px;
 }
 
-th,
-td{
-padding:11px;
-border-bottom:1px solid #eee;
-text-align:left;
-vertical-align:top;
+.news-title{
+    font-size:20px;
+    line-height:1.3;
+    margin-bottom:8px;
 }
 
-td img{
-width:90px;
-height:60px;
-object-fit:cover;
-border-radius:6px;
+.news-meta{
+    color:#6b7280;
+    font-size:13px;
+    margin-bottom:10px;
 }
 
-@media(max-width:700px){
-
-table{
-font-size:13px;
+.news-excerpt{
+    color:#4b5563;
+    line-height:1.5;
+    font-size:14px;
 }
+
+/* STATUS */
+
+.status{
+    display:inline-block;
+    margin-top:12px;
+    padding:5px 9px;
+    border-radius:5px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.status.Pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status.In-Progress{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+.status.Resolved{
+    background:#dcfce7;
+    color:#166534;
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:50px;
+    color:#666;
+}
+
+.empty{
+    grid-column:1/-1;
+    text-align:center;
+    background:white;
+    padding:50px;
+    border-radius:12px;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    z-index:2000;
+    overflow-y:auto;
+    padding:30px 15px;
+}
+
+.modal.show{
+    display:block;
+}
+
+.modal-box{
+    max-width:850px;
+    margin:auto;
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+    position:relative;
+}
+
+.modal-image{
+    width:100%;
+    max-height:450px;
+    object-fit:cover;
+    display:block;
+}
+
+.modal-content{
+    padding:25px;
+}
+
+.close{
+    position:absolute;
+    right:15px;
+    top:15px;
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,.65);
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+    z-index:10;
+}
+
+.modal-title{
+    font-size:30px;
+    line-height:1.25;
+    margin:12px 0;
+}
+
+.modal-meta{
+    color:#6b7280;
+    margin-bottom:20px;
+}
+
+.modal-text{
+    line-height:1.8;
+    white-space:pre-line;
+}
+
+.authority{
+    margin-top:25px;
+    padding:18px;
+    background:#f3f4f6;
+    border-left:4px solid #111827;
+}
+
+.authority h3{
+    margin-bottom:8px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:50px;
+    background:#111827;
+    color:#d1d5db;
+    padding:30px 15px;
+    text-align:center;
+}
+
+.footer-logo{
+    font-size:24px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:8px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .news-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .header-inner{
+        display:block;
+    }
+
+    .tagline{
+        margin-top:5px;
+    }
+
+    .nav{
+        top:84px;
+    }
+
+    .news-grid{
+        grid-template-columns:1fr;
+    }
+
+    .news-image{
+        height:220px;
+    }
+
+    .modal-title{
+        font-size:24px;
+    }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
+<!-- HEADER -->
 
 <header>
 
-<div class="logo">
-CIVIL<span>LINE</span> ADMIN
-</div>
+    <div class="header-inner">
 
-<button onclick="logout()">
-Logout
-</button>
+        <div>
+            <div class="logo">
+                CIVIL<span>LINE</span>
+            </div>
+
+            <div class="tagline">
+                Local News • Public Problems • Protest
+            </div>
+        </div>
+
+    </div>
 
 </header>
 
 
-<main>
+<!-- BREAKING NEWS -->
 
+<div class="breaking">
 
-<!-- LOGIN -->
+    <span class="breaking-title">
+        BREAKING NEWS
+    </span>
 
-<div
-id="loginPanel"
-class="panel login"
->
-
-<h2>
-CIVILLINE Admin Login
-</h2>
-
-
-<div class="warning">
-
-<strong>
-Temporary Password:
-</strong>
-
-ADMIN1234
+    <span id="breakingText">
+        Latest CIVILLINE updates
+    </span>
 
 </div>
 
 
-<label>
-Password
-</label>
-
-<input
-id="adminPassword"
-type="password"
-placeholder="Enter admin password"
->
-
-
-<br><br>
-
-
-<button
-class="primary"
-onclick="login()"
->
-
-Login
-
-</button>
-
-
-<div
-id="loginMessage"
->
-</div>
-
-</div>
-
-
-<!-- ADMIN APP -->
-
-<div
-id="adminApp"
-class="hidden"
->
-
-
-<!-- ADD / EDIT -->
-
-<div class="panel">
-
-
-<h2 id="formTitle">
-Add News
-</h2>
-
-
-<input
-id="newsId"
-type="hidden"
->
-
-
-<label>
-Category
-</label>
-
-<select id="category">
-
-<option>
-Common News
-</option>
-
-<option>
-Protest
-</option>
-
-<option>
-Public Problem
-</option>
-
-</select>
-
-
-<label>
-News Title
-</label>
-
-<input
-id="title"
-placeholder="Enter news title"
->
-
-
-<label>
-Location
-</label>
-
-<input
-id="location"
-placeholder="Baramati, Pune, Maharashtra"
->
-
-
-<label>
-Short Description
-</label>
-
-<textarea
-id="excerpt"
-style="min-height:80px"
-placeholder="Short news description"
-></textarea>
-
-
-<label>
-Full News
-</label>
-
-<textarea
-id="content"
-placeholder="Write complete news..."
-></textarea>
-
-
-<label>
-Authority Response
-</label>
-
-<textarea
-id="authorityResponse"
-style="min-height:80px"
-placeholder="Optional"
-></textarea>
-
-
-<label>
-Status
-</label>
-
-<select id="status">
-
-<option>
-Pending
-</option>
-
-<option>
-In Progress
-</option>
-
-<option>
-Resolved
-</option>
-
-</select>
-
-
-<label>
-News Image
-</label>
-
-<input
-id="image"
-type="file"
-accept="image/*"
->
-
-
-<label class="check">
-
-<input
-id="published"
-type="checkbox"
->
-
-Publish this news
-
-</label>
-
-
-<br>
-
-
-<div class="actions">
-
-<button
-class="primary"
-onclick="saveNews()"
->
-
-Save News
-
-</button>
-
-
-<button
-class="gray"
-onclick="clearForm()"
->
-
-Clear
-
-</button>
+<!-- CATEGORY NAVIGATION -->
+
+<div class="nav">
+
+    <div class="nav-inner">
+
+        <button
+            class="category-btn active"
+            onclick="setCategory('All',this)">
+            All
+        </button>
+
+        <button
+            class="category-btn"
+            onclick="setCategory('Common News',this)">
+            Common News
+        </button>
+
+        <button
+            class="category-btn"
+            onclick="setCategory('Protest',this)">
+            Protest
+        </button>
+
+        <button
+            class="category-btn"
+            onclick="setCategory('Public Problem',this)">
+            Public Problem
+        </button>
+
+    </div>
 
 </div>
 
 
-<div
-id="message"
-class="message"
->
-</div>
+<!-- MAIN -->
+
+<main class="container">
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search news, location or title..."
+            oninput="filterNews()"
+        >
+
+    </div>
 
 
-</div>
+    <!-- NEWS -->
 
+    <div
+        id="newsGrid"
+        class="news-grid">
 
-<!-- NEWS TABLE -->
+        <div class="loading">
+            Loading news...
+        </div>
 
-<div class="panel">
-
-<h2>
-News Management
-</h2>
-
-
-<div style="overflow:auto">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-Image
-</th>
-
-<th>
-News
-</th>
-
-<th>
-Category
-</th>
-
-<th>
-Status
-</th>
-
-<th>
-Published
-</th>
-
-<th>
-Action
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody
-id="newsTable"
->
-</tbody>
-
-
-</table>
-
-</div>
-
-</div>
-
-
-</div>
+    </div>
 
 </main>
 
 
-<script>
-
-
-/* =====================================================
-SUPABASE
-===================================================== */
-
-const SUPABASE_URL =
-"https://aoicywtjwvqzzhmxkxvs.supabase.co";
-
-
-const SUPABASE_KEY =
-"sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
-
-
-const db =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =====================================================
-ADMIN PASSWORD
-===================================================== */
-
-const ADMIN_PASSWORD =
-"ADMIN1234";
-
-
-let newsList = [];
-
-
-/* =====================================================
-LOGIN
-===================================================== */
-
-function login(){
-
-const password =
-document.getElementById(
-"adminPassword"
-).value;
-
-
-if(password !== ADMIN_PASSWORD){
-
-document.getElementById(
-"loginMessage"
-).textContent =
-"Incorrect password.";
-
-return;
-
-}
-
-
-sessionStorage.setItem(
-"civilline_admin",
-"1"
-);
-
-
-showAdmin();
-
-}
-
-
-/* =====================================================
-SHOW ADMIN
-===================================================== */
-
-function showAdmin(){
-
-document
-.getElementById("loginPanel")
-.classList
-.add("hidden");
-
-
-document
-.getElementById("adminApp")
-.classList
-.remove("hidden");
-
-
-loadNews();
-
-}
-
-
-/* =====================================================
-LOGOUT
-===================================================== */
-
-function logout(){
-
-sessionStorage.removeItem(
-"civilline_admin"
-);
-
-
-document
-.getElementById("adminApp")
-.classList
-.add("hidden");
-
-
-document
-.getElementById("loginPanel")
-.classList
-.remove("hidden");
-
-
-document.getElementById(
-"adminPassword"
-).value = "";
-
-}
-
-
-/* =====================================================
-ESCAPE
-===================================================== */
-
-function escapeHTML(value){
-
-const div =
-document.createElement("div");
-
-div.textContent =
-value || "";
-
-return div.innerHTML;
-
-}
-
-
-/* =====================================================
-LOAD NEWS
-===================================================== */
-
-async function loadNews(){
-
-const result =
-await db
-.from("news")
-.select("*")
-.order(
-"created_at",
-{
-ascending:false
-}
-);
-
-
-if(result.error){
-
-document.getElementById(
-"message"
-).textContent =
-result.error.message;
-
-return;
-
-}
-
-
-newsList =
-result.data || [];
-
-
-const table =
-document.getElementById(
-"newsTable"
-);
-
-
-table.innerHTML =
-newsList.map(news => `
-
-<tr>
-
-<td>
-
-${
-news.image_url
-?
-`
-<img
-src="${escapeHTML(news.image_url)}"
->
-`
-:
-""
-}
-
-</td>
-
-
-<td>
-
-<strong>
-${escapeHTML(news.title)}
-</strong>
-
-<br>
-
-<small>
-${escapeHTML(news.location || "")}
-</small>
-
-</td>
-
-
-<td>
-
-${escapeHTML(news.category)}
-
-</td>
-
-
-<td>
-
-${escapeHTML(news.status)}
-
-</td>
-
-
-<td>
-
-${
-news.published
-?
-"Yes"
-:
-"Draft"
-}
-
-</td>
-
-
-<td>
-
-<div class="actions">
-
-<button
-class="gray"
-onclick="editNews('${news.id}')"
->
-
-Edit
-
-</button>
-
-
-<button
-class="danger"
-onclick="deleteNews('${news.id}')"
->
-
-Delete
-
-</button>
+<!-- NEWS MODAL -->
+
+<div
+    id="newsModal"
+    class="modal"
+    onclick="closeOutside(event)">
+
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeModal()">
+            ×
+        </button>
+
+        <img
+            id="modalImage"
+            class="modal-image"
+            src=""
+            alt="News image"
+        >
+
+        <div class="modal-content">
+
+            <div
+                id="modalCategory"
+                class="category">
+            </div>
+
+            <h1
+                id="modalTitle"
+                class="modal-title">
+            </h1>
+
+            <div
+                id="modalMeta"
+                class="modal-meta">
+            </div>
+
+            <div
+                id="modalStatus"
+                class="status">
+            </div>
+
+            <div
+                id="modalText"
+                class="modal-text"
+                style="margin-top:20px;">
+            </div>
+
+            <div
+                id="authorityBox"
+                class="authority"
+                style="display:none;">
+
+                <h3>
+                    Authority Response
+                </h3>
+
+                <div id="authorityText"></div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-</td>
 
-</tr>
+<!-- FOOTER -->
 
-`).join("");
+<footer>
+
+    <div class="footer-logo">
+        CIVILLINE
+    </div>
+
+    <div>
+        Local News • Public Problems • Protest
+    </div>
+
+    <div style="margin-top:10px;font-size:13px;">
+        © 2026 CIVILLINE. All Rights Reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+/* ==========================================
+   SUPABASE CONFIGURATION
+========================================== */
+
+const SUPABASE_URL =
+    "https://aoicywtjwvqzzhmxkxvs.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+
+const db =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ==========================================
+   GLOBAL VARIABLES
+========================================== */
+
+let allNews = [];
+
+let currentCategory = "All";
+
+
+/* ==========================================
+   LOAD NEWS
+========================================== */
+
+async function loadNews(){
+
+    const grid =
+        document.getElementById("newsGrid");
+
+    grid.innerHTML =
+        `<div class="loading">
+            Loading news...
+        </div>`;
+
+    try{
+
+        const { data, error } =
+
+            await db
+                .from("news")
+                .select(`
+                    id,
+                    title,
+                    category,
+                    location,
+                    excerpt,
+                    content,
+                    authority_response,
+                    status,
+                    image_url,
+                    created_at
+                `)
+                .eq("published", true)
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                );
+
+
+        if(error){
+
+            console.error(error);
+
+            grid.innerHTML =
+                `<div class="empty">
+                    Unable to load news.
+                </div>`;
+
+            return;
+        }
+
+
+        allNews = data || [];
+
+        updateBreakingNews();
+
+        renderNews(allNews);
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        grid.innerHTML =
+            `<div class="empty">
+                Unable to connect to CIVILLINE.
+            </div>`;
+
+    }
 
 }
 
 
-/* =====================================================
-SAVE NEWS
-===================================================== */
+/* ==========================================
+   RENDER NEWS
+========================================== */
 
-async function saveNews(){
+function renderNews(news){
 
-const id =
-document.getElementById(
-"newsId"
-).value;
+    const grid =
+        document.getElementById("newsGrid");
 
 
-const title =
-document.getElementById(
-"title"
-).value
-.trim();
+    if(!news.length){
+
+        grid.innerHTML =
+            `<div class="empty">
+                No news found.
+            </div>`;
+
+        return;
+    }
 
 
-const content =
-document.getElementById(
-"content"
-).value
-.trim();
+    grid.innerHTML =
+        news.map(item => {
+
+            const date =
+                formatDate(item.created_at);
 
 
-if(!title || !content){
+            const image =
+                item.image_url
+                ? item.image_url
+                : "";
 
-document.getElementById(
-"message"
-).textContent =
-"Title and full news are required.";
 
-return;
+            const statusClass =
+                (item.status || "Pending")
+                .replace(/\s+/g,"-");
+
+
+            return `
+
+                <article
+                    class="news-card"
+                    onclick="openNews('${item.id}')">
+
+                    ${
+                        image
+                        ?
+                        `<img
+                            class="news-image"
+                            src="${escapeAttribute(image)}"
+                            alt="${escapeAttribute(item.title)}"
+                            loading="lazy"
+                            onerror="this.style.display='none';"
+                        >`
+                        :
+                        ``
+                    }
+
+
+                    <div class="news-content">
+
+                        <div class="category">
+                            ${escapeHtml(item.category)}
+                        </div>
+
+
+                        <h2 class="news-title">
+                            ${escapeHtml(item.title)}
+                        </h2>
+
+
+                        <div class="news-meta">
+
+                            ${
+                                item.location
+                                ?
+                                escapeHtml(item.location) + " • "
+                                :
+                                ""
+                            }
+
+                            ${date}
+
+                        </div>
+
+
+                        <div class="news-excerpt">
+
+                            ${escapeHtml(
+                                item.excerpt ||
+                                item.content.substring(0,180)
+                            )}
+
+                        </div>
+
+
+                        <span
+                            class="status ${statusClass}">
+
+                            ${escapeHtml(
+                                item.status || "Pending"
+                            )}
+
+                        </span>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        })
+        .join("");
 
 }
 
 
-const file =
-document.getElementById(
-"image"
-).files[0];
+/* ==========================================
+   CATEGORY FILTER
+========================================== */
+
+function setCategory(category, button){
+
+    currentCategory = category;
 
 
-let imageUrl =
-null;
+    document
+        .querySelectorAll(".category-btn")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
 
 
-let imagePath =
-null;
+    button.classList.add("active");
 
 
-/* UPLOAD IMAGE */
+    filterNews();
 
-if(file){
-
-const extension =
-(
-file.name
-.split(".")
-.pop()
-||
-"jpg"
-)
-.toLowerCase();
-
-
-imagePath =
-crypto.randomUUID()
-+
-"."
-+
-extension;
-
-
-const upload =
-await db
-.storage
-.from("news-images")
-.upload(
-imagePath,
-file,
-{
-contentType:file.type
 }
+
+
+/* ==========================================
+   SEARCH + FILTER
+========================================== */
+
+function filterNews(){
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const filtered =
+        allNews.filter(item => {
+
+            const categoryMatch =
+                currentCategory === "All" ||
+                item.category === currentCategory;
+
+
+            const searchText = (
+
+                (item.title || "") +
+                " " +
+                (item.location || "") +
+                " " +
+                (item.excerpt || "") +
+                " " +
+                (item.content || "")
+
+            ).toLowerCase();
+
+
+            const searchMatch =
+                !search ||
+                searchText.includes(search);
+
+
+            return categoryMatch &&
+                   searchMatch;
+
+        });
+
+
+    renderNews(filtered);
+
+}
+
+
+/* ==========================================
+   OPEN NEWS
+========================================== */
+
+function openNews(id){
+
+    const item =
+        allNews.find(
+            news => news.id === id
+        );
+
+
+    if(!item) return;
+
+
+    const modal =
+        document.getElementById("newsModal");
+
+
+    const modalImage =
+        document.getElementById("modalImage");
+
+
+    if(item.image_url){
+
+        modalImage.src =
+            item.image_url;
+
+        modalImage.style.display =
+            "block";
+
+    }
+
+    else{
+
+        modalImage.style.display =
+            "none";
+
+    }
+
+
+    document.getElementById(
+        "modalCategory"
+    ).textContent =
+        item.category || "";
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        item.title || "";
+
+
+    document.getElementById(
+        "modalMeta"
+    ).textContent =
+
+        (
+            item.location
+            ? item.location + " • "
+            : ""
+        ) +
+
+        formatDate(item.created_at);
+
+
+    const status =
+        document.getElementById(
+            "modalStatus"
+        );
+
+
+    status.textContent =
+        item.status || "Pending";
+
+
+    status.className =
+        "status " +
+        (item.status || "Pending")
+            .replace(/\s+/g,"-");
+
+
+    document.getElementById(
+        "modalText"
+    ).textContent =
+        item.content || "";
+
+
+    const authorityBox =
+        document.getElementById(
+            "authorityBox"
+        );
+
+
+    if(item.authority_response){
+
+        authorityBox.style.display =
+            "block";
+
+
+        document.getElementById(
+            "authorityText"
+        ).textContent =
+            item.authority_response;
+
+    }
+
+    else{
+
+        authorityBox.style.display =
+            "none";
+
+    }
+
+
+    modal.classList.add("show");
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+/* ==========================================
+   CLOSE MODAL
+========================================== */
+
+function closeModal(){
+
+    document
+        .getElementById("newsModal")
+        .classList.remove("show");
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+function closeOutside(event){
+
+    if(
+        event.target.id ===
+        "newsModal"
+    ){
+
+        closeModal();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Escape"){
+
+            closeModal();
+
+        }
+
+    }
 );
 
 
-if(upload.error){
+/* ==========================================
+   BREAKING NEWS
+========================================== */
 
-document.getElementById(
-"message"
-).textContent =
-"Image upload failed: "
-+
-upload.error.message;
+function updateBreakingNews(){
 
-return;
+    const element =
+        document.getElementById(
+            "breakingText"
+        );
+
+
+    if(!allNews.length){
+
+        element.textContent =
+            "No breaking news available.";
+
+        return;
+
+    }
+
+
+    element.textContent =
+        allNews
+            .slice(0,5)
+            .map(item => item.title)
+            .join("  •  ");
 
 }
 
 
-imageUrl =
-db
-.storage
-.from("news-images")
-.getPublicUrl(
-imagePath
+/* ==========================================
+   DATE
+========================================== */
+
+function formatDate(date){
+
+    if(!date) return "";
+
+    return new Date(date)
+        .toLocaleDateString(
+            "en-IN",
+            {
+                day:"2-digit",
+                month:"short",
+                year:"numeric"
+            }
+        );
+
+}
+
+
+/* ==========================================
+   SECURITY HELPERS
+========================================== */
+
+function escapeHtml(value){
+
+    if(value === null ||
+       value === undefined){
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttribute(value){
+
+    return escapeHtml(value);
+
+}
+
+
+/* ==========================================
+   REAL-TIME UPDATES
+========================================== */
+
+db.channel(
+    "civilline-public-news"
 )
-.data
-.publicUrl;
+.on(
+    "postgres_changes",
+    {
+        event:"*",
+        schema:"public",
+        table:"news"
+    },
+    function(){
 
-}
+        loadNews();
 
-
-/* DATA */
-
-const data = {
-
-title:title,
-
-category:
-document.getElementById(
-"category"
-).value,
-
-location:
-document.getElementById(
-"location"
-).value
-.trim(),
-
-excerpt:
-document.getElementById(
-"excerpt"
-).value
-.trim(),
-
-content:content,
-
-authority_response:
-document.getElementById(
-"authorityResponse"
-).value
-.trim(),
-
-status:
-document.getElementById(
-"status"
-).value,
-
-published:
-document.getElementById(
-"published"
-).checked
-
-};
+    }
+)
+.subscribe();
 
 
-if(file){
-
-data.image_url =
-imageUrl;
-
-data.image_path =
-imagePath;
-
-}
-
-
-/* INSERT */
-
-let result;
-
-
-if(id){
-
-result =
-await db
-.from("news")
-.update(data)
-.eq("id",id);
-
-}
-else{
-
-result =
-await db
-.from("news")
-.insert(data);
-
-}
-
-
-if(result.error){
-
-document.getElementById(
-"message"
-).textContent =
-result.error.message;
-
-return;
-
-}
-
-
-document.getElementById(
-"message"
-).textContent =
-"News saved successfully.";
-
-
-clearForm();
+/* ==========================================
+   INITIAL LOAD
+========================================== */
 
 loadNews();
-
-}
-
-
-/* =====================================================
-EDIT
-===================================================== */
-
-function editNews(id){
-
-const news =
-newsList.find(
-item => item.id === id
-);
-
-
-if(!news){
-return;
-}
-
-
-document.getElementById(
-"newsId"
-).value =
-news.id;
-
-
-document.getElementById(
-"category"
-).value =
-news.category;
-
-
-document.getElementById(
-"title"
-).value =
-news.title;
-
-
-document.getElementById(
-"location"
-).value =
-news.location || "";
-
-
-document.getElementById(
-"excerpt"
-).value =
-news.excerpt || "";
-
-
-document.getElementById(
-"content"
-).value =
-news.content;
-
-
-document.getElementById(
-"authorityResponse"
-).value =
-news.authority_response || "";
-
-
-document.getElementById(
-"status"
-).value =
-news.status;
-
-
-document.getElementById(
-"published"
-).checked =
-news.published;
-
-
-document.getElementById(
-"formTitle"
-).textContent =
-"Edit News";
-
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-
-/* =====================================================
-DELETE
-===================================================== */
-
-async function deleteNews(id){
-
-if(
-!confirm(
-"Delete this news?"
-)
-){
-
-return;
-
-}
-
-
-const news =
-newsList.find(
-item => item.id === id
-);
-
-
-const result =
-await db
-.from("news")
-.delete()
-.eq("id",id);
-
-
-if(result.error){
-
-document.getElementById(
-"message"
-).textContent =
-result.error.message;
-
-return;
-
-}
-
-
-/* DELETE IMAGE */
-
-if(news && news.image_path){
-
-await db
-.storage
-.from("news-images")
-.remove([
-news.image_path
-]);
-
-}
-
-
-loadNews();
-
-}
-
-
-/* =====================================================
-CLEAR FORM
-===================================================== */
-
-function clearForm(){
-
-document.getElementById(
-"newsId"
-).value =
-"";
-
-
-document.getElementById(
-"category"
-).value =
-"Common News";
-
-
-document.getElementById(
-"title"
-).value =
-"";
-
-
-document.getElementById(
-"location"
-).value =
-"";
-
-
-document.getElementById(
-"excerpt"
-).value =
-"";
-
-
-document.getElementById(
-"content"
-).value =
-"";
-
-
-document.getElementById(
-"authorityResponse"
-).value =
-"";
-
-
-document.getElementById(
-"status"
-).value =
-"Pending";
-
-
-document.getElementById(
-"published"
-).checked =
-false;
-
-
-document.getElementById(
-"image"
-).value =
-"";
-
-
-document.getElementById(
-"formTitle"
-).textContent =
-"Add News";
-
-}
-
-
-/* =====================================================
-AUTO LOGIN FOR SAME BROWSER
-===================================================== */
-
-if(
-sessionStorage.getItem(
-"civilline_admin"
-)
-===
-"1"
-){
-
-showAdmin();
-
-}
 
 </script>
 
