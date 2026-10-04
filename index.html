@@ -6,6 +6,19 @@
 
 <title>CIVILLINE | Latest News</title>
 
+<!-- Default social preview -->
+<meta property="og:site_name" content="CIVILLINE">
+<meta property="og:title" content="CIVILLINE | Latest News">
+<meta property="og:description" content="Latest local news, public problems and protest news from CIVILLINE.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://civilline.online/">
+<meta property="og:image" content="https://civilline.online/og-image.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CIVILLINE | Latest News">
+<meta name="twitter:description" content="Latest local news, public problems and protest news from CIVILLINE.">
+<meta name="twitter:image" content="https://civilline.online/og-image.jpg">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -123,7 +136,6 @@ header{
   0%{
     transform:translateX(100%);
   }
-
   100%{
     transform:translateX(-100%);
   }
@@ -179,6 +191,32 @@ header{
   color:#dc2626;
   margin-top:5px;
   font-weight:600;
+}
+
+/* CANCEL REDIRECT */
+
+.cancel-redirect-btn{
+  margin-top:8px;
+  border:1px solid #dc2626;
+  background:white;
+  color:#dc2626;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.cancel-redirect-btn:hover{
+  background:#dc2626;
+  color:white;
+}
+
+.cancel-redirect-btn.cancelled{
+  border-color:#16a34a;
+  color:#16a34a;
+  background:white;
+  cursor:default;
 }
 
 .sponsor-btn{
@@ -641,7 +679,6 @@ footer{
 
 <body>
 
-
 <!-- ================= HEADER ================= -->
 
 <header>
@@ -659,7 +696,6 @@ footer{
       </div>
 
     </div>
-
 
     <div class="search-box">
 
@@ -729,7 +765,6 @@ footer{
 
       </a>
 
-
       <div>
 
         <div class="sponsor-label">
@@ -747,10 +782,17 @@ footer{
           Redirecting in 5 seconds...
         </div>
 
+        <button
+          id="cancelRedirectBtn"
+          class="cancel-redirect-btn"
+          onclick="cancelAdRedirect()"
+        >
+          ✕ Cancel Redirect
+        </button>
+
       </div>
 
     </div>
-
 
     <a
       class="sponsor-btn"
@@ -769,9 +811,6 @@ footer{
 <!-- ================= MAIN ================= -->
 
 <main class="container">
-
-
-  <!-- CATEGORY -->
 
   <div class="categories">
 
@@ -806,8 +845,6 @@ footer{
   </div>
 
 
-  <!-- NEWS -->
-
   <div
     id="newsGrid"
     class="news-grid"
@@ -832,7 +869,6 @@ footer{
 
   <div class="modal-box">
 
-
     <button
       class="modal-close"
       onclick="closeModal()"
@@ -850,7 +886,6 @@ footer{
 
 
     <div class="modal-content">
-
 
       <div
         id="modalCategory"
@@ -875,8 +910,6 @@ footer{
         class="modal-body"
       ></div>
 
-
-      <!-- AUTHORITY RESPONSE -->
 
       <div
         id="authorityBox"
@@ -914,12 +947,11 @@ footer{
       </div>
 
 
-      <!-- MODAL SPONSOR -->
+      <!-- SPONSOR -->
 
       <div class="modal-sponsor">
 
         <div class="modal-sponsor-inner">
-
 
           <div class="modal-sponsor-left">
 
@@ -1007,7 +1039,7 @@ const db =
 
 
 /* =====================================================
-   SPONSORED
+   SPONSOR
 ===================================================== */
 
 const AFFILIATE_LINK =
@@ -1018,7 +1050,7 @@ const SPONSOR_IMAGE =
 
 
 /* =====================================================
-   GLOBAL VARIABLES
+   GLOBAL
 ===================================================== */
 
 let allNews = [];
@@ -1026,6 +1058,55 @@ let allNews = [];
 let currentCategory = "All";
 
 let currentNews = null;
+
+let redirectTimer = null;
+
+let redirectCancelled = false;
+
+
+/* =====================================================
+   CANCEL REDIRECT
+===================================================== */
+
+function cancelAdRedirect(){
+
+  redirectCancelled = true;
+
+  if(redirectTimer){
+
+    clearInterval(
+      redirectTimer
+    );
+
+  }
+
+  const countdown =
+    document.getElementById(
+      "adCountdown"
+    );
+
+  const button =
+    document.getElementById(
+      "cancelRedirectBtn"
+    );
+
+  countdown.textContent =
+    "Automatic redirect cancelled.";
+
+  countdown.style.color =
+    "#16a34a";
+
+  button.textContent =
+    "✓ Redirect Cancelled";
+
+  button.classList.add(
+    "cancelled"
+  );
+
+  button.disabled =
+    true;
+
+}
 
 
 /* =====================================================
@@ -1041,8 +1122,18 @@ let currentNews = null;
       "adCountdown"
     );
 
-  const timer =
+  redirectTimer =
     setInterval(function(){
+
+      if(redirectCancelled){
+
+        clearInterval(
+          redirectTimer
+        );
+
+        return;
+
+      }
 
       seconds--;
 
@@ -1053,15 +1144,22 @@ let currentNews = null;
           seconds +
           " seconds...";
 
-      }else{
+      }
+      else{
 
-        clearInterval(timer);
+        clearInterval(
+          redirectTimer
+        );
 
-        countdown.textContent =
-          "Opening sponsored offer...";
+        if(!redirectCancelled){
 
-        window.location.href =
-          AFFILIATE_LINK;
+          countdown.textContent =
+            "Opening sponsored offer...";
+
+          window.location.href =
+            AFFILIATE_LINK;
+
+        }
 
       }
 
@@ -1080,7 +1178,6 @@ async function loadNews(){
     document.getElementById(
       "newsGrid"
     );
-
 
   grid.innerHTML =
     '<div class="loading">Loading latest news...</div>';
@@ -1103,7 +1200,10 @@ async function loadNews(){
       image_url,
       created_at
     `)
-    .eq("published",true)
+    .eq(
+      "published",
+      true
+    )
     .order(
       "created_at",
       {
@@ -1118,7 +1218,6 @@ async function loadNews(){
       "Supabase error:",
       error
     );
-
 
     grid.innerHTML = `
       <div class="empty">
@@ -1136,19 +1235,9 @@ async function loadNews(){
   allNews =
     data || [];
 
-
   updateBreakingNews();
 
   renderNews();
-
-
-  /*
-    If URL contains:
-    ?news=ID
-
-    automatically open
-    that particular news.
-  */
 
   openNewsFromURL();
 
@@ -1171,11 +1260,8 @@ function updateBreakingNews(){
 
     track.innerHTML = `
       <div class="breaking-item">
-
         <span class="breaking-dot"></span>
-
         No breaking news available
-
       </div>
     `;
 
@@ -1185,7 +1271,10 @@ function updateBreakingNews(){
 
 
   const latest =
-    allNews.slice(0,10);
+    allNews.slice(
+      0,
+      10
+    );
 
 
   let html = "";
@@ -1228,7 +1317,6 @@ function renderNews(){
       "newsGrid"
     );
 
-
   const search =
     document
       .getElementById(
@@ -1244,7 +1332,8 @@ function renderNews(){
 
       const categoryMatch =
         currentCategory === "All" ||
-        news.category === currentCategory;
+        news.category ===
+        currentCategory;
 
 
       const searchText =
@@ -1261,7 +1350,9 @@ function renderNews(){
 
       const searchMatch =
         !search ||
-        searchText.includes(search);
+        searchText.includes(
+          search
+        );
 
 
       return (
@@ -1297,7 +1388,6 @@ function renderNews(){
 
         <article class="news-card">
 
-
           <img
             class="news-image"
             src="${escapeAttribute(image)}"
@@ -1307,48 +1397,53 @@ function renderNews(){
             onerror="this.src='https://via.placeholder.com/800x500?text=CIVILLINE'"
           >
 
-
           <div class="news-content">
 
-
             <div class="news-category">
-              ${escapeHtml(news.category || "News")}
+              ${escapeHtml(
+                news.category ||
+                "News"
+              )}
             </div>
-
 
             <h2
               class="news-title"
               onclick="openNews('${escapeAttribute(news.id)}')"
             >
-              ${escapeHtml(news.title || "")}
+              ${escapeHtml(
+                news.title ||
+                ""
+              )}
             </h2>
-
 
             <p
               class="news-excerpt"
               onclick="openNews('${escapeAttribute(news.id)}')"
             >
-              ${escapeHtml(news.excerpt || "")}
+              ${escapeHtml(
+                news.excerpt ||
+                ""
+              )}
             </p>
-
 
             <div class="news-meta">
 
               <span>
-                ${escapeHtml(news.location || "India")}
+                ${escapeHtml(
+                  news.location ||
+                  "India"
+                )}
               </span>
 
               <span>
-                ${formatDate(news.created_at)}
+                ${formatDate(
+                  news.created_at
+                )}
               </span>
 
             </div>
 
-
-            <!-- CARD ACTIONS -->
-
             <div class="news-actions">
-
 
               <button
                 class="read-btn"
@@ -1357,17 +1452,14 @@ function renderNews(){
                 Read Full News
               </button>
 
-
               <button
                 class="share-btn"
-                onclick="shareNews('${escapeAttribute(news.id)}', event)"
+                onclick="shareNews('${escapeAttribute(news.id)}',event)"
               >
                 📤 Share
               </button>
 
-
             </div>
-
 
           </div>
 
@@ -1432,7 +1524,7 @@ function filterNews(){
 
 
 /* =====================================================
-   CREATE NEWS URL
+   NEWS URL
 ===================================================== */
 
 function getNewsUrl(id){
@@ -1478,8 +1570,10 @@ async function shareNews(
   const news =
     allNews.find(function(item){
 
-      return String(item.id) ===
-        String(id);
+      return String(
+        item.id
+      ) ===
+      String(id);
 
     });
 
@@ -1492,32 +1586,44 @@ async function shareNews(
 
 
   const shareUrl =
-    getNewsUrl(news.id);
+    getNewsUrl(
+      news.id
+    );
+
+
+  /*
+    IMPORTANT:
+    Use the actual news title
+    as the Web Share title.
+  */
+
+  const title =
+    news.title ||
+    "CIVILLINE News";
+
+
+  const description =
+    news.excerpt ||
+    news.content ||
+    "Read the latest news on CIVILLINE.";
 
 
   const shareData = {
 
     title:
-      news.title ||
-      "CIVILLINE News",
+      title,
 
     text:
-      (
-        news.title ||
-        "Latest news from CIVILLINE"
-      ) +
-      "\n\nRead more on CIVILLINE:",
+      title +
+      "\n\n" +
+      description +
+      "\n\nCIVILLINE",
 
     url:
       shareUrl
 
   };
 
-
-  /*
-    Native Android / iPhone
-    share menu
-  */
 
   if(
     navigator.share
@@ -1531,12 +1637,8 @@ async function shareNews(
 
       return;
 
-    }catch(error){
-
-      /*
-        User cancelled sharing.
-        Do nothing.
-      */
+    }
+    catch(error){
 
       if(
         error &&
@@ -1552,11 +1654,6 @@ async function shareNews(
 
   }
 
-
-  /*
-    Fallback:
-    copy link
-  */
 
   copyToClipboard(
     shareUrl,
@@ -1614,7 +1711,7 @@ function copyCurrentNewsLink(){
 
 
 /* =====================================================
-   COPY TO CLIPBOARD
+   COPY
 ===================================================== */
 
 async function copyToClipboard(
@@ -1633,11 +1730,8 @@ async function copyToClipboard(
       "Link copied!"
     );
 
-  }catch(error){
-
-    /*
-      Older browser fallback
-    */
+  }
+  catch(error){
 
     const textarea =
       document.createElement(
@@ -1686,8 +1780,10 @@ function openNews(id){
   const news =
     allNews.find(function(item){
 
-      return String(item.id) ===
-        String(id);
+      return String(
+        item.id
+      ) ===
+      String(id);
 
     });
 
@@ -1703,11 +1799,6 @@ function openNews(id){
     news;
 
 
-  /*
-    Update browser URL
-    without reloading page.
-  */
-
   const newUrl =
     getNewsUrl(
       news.id
@@ -1722,6 +1813,21 @@ function openNews(id){
     newUrl
   );
 
+
+  showNewsContent(
+    news
+  );
+
+}
+
+
+/* =====================================================
+   SHOW NEWS
+===================================================== */
+
+function showNewsContent(
+  news
+){
 
   const image =
     news.image_url ||
@@ -1799,13 +1905,13 @@ function openNews(id){
     authorityBox.style.display =
       "block";
 
-
     document.getElementById(
       "modalAuthority"
     ).textContent =
       news.authority_response;
 
-  }else{
+  }
+  else{
 
     authorityBox.style.display =
       "none";
@@ -1826,7 +1932,7 @@ function openNews(id){
 
 
 /* =====================================================
-   OPEN NEWS FROM SHARED URL
+   OPEN SHARED NEWS
 ===================================================== */
 
 function openNewsFromURL(){
@@ -1838,7 +1944,9 @@ function openNewsFromURL(){
 
 
   const newsId =
-    params.get("news");
+    params.get(
+      "news"
+    );
 
 
   if(!newsId){
@@ -1851,8 +1959,10 @@ function openNewsFromURL(){
   const news =
     allNews.find(function(item){
 
-      return String(item.id) ===
-        String(newsId);
+      return String(
+        item.id
+      ) ===
+      String(newsId);
 
     });
 
@@ -1861,8 +1971,11 @@ function openNewsFromURL(){
 
     setTimeout(function(){
 
-      openNews(
-        news.id
+      currentNews =
+        news;
+
+      showNewsContent(
+        news
       );
 
     },300);
@@ -1887,11 +2000,6 @@ function closeModal(){
   document.body.style.overflow =
     "";
 
-
-  /*
-    Remove ?news=ID
-    from URL after closing.
-  */
 
   const url =
     new URL(
@@ -1941,7 +2049,7 @@ function closeOutside(event){
 
 
 /* =====================================================
-   BROWSER BACK BUTTON
+   BROWSER BACK
 ===================================================== */
 
 window.addEventListener(
@@ -1955,7 +2063,9 @@ window.addEventListener(
 
 
     const id =
-      params.get("news");
+      params.get(
+        "news"
+      );
 
 
     if(id){
@@ -1963,21 +2073,27 @@ window.addEventListener(
       const news =
         allNews.find(function(item){
 
-          return String(item.id) ===
-            String(id);
+          return String(
+            item.id
+          ) ===
+          String(id);
 
         });
 
 
       if(news){
 
-        showNewsWithoutHistory(
+        currentNews =
+          news;
+
+        showNewsContent(
           news
         );
 
       }
 
-    }else{
+    }
+    else{
 
       document.getElementById(
         "newsModal"
@@ -1994,108 +2110,6 @@ window.addEventListener(
 
   }
 );
-
-
-/* =====================================================
-   SHOW NEWS WITHOUT PUSHING URL
-===================================================== */
-
-function showNewsWithoutHistory(
-  news
-){
-
-  currentNews =
-    news;
-
-
-  const image =
-    news.image_url ||
-    "https://via.placeholder.com/800x500?text=CIVILLINE";
-
-
-  document.getElementById(
-    "modalImage"
-  ).src =
-    image;
-
-
-  document.getElementById(
-    "modalCategory"
-  ).textContent =
-    news.category ||
-    "NEWS";
-
-
-  document.getElementById(
-    "modalTitle"
-  ).textContent =
-    news.title ||
-    "";
-
-
-  document.getElementById(
-    "modalMeta"
-  ).textContent =
-    (
-      news.location ||
-      "India"
-    ) +
-    " • " +
-    formatDate(
-      news.created_at
-    ) +
-    (
-      news.status
-        ? " • " +
-          news.status
-        : ""
-    );
-
-
-  document.getElementById(
-    "modalBody"
-  ).textContent =
-    news.content ||
-    news.excerpt ||
-    "";
-
-
-  const authorityBox =
-    document.getElementById(
-      "authorityBox"
-    );
-
-
-  if(
-    news.authority_response
-  ){
-
-    authorityBox.style.display =
-      "block";
-
-    document.getElementById(
-      "modalAuthority"
-    ).textContent =
-      news.authority_response;
-
-  }else{
-
-    authorityBox.style.display =
-      "none";
-
-  }
-
-
-  document.getElementById(
-    "newsModal"
-  ).style.display =
-    "block";
-
-
-  document.body.style.overflow =
-    "hidden";
-
-}
 
 
 /* =====================================================
@@ -2209,7 +2223,7 @@ function escapeAttribute(
 
 
 /* =====================================================
-   SUPABASE REALTIME
+   REALTIME
 ===================================================== */
 
 db
