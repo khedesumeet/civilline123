@@ -3,2256 +3,483 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>CIVILLINE | Latest News</title>
-
-<!-- Default social preview -->
+<meta name="description" content="CIVILLINE - Latest local news, public problems and protest news.">
 <meta property="og:site_name" content="CIVILLINE">
 <meta property="og:title" content="CIVILLINE | Latest News">
 <meta property="og:description" content="Latest local news, public problems and protest news from CIVILLINE.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://civilline.online/">
-<meta property="og:image" content="https://civilline.online/og-image.jpg">
-
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CIVILLINE | Latest News">
 <meta name="twitter:description" content="Latest local news, public problems and protest news from CIVILLINE.">
-<meta name="twitter:image" content="https://civilline.online/og-image.jpg">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+/* GLOBAL */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;color:#111827}
+
+/* HEADER (animated) */
+header{position:sticky;top:0;z-index:1000;color:#fff;padding:16px 20px;
+  background:linear-gradient(120deg,#0b1020,#111827,#1e3a8a,#111827,#0b1020);
+  background-size:300% 300%;animation:headerIn .7s ease both,bgShift 14s ease-in-out infinite;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);transition:padding .3s ease}
+header::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;
+  background:linear-gradient(90deg,transparent,#f59e0b,#ef4444,#f59e0b,transparent);
+  background-size:200% 100%;animation:sweep 3.5s linear infinite}
+header.scrolled{padding:8px 20px}
+header.scrolled .tagline{max-height:0;opacity:0;margin-top:0}
+header.scrolled .logo{font-size:22px}
+.header-inner{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{font-size:30px;font-weight:800;letter-spacing:2px;transition:font-size .3s ease}
+.logo span{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 3s linear infinite}
+.tagline{font-size:12px;color:#94a3b8;margin-top:4px;max-height:20px;overflow:hidden;
+  transition:max-height .3s ease,opacity .3s ease,margin .3s ease}
+.tagline b{font-weight:600;animation:tagPulse 6s infinite}
+.tagline b:nth-child(2){animation-delay:2s}
+.tagline b:nth-child(3){animation-delay:4s}
+.live{display:flex;align-items:center;gap:6px;background:rgba(220,38,38,.18);border:1px solid rgba(248,113,113,.5);
+  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold;letter-spacing:1px;color:#fecaca}
+.live i{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulse 1.4s infinite}
+.header-right{display:flex;align-items:center;gap:14px}
+.date-chip{font-size:12px;color:#cbd5e1;white-space:nowrap}
+.search-box{width:260px;transition:width .3s ease}
+.search-box:focus-within{width:340px}
+.search-box input{width:100%;padding:10px 14px;border:2px solid transparent;outline:none;border-radius:10px;font-size:14px;transition:border-color .2s,box-shadow .2s}
+.search-box input:focus{border-color:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.25)}
+
+@keyframes headerIn{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes sweep{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes shimmer{from{background-position:0% 0}to{background-position:200% 0}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}70%{box-shadow:0 0 0 8px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+@keyframes tagPulse{0%,33%,100%{color:#94a3b8}10%,25%{color:#fbbf24}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* LANGUAGE SWITCH */
+.lang-select{padding:9px 10px;border:2px solid transparent;border-radius:10px;font-size:13px;font-weight:bold;background:#fff;color:#111827;cursor:pointer;outline:none}
+.lang-select:focus{border-color:#f59e0b}
+
+/* BREAKING NEWS */
+.breaking{background:#dc2626;color:#fff;height:42px;display:flex;align-items:center;overflow:hidden}
+.breaking-title{background:#991b1b;height:100%;display:flex;align-items:center;padding:0 18px;font-weight:bold;font-size:13px;z-index:2;white-space:nowrap}
+.breaking-window{overflow:hidden;flex:1}
+.breaking-track{display:flex;width:max-content;animation:ticker 45s linear infinite}
+.breaking-track:hover{animation-play-state:paused}
+.breaking-item{display:flex;align-items:center;white-space:nowrap;margin-right:45px;font-size:14px;cursor:pointer}
+.breaking-dot{width:7px;height:7px;background:#fff;border-radius:50%;margin-right:8px}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* MAIN */
+.container{max-width:1200px;margin:25px auto;padding:0 20px}
+.categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.category-btn{border:1px solid #d1d5db;background:#fff;padding:9px 16px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
+.category-btn:hover{background:#f3f4f6;transform:translateY(-1px)}
+.category-btn.active{background:#111827;color:#fff;border-color:#111827}
+
+/* GRID + CARDS */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.news-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:.2s;animation:fadeUp .5s ease both}
+.news-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.14)}
+.news-image{width:100%;height:210px;object-fit:cover;background:#e5e7eb;cursor:pointer;display:block}
+.news-content{padding:16px}
+.news-category{display:inline-block;font-size:11px;font-weight:bold;color:#2563eb;text-transform:uppercase;margin-bottom:8px}
+.news-title{font-size:18px;line-height:1.35;margin-bottom:8px;cursor:pointer}
+.news-title:hover{color:#2563eb}
+.news-excerpt{color:#6b7280;font-size:13px;line-height:1.5;cursor:pointer}
+.news-meta{margin-top:12px;font-size:11px;color:#9ca3af;display:flex;justify-content:space-between;gap:8px}
+.news-actions{margin-top:14px;display:flex;gap:8px}
+.read-btn{flex:1;border:none;background:#111827;color:#fff;padding:10px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:bold}
+.read-btn:hover{background:#374151}
+.share-btn{border:1px solid #d1d5db;background:#fff;padding:10px 13px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:bold}
+.share-btn:hover{background:#f3f4f6}
+.empty,.loading{grid-column:1/-1;text-align:center;color:#6b7280}
+.empty{background:#fff;padding:40px;border-radius:10px}
+.loading{padding:50px}
+
+/* MODAL */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:3000;overflow-y:auto;padding:30px 15px}
+.modal-box{max-width:850px;margin:auto;background:#fff;border-radius:14px;overflow:hidden;position:relative;animation:fadeUp .3s ease both}
+.modal-close{position:absolute;top:12px;right:15px;width:36px;height:36px;border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:22px;cursor:pointer;z-index:5}
+.modal-image{width:100%;max-height:450px;object-fit:cover;background:#e5e7eb;display:block}
+.modal-content{padding:25px}
+.modal-category{font-size:12px;color:#2563eb;font-weight:bold;text-transform:uppercase;margin-bottom:8px}
+.modal-title{font-size:30px;line-height:1.2;margin-bottom:12px}
+.modal-meta{font-size:12px;color:#6b7280;margin-bottom:20px}
+.modal-body{font-size:15px;line-height:1.7;color:#374151;white-space:pre-line}
+.authority{margin-top:20px;padding:15px;background:#f3f4f6;border-left:4px solid #2563eb;border-radius:6px}
+.authority-title{font-weight:bold;margin-bottom:5px}
+.modal-actions{display:flex;gap:10px;margin-top:22px}
+.modal-share-btn{flex:1;border:none;background:#2563eb;color:#fff;padding:12px;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer}
+.modal-share-btn:hover{background:#1d4ed8}
+.modal-copy-btn{flex:1;border:1px solid #d1d5db;background:#fff;padding:12px;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer}
+.modal-copy-btn:hover{background:#f3f4f6}
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+/* FOOTER */
+footer{background:#111827;color:#cbd5e1;margin-top:40px;padding:25px 20px;text-align:center;font-size:12px}
+.footer-title{color:#fff;font-size:18px;font-weight:bold;margin-bottom:6px}
+.footer-disclosure{margin-top:8px;color:#94a3b8}
 
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f4f6f8;
-  color:#111827;
-}
-
-/* ================= HEADER ================= */
-
-header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:#111827;
-  color:white;
-  padding:14px 20px;
-  box-shadow:0 2px 8px rgba(0,0,0,.2);
-}
-
-.header-inner{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.logo{
-  font-size:26px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.tagline{
-  font-size:12px;
-  color:#cbd5e1;
-  margin-top:3px;
-}
-
-.search-box{
-  width:280px;
-}
-
-.search-box input{
-  width:100%;
-  padding:10px 14px;
-  border:none;
-  outline:none;
-  border-radius:8px;
-  font-size:14px;
-}
-
-/* ================= BREAKING ================= */
-
-.breaking{
-  background:#dc2626;
-  color:white;
-  height:42px;
-  display:flex;
-  align-items:center;
-  overflow:hidden;
-}
-
-.breaking-title{
-  background:#991b1b;
-  height:100%;
-  display:flex;
-  align-items:center;
-  padding:0 18px;
-  font-weight:bold;
-  font-size:13px;
-  z-index:2;
-  white-space:nowrap;
-}
-
-.breaking-window{
-  overflow:hidden;
-  flex:1;
-}
-
-.breaking-track{
-  display:flex;
-  width:max-content;
-  animation:breakingMove 35s linear infinite;
-}
-
-.breaking-item{
-  display:flex;
-  align-items:center;
-  white-space:nowrap;
-  margin-right:45px;
-  font-size:14px;
-  cursor:pointer;
-}
-
-.breaking-dot{
-  width:7px;
-  height:7px;
-  background:white;
-  border-radius:50%;
-  margin-right:8px;
-}
-
-@keyframes breakingMove{
-  0%{
-    transform:translateX(100%);
-  }
-  100%{
-    transform:translateX(-100%);
-  }
-}
-
-/* ================= SPONSORED ================= */
-
-.sponsor{
-  background:white;
-  border-bottom:1px solid #e5e7eb;
-  padding:15px 20px;
-}
-
-.sponsor-inner{
-  max-width:1200px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.sponsor-left{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.sponsor-img{
-  width:150px;
-  height:150px;
-  object-fit:cover;
-  border-radius:10px;
-  display:block;
-}
-
-.sponsor-label{
-  font-size:11px;
-  color:#6b7280;
-  text-transform:uppercase;
-  letter-spacing:.8px;
-  margin-bottom:4px;
-}
-
-.sponsor-text{
-  font-size:17px;
-  font-weight:bold;
-  color:#111827;
-}
-
-.ad-countdown{
-  font-size:12px;
-  color:#dc2626;
-  margin-top:5px;
-  font-weight:600;
-}
-
-/* CANCEL REDIRECT */
-
-.cancel-redirect-btn{
-  margin-top:8px;
-  border:1px solid #dc2626;
-  background:white;
-  color:#dc2626;
-  padding:6px 10px;
-  border-radius:6px;
-  font-size:11px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.cancel-redirect-btn:hover{
-  background:#dc2626;
-  color:white;
-}
-
-.cancel-redirect-btn.cancelled{
-  border-color:#16a34a;
-  color:#16a34a;
-  background:white;
-  cursor:default;
-}
-
-.sponsor-btn{
-  background:#111827;
-  color:white;
-  text-decoration:none;
-  padding:11px 18px;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  white-space:nowrap;
-}
-
-.sponsor-btn:hover{
-  background:#374151;
-}
-
-/* ================= MAIN ================= */
-
-.container{
-  max-width:1200px;
-  margin:25px auto;
-  padding:0 20px;
-}
-
-/* ================= CATEGORY ================= */
-
-.categories{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-.category-btn{
-  border:1px solid #d1d5db;
-  background:white;
-  padding:9px 15px;
-  border-radius:20px;
-  cursor:pointer;
-  font-size:13px;
-}
-
-.category-btn.active{
-  background:#111827;
-  color:white;
-  border-color:#111827;
-}
-
-/* ================= NEWS GRID ================= */
-
-.news-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-}
-
-.news-card{
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-  transition:.2s;
-}
-
-.news-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 5px 16px rgba(0,0,0,.12);
-}
-
-.news-image{
-  width:100%;
-  height:210px;
-  object-fit:cover;
-  background:#e5e7eb;
-  cursor:pointer;
-}
-
-.news-content{
-  padding:16px;
-}
-
-.news-category{
-  display:inline-block;
-  font-size:11px;
-  font-weight:bold;
-  color:#2563eb;
-  text-transform:uppercase;
-  margin-bottom:8px;
-}
-
-.news-title{
-  font-size:18px;
-  line-height:1.35;
-  margin-bottom:8px;
-  color:#111827;
-  cursor:pointer;
-}
-
-.news-excerpt{
-  color:#6b7280;
-  font-size:13px;
-  line-height:1.5;
-  cursor:pointer;
-}
-
-.news-meta{
-  margin-top:12px;
-  font-size:11px;
-  color:#9ca3af;
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-}
-
-/* ================= CARD ACTIONS ================= */
-
-.news-actions{
-  margin-top:14px;
-  display:flex;
-  gap:8px;
-}
-
-.read-btn{
-  flex:1;
-  border:none;
-  background:#111827;
-  color:white;
-  padding:9px 10px;
-  border-radius:7px;
-  cursor:pointer;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.read-btn:hover{
-  background:#374151;
-}
-
-.share-btn{
-  border:1px solid #d1d5db;
-  background:white;
-  color:#111827;
-  padding:9px 13px;
-  border-radius:7px;
-  cursor:pointer;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.share-btn:hover{
-  background:#f3f4f6;
-}
-
-/* ================= EMPTY ================= */
-
-.empty{
-  grid-column:1/-1;
-  background:white;
-  padding:40px;
-  text-align:center;
-  border-radius:10px;
-  color:#6b7280;
-}
-
-.loading{
-  grid-column:1/-1;
-  text-align:center;
-  padding:50px;
-  color:#6b7280;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  z-index:3000;
-  overflow-y:auto;
-  padding:30px 15px;
-}
-
-.modal-box{
-  max-width:850px;
-  margin:auto;
-  background:white;
-  border-radius:14px;
-  overflow:hidden;
-  position:relative;
-}
-
-.modal-close{
-  position:absolute;
-  top:12px;
-  right:15px;
-  width:36px;
-  height:36px;
-  border:none;
-  border-radius:50%;
-  background:rgba(0,0,0,.65);
-  color:white;
-  font-size:22px;
-  cursor:pointer;
-  z-index:5;
-}
-
-.modal-image{
-  width:100%;
-  max-height:450px;
-  object-fit:cover;
-  background:#e5e7eb;
-}
-
-.modal-content{
-  padding:25px;
-}
-
-.modal-category{
-  font-size:12px;
-  color:#2563eb;
-  font-weight:bold;
-  text-transform:uppercase;
-  margin-bottom:8px;
-}
-
-.modal-title{
-  font-size:30px;
-  line-height:1.2;
-  margin-bottom:12px;
-}
-
-.modal-meta{
-  font-size:12px;
-  color:#6b7280;
-  margin-bottom:20px;
-}
-
-.modal-body{
-  font-size:15px;
-  line-height:1.7;
-  color:#374151;
-  white-space:pre-line;
-}
-
-/* ================= MODAL SHARE ================= */
-
-.modal-actions{
-  display:flex;
-  gap:10px;
-  margin-top:22px;
-}
-
-.modal-share-btn{
-  flex:1;
-  border:none;
-  background:#2563eb;
-  color:white;
-  padding:12px;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.modal-share-btn:hover{
-  background:#1d4ed8;
-}
-
-.modal-copy-btn{
-  flex:1;
-  border:1px solid #d1d5db;
-  background:white;
-  color:#111827;
-  padding:12px;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.modal-copy-btn:hover{
-  background:#f3f4f6;
-}
-
-/* ================= AUTHORITY ================= */
-
-.authority{
-  margin-top:20px;
-  padding:15px;
-  background:#f3f4f6;
-  border-left:4px solid #2563eb;
-  border-radius:6px;
-}
-
-.authority-title{
-  font-weight:bold;
-  margin-bottom:5px;
-}
-
-/* ================= MODAL SPONSOR ================= */
-
-.modal-sponsor{
-  margin-top:25px;
-  padding-top:20px;
-  border-top:1px solid #e5e7eb;
-}
-
-.modal-sponsor-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.modal-sponsor-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.modal-sponsor-img{
-  width:90px;
-  height:90px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-/* ================= FOOTER ================= */
-
-footer{
-  background:#111827;
-  color:#cbd5e1;
-  margin-top:40px;
-  padding:25px 20px;
-  text-align:center;
-  font-size:12px;
-}
-
-.footer-title{
-  color:white;
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:6px;
-}
-
-.footer-disclosure{
-  margin-top:8px;
-  color:#94a3b8;
-}
-
-/* ================= MOBILE ================= */
-
+/* RESPONSIVE */
 @media(max-width:850px){
-
-  .header-inner{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .search-box{
-    width:100%;
-  }
-
-  .news-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .sponsor-img{
-    width:120px;
-    height:120px;
-  }
-
+  .header-inner{flex-direction:column;align-items:stretch;gap:12px}
+  .header-right{justify-content:space-between}
+  .search-box,.search-box:focus-within{width:100%}
+  .news-grid{grid-template-columns:repeat(2,1fr)}
 }
-
 @media(max-width:600px){
-
-  header{
-    padding:12px 15px;
-  }
-
-  .logo{
-    font-size:23px;
-  }
-
-  .container{
-    padding:0 12px;
-    margin-top:18px;
-  }
-
-  .news-grid{
-    grid-template-columns:1fr;
-  }
-
-  .news-image{
-    height:220px;
-  }
-
-  .breaking-title{
-    padding:0 10px;
-    font-size:11px;
-  }
-
-  .breaking-item{
-    font-size:12px;
-  }
-
-  .sponsor{
-    padding:12px;
-  }
-
-  .sponsor-inner{
-    gap:10px;
-  }
-
-  .sponsor-img{
-    width:100px;
-    height:100px;
-  }
-
-  .sponsor-text{
-    font-size:14px;
-  }
-
-  .sponsor-btn{
-    padding:9px 12px;
-    font-size:12px;
-  }
-
-  .modal{
-    padding:10px;
-  }
-
-  .modal-content{
-    padding:18px;
-  }
-
-  .modal-title{
-    font-size:24px;
-  }
-
-  .modal-actions{
-    flex-direction:column;
-  }
-
-  .modal-sponsor-inner{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .modal-sponsor .sponsor-btn{
-    text-align:center;
-  }
-
+  header{padding:12px 15px}
+  .logo{font-size:24px}
+  .date-chip{display:none}
+  .container{padding:0 12px;margin-top:18px}
+  .news-grid{grid-template-columns:1fr}
+  .news-image{height:220px}
+  .breaking-title{padding:0 10px;font-size:11px}
+  .breaking-item{font-size:12px}
+  .modal{padding:10px}
+  .modal-content{padding:18px}
+  .modal-title{font-size:24px}
+  .modal-actions{flex-direction:column}
 }
-
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
-
-<header>
-
+<header id="siteHeader">
   <div class="header-inner">
-
-    <div>
-
-      <div class="logo">
-        CIVILLINE
+    <div class="brand">
+      <div>
+        <div class="logo">CIVIL<span>LINE</span></div>
+        <div class="tagline"><b data-i18n="tag1">Local News</b> • <b data-i18n="tag2">Public Problems</b> • <b data-i18n="tag3">Protest</b></div>
       </div>
-
-      <div class="tagline">
-        Local News • Public Problems • Protest
+      <span class="live"><i></i><span data-i18n="live">LIVE</span></span>
+    </div>
+    <div class="header-right">
+      <div class="date-chip" id="dateChip"></div>
+      <select class="lang-select" id="langSelect" onchange="setLang(this.value)" aria-label="Language">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="bn">বাংলা</option>
+        <option value="ta">தமிழ்</option>
+      </select>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search news..." data-i18n-ph="search" oninput="filterNews()">
       </div>
-
     </div>
-
-    <div class="search-box">
-
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search news..."
-        oninput="filterNews()"
-      >
-
-    </div>
-
   </div>
-
 </header>
 
-
-<!-- ================= BREAKING ================= -->
-
 <div class="breaking">
-
-  <div class="breaking-title">
-    BREAKING
-  </div>
-
+  <div class="breaking-title" data-i18n="breaking">BREAKING</div>
   <div class="breaking-window">
-
-    <div
-      id="breakingTrack"
-      class="breaking-track"
-    >
-
-      <div class="breaking-item">
-
-        <span class="breaking-dot"></span>
-
-        Loading latest news...
-
-      </div>
-
+    <div id="breakingTrack" class="breaking-track">
+      <div class="breaking-item"><span class="breaking-dot"></span>Loading latest news...</div>
     </div>
-
   </div>
-
 </div>
-
-
-<!-- ================= SPONSORED ================= -->
-
-<div class="sponsor">
-
-  <div class="sponsor-inner">
-
-    <div class="sponsor-left">
-
-      <a
-        href="https://link.amazon/B0ieu2BTI"
-        target="_blank"
-        rel="sponsored noopener"
-      >
-
-        <img
-          class="sponsor-img"
-          src="https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg"
-          alt="Sponsored offer"
-        >
-
-      </a>
-
-      <div>
-
-        <div class="sponsor-label">
-          Sponsored
-        </div>
-
-        <div class="sponsor-text">
-          🔥 Featured offer
-        </div>
-
-        <div
-          id="adCountdown"
-          class="ad-countdown"
-        >
-          Redirecting in 5 seconds...
-        </div>
-
-        <button
-          id="cancelRedirectBtn"
-          class="cancel-redirect-btn"
-          onclick="cancelAdRedirect()"
-        >
-          ✕ Cancel Redirect
-        </button>
-
-      </div>
-
-    </div>
-
-    <a
-      class="sponsor-btn"
-      href="https://link.amazon/B0ieu2BTI"
-      target="_blank"
-      rel="sponsored noopener"
-    >
-      Chat Now
-    </a>
-
-  </div>
-
-</div>
-
-
-<!-- ================= MAIN ================= -->
 
 <main class="container">
-
   <div class="categories">
-
-    <button
-      class="category-btn active"
-      onclick="setCategory('All',this)"
-    >
-      All
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="setCategory('Common News',this)"
-    >
-      Common News
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="setCategory('Protest',this)"
-    >
-      Protest
-    </button>
-
-    <button
-      class="category-btn"
-      onclick="setCategory('Public Problem',this)"
-    >
-      Public Problem
-    </button>
-
+    <button class="category-btn active" data-i18n="all" onclick="setCategory('All',this)">All</button>
+    <button class="category-btn" data-i18n="common" onclick="setCategory('Common News',this)">Common News</button>
+    <button class="category-btn" data-i18n="protest" onclick="setCategory('Protest',this)">Protest</button>
+    <button class="category-btn" data-i18n="public" onclick="setCategory('Public Problem',this)">Public Problem</button>
   </div>
-
-
-  <div
-    id="newsGrid"
-    class="news-grid"
-  >
-
-    <div class="loading">
-      Loading latest news...
-    </div>
-
-  </div>
-
+  <div id="newsGrid" class="news-grid"><div class="loading">Loading latest news...</div></div>
 </main>
 
-
-<!-- ================= NEWS MODAL ================= -->
-
-<div
-  id="newsModal"
-  class="modal"
-  onclick="closeOutside(event)"
->
-
+<div id="newsModal" class="modal" onclick="closeOutside(event)">
   <div class="modal-box">
-
-    <button
-      class="modal-close"
-      onclick="closeModal()"
-    >
-      ×
-    </button>
-
-
-    <img
-      id="modalImage"
-      class="modal-image"
-      src=""
-      alt="News image"
-    >
-
-
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <img id="modalImage" class="modal-image" src="" alt="News image">
     <div class="modal-content">
-
-      <div
-        id="modalCategory"
-        class="modal-category"
-      ></div>
-
-
-      <h1
-        id="modalTitle"
-        class="modal-title"
-      ></h1>
-
-
-      <div
-        id="modalMeta"
-        class="modal-meta"
-      ></div>
-
-
-      <div
-        id="modalBody"
-        class="modal-body"
-      ></div>
-
-
-      <div
-        id="authorityBox"
-        class="authority"
-        style="display:none"
-      >
-
-        <div class="authority-title">
-          Authority Response
-        </div>
-
+      <div id="modalCategory" class="modal-category"></div>
+      <h1 id="modalTitle" class="modal-title"></h1>
+      <div id="modalMeta" class="modal-meta"></div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="authorityBox" class="authority" style="display:none">
+        <div class="authority-title" data-i18n="authority">Authority Response</div>
         <div id="modalAuthority"></div>
-
       </div>
-
-
-      <!-- SHARE BUTTONS -->
-
       <div class="modal-actions">
-
-        <button
-          class="modal-share-btn"
-          onclick="shareCurrentNews()"
-        >
-          📤 Share News
-        </button>
-
-        <button
-          class="modal-copy-btn"
-          onclick="copyCurrentNewsLink()"
-        >
-          🔗 Copy Link
-        </button>
-
+        <button class="modal-share-btn" data-i18n="shareNews" onclick="shareCurrentNews()">📤 Share News</button>
+        <button class="modal-copy-btn" data-i18n="copyLink" onclick="copyCurrentNewsLink()">🔗 Copy Link</button>
       </div>
-
-
-      <!-- SPONSOR -->
-
-      <div class="modal-sponsor">
-
-        <div class="modal-sponsor-inner">
-
-          <div class="modal-sponsor-left">
-
-            <img
-              class="modal-sponsor-img"
-              src="https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg"
-              alt="Sponsored offer"
-            >
-
-            <div>
-
-              <div class="sponsor-label">
-                Sponsored
-              </div>
-
-              <div class="sponsor-text">
-                🔥 Featured offer
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <a
-            class="sponsor-btn"
-            href="https://link.amazon/B0ieu2BTI"
-            target="_blank"
-            rel="sponsored noopener"
-          >
-            Chat Now
-          </a>
-
-        </div>
-
-      </div>
-
     </div>
-
   </div>
-
 </div>
 
-
-<!-- ================= FOOTER ================= -->
-
 <footer>
-
-  <div class="footer-title">
-    CIVILLINE
-  </div>
-
-  <div>
-    Local News • Public Problems • Protest
-  </div>
-
-  <div class="footer-disclosure">
-    As an Amazon Associate, CIVILLINE may earn from qualifying purchases.
-  </div>
-
-  <div class="footer-disclosure">
-    © 2026 CIVILLINE. All rights reserved.
-  </div>
-
+  <div class="footer-title">CIVILLINE</div>
+  <div data-i18n="tagline">Local News • Public Problems • Protest</div>
+  <div class="footer-disclosure" data-i18n="rights">© 2026 CIVILLINE. All rights reserved.</div>
 </footer>
 
-
 <script>
+/* SUPABASE */
+const SUPABASE_URL = "https://aoicywtjwvqzzhmxkxvs.supabase.co";
+const SUPABASE_KEY = "sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+let allNews = [], currentCategory = "All", currentNews = null;
 
-const SUPABASE_URL =
-  "https://aoicywtjwvqzzhmxkxvs.supabase.co";
+/* LANGUAGES (interface text only; news text stays as written in the database) */
+const LOCALES = { en:"en-IN", hi:"hi-IN", bn:"bn-IN", ta:"ta-IN" };
+const I18N = {
+  en:{tag1:"Local News",tag2:"Public Problems",tag3:"Protest",live:"LIVE",search:"Search news...",breaking:"BREAKING",all:"All",common:"Common News",protest:"Protest",public:"Public Problem",news:"News",authority:"Authority Response",shareNews:"📤 Share News",copyLink:"🔗 Copy Link",read:"Read Full News",share:"📤 Share",noNews:"No news found.",noBreaking:"No breaking news available",unable:"Unable to load news.",tryLater:"Please try again later.",copied:t("copied"),loading:"Loading latest news...",india:"India",rights:"© 2026 CIVILLINE. All rights reserved."},
+  hi:{tag1:"स्थानीय समाचार",tag2:"जन समस्याएं",tag3:"विरोध प्रदर्शन",live:"लाइव",search:"समाचार खोजें...",breaking:"ताज़ा खबर",all:"सभी",common:"सामान्य समाचार",protest:"विरोध प्रदर्शन",public:"जन समस्या",news:"समाचार",authority:"प्राधिकरण का जवाब",shareNews:"📤 समाचार शेयर करें",copyLink:"🔗 लिंक कॉपी करें",read:"पूरी खबर पढ़ें",share:"📤 शेयर",noNews:"कोई समाचार नहीं मिला।",noBreaking:"कोई ताज़ा खबर उपलब्ध नहीं",unable:"समाचार लोड नहीं हो सका।",tryLater:"कृपया बाद में पुनः प्रयास करें।",copied:"समाचार लिंक कॉपी हो गया!",loading:"ताज़ा समाचार लोड हो रहे हैं...",india:"भारत",rights:"© 2026 CIVILLINE. सर्वाधिकार सुरक्षित।"},
+  bn:{tag1:"স্থানীয় সংবাদ",tag2:"জনসমস্যা",tag3:"বিক্ষোভ",live:"লাইভ",search:"সংবাদ খুঁজুন...",breaking:"ব্রেকিং",all:"সব",common:"সাধারণ সংবাদ",protest:"বিক্ষোভ",public:"জনসমস্যা",news:"সংবাদ",authority:"কর্তৃপক্ষের প্রতিক্রিয়া",shareNews:"📤 সংবাদ শেয়ার করুন",copyLink:"🔗 লিংক কপি করুন",read:"সম্পূর্ণ খবর পড়ুন",share:"📤 শেয়ার",noNews:"কোনো সংবাদ পাওয়া যায়নি।",noBreaking:"কোনো ব্রেকিং নিউজ নেই",unable:"সংবাদ লোড করা যায়নি।",tryLater:"অনুগ্রহ করে পরে আবার চেষ্টা করুন।",copied:"সংবাদের লিংক কপি হয়েছে!",loading:"সর্বশেষ সংবাদ লোড হচ্ছে...",india:"ভারত",rights:"© 2026 CIVILLINE. সর্বস্বত্ব সংরক্ষিত।"},
+  ta:{tag1:"உள்ளூர் செய்திகள்",tag2:"பொதுப் பிரச்சினைகள்",tag3:"போராட்டம்",live:"நேரலை",search:"செய்திகளைத் தேடுங்கள்...",breaking:"முக்கியச் செய்தி",all:"அனைத்தும்",common:"பொதுச் செய்திகள்",protest:"போராட்டம்",public:"பொதுப் பிரச்சினை",news:"செய்தி",authority:"அதிகாரிகளின் பதில்",shareNews:"📤 செய்தியைப் பகிரவும்",copyLink:"🔗 இணைப்பை நகலெடு",read:"முழுச் செய்தியைப் படிக்க",share:"📤 பகிர்",noNews:"செய்திகள் எதுவும் இல்லை.",noBreaking:"முக்கியச் செய்திகள் இல்லை",unable:"செய்திகளை ஏற்ற முடியவில்லை.",tryLater:"பிறகு மீண்டும் முயற்சிக்கவும்.",copied:"செய்தி இணைப்பு நகலெடுக்கப்பட்டது!",loading:"சமீபத்திய செய்திகள் ஏற்றப்படுகின்றன...",india:"இந்தியா",rights:"© 2026 CIVILLINE. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை."}
+};
+Object.values(I18N).forEach(L => L.tagline = [L.tag1, L.tag2, L.tag3].join(" • "));
 
-const SUPABASE_KEY =
-  "sb_publishable_8oZE-6157A8F7sRZEWCrhw_8OQ4yz0W";
+let LANG = "en";
+try{ const saved = localStorage.getItem("civilline_lang"); if(I18N[saved]) LANG = saved; }catch(e){}
 
-const db =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const t = key => (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key;
+const CAT_KEYS = { "Common News":"common", "Protest":"protest", "Public Problem":"public", "News":"news" };
+const catLabel = c => CAT_KEYS[c] ? t(CAT_KEYS[c]) : (c || t("news"));
 
+/* Built-in placeholder (no external service needed) */
+const PLACEHOLDER = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><rect width="800" height="500" fill="#111827"/>' +
+  '<text x="400" y="265" font-size="56" font-weight="bold" font-family="Arial" fill="#f59e0b" text-anchor="middle">CIVILLINE</text></svg>');
 
-/* =====================================================
-   SPONSOR
-===================================================== */
+/* HEADER ANIMATION: shrink on scroll + date */
+const header = document.getElementById("siteHeader");
+window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 40), { passive:true });
+/* date chip is set in applyLang() */
 
-const AFFILIATE_LINK =
-  "https://link.amazon/B0ieu2BTI";
-
-const SPONSOR_IMAGE =
-  "https://i.ibb.co/wZkjZvC2/we-vibe-toys-4-S4h-B8i-FFo-Y-unsplash.jpg";
-
-
-/* =====================================================
-   GLOBAL
-===================================================== */
-
-let allNews = [];
-
-let currentCategory = "All";
-
-let currentNews = null;
-
-let redirectTimer = null;
-
-let redirectCancelled = false;
-
-
-/* =====================================================
-   CANCEL REDIRECT
-===================================================== */
-
-function cancelAdRedirect(){
-
-  redirectCancelled = true;
-
-  if(redirectTimer){
-
-    clearInterval(
-      redirectTimer
-    );
-
-  }
-
-  const countdown =
-    document.getElementById(
-      "adCountdown"
-    );
-
-  const button =
-    document.getElementById(
-      "cancelRedirectBtn"
-    );
-
-  countdown.textContent =
-    "Automatic redirect cancelled.";
-
-  countdown.style.color =
-    "#16a34a";
-
-  button.textContent =
-    "✓ Redirect Cancelled";
-
-  button.classList.add(
-    "cancelled"
-  );
-
-  button.disabled =
-    true;
-
+/* HELPERS */
+const byId = id => document.getElementById(id);
+const findNews = id => allNews.find(n => String(n.id) === String(id));
+function escapeHtml(v){
+  if(v === null || v === undefined) return "";
+  return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+const escapeAttribute = escapeHtml;
+function formatDate(date){
+  if(!date) return "";
+  return new Date(date).toLocaleDateString(LOCALES[LANG] || "en-IN", { day:"2-digit", month:"short", year:"numeric" });
 }
 
-
-/* =====================================================
-   5 SECOND REDIRECT
-===================================================== */
-
-(function(){
-
-  let seconds = 5;
-
-  const countdown =
-    document.getElementById(
-      "adCountdown"
-    );
-
-  redirectTimer =
-    setInterval(function(){
-
-      if(redirectCancelled){
-
-        clearInterval(
-          redirectTimer
-        );
-
-        return;
-
-      }
-
-      seconds--;
-
-      if(seconds > 0){
-
-        countdown.textContent =
-          "Redirecting in " +
-          seconds +
-          " seconds...";
-
-      }
-      else{
-
-        clearInterval(
-          redirectTimer
-        );
-
-        if(!redirectCancelled){
-
-          countdown.textContent =
-            "Opening sponsored offer...";
-
-          window.location.href =
-            AFFILIATE_LINK;
-
-        }
-
-      }
-
-    },1000);
-
-})();
-
-
-/* =====================================================
-   LOAD NEWS
-===================================================== */
-
+/* LOAD NEWS */
 async function loadNews(){
+  const grid = byId("newsGrid");
+  if(!allNews.length) grid.innerHTML = `<div class="loading">${t("loading")}</div>`;
 
-  const grid =
-    document.getElementById(
-      "newsGrid"
-    );
-
-  grid.innerHTML =
-    '<div class="loading">Loading latest news...</div>';
-
-
-  const {
-    data,
-    error
-  } = await db
-    .from("news")
-    .select(`
-      id,
-      title,
-      category,
-      location,
-      excerpt,
-      content,
-      authority_response,
-      status,
-      image_url,
-      created_at
-    `)
-    .eq(
-      "published",
-      true
-    )
-    .order(
-      "created_at",
-      {
-        ascending:false
-      }
-    );
-
+  const { data, error } = await db.from("news")
+    .select("id,title,category,location,excerpt,content,authority_response,status,image_url,created_at")
+    .eq("published", true)
+    .order("created_at", { ascending:false });
 
   if(error){
-
-    console.error(
-      "Supabase error:",
-      error
-    );
-
-    grid.innerHTML = `
-      <div class="empty">
-        Unable to load news.
-        <br><br>
-        Please try again later.
-      </div>
-    `;
-
+    console.error("Supabase error:", error);
+    grid.innerHTML = `<div class="empty">${t("unable")}<br><br>${t("tryLater")}</div>`;
     return;
-
   }
-
-
-  allNews =
-    data || [];
-
+  allNews = data || [];
   updateBreakingNews();
-
   renderNews();
-
-  openNewsFromURL();
-
+  if(!currentNews) openNewsFromURL();
 }
 
-
-/* =====================================================
-   BREAKING NEWS
-===================================================== */
-
+/* BREAKING NEWS */
 function updateBreakingNews(){
-
-  const track =
-    document.getElementById(
-      "breakingTrack"
-    );
-
-
+  const track = byId("breakingTrack");
   if(!allNews.length){
-
-    track.innerHTML = `
-      <div class="breaking-item">
-        <span class="breaking-dot"></span>
-        No breaking news available
-      </div>
-    `;
-
+    track.innerHTML = `<div class="breaking-item"><span class="breaking-dot"></span>${t("noBreaking")}</div>`;
     return;
-
   }
+  const html = allNews.slice(0,10).map(n =>
+    `<div class="breaking-item" onclick="openNews('${escapeAttribute(n.id)}')"><span class="breaking-dot"></span>${escapeHtml(n.title)}</div>`
+  ).join("");
+  track.innerHTML = html + html;
+}
 
+/* RENDER NEWS */
+function renderNews(){
+  const grid = byId("newsGrid");
+  const search = byId("searchInput").value.trim().toLowerCase();
 
-  const latest =
-    allNews.slice(
-      0,
-      10
-    );
-
-
-  let html = "";
-
-
-  latest.forEach(function(news){
-
-    html += `
-
-      <div
-        class="breaking-item"
-        onclick="openNews('${escapeAttribute(news.id)}')"
-      >
-
-        <span class="breaking-dot"></span>
-
-        ${escapeHtml(news.title)}
-
-      </div>
-
-    `;
-
+  const filtered = allNews.filter(n => {
+    const categoryMatch = currentCategory === "All" || n.category === currentCategory;
+    const text = ((n.title||"") + " " + (n.excerpt||"") + " " + (n.location||"") + " " + (n.category||"")).toLowerCase();
+    return categoryMatch && (!search || text.includes(search));
   });
 
-
-  track.innerHTML =
-    html + html;
-
-}
-
-
-/* =====================================================
-   RENDER NEWS
-===================================================== */
-
-function renderNews(){
-
-  const grid =
-    document.getElementById(
-      "newsGrid"
-    );
-
-  const search =
-    document
-      .getElementById(
-        "searchInput"
-      )
-      .value
-      .trim()
-      .toLowerCase();
-
-
-  const filtered =
-    allNews.filter(function(news){
-
-      const categoryMatch =
-        currentCategory === "All" ||
-        news.category ===
-        currentCategory;
-
-
-      const searchText =
-        (
-          (news.title || "") +
-          " " +
-          (news.excerpt || "") +
-          " " +
-          (news.location || "") +
-          " " +
-          (news.category || "")
-        ).toLowerCase();
-
-
-      const searchMatch =
-        !search ||
-        searchText.includes(
-          search
-        );
-
-
-      return (
-        categoryMatch &&
-        searchMatch
-      );
-
-    });
-
-
   if(!filtered.length){
-
-    grid.innerHTML = `
-      <div class="empty">
-        No news found.
-      </div>
-    `;
-
+    grid.innerHTML = `<div class="empty">${t("noNews")}</div>`;
     return;
-
   }
 
-
-  grid.innerHTML =
-    filtered.map(function(news){
-
-      const image =
-        news.image_url ||
-        "https://via.placeholder.com/800x500?text=CIVILLINE";
-
-
-      return `
-
-        <article class="news-card">
-
-          <img
-            class="news-image"
-            src="${escapeAttribute(image)}"
-            alt="${escapeAttribute(news.title || "News image")}"
-            loading="lazy"
-            onclick="openNews('${escapeAttribute(news.id)}')"
-            onerror="this.src='https://via.placeholder.com/800x500?text=CIVILLINE'"
-          >
-
-          <div class="news-content">
-
-            <div class="news-category">
-              ${escapeHtml(
-                news.category ||
-                "News"
-              )}
-            </div>
-
-            <h2
-              class="news-title"
-              onclick="openNews('${escapeAttribute(news.id)}')"
-            >
-              ${escapeHtml(
-                news.title ||
-                ""
-              )}
-            </h2>
-
-            <p
-              class="news-excerpt"
-              onclick="openNews('${escapeAttribute(news.id)}')"
-            >
-              ${escapeHtml(
-                news.excerpt ||
-                ""
-              )}
-            </p>
-
-            <div class="news-meta">
-
-              <span>
-                ${escapeHtml(
-                  news.location ||
-                  "India"
-                )}
-              </span>
-
-              <span>
-                ${formatDate(
-                  news.created_at
-                )}
-              </span>
-
-            </div>
-
-            <div class="news-actions">
-
-              <button
-                class="read-btn"
-                onclick="openNews('${escapeAttribute(news.id)}')"
-              >
-                Read Full News
-              </button>
-
-              <button
-                class="share-btn"
-                onclick="shareNews('${escapeAttribute(news.id)}',event)"
-              >
-                📤 Share
-              </button>
-
-            </div>
-
+  grid.innerHTML = filtered.map((n, i) => {
+    const id = escapeAttribute(n.id);
+    return `
+      <article class="news-card" style="animation-delay:${Math.min(i,8)*60}ms">
+        <img class="news-image" src="${escapeAttribute(n.image_url || PLACEHOLDER)}"
+             alt="${escapeAttribute(n.title || "News image")}" loading="lazy"
+             onclick="openNews('${id}')" onerror="this.onerror=null;this.src=PLACEHOLDER">
+        <div class="news-content">
+          <div class="news-category">${escapeHtml(catLabel(n.category))}</div>
+          <h2 class="news-title" onclick="openNews('${id}')">${escapeHtml(n.title || "")}</h2>
+          <p class="news-excerpt" onclick="openNews('${id}')">${escapeHtml(n.excerpt || "")}</p>
+          <div class="news-meta">
+            <span>${escapeHtml(n.location || t("india"))}</span>
+            <span>${formatDate(n.created_at)}</span>
           </div>
-
-        </article>
-
-      `;
-
-    }).join("");
-
+          <div class="news-actions">
+            <button class="read-btn" onclick="openNews('${id}')">${t("read")}</button>
+            <button class="share-btn" onclick="shareNews('${id}',event)">${t("share")}</button>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
 }
 
-
-/* =====================================================
-   CATEGORY
-===================================================== */
-
-function setCategory(
-  category,
-  button
-){
-
-  currentCategory =
-    category;
-
-
-  document
-    .querySelectorAll(
-      ".category-btn"
-    )
-    .forEach(function(btn){
-
-      btn.classList.remove(
-        "active"
-      );
-
-    });
-
-
-  if(button){
-
-    button.classList.add(
-      "active"
-    );
-
-  }
-
-
+/* CATEGORY + SEARCH */
+function setCategory(category, button){
+  currentCategory = category;
+  document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
+  if(button) button.classList.add("active");
   renderNews();
-
 }
+function filterNews(){ renderNews(); }
 
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-function filterNews(){
-
-  renderNews();
-
-}
-
-
-/* =====================================================
-   NEWS URL
-===================================================== */
-
+/* SHARE */
 function getNewsUrl(id){
-
-  const url =
-    new URL(
-      window.location.href
-    );
-
-
-  url.search = "";
-
-  url.hash = "";
-
-
-  url.searchParams.set(
-    "news",
-    id
-  );
-
-
+  const url = new URL(window.location.href);
+  url.search = ""; url.hash = "";
+  url.searchParams.set("news", id);
   return url.toString();
-
 }
 
+async function shareNews(id, event){
+  if(event) event.stopPropagation();
+  const news = findNews(id);
+  if(!news) return;
+  const shareUrl = getNewsUrl(news.id);
+  const title = news.title || "CIVILLINE News";
+  const description = news.excerpt || news.content || "Read the latest news on CIVILLINE.";
 
-/* =====================================================
-   SHARE NEWS
-===================================================== */
-
-async function shareNews(
-  id,
-  event
-){
-
-  if(event){
-
-    event.stopPropagation();
-
-  }
-
-
-  const news =
-    allNews.find(function(item){
-
-      return String(
-        item.id
-      ) ===
-      String(id);
-
-    });
-
-
-  if(!news){
-
-    return;
-
-  }
-
-
-  const shareUrl =
-    getNewsUrl(
-      news.id
-    );
-
-
-  /*
-    IMPORTANT:
-    Use the actual news title
-    as the Web Share title.
-  */
-
-  const title =
-    news.title ||
-    "CIVILLINE News";
-
-
-  const description =
-    news.excerpt ||
-    news.content ||
-    "Read the latest news on CIVILLINE.";
-
-
-  const shareData = {
-
-    title:
-      title,
-
-    text:
-      title +
-      "\n\n" +
-      description +
-      "\n\nCIVILLINE",
-
-    url:
-      shareUrl
-
-  };
-
-
-  if(
-    navigator.share
-  ){
-
+  if(navigator.share){
     try{
-
-      await navigator.share(
-        shareData
-      );
-
+      await navigator.share({ title, text: title + "\n\n" + description + "\n\nCIVILLINE", url: shareUrl });
       return;
-
+    }catch(error){
+      if(error && error.name === "AbortError") return;
     }
-    catch(error){
-
-      if(
-        error &&
-        error.name ===
-        "AbortError"
-      ){
-
-        return;
-
-      }
-
-    }
-
   }
-
-
-  copyToClipboard(
-    shareUrl,
-    "News link copied!"
-  );
-
+  copyToClipboard(shareUrl, t("copied"));
 }
 
+async function shareCurrentNews(){ if(currentNews) await shareNews(currentNews.id); }
+function copyCurrentNewsLink(){ if(currentNews) copyToClipboard(getNewsUrl(currentNews.id), t("copied")); }
 
-/* =====================================================
-   SHARE CURRENT NEWS
-===================================================== */
-
-async function shareCurrentNews(){
-
-  if(!currentNews){
-
-    return;
-
-  }
-
-
-  await shareNews(
-    currentNews.id
-  );
-
-}
-
-
-/* =====================================================
-   COPY CURRENT NEWS LINK
-===================================================== */
-
-function copyCurrentNewsLink(){
-
-  if(!currentNews){
-
-    return;
-
-  }
-
-
-  const url =
-    getNewsUrl(
-      currentNews.id
-    );
-
-
-  copyToClipboard(
-    url,
-    "News link copied!"
-  );
-
-}
-
-
-/* =====================================================
-   COPY
-===================================================== */
-
-async function copyToClipboard(
-  text,
-  message
-){
-
+async function copyToClipboard(text, message){
   try{
-
-    await navigator.clipboard.writeText(
-      text
-    );
-
-    alert(
-      message ||
-      "Link copied!"
-    );
-
+    await navigator.clipboard.writeText(text);
+  }catch(error){
+    const t = document.createElement("textarea");
+    t.value = text; t.style.position = "fixed"; t.style.opacity = "0";
+    document.body.appendChild(t); t.select();
+    document.execCommand("copy");
+    document.body.removeChild(t);
   }
-  catch(error){
-
-    const textarea =
-      document.createElement(
-        "textarea"
-      );
-
-    textarea.value =
-      text;
-
-    textarea.style.position =
-      "fixed";
-
-    textarea.style.opacity =
-      "0";
-
-    document.body.appendChild(
-      textarea
-    );
-
-    textarea.select();
-
-    document.execCommand(
-      "copy"
-    );
-
-    document.body.removeChild(
-      textarea
-    );
-
-    alert(
-      message ||
-      "Link copied!"
-    );
-
-  }
-
+  alert(message || "Link copied!");
 }
 
-
-/* =====================================================
-   OPEN NEWS
-===================================================== */
-
+/* MODAL */
 function openNews(id){
-
-  const news =
-    allNews.find(function(item){
-
-      return String(
-        item.id
-      ) ===
-      String(id);
-
-    });
-
-
-  if(!news){
-
-    return;
-
-  }
-
-
-  currentNews =
-    news;
-
-
-  const newUrl =
-    getNewsUrl(
-      news.id
-    );
-
-
-  window.history.pushState(
-    {
-      newsId:news.id
-    },
-    "",
-    newUrl
-  );
-
-
-  showNewsContent(
-    news
-  );
-
+  const news = findNews(id);
+  if(!news) return;
+  currentNews = news;
+  window.history.pushState({ newsId: news.id }, "", getNewsUrl(news.id));
+  showNewsContent(news);
 }
 
+function showNewsContent(news){
+  const img = byId("modalImage");
+  img.onerror = function(){ this.onerror = null; this.src = PLACEHOLDER; };
+  img.src = news.image_url || PLACEHOLDER;
 
-/* =====================================================
-   SHOW NEWS
-===================================================== */
+  byId("modalCategory").textContent = catLabel(news.category);
+  byId("modalTitle").textContent = news.title || "";
+  byId("modalMeta").textContent = (news.location || t("india")) + " • " + formatDate(news.created_at) + (news.status ? " • " + news.status : "");
+  byId("modalBody").textContent = news.content || news.excerpt || "";
 
-function showNewsContent(
-  news
-){
-
-  const image =
-    news.image_url ||
-    "https://via.placeholder.com/800x500?text=CIVILLINE";
-
-
-  document.getElementById(
-    "modalImage"
-  ).src =
-    image;
-
-
-  document.getElementById(
-    "modalImage"
-  ).onerror =
-    function(){
-
-      this.src =
-        "https://via.placeholder.com/800x500?text=CIVILLINE";
-
-    };
-
-
-  document.getElementById(
-    "modalCategory"
-  ).textContent =
-    news.category ||
-    "NEWS";
-
-
-  document.getElementById(
-    "modalTitle"
-  ).textContent =
-    news.title ||
-    "";
-
-
-  document.getElementById(
-    "modalMeta"
-  ).textContent =
-    (
-      news.location ||
-      "India"
-    ) +
-    " • " +
-    formatDate(
-      news.created_at
-    ) +
-    (
-      news.status
-        ? " • " +
-          news.status
-        : ""
-    );
-
-
-  document.getElementById(
-    "modalBody"
-  ).textContent =
-    news.content ||
-    news.excerpt ||
-    "";
-
-
-  const authorityBox =
-    document.getElementById(
-      "authorityBox"
-    );
-
-
-  if(
-    news.authority_response
-  ){
-
-    authorityBox.style.display =
-      "block";
-
-    document.getElementById(
-      "modalAuthority"
-    ).textContent =
-      news.authority_response;
-
+  const box = byId("authorityBox");
+  if(news.authority_response){
+    box.style.display = "block";
+    byId("modalAuthority").textContent = news.authority_response;
+  }else{
+    box.style.display = "none";
   }
-  else{
-
-    authorityBox.style.display =
-      "none";
-
-  }
-
-
-  document.getElementById(
-    "newsModal"
-  ).style.display =
-    "block";
-
-
-  document.body.style.overflow =
-    "hidden";
-
+  byId("newsModal").style.display = "block";
+  document.body.style.overflow = "hidden";
 }
-
-
-/* =====================================================
-   OPEN SHARED NEWS
-===================================================== */
 
 function openNewsFromURL(){
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-
-  const newsId =
-    params.get(
-      "news"
-    );
-
-
-  if(!newsId){
-
-    return;
-
-  }
-
-
-  const news =
-    allNews.find(function(item){
-
-      return String(
-        item.id
-      ) ===
-      String(newsId);
-
-    });
-
-
-  if(news){
-
-    setTimeout(function(){
-
-      currentNews =
-        news;
-
-      showNewsContent(
-        news
-      );
-
-    },300);
-
-  }
-
+  const id = new URLSearchParams(window.location.search).get("news");
+  if(!id) return;
+  const news = findNews(id);
+  if(news){ currentNews = news; showNewsContent(news); }
 }
-
-
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
 
 function closeModal(){
+  byId("newsModal").style.display = "none";
+  document.body.style.overflow = "";
+  const url = new URL(window.location.href);
+  url.searchParams.delete("news");
+  window.history.pushState({}, "", url.pathname + url.search);
+  currentNews = null;
+}
+function closeOutside(e){ if(e.target.id === "newsModal") closeModal(); }
 
-  document.getElementById(
-    "newsModal"
-  ).style.display =
-    "none";
+window.addEventListener("popstate", function(){
+  const id = new URLSearchParams(window.location.search).get("news");
+  const news = id ? findNews(id) : null;
+  if(news){
+    currentNews = news; showNewsContent(news);
+  }else{
+    byId("newsModal").style.display = "none";
+    document.body.style.overflow = "";
+    currentNews = null;
+  }
+});
 
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
 
-  document.body.style.overflow =
-    "";
+/* REALTIME */
+db.channel("news-realtime")
+  .on("postgres_changes", { event:"*", schema:"public", table:"news" }, () => loadNews())
+  .subscribe();
 
-
-  const url =
-    new URL(
-      window.location.href
-    );
-
-
-  url.searchParams.delete(
-    "news"
-  );
-
-
-  window.history.pushState(
-    {},
-    "",
-    url.pathname +
-    (
-      url.search
-        ? url.search
-        : ""
-    )
-  );
-
-
-  currentNews =
-    null;
-
+/* LANGUAGE SWITCHER */
+function applyLang(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  byId("langSelect").value = LANG;
+  byId("dateChip").textContent = new Date().toLocaleDateString(LOCALES[LANG] || "en-IN", { weekday:"short", day:"2-digit", month:"short", year:"numeric" });
+  if(allNews.length){ updateBreakingNews(); renderNews(); }
+  if(currentNews) showNewsContent(currentNews);
+}
+function setLang(code){
+  if(!I18N[code]) return;
+  LANG = code;
+  try{ localStorage.setItem("civilline_lang", code); }catch(e){}
+  applyLang();
 }
 
-
-/* =====================================================
-   CLOSE OUTSIDE
-===================================================== */
-
-function closeOutside(event){
-
-  if(
-    event.target.id ===
-    "newsModal"
-  ){
-
-    closeModal();
-
-  }
-
-}
-
-
-/* =====================================================
-   BROWSER BACK
-===================================================== */
-
-window.addEventListener(
-  "popstate",
-  function(){
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-
-    const id =
-      params.get(
-        "news"
-      );
-
-
-    if(id){
-
-      const news =
-        allNews.find(function(item){
-
-          return String(
-            item.id
-          ) ===
-          String(id);
-
-        });
-
-
-      if(news){
-
-        currentNews =
-          news;
-
-        showNewsContent(
-          news
-        );
-
-      }
-
-    }
-    else{
-
-      document.getElementById(
-        "newsModal"
-      ).style.display =
-        "none";
-
-      document.body.style.overflow =
-        "";
-
-      currentNews =
-        null;
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   ESC KEY
-===================================================== */
-
-document.addEventListener(
-  "keydown",
-  function(event){
-
-    if(
-      event.key ===
-      "Escape"
-    ){
-
-      closeModal();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   DATE
-===================================================== */
-
-function formatDate(
-  date
-){
-
-  if(!date){
-
-    return "";
-
-  }
-
-
-  const d =
-    new Date(date);
-
-
-  return d.toLocaleDateString(
-    "en-IN",
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    }
-  );
-
-}
-
-
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
-
-function escapeHtml(
-  value
-){
-
-  if(
-    value === null ||
-    value === undefined
-  ){
-
-    return "";
-
-  }
-
-
-  return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* =====================================================
-   ATTRIBUTE ESCAPE
-===================================================== */
-
-function escapeAttribute(
-  value
-){
-
-  return escapeHtml(
-    value
-  );
-
-}
-
-
-/* =====================================================
-   REALTIME
-===================================================== */
-
-db
-.channel(
-  "news-realtime"
-)
-.on(
-  "postgres_changes",
-  {
-    event:"*",
-    schema:"public",
-    table:"news"
-  },
-  function(){
-
-    loadNews();
-
-  }
-)
-.subscribe();
-
-
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
-
+/* INITIAL LOAD */
+applyLang();
 loadNews();
-
 </script>
-
 </body>
 </html>
